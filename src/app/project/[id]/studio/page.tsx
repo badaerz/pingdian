@@ -1,3 +1,6 @@
 import { StudioWorkspace } from "@/components/studio/studio-workspace";
 
-export default function StudioPage() { return <StudioWorkspace />; }
+export default async function StudioPage({ params }: PageProps<"/project/[id]/studio">) {
+  const { id } = await params;
+  return <StudioWorkspace projectId={id} />;
+}

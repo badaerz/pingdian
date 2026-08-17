@@ -1,6 +1,13 @@
 import { expect, test } from "@playwright/test";
 
 test("candidate only changes prose after explicit confirmation", async ({ page }) => {
+  await page.route("**/api/generate", (route) => route.fulfill({ json: {
+    mode: "demo",
+    candidates: [
+      { id: "candidate-1", label: "克制推进", content: "雾中的汽笛又响了一次。", rationale: "测试候选", tags: [], status: "pending" },
+      { id: "candidate-2", label: "悬念强化", content: "另一段候选正文。", rationale: "测试候选", tags: [], status: "pending" },
+    ],
+  } }));
   await page.goto("/project/demo/studio");
   const editor = page.getByTestId("prose-editor");
   await expect(editor).toContainText("码头的钟停在凌晨三点十七分");
