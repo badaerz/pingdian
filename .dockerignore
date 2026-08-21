@@ -1,0 +1,14 @@
+node_modules
+.next
+test-results
+coverage
+.git
+.gitignore
+.env*
+.npm-cache
+.superpowers
+.worktrees
+*.log
+docs/superpowers
+docs/PRD_v1.1_current.docx
+docs/PRD_v1.1_current.md

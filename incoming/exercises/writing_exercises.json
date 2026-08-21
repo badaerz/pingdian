@@ -1,0 +1,293 @@
+[
+  {
+    "id": "EX_001",
+    "technique_name": "展示而非告知 (Show, Don't Tell)",
+    "category": "描写技法 / 感官具象",
+    "difficulty": "入门 / 进阶",
+    "objective": "学会剥离抽象概念词与主观情绪标签（如'非常悲伤'、'极度紧张'），通过客观物象（Objective Correlative）、身体微生理反应及环境交互，将角色的内心情绪转化为可见、可感的具象场景。",
+    "prompt": "【情境设定】一名主治医生刚走出手术室，需要向走廊外焦急等待的病人家属传达手术失败的消息。\n【写作要求】\n1. 字数：150-300 字；\n2. 严禁出现任何情绪与抽象词汇（包括但不限于：'悲伤'、'难过'、'沉重'、'痛苦'、'内疚'、'遗憾'、'紧张'）；\n3. 通过医生的肢体动作、随身物品处理以及环境光影/声音来体现其内心的巨大压力与疲惫。",
+    "evaluation_rubrics": [
+      {
+        "dimension": "抽象词违规率 (Word Filter)",
+        "weight": "25%",
+        "criteria": "是否严格剔除情绪词汇与主观概括句，全篇由名词和具体动词驱动。"
+      },
+      {
+        "dimension": "感官细节层次 (Sensory Details)",
+        "weight": "25%",
+        "criteria": "是否调动了触觉、听觉、视觉等多种感官（如冷水、电流声、烟盒硬度）。"
+      },
+      {
+        "dimension": "客观对应物运用 (Objective Correlative)",
+        "weight": "25%",
+        "criteria": "所选道具与环境细节（如空转的打火机、脱皮的双手）是否精准映射心理状态。"
+      },
+      {
+        "dimension": "动作节律与留白 (Pacing & Subtlety)",
+        "weight": "25%",
+        "criteria": "动作之间是否存在心理停顿，是否给读者留出推导情绪的空间。"
+      }
+    ],
+    "ai_guardrails": {
+      "strict_ghostwriting_prohibition": true,
+      "feedback_strategy": "过程性启发式反馈",
+      "forbidden_behaviors": [
+        "禁止直接替用户写出一篇完整的新段落；",
+        "禁止直接在用户文本上做无解释的全文一键润色替换。"
+      ],
+      "required_feedback_flow": [
+        "1. 违禁词扫描：高亮指出用户文本中出现的抽象情绪词（如发现用户写了'他心里沉甸甸的'，标出并警告）；",
+        "2. 亮点肯定：指出写得最具体的一个动词或物象细节；",
+        "3. 诊断与提问：针对薄弱处提出 1-2 个启发式问题（例如：'你写他走过去时，他的双手在做什么？'）；",
+        "4. 改写思路示例：仅提供局部词句的'思考方向'，不提供最终成稿。"
+      ]
+    },
+    "provenance": "Story Forge 教学团队自编情境",
+    "license": "原创教学素材，可用于本 Demo",
+    "demoFixture": {
+      "prompt": "课堂讨论提示：标出一处具体动作或物象，说明它如何服务本题技法。",
+      "submissionPolicy": "仅作课堂观察提示，不是可提交范文。"
+    }
+  },
+  {
+    "id": "EX_002",
+    "technique_name": "人物行动与性格塑造 (Action & Characterization)",
+    "category": "人物塑造 / 动作设计",
+    "difficulty": "进阶",
+    "objective": "避免通过作者全知解说给人物贴性格标签（如'他是一个爱面子且破产的中年人'），学会通过角色在冲突情境中的非常规物理动作、微习惯与道具操控，展现人物的性格裂变与心理防御机制。",
+    "prompt": "【情境设定】一位曾经风光无限、如今公司破产负债累累的中年男人，在一家人均 15 元的苍蝇馆子里，偶遇了不知其破产现状的昔日老下属。老下属主动上前热情寒暄。\n【写作要求】\n1. 字数：200-350 字；\n2. 严禁使用'好面子'、'尴尬'、'窘迫'、'自尊心'、'落魄'等标签化形容词；\n3. 通过男人处理桌上食物、随身物品（如手机/车钥匙/公文包）以及抢单结账的行动细节，体现其极力维系的体面与内心的崩溃。",
+    "evaluation_rubrics": [
+      {
+        "dimension": "动作特异性 (Action Specificity)",
+        "weight": "30%",
+        "criteria": "动作是否符合人物身份背景与当前困境，是否具备典型性与不可替代性。"
+      },
+      {
+        "dimension": "道具心理投射 (Prop Manipulation)",
+        "weight": "30%",
+        "criteria": "对公文包、手机、硬币等道具的物理操作是否精准传达掩饰心理。"
+      },
+      {
+        "dimension": "反差张力 (Contrast Tension)",
+        "weight": "20%",
+        "criteria": "外在浮夸动作（大声招呼）与内在掩饰动作（遮挡鞋头）是否形成鲜明对立。"
+      },
+      {
+        "dimension": "语言紧凑度 (Economy of Language)",
+        "weight": "20%",
+        "criteria": "动词选用是否精准凌厉，有无多余拖沓的心理说明。"
+      }
+    ],
+    "ai_guardrails": {
+      "strict_ghostwriting_prohibition": true,
+      "feedback_strategy": "动作链条诊断",
+      "forbidden_behaviors": [
+        "禁止替用户续写人物对话或后续剧情；",
+        "禁止直接提供整段人物描写模板。"
+      ],
+      "required_feedback_flow": [
+        "1. 动作有效性评估：分析用户设计的动作是'概念化套路动作'（如简单的抓头、叹气）还是'特异性动作'；",
+        "2. 道具互动检查：评估文本中道具的出现是否真正推动了心理呈现；",
+        "3. 动作链逻辑提问：指出动作连接生硬的地方（例如：'从坐着到站起来之间，他的眼神停留在哪里？'）。"
+      ]
+    },
+    "provenance": "Story Forge 教学团队自编情境",
+    "license": "原创教学素材，可用于本 Demo",
+    "demoFixture": {
+      "prompt": "课堂讨论提示：标出一处具体动作或物象，说明它如何服务本题技法。",
+      "submissionPolicy": "仅作课堂观察提示，不是可提交范文。"
+    }
+  },
+  {
+    "id": "EX_003",
+    "technique_name": "对话潜台词与冰山对话 (Dialogue Subtext)",
+    "category": "对话技法 / 潜台词",
+    "difficulty": "进阶 / 高级",
+    "objective": "掌握'言在此而意在彼'的冰山对话技巧。克服所想即所说的扁平直白对话，通过日常琐事、外界道具转移、话题回避与停顿，表达角色之间未说出口的真实欲望、权利博弈或不可逆的情感破裂。",
+    "prompt": "【情境设定】一对相恋五年、已经默认决定和平分手但尚未正式开口的情侣，在周日清晨的出租屋里，一边收拾行李，一边讨论一台最近坏掉的咖啡机（或吐司机）。\n【写作要求】\n1. 字数：250-400 字；\n2. 严禁出现任何关于'分手'、'分开'、'不爱了'、'未来'、'感情'等字眼；\n3. 全篇必须主要由双人对话构成，辅以简要的动作停顿；\n4. 让读者清晰感受到：他们讨论的不仅是机器，而是这段关系的终结与无法修复。",
+    "evaluation_rubrics": [
+      {
+        "dimension": "双层语意张力 (Subtext Depth)",
+        "weight": "35%",
+        "criteria": "表面谈话内容（修咖啡机）与真实所指（修补感情）之间的映射是否自然且深刻。"
+      },
+      {
+        "dimension": "对话真实度与口语感 (Dialogue Realism)",
+        "weight": "25%",
+        "criteria": "语言是否符合日常口语习惯，有无过度文艺腔或刻意说教感。"
+      },
+      {
+        "dimension": "动作伴随度 (Action Beats)",
+        "weight": "20%",
+        "criteria": "对话间隙的物理停顿（胶带声、收刀片、绕电线）是否有效强化了情绪断点。"
+      },
+      {
+        "dimension": "留白与克制 (Restraint & Subtlety)",
+        "weight": "20%",
+        "criteria": "是否做到不点破、不煽情，依靠对话的潜流引发读者的情感共鸣。"
+      }
+    ],
+    "ai_guardrails": {
+      "strict_ghostwriting_prohibition": true,
+      "feedback_strategy": "潜台词解码与张力分析",
+      "forbidden_behaviors": [
+        "禁止替用户重写对话台词；",
+        "禁止直接替用户设计结局台词。"
+      ],
+      "required_feedback_flow": [
+        "1. 直白度扫描：指出哪一句台词'说得太透/太露'，破坏了潜台词的隐蔽性；",
+        "2. 动作节律反馈：指出对话是否缺少肢体动作（Talking Heads 现象），建议在哪个节点插入微小的物理动作；",
+        "3. 潜台词提问：例如：'当角色 A 说这句话时，TA 真正想让对方做出的反应是什么？'"
+      ]
+    },
+    "provenance": "Story Forge 教学团队自编情境",
+    "license": "原创教学素材，可用于本 Demo",
+    "demoFixture": {
+      "prompt": "课堂讨论提示：标出一处具体动作或物象，说明它如何服务本题技法。",
+      "submissionPolicy": "仅作课堂观察提示，不是可提交范文。"
+    }
+  },
+  {
+    "id": "EX_004",
+    "technique_name": "冷峻白描与以冷写热 (Imitative Sketching & Detachment)",
+    "category": "经典仿写 / 叙事距离",
+    "difficulty": "高级",
+    "objective": "学习鲁迅、海明威式的克制叙事。通过极度冷静、近乎病理学记录的客观笔法描写极端事件，拉大叙述者与被叙述对象的心理距离，达到'叙述越冷酷，情感越震撼'的美学效果。",
+    "prompt": "【情境设定】描写一个孤独的老人在暴风雨后的废墟中寻找一件对他至关重要的旧物（如亡妻的旧相册、老怀表或一枚勋章）。\n【写作要求】\n1. 字数：200-300 字；\n2. 严禁使用任何抒情句、感叹号或心理独白（如'他想起了过去的美好时光'）；\n3. 采用纯白描与极短句，多用名词与短动词；\n4. 结尾处用一个客观物象的物理状态结束，不作总结。",
+    "evaluation_rubrics": [
+      {
+        "dimension": "叙事距离控制 (Narrative Detachment)",
+        "weight": "35%",
+        "criteria": "叙述语气是否保持绝对的客观冷峻，杜绝任何作者主观介入与直接抒情。"
+      },
+      {
+        "dimension": "句式与动词精炼度 (Syntactic Precision)",
+        "weight": "35%",
+        "criteria": "是否以短句为主，动词是否直接准确，修饰性形容词是否极度克制。"
+      },
+      {
+        "dimension": "结尾余韵 (Ending Resonance)",
+        "weight": "30%",
+        "criteria": "结尾物象（如断树落水）是否自然收束且具备诗意回甘。"
+      }
+    ],
+    "ai_guardrails": {
+      "strict_ghostwriting_prohibition": true,
+      "feedback_strategy": "修辞瘦身与白描诊断",
+      "forbidden_behaviors": [
+        "禁止替用户修改文段为煽情风格；",
+        "禁止直接补写结尾。"
+      ],
+      "required_feedback_flow": [
+        "1. 冗余修辞剔除：找出文本中多余的副词、形容词和解释性句子，建议用户删除；",
+        "2. 动词力量评估：分析动词是否够硬（例如将'慢慢地走进去'建议改为更具质感的动词）；",
+        "3. 结尾收束点评：评估结尾是否做到了'画止而意不止'。"
+      ]
+    },
+    "provenance": "Story Forge 教学团队自编情境",
+    "license": "原创教学素材，可用于本 Demo",
+    "demoFixture": {
+      "prompt": "课堂讨论提示：标出一处具体动作或物象，说明它如何服务本题技法。",
+      "submissionPolicy": "仅作课堂观察提示，不是可提交范文。"
+    }
+  },
+  {
+    "id": "EX_005",
+    "technique_name": "场景与氛围 (Scene & Atmosphere)",
+    "category": "场景描写 / 感官氛围",
+    "difficulty": "入门 / 进阶",
+    "objective": "通过光线、声音、温度、材质与空间关系建立可感的场景氛围，让环境参与叙事而不是只作为背景名词。",
+    "prompt": "【情境设定】凌晨四点的旧火车站，一名学生等待一班可能取消的列车。\n【写作要求】\n1. 字数：180-300 字；\n2. 至少使用三种感官线索；\n3. 不直接写‘孤独’‘焦虑’等情绪结论；\n4. 让一个环境变化推动人物做出微小选择。",
+    "evaluation_rubrics": [
+      {
+        "dimension": "感官线索密度",
+        "weight": "30%",
+        "criteria": "光线、声音、温度或材质等线索是否具体且互相呼应。"
+      },
+      {
+        "dimension": "空间叙事功能",
+        "weight": "25%",
+        "criteria": "空间限制、距离和动线是否影响人物行动。"
+      },
+      {
+        "dimension": "氛围递进",
+        "weight": "25%",
+        "criteria": "环境细节是否随等待推进而发生可观察的变化。"
+      },
+      {
+        "dimension": "情绪留白",
+        "weight": "20%",
+        "criteria": "是否避免直接命名情绪，并给读者留下推断空间。"
+      }
+    ],
+    "ai_guardrails": {
+      "strict_ghostwriting_prohibition": true,
+      "feedback_strategy": "感官线索与空间动线诊断",
+      "forbidden_behaviors": [
+        "禁止替用户补写完整场景。",
+        "禁止直接给出氛围段落成稿。"
+      ],
+      "required_feedback_flow": [
+        "先引用用户文本中的具体环境证据。",
+        "指出一处感官或空间断点。",
+        "提出下一次局部实验问题。"
+      ]
+    },
+    "provenance": "Story Forge 教学团队自编情境",
+    "license": "原创教学素材，可用于本 Demo",
+    "demoFixture": {
+      "prompt": "课堂观察提示：把环境线索按光、声、温度分组，讨论哪一组最有效。",
+      "submissionPolicy": "仅作课堂观察提示，不是可提交范文。"
+    }
+  },
+  {
+    "id": "EX_006",
+    "technique_name": "铺垫与回收 (Setup & Payoff)",
+    "category": "情节结构 / 伏笔回收",
+    "difficulty": "进阶",
+    "objective": "练习在读者可忽略的细节中埋下可回收的线索，并在后续行动或物件变化中完成验证，避免突兀反转与事后解释。",
+    "prompt": "【情境设定】一名租客搬离旧屋前整理厨房，发现一把从未使用过的钥匙。\n【写作要求】\n1. 字数：220-360 字；\n2. 至少埋下两处可回收线索；\n3. 回收必须通过动作、物件或对话完成，不用旁白解释；\n4. 结尾留下一个新的可验证问题。",
+    "evaluation_rubrics": [
+      {
+        "dimension": "线索可见度",
+        "weight": "25%",
+        "criteria": "线索足够具体，首次出现时不显得强行提示。"
+      },
+      {
+        "dimension": "回收对应度",
+        "weight": "30%",
+        "criteria": "后文回收与前文线索存在可核验的物理或因果对应。"
+      },
+      {
+        "dimension": "节奏控制",
+        "weight": "25%",
+        "criteria": "铺垫与回收之间有合理间隔，信息释放不拥挤。"
+      },
+      {
+        "dimension": "留疑能力",
+        "weight": "20%",
+        "criteria": "结尾提出新的可验证问题，而不是用解释封闭故事。"
+      }
+    ],
+    "ai_guardrails": {
+      "strict_ghostwritingProhibition": true,
+      "strict_ghostwriting_prohibition": true,
+      "feedback_strategy": "线索证据链诊断",
+      "forbidden_behaviors": [
+        "禁止替用户设计完整反转。",
+        "禁止直接续写伏笔回收段落。"
+      ],
+      "required_feedback_flow": [
+        "列出用户文本中的线索证据及其位置。",
+        "判断每条线索是否有对应回收。",
+        "提出一个不代写的回收实验问题。"
+      ]
+    },
+    "provenance": "Story Forge 教学团队自编情境",
+    "license": "原创教学素材，可用于本 Demo",
+    "demoFixture": {
+      "prompt": "课堂观察提示：用箭头连接首次出现的线索与后文回收点。",
+      "submissionPolicy": "仅作课堂观察提示，不是可提交范文。"
+    }
+  }
+]

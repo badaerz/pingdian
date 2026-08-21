@@ -1,0 +1,680 @@
+[
+  {
+    "id": "KB_001",
+    "title": "孔乙己",
+    "author": "鲁迅",
+    "era": "民国 / 中国现代文学",
+    "genre": "短篇小说 / 现实主义",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/孔乙己",
+      "license": "CC0 / 公共领域",
+      "display_scope": "全篇文本、人物关系、结构解构及衍生写作训练完全公开"
+    },
+    "core_summary": "通过咸亨酒店十二岁小伙计的旁观视角，描写穷困潦倒但死守封建科举尊严的落魄知识分子孔乙己的悲剧命运。",
+    "themes": {
+      "main_theme": "封建科举对人性的扭曲与看客社会的冷漠麻木",
+      "sub_themes": ["阶层隔阂（短衣帮与长衫客）", "知识分子的精神迂腐", "无意义的生存消耗"],
+      "value_conflicts": ["传统士人尊严 VS 底层生存现实", "温情同情 VS 集体看客的取乐嘲弄"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "长衫",
+        "literal_meaning": "读书人身份的标志性衣着",
+        "symbolic_meaning": "科举制度残留的阶级幻觉与放不下的士人虚荣",
+        "text_anchor": "穿的虽然是长衫，可是又脏又破，似乎十多年没有补，也没有洗。"
+      },
+      {
+        "imagery": "茴香豆",
+        "literal_meaning": "酒店廉价的下酒配食",
+        "symbolic_meaning": "孔乙己残存的善良教化欲与物质极度贫困的矛盾",
+        "text_anchor": "孔乙己分给孩子们一人一颗，随后用手罩住碟子说：'不多不多！多乎哉？不多也。'"
+      },
+      {
+        "imagery": "门槛与柜台",
+        "literal_meaning": "酒店的物理空间隔断",
+        "symbolic_meaning": "社会阶层无法逾越的鸿沟与冷酷的人际距离",
+        "text_anchor": "只有穿长衫的，才踱进店面隔壁的房里，要酒要菜，慢慢地坐喝。"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）",
+      "pacing": "常态描写（酒馆日常）→ 两次冲突事件（偷书被揭/教回字）→ 命运急转（折腿来饮）→ 悬念余韵",
+      "literary_devices": [
+        {
+          "name": "白描（Sketching）",
+          "function": "寥寥数语勾勒外貌与精神状态，不加过多心理主观修饰",
+          "example": "身材很高大；青白脸色，皱纹间时常夹些伤痕；一部乱蓬蓬的花白胡子。"
+        },
+        {
+          "name": "以喜衬悲（Tragedy through Farce）",
+          "function": "用周围众人的哄笑与快活，衬托主人公极致的生存凄苦",
+          "example": "店内外充满了快活的空气。"
+        },
+        {
+          "name": "首尾呼应与账本伏笔",
+          "function": "通过掌柜反复念叨的'十九个钱'，强化功利冷漠的社会本质",
+          "example": "孔乙己还欠十九个钱呢！"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "咸亨酒店格局介绍，短衣帮与长衫客的阶层区隔建立。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "孔乙己出场，因唯一'穿长衫而站着喝酒'成为酒客取笑对象。" },
+      { "stage": "发展 (Rising Action)", "description": "孔乙己为偷书辩护、教小伙计写'茴'字、给孩童分豆，展现迂腐与微弱善意。" },
+      { "stage": "转折 (Crisis)", "description": "孔乙己因偷丁举人家物事被打断双腿，长久未在酒馆露面。" },
+      { "stage": "高潮 (Climax)", "description": "中秋后初冬，孔乙己以手代步坐蒲包来喝最后一次酒，忍受残忍嘲笑后默默爬走。" },
+      { "stage": "结局 (Resolution)", "description": "年关掌柜擦去粉板欠账，以'大约孔乙己的确死了'作结，留下无尽冷酷余味。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "kong", "name": "孔乙己", "role": "主角 / 落魄封建文人", "traits": ["迂腐", "好喝懒做", "残留善良", "死要面子"] },
+        { "id": "narrator", "name": "小伙计（我）", "role": "叙述者 / 旁观视角", "traits": ["冷淡", "懵懂", "被动看客"] },
+        { "id": "manager", "name": "掌柜", "role": "次要人物 / 市侩资本代表", "traits": ["刻薄", "唯利是图", "麻木"] },
+        { "id": "customers", "name": "短衣帮酒客", "role": "群体看客 / 嘲弄者", "traits": ["粗鄙", "取乐他人痛苦"] },
+        { "id": "ding", "name": "丁举人", "role": "背景支配者 / 封建强权", "traits": ["残暴", "居高临下"] }
+      ],
+      "edges": [
+        { "source": "customers", "target": "kong", "relation": "嘲弄与精神凌辱" },
+        { "source": "manager", "target": "kong", "relation": "经济索取 / 功利记账" },
+        { "source": "ding", "target": "kong", "relation": "肉体摧残 / 阶级碾压" },
+        { "source": "kong", "target": "narrator", "relation": "试图传递知识 / 寻求认同" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "穿的虽然是长衫，可是又脏又破，似乎十多年没有补，也没有洗。",
+      "literary_analysis": "鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识分子和上层体面，而'脏、破、十多年未洗'则属于赤贫阶层的特征。两者的并置在第一句话就确立了孔乙己核心的性格悲剧：身份认同与生活实相的剧烈断裂。",
+      "writing_advice": "在描写人物出场时，避免直接罗列性格形容词。可选取两个具有阶层/心理冲突属性的物件或特征进行组合，让读者自行感知人物的撕裂感。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "请描写一个'极度贫穷却极度好面子的落魄创业者'走进高档咖啡厅的场景。要求：不得出现'穷'、'虚荣'、'尴尬'等词汇，通过着装细节、动作及付款交互体现。",
+      "imitation_exercise": "尝试采用第一人称服务员/店员的冷眼视角，记录一位来店里的特殊常客。"
+    }
+  },
+  {
+    "id": "KB_002",
+    "title": "林冲风雪山神庙",
+    "author": "施耐庵",
+    "era": "元末明初 / 中国古典小说",
+    "genre": "章回体小说 / 英雄传奇",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/水滸傳/第010回",
+      "license": "CC0 / 公共领域",
+      "display_scope": "全篇文本、情节节律、草蛇灰线分析完全公开"
+    },
+    "core_summary": "八十万禁军教头林冲发配沧州后一再退让求安，终因陆谦等人设计火烧草料场逼入绝境，于风雪山神庙手刃仇敌、雪夜上梁山。",
+    "themes": {
+      "main_theme": "逼上梁山（压迫体制下的个体生存极限与性格蜕变）",
+      "sub_themes": ["忠义困境", "恶意的步步紧逼", "风雪与命运的交织"],
+      "value_conflicts": ["体制内隐忍苟活 VS 绝地反抗破局"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "风雪",
+        "literal_meaning": "沧州极寒恶劣气候",
+        "symbolic_meaning": "社会黑暗与政治严冬的具象化，也是压垮草料场、促使林冲移步山神庙的关键推手",
+        "text_anchor": "正是严冬天气，彤云密布，朔风渐起，却早翻翻覆覆飞下一天瑞雪来。"
+      },
+      {
+        "imagery": "花枪与酒葫芦",
+        "literal_meaning": "随身兵刃与御寒酒器",
+        "symbolic_meaning": "武力潜能与隐忍求安的并存，当酒尽屋塌，花枪便化为复仇工具",
+        "text_anchor": "把花枪挑了酒葫芦，依旧把门拽上，锁了，望那草料场来。"
+      },
+      {
+        "imagery": "大石倚门",
+        "literal_meaning": "山神庙挡风的巨石",
+        "symbolic_meaning": "生死分界之锁，既阻断了刺客的退路，也断绝了林冲退回旧体制的可能",
+        "text_anchor": "把庙门关上，旁边止有一块大石头，掇将过来靠了门。"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "全知视角但高度附着于林冲行动轨迹",
+      "pacing": "徐缓（酒店安歇/接管草料场）→ 积蓄（风雪渐猛/草屋被压）→ 偶发转移（买酒避庙）→ 突爆（隔门听阴谋）→ 凌厉爆发（开门杀敌）",
+      "literary_devices": [
+        {
+          "name": "草蛇灰线，伏脉千里",
+          "function": "所有偶然情节（李小二认人、买酒、屋塌、大石靠门）皆为高潮复仇铺设严密逻辑链",
+          "example": "林冲因炭火救济李小二，李小二方才报信；因风雪压倒草厅，方有山神庙避寒。"
+        },
+        {
+          "name": "景物烘托与心理共振",
+          "function": "风雪的物理力度与剧情的紧迫感成正比递增",
+          "example": "看那雪到晚越下得紧了。"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "林冲在沧州牢营得差使，偶遇并救济旧识李小二。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "李小二发现东京来的陆谦与差拨密谋，林冲买刀寻仇未果。" },
+      { "stage": "发展 (Rising Action)", "description": "林冲被调派看守大军草料场，途中风雪大作，取酒御寒。" },
+      { "stage": "转折 (Crisis)", "description": "风雪压垮草厅，林冲前往古庙避雪，用大石挡门。" },
+      { "stage": "高潮 (Climax)", "description": "陆谦等人在庙外纵火并庆贺得计，林冲推门而出，手刃仇敌三人。" },
+      { "stage": "结局 (Resolution)", "description": "林冲雪夜投奔梁山泊，彻底完成了从禁军教头到义军英雄的身份转变。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "lin", "name": "林冲", "role": "主角 / 悲剧武将", "traits": ["武艺高强", "隐忍退让", "心存侥幸", "最终决绝"] },
+        { "id": "lu", "name": "陆谦", "role": "反派 / 昔日好友背叛者", "traits": ["阴险", "谄媚权贵", "赶尽杀绝"] },
+        { "id": "li", "name": "李小二", "role": "辅助人物 / 知恩图报底层", "traits": ["机警", "忠厚"] },
+        { "id": "gao", "name": "高俅", "role": "幕后黑手 / 权势压迫者", "traits": ["滥用职权", "专横"] }
+      ],
+      "edges": [
+        { "source": "lu", "target": "lin", "relation": "背叛与暗杀设计" },
+        { "source": "lin", "target": "li", "relation": "施恩与庇护" },
+        { "source": "li", "target": "lin", "relation": "报信预警" },
+        { "source": "lin", "target": "lu", "relation": "绝望反杀" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "将身一耸，把庙门推开，大喝一声：'贼徒！哪里去！'",
+      "literary_analysis": "在此之前，林冲经历了一整篇的'退、忍、避'。施耐庵用动词'一耸'（蓄力、爆发）、'推开'（推倒阻隔）、'大喝'（情绪总宣泄），瞬间完成了人物性格弧光从压抑到释放的临界点切换。",
+      "writing_advice": "在处理长久隐忍型角色的爆发戏时，前期铺垫必须足够窒息与合理，爆发时的动词需短促有力，节奏由拖沓骤变紧凑。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "描写一场自然环境恶化（暴雨/暴风雪/酷暑），要求自然现象必须对主角的物理行动产生直接阻碍，并促使其进入特定密闭空间。",
+      "imitation_exercise": "设计一个'昔日好友为利益前来加害，主角意外在墙外/门后偷听到全过程'的紧张情节片段。"
+    }
+  },
+  {
+    "id": "KB_003",
+    "title": "边城",
+    "author": "沈从文",
+    "era": "民国 / 中国现代文学 (1934)",
+    "genre": "中篇小说 / 抒情乡土文学",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/邊城",
+      "license": "CC0 / 公共领域",
+      "display_scope": "全篇文本、田园意象、诗性叙事及留白技法完全公开"
+    },
+    "core_summary": "湘西茶峒小镇上，渡船老人的外孙女翠翠与船总顺顺的两个儿子天保、傩送之间纯洁而充满宿命阴差阳错的爱情悲剧。",
+    "themes": {
+      "main_theme": "人性之美、自然之爱与无法抗拒的宿命无常",
+      "sub_themes": ["田园牧歌的消逝", "原始质朴的道德美", "代际沟通的错位与遗憾"],
+      "value_conflicts": ["走马路（唱情歌的浪漫追求） VS 走车路（托媒提亲的世俗规矩）"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "渡船与白塔",
+        "literal_meaning": "茶峒溪口的摆渡工具与地标建筑",
+        "symbolic_meaning": "渡船象征接引与流转漂泊，白塔象征古老秩序与爷爷的生命守护；白塔崩塌预示旧秩序的瓦解",
+        "text_anchor": "那座在翠翠心中极其庄严的白塔，被昨夜的大风雨吹坍了。"
+      },
+      {
+        "imagery": "虎耳草",
+        "literal_meaning": "悬崖绝壁上的野生草本植物",
+        "symbolic_meaning": "少女纯洁朦胧的情窦初开与不可触及的相思之梦",
+        "text_anchor": "在梦中，翠翠听到傩送的歌声，灵魂浮起来，去悬崖上摘了一把虎耳草。"
+      },
+      {
+        "imagery": "流水与黄昏",
+        "literal_meaning": "湘西自然的常态风光",
+        "symbolic_meaning": "时间的无情流逝与孤独怅惘的生命基调",
+        "text_anchor": "黄昏来时，翠翠坐在溪边，看着天上的红云，心中泛起一种无由的哀伤。"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "全知诗性散文视角，叙述者充满温情与悲悯",
+      "pacing": "舒缓流淌，注重风俗风物的工笔勾勒与心理微澜的捕捉",
+      "literary_devices": [
+        {
+          "name": "情景交融与以乐写哀",
+          "function": "在极美的山水民风中渗入淡淡的悲凉感，强化宿命的不可避免",
+          "example": "由四川过湖南去，靠东有一条官路。这官路将到了湘西边境，到了一个地方名叫'茶峒'的小山城……"
+        },
+        {
+          "name": "留白艺术（Ambiguity & Open Ending）",
+          "function": "不在终局给出确切答案，赋予作品广阔的余味空间",
+          "example": "这个人也许永远不回来了，也许'明天'回来。"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "描绘湘西茶峒的渡口、老船夫、翠翠与黄狗相依为命的纯朴生活。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "端午节龙舟赛，翠翠偶遇二老傩送，情窦初开；大老天保亦爱上翠翠。" },
+      { "stage": "发展 (Rising Action)", "description": "兄弟二人相约依湘西规矩在山崖上唱情歌决胜，天保自知歌声不如弟弟，选择退出。" },
+      { "stage": "转折 (Crisis)", "description": "天保驾船下辰州不幸溺水身亡，顺顺家对老船夫产生误解与芥蒂。" },
+      { "stage": "高潮 (Climax)", "description": "暴风雨之夜白塔倒塌，老船夫在忧患中安详离世，傩送负气远走他乡。" },
+      { "stage": "结局 (Resolution)", "description": "乡邻重修白塔，翠翠接替爷爷继续在渡口撑船，陷入无尽的等待。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "cui", "name": "翠翠", "role": "主角 / 纯情少女", "traits": ["天真", "敏锐", "深情", "孤独"] },
+        { "id": "grandpa", "name": "老船夫", "role": "守护者 / 传统道德象征", "traits": ["善良", "自尊", "忧虑过多"] },
+        { "id": "nuosong", "name": "傩送（二老）", "role": "恋人 / 崇尚真爱者", "traits": ["英勇", "多情", "重情义"] },
+        { "id": "tianbao", "name": "天保（大老）", "role": "竞争者 / 豪爽汉子", "traits": ["豁达", "敢作敢当"] },
+        { "id": "shunshun", "name": "顺顺", "role": "乡绅船总 / 地方威信", "traits": ["慷慨", "讲义气"] }
+      ],
+      "edges": [
+        { "source": "grandpa", "target": "cui", "relation": "血缘抚养与担忧" },
+        { "source": "tianbao", "target": "cui", "relation": "提亲爱慕" },
+        { "source": "nuosong", "target": "cui", "relation": "心意相通 / 误会搁浅" },
+        { "source": "tianbao", "target": "nuosong", "relation": "手足情深 / 公平竞争" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "这个人也许永远不回来了，也许'明天'回来。",
+      "literary_analysis": "结尾没有安排大团圆，也没有写出死亡，而是采用了极具张力的'时间悬置'。'永远'代表了现实宿命的残酷，'明天'代表了生命内生的希望。两词并列，使全书的哀而不伤达到了美学巅峰。",
+      "writing_advice": "在处理带有遗憾色彩的情感结局时，尝试用'未完成的时态'代替确定的交代，给读者留出想象与回味的情感回音室。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "描写一个少女在黄昏等待心上人但对方未出现的心理状态。禁止使用'失落'、'想念'、'伤心'，完全通过对周围水流、天色及指尖动作的描写表现。",
+      "imitation_exercise": "使用富有地方风物气息的语言，描写一个远离都市的小渡口或旧车站的一日晨昏。"
+    }
+  },
+  {
+    "id": "KB_004",
+    "title": "红楼梦（第五回/前八十回架构）",
+    "author": "曹雪芹",
+    "era": "清代 / 中国古典小说巅峰",
+    "genre": "章回体长篇世情小说",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/紅樓夢",
+      "license": "CC0 / 公共领域",
+      "display_scope": "宏大网络人物构建、预叙（Prolepsis）与多线交织技法公开"
+    },
+    "core_summary": "以贾宝玉、林黛玉、薛宝钗的爱情与婚姻悲剧为主线，以贾、史、王、薛四大家族的兴衰为背景，展现封建大家族的繁华如梦与幻灭宿命。",
+    "themes": {
+      "main_theme": "万境归空与青春生命的挽歌",
+      "sub_themes": ["真假虚实之辨（假作真时真亦假）", "封建体制的礼教禁锢", "女性才情与毁灭"],
+      "value_conflicts": ["木石前盟（心灵共鸣） VS 金玉良缘（宗法现实）", "叛逆自由 VS 封建仕途"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "通灵宝玉与绛珠仙草",
+        "literal_meaning": "随身神石与神话植物",
+        "symbolic_meaning": "因果宿命与还泪之债，确立了全书超验的神话母题",
+        "text_anchor": "一个是阆苑仙葩，一个是美玉无瑕。"
+      },
+      {
+        "imagery": "大观园",
+        "literal_meaning": "贾府为元春省亲修建的园林",
+        "symbolic_meaning": "与外界浊世隔绝的乌托邦，也是少女青春最后的庇护所",
+        "text_anchor": "天上人间诸景备，衔山抱水建来精。"
+      },
+      {
+        "imagery": "落红与风筝",
+        "literal_meaning": "春末残花与飘摇断线的纸鸢",
+        "symbolic_meaning": "群芳零落与诸钗身不由己的飘零命运",
+        "text_anchor": "花谢花飞花满天，红消香断有谁怜？"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "多重叙事层（神话框式结构 + 全知限制混合视角）",
+      "pacing": "大开大阖，盛极而衰，细密写实与宏观预言同步推进",
+      "literary_devices": [
+        {
+          "name": "判词预叙（Prolepsis）",
+          "function": "在开篇太虚幻境通过判词与曲子提前揭示全员终局，形成命运的宿命笼罩感",
+          "example": "二十年来辨是非，榴花开处照宫闱。三春争及初春景，虎兕相逢大梦归。"
+        },
+        {
+          "name": "网状复调叙事（Polyphonic Mesh）",
+          "function": "百余人物各有声口，多条事件线如织锦般互为因果",
+          "example": "抄检大观园事件引发的一系列仆役变故与小姐离散。"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "神话缘起、太虚幻境判词预言、林黛玉进贾府建立世界观与核心人物群。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "宝黛初会建立深厚共鸣，宝钗入府带来'金玉良缘'说，冲突暗生。" },
+      { "stage": "发展 (Rising Action)", "description": "元妃省亲建大观园，群芳结社作诗，家族声势达到繁华鼎盛。" },
+      { "stage": "转折 (Crisis)", "description": "抄检大观园、尤三姐自刎、晴雯早夭，家族内乱频发，盛极转衰。" },
+      { "stage": "高潮 (Climax)", "description": "贾府被抄、黛玉焚稿断痴情、宝玉误娶宝钗，双重悲剧集中爆发。" },
+      { "stage": "结局 (Resolution)", "description": "落了片白茫茫大地真干净，宝玉出家归入太虚，神话闭环。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "baoyu", "name": "贾宝玉", "role": "主角 / 意淫之核心", "traits": ["多情", "叛逆", "尊重女性", "厌恶仕途"] },
+        { "id": "daiyu", "name": "林黛玉", "role": "主角 / 绛珠还泪", "traits": ["敏感", "才华绝世", "纯粹", "多愁善感"] },
+        { "id": "baochai", "name": "薛宝钗", "role": "主角 / 宗法典范", "traits": ["端庄", "通达世故", "理性克制"] },
+        { "id": "xifeng", "name": "王熙凤", "role": "管家支柱 / 权力中枢", "traits": ["精明", "狠辣", "机变", "机算太尽"] },
+        { "id": "jia_mu", "name": "贾母", "role": "最高权力象征", "traits": ["慈爱", "享乐", "溺爱宝玉"] }
+      ],
+      "edges": [
+        { "source": "baoyu", "target": "daiyu", "relation": "知己真爱与木石前盟" },
+        { "source": "baoyu", "target": "baochai", "relation": "相敬如宾与金玉错配" },
+        { "source": "xifeng", "target": "jia_mu", "relation": "奉承依赖与权力获取" },
+        { "source": "daiyu", "target": "baochai", "relation": "由猜忌情敌转化为知心姐妹" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "林妹妹是从来不说这些混账话的；若是他也说过这些混账话，我早和他生分了。",
+      "literary_analysis": "这是宝玉对史湘云劝其考取功名时的反驳。曹雪芹没有直接写宝黛如何相爱，而是借他人之口反衬黛玉与其他闺秀的根本差异——不劝宝玉做世俗'国贼禄鬼'，以此精准立住'灵魂知己'的根基。",
+      "writing_advice": "确立核心CP的不可替代性时，不要只写外貌或日常互动，应写他们在价值观面临外界考验时的极端一致与对世俗的共同反叛。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "设计一个群戏场景（如家庭聚会/团队开会），写一个极具权势的管事人进门，通过各色不同身份人物的微动作体现对其敬畏与阿谀。",
+      "imitation_exercise": "为你的原创故事主角写一首简短的'命运判词'或预言诗，暗藏其结局与核心性格缺陷。"
+    }
+  },
+  {
+    "id": "KB_005",
+    "title": "促织",
+    "author": "蒲松龄",
+    "era": "清代 / 中国文言志怪小说",
+    "genre": "志怪传奇 / 讽刺寓言",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/聊齋志異/第04卷#促織",
+      "license": "CC0 / 公共领域",
+      "display_scope": "全篇文言及译文、三叠式冲突结构、魔幻现实异化解析公开"
+    },
+    "core_summary": "宣德年间宫中尚斗蟋蟀，地方官吏层层摊派勒索，老实县民成名一家因交不起促织家破人亡，其幼子投井化身为斗无不胜的促织以解家难。",
+    "themes": {
+      "main_theme": "封建上层一己之私引发底层人间的灭顶之灾",
+      "sub_themes": ["人不如虫的荒诞异化", "官僚链条的层层盘剥", "微弱希望与大恐怖"],
+      "value_conflicts": ["童真生命 VS 一纸贡物公文", "荒诞超自然奇迹 VS 现实血泪残酷"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "蟋蟀（促织）",
+        "literal_meaning": "一种秋季鸣叫打斗的鸣虫",
+        "symbolic_meaning": "底层百姓的生命抵押物，权力荒谬意志的微观载体",
+        "text_anchor": "此物故非西产；有好事者驯养一虫，斗胜，因献入；遂使天下大征。"
+      },
+      {
+        "imagery": "小儿魂魄化虫",
+        "literal_meaning": "小孩因害死促织自尽，灵魂异化为青麻头促织",
+        "symbolic_meaning": "极致的异化与悲凉：人必须剥离人性成为玩物，才能让家庭在残酷社会中苟活",
+        "text_anchor": "昂头振翼，迅急搏击，小儿自言：'我化为促织矣！'"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "第三人称全知志怪传奇体",
+      "pacing": "一波三折（得虫欢喜→失虫自尽→化虫绝胜→封官受赏），叙事张力极度饱满",
+      "literary_devices": [
+        {
+          "name": "跌宕波折法（Rollercoaster Structure）",
+          "function": "让主角在'绝望-希望-绝灭-奇迹-狂欢-讽刺'中急剧跌宕",
+          "example": "成名得神虫自喜，子好奇毙虫，成妻哭儿，成欲寻死，儿复活化虫破局。"
+        },
+        {
+          "name": "寓讽于奇（Satirical Fantasy）",
+          "function": "借奇幻异化包裹严苛的社会批判，荒谬中见真切",
+          "example": "独是成氏子以蠹贫，以促织富，裘马扬扬。"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "宫廷好蟋蟀之戏，导致华阴县令层层转嫁摊派，成名被逼破产受杖刑。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "成名得驼背巫指点，千辛万苦寻得一头神骏的大蟋蟀。" },
+      { "stage": "发展 (Rising Action)", "description": "九岁幼子趁父不在偷看，不慎将虫压死；恐惧之下投井自尽。" },
+      { "stage": "转折 (Crisis)", "description": "夫妻哭儿未绝，幼子魂魄苏醒，家中出现一只极小但极机警的青褐色蟋蟀。" },
+      { "stage": "高潮 (Climax)", "description": "小促织斗败蟹壳青、斗败公鸡，献入宫中得皇帝大喜，抚军与县令皆受重赏。" },
+      { "stage": "结局 (Resolution)", "description": "成名家资巨万，出入裘马；蒲松龄以'异史氏曰'冷峻点破'一人飞升，仙及鸡犬'的本质荒谬。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "cheng", "name": "成名", "role": "主角 / 被逼入绝境的良民", "traits": ["老实", "懦弱", "逼上绝路"] },
+        { "id": "son", "name": "成名幼子", "role": "悲剧转折点 / 异化载体", "traits": ["天真", "恐惧", "牺牲"] },
+        { "id": "magistrate", "name": "县官/差役", "role": "压迫执行者", "traits": ["贪婪", "媚上欺下"] },
+        { "id": "emperor", "name": "天子（宣德帝）", "role": "终极权力源", "traits": ["贪玩荒政", "视万民如草芥"] }
+      ],
+      "edges": [
+        { "source": "magistrate", "target": "cheng", "relation": "暴力索取与肉体责罚" },
+        { "source": "son", "target": "cheng", "relation": "误伤祸事与牺牲拯救" },
+        { "source": "cheng", "target": "emperor", "relation": "进贡玩物获取特权" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "夫妻向隅，茅舍无烟，相对默然，不复聊赖。",
+      "literary_analysis": "蒲松龄在小儿投井后，没有用铺张的哭号描写，而是用'茅舍无烟，相对默然'八个字，精准呈现了底层人在遭遇毁灭性打击时极度的麻木与死寂。这种'静'为随后的奇幻化虫积蓄了巨大的心理势能。",
+      "writing_advice": "描写绝境悲痛时，极致的沉默往往比大声疾呼更具冲击力。关注生活日常的停滞（如不做饭、不起床、不说话）。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "描写一个普通打工人因弄丢了公司一份核心数据/贵重物品后的崩溃状态。要求：不要写心理独白，完全描写其在家中的物理动作与神经质反应。",
+      "imitation_exercise": "构思一个微型现代寓言：为了应付某个荒谬的指标，主角被迫将自己身体的某个部分异化为工具。"
+    }
+  },
+  {
+    "id": "KB_006",
+    "title": "变形记 (The Metamorphosis)",
+    "author": "弗朗茨·卡夫卡 (Franz Kafka)",
+    "era": "20世纪初 / 西方现代主义",
+    "genre": "中篇小说 / 表现主义 / 荒诞派",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/變形記_(卡夫卡)",
+      "license": "CC0 / 公共领域",
+      "display_scope": "公版译本分析、荒谬开局与冷峻细节法、现代人异化分析公开"
+    },
+    "core_summary": "推销员格里高尔·萨姆沙清晨醒来发现自己变成了一只巨大的甲虫。随着失去工作能力，他从家庭的经济支柱逐渐沦为家人的负担和累赘，最终在孤独中死去。",
+    "themes": {
+      "main_theme": "工具理性下现代人的异化与资本/亲情关系的本质冷酷",
+      "sub_themes": ["沟通的彻底断绝", "身体变形引发的空间驱逐", "实用主义亲情"],
+      "value_conflicts": ["劳动价值作为被爱的唯一前提 VS 无条件的亲情神话"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "巨甲虫",
+        "literal_meaning": "格里高尔变形后的生理形态",
+        "symbolic_meaning": "被压抑的潜意识爆发，失去劳动力后沦为寄生虫的自我指认",
+        "text_anchor": "清晨醒来，发现自己在床上变成了一只巨大的甲虫。他背穹甲坚硬，腹部凸起分节。"
+      },
+      {
+        "imagery": "嵌在背上的烂苹果",
+        "literal_meaning": "父亲愤怒投掷并腐烂在甲壳里的水果",
+        "symbolic_meaning": "家庭强权的致命伤害与父权暴力的永久创伤印记",
+        "text_anchor": "一个苹果陷进了格里高尔的背里，甚至成了致命伤，周围肉体开始腐烂发炎。"
+      },
+      {
+        "imagery": "紧闭与锁上的房门",
+        "literal_meaning": "格里高尔卧室的门锁",
+        "symbolic_meaning": "社会与家庭对异类个体的物理隔离与精神隔绝",
+        "text_anchor": "门被外面钥匙反锁上了，这是他有生以来第一次无法自由走出房间。"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）",
+      "pacing": "突兀开局（首句即高潮设定）→ 空间不断收缩（全家→卧室→床底→角落）→ 逐步剥夺（家具被搬空）→ 必然消亡",
+      "literary_devices": [
+        {
+          "name": "陌生化与超现实实录（Kafkaesque Realism）",
+          "function": "用极其严谨细致的现实主义笔法描写完全不可能的荒诞情境，使其产生惊人的心理真实感",
+          "example": "他第一反应不是惊恐自己为何变成虫，而是担心赶不上早晨五点的火车迟到被开除。"
+        },
+        {
+          "name": "心理距离控制（Clinical Detachment）",
+          "function": "叙述者不带任何同情或惊叹词，如病理报告般记录主人公的退化与死亡",
+          "example": "他的头不由自主地下垂，鼻孔里呼出了最后一丝微弱的气息。"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "格里高尔早晨醒来变成甲虫，但仍满脑子担忧推销员工作与家庭债务。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "主任上门催促，格里高尔艰难开门亮相，母亲吓晕，主任逃跑，父亲将其暴力赶回房内。" },
+      { "stage": "发展 (Rising Action)", "description": "妹妹格蕾特负责喂食，但逐渐失去耐心；家人为租客腾空间开始搬走他的家具。" },
+      { "stage": "转折 (Crisis)", "description": "母亲见其真身再次受惊，父亲用苹果狂掷格里高尔，致其背部严重受创腐烂。" },
+      { "stage": "高潮 (Climax)", "description": "妹妹在房客面前公开提议'我们必须摆脱它'，格里高尔在极度绝望与平静中确认了死意。" },
+      { "stage": "结局 (Resolution)", "description": "女佣清理尸体，全家如释重负乘车郊游，父母欣慰地看着妹妹舒展身体，象征新周期的开始。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "gregor", "name": "格里高尔", "role": "主角 / 异化甲虫", "traits": ["隐忍", "奉献", "自我牺牲", "被彻底抛弃"] },
+        { "id": "father", "name": "父亲", "role": "对抗者 / 权威暴君", "traits": ["冷酷", "暴力", "重利"] },
+        { "id": "grete", "name": "妹妹格蕾特", "role": "同情者演变为抛弃者", "traits": ["由温情转向实用冷血"] },
+        { "id": "mother", "name": "母亲", "role": "懦弱观望者", "traits": ["软弱", "神经质", "逃避"] }
+      ],
+      "edges": [
+        { "source": "father", "target": "gregor", "relation": "肉体伤害与精神驱逐" },
+        { "source": "grete", "target": "gregor", "relation": "温情照料演变为彻底否定" },
+        { "source": "gregor", "target": "grete", "relation": "唯一的精神寄托与音乐共鸣" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "一天早晨，格里高尔·萨姆沙从不安的睡梦中醒来，发现自己躺在床上变成了一只巨大的甲虫。",
+      "literary_analysis": "文学史上最著名的开篇之一。卡夫卡放弃了一切前因后果解释（没有魔法、没有诅咒、没有科学实验），把最大的荒诞直接作为既定事实前置。这迫使读者跳过'为什么'，直接聚焦于'变形之后人际关系的真实崩溃'。",
+      "writing_advice": "在写奇幻或超现实设定时，不要在开头花费大段篇幅解释世界观成因。把最极端的核心设定当作日常现实直接抛给读者，用精确细节写其即时反应。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "设定主角突然丧失了某项核心能力（如说话/直立行走/视觉），描写其试图完成'起床洗漱'这一日常动作的艰难过程。",
+      "imitation_exercise": "写一个故事开头：主角早晨醒来发现身处的物理环境发生了不可逆的荒诞改变，但他第一反应是在算计当天的一件微小琐事。"
+    }
+  },
+  {
+    "id": "KB_007",
+    "title": "老人与海 (The Old Man and the Sea)",
+    "author": "欧内斯特·海明威 (Ernest Hemingway)",
+    "era": "20世纪中叶 / 美国现代文学",
+    "genre": "中篇小说 / 硬汉派文学",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/老人與海",
+      "license": "CC0 / 公共领域",
+      "display_scope": "冰山原则（Iceberg Theory）、极简句式、硬汉意志解构完全公开"
+    },
+    "core_summary": "古巴老渔夫圣地亚哥连续84天没捕到鱼，在第85天独自远航捕获了一条巨大的马林鱼；经过漫长博弈后击杀大鱼，但在返航途中大鱼被鲨鱼群啃食殆尽，老人最终拖回一副空骨架。",
+    "themes": {
+      "main_theme": "人可以被毁灭，但不能被打败（人类尊严与意志的终极赞歌）",
+      "sub_themes": ["人与自然的对手与兄弟关系", "孤独的仪式感", "无果搏斗的形而上意义"],
+      "value_conflicts": ["世俗意义的收获/空手而归 VS 精神领域的绝对胜利"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "大马林鱼",
+        "literal_meaning": "长达十八英尺的巨大猎物",
+        "symbolic_meaning": "值得尊敬的伟大对手，理想与生命追求的实体化",
+        "text_anchor": "我爱你，也非常尊敬你。不过今天天黑以前我一定要把你弄死。"
+      },
+      {
+        "imagery": "鲨鱼群",
+        "literal_meaning": "闻血而来的食腐掠食者",
+        "symbolic_meaning": "无情消耗生命成果的残酷现实与厄运",
+        "text_anchor": "它们不是为了高尚的目标而斗争，它们只是为了肚皮而来。"
+      },
+      {
+        "imagery": "狮子之梦",
+        "literal_meaning": "老人反复梦见的非洲海滩上的幼狮",
+        "symbolic_meaning": "逝去的青春活力、宁静纯粹的力量与永恒的希望",
+        "text_anchor": "老人正梦见狮子。"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "第三人称客观视角与老人内心独白穿插",
+      "pacing": "极度凝炼，长久的静态等待与瞬间的搏击爆发交织",
+      "literary_devices": [
+        {
+          "name": "冰山原则 (Iceberg Theory)",
+          "function": "文字只展现水面上的八分之一，将庞大的情感、历史与哲学留在水下由读者体会",
+          "example": "每一句话都由最简练的动词和名词构成，极少使用华丽的副词与形容词。"
+        },
+        {
+          "name": "仪式化的内心自白",
+          "function": "在极端孤独中通过与鱼、鸟、双手的对话，维系理性与人类意志的清醒",
+          "example": "他大声说：'我真希望那个男孩在这儿。'"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "老人圣地亚哥84天未捕到鱼被视为'倒了血霉'，小男孩马诺林依然崇拜并照顾他。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "第85天黎明，老人独自划船驶向深海未知海域。" },
+      { "stage": "发展 (Rising Action)", "description": "巨型马林鱼上钩，将小船拖入更深海域，老人与鱼在饥渴伤痛中展开两天两夜的意志相持。" },
+      { "stage": "转折 (Crisis)", "description": "老人终于将大鱼耗尽力气拖近船边，用鱼叉刺中其心脏，取得艰难胜利。" },
+      { "stage": "高潮 (Climax)", "description": "血腥味引来成群鲨鱼，老人用鱼叉、刀子、船桨誓死抵抗，直到所有武器折断。" },
+      { "stage": "结局 (Resolution)", "description": "老人拖着巨大白骨架夜半归港，爬回窝棚沉睡；游客惊叹骨架，老人梦见狮子。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "santiago", "name": "圣地亚哥", "role": "主角 / 硬汉老渔夫", "traits": ["坚韧", "专业", "敬畏自然", "不屈不挠"] },
+        { "id": "manolin", "name": "小男孩马诺林", "role": "传承者 / 精神崇拜者", "traits": ["忠诚", "关怀", "未来的希望"] },
+        { "id": "marlin", "name": "大马林鱼", "role": "崇高对手", "traits": ["尊严", "强健", "兄弟般的存在"] },
+        { "id": "sharks", "name": "鲨鱼群", "role": "掠夺者 / 命运吞噬者", "traits": ["凶残", "盲目"] }
+      ],
+      "edges": [
+        { "source": "manolin", "target": "santiago", "relation": "敬爱与生活照顾" },
+        { "source": "santiago", "target": "marlin", "relation": "生死相搏与相互敬重" },
+        { "source": "sharks", "target": "santiago", "relation": "残酷掠夺与绝地搏杀" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "不过人不是为失败而生的，'他说，'一个人可以被毁灭，但不能被打败。'",
+      "literary_analysis": "海明威在此处将'毁灭（物理层面的肉体消亡或物质损失）'与'打败（精神层面的妥协与投降）'做出了截然二分的哲学定义。语言极简，不加论证，以公理式的力量直击人心。",
+      "writing_advice": "当你想表达全书核心主旨时，不需要冗长的说教。在角色经历极度痛苦与体力耗尽的时刻，用一句极具对称感的短句作为精神定海神针。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "描写一个人身体某处剧烈抽筋或伤痛（如手掌被绳索割破），要求全程只写其物理处理动作（揉搓、浸水、发力），不写'好痛'、'痛苦'。",
+      "imitation_exercise": "使用海明威风格（多用短句、连词'和'，剔除抒情形容词），描写一段单人对抗恶劣天气（暴雨/沙尘）的行动过程。"
+    }
+  },
+  {
+    "id": "KB_008",
+    "title": "项链 (The Necklace)",
+    "author": "居伊·德·莫泊桑 (Guy de Maupassant)",
+    "era": "19世纪末 / 法国现实主义",
+    "genre": "短篇小说 / 讽刺现实主义",
+    "copyright": {
+      "status": "public_domain",
+      "source_url": "https://zh.wikisource.org/wiki/項鍊_(短篇小說)",
+      "license": "CC0 / 公共领域",
+      "display_scope": "道具叙事（MacGuffin）、陡转与结局反讽技巧完全公开"
+    },
+    "core_summary": "小公务员之妻玛蒂尔德为在舞会上出风头，向富友借了一串钻石项链；舞会后项链意外丢失，夫妇二人为此背负巨额高利贷苦役十年偿还，最后却得知借来的项链是假钻石。",
+    "themes": {
+      "main_theme": "虚荣心对人生的奴役与命运捉弄的残酷反讽",
+      "sub_themes": ["小资产阶级的生活幻灭", "十年苦役下真实人格的淬炼与沉沦", "巧合与宿命"],
+      "value_conflicts": ["虚荣奢华幻想 VS 诚实承担苦难的道德责任"]
+    },
+    "imagery_and_symbols": [
+      {
+        "imagery": "钻石项链",
+        "literal_meaning": "一件看似昂贵的首饰",
+        "symbolic_meaning": "上流社会的虚假光环与摧毁人生的欲望诱饵",
+        "text_anchor": "那是一串极精致的钻石项链，在黑缎盒子里闪耀着摄人魂魄的光彩。"
+      },
+      {
+        "imagery": "粗陋的瓦罐与洗碗水",
+        "literal_meaning": "十年苦役中的家务工具",
+        "symbolic_meaning": "生活褪去虚荣幻象后冷酷沉重的现实泥沼",
+        "text_anchor": "她穿着粗布衣服，手里提着油腻的瓦罐，在油腻的盘碗和锅底上磨损了娇嫩的手指。"
+      }
+    ],
+    "techniques_and_craft": {
+      "narrative_perspective": "第三人称全知视角，兼具冷嘲与悲悯",
+      "pacing": "渴望铺垫（前段）→ 辉煌高潮（舞会）→ 惊恐丢失（中段）→ 漫长消耗（十年）→ 猝不及防的反转（尾声）",
+      "literary_devices": [
+        {
+          "name": "莫泊桑式反转 (O. Henry / Maupassant Twist)",
+          "function": "在故事最后一句话引爆隐藏真相，推翻前文所有的心理假设，引发巨大的认知震撼",
+          "example": "哎！我可怜的玛蒂尔德！我那串项链是假的，至多值五百法郎！"
+        },
+        {
+          "name": "道具驱动叙事 (Object-Driven Plot)",
+          "function": "以单一核心道具（项链）的借出、佩戴、丢失、寻觅、赔偿贯穿全剧始末",
+          "example": "项链不仅是装饰，也是推动所有人物动机与情节裂变的核心发动机。"
+        }
+      ]
+    },
+    "plot_blueprint": [
+      { "stage": "开端 (Exposition)", "description": "玛蒂尔德自认天生丽质，但只能嫁给小书记员，成天幻想奢华生活。" },
+      { "stage": "冲突 (Inciting Incident)", "description": "丈夫弄来教育部舞会请帖，玛蒂尔德为配得上礼服向好友佛来思节夫人借了钻石项链。" },
+      { "stage": "发展 (Rising Action)", "description": "玛蒂尔德在舞会上艳惊四座，尽情享受虚荣的狂欢。" },
+      { "stage": "转折 (Crisis)", "description": "凌晨回家后发现项链丢失，二人四处寻找无果，决定买三万六千法郎的正品暗中替换。" },
+      { "stage": "高潮 (Climax)", "description": "夫妇二人借遍高利贷，退租做苦工，整整耗费十年青春还清所有债务。" },
+      { "stage": "结局 (Resolution)", "description": "玛蒂尔德在香榭丽舍大街偶遇依然年轻的好友，坦白真相后得知当年借的只是假钻石。" }
+    ],
+    "character_graph": {
+      "nodes": [
+        { "id": "mathilde", "name": "玛蒂尔德", "role": "主角 / 虚荣与受难者", "traits": ["虚荣", "爱美", "具有承担责任的硬气", "被摧残"] },
+        { "id": "loisel", "name": "卢瓦瑟尔", "role": "丈夫 / 善良平庸配角", "traits": ["老实", "宠爱妻子", "勤恳受累"] },
+        { "id": "forestier", "name": "佛来思节夫人", "role": "富友 / 对照组", "traits": ["富裕", "大方", "冷淡随意"] }
+      ],
+      "edges": [
+        { "source": "loisel", "target": "mathilde", "relation": "包容与共同承担债务" },
+        { "source": "mathilde", "target": "forestier", "relation": "自卑羡慕、借物与最终摊牌" }
+      ]
+    },
+    "why_write_this_way_case": {
+      "selected_text": "倘若那时没有失掉那串项链，今天又是怎样？谁知道？谁知道？生活是多么古怪！多么变化莫测！一点微不足道的小事就能把人断送，或者把人拯救！",
+      "literary_analysis": "莫泊桑在反转揭晓前插入这一段作者议论，看似在抒发生命感慨，实则是巧妙的叙事迷雾（Red Herring）。它强化了读者对'丢失真钻石导致命运被毁'的既有认知，使最后一句话的假钻石反转更具毁灭性张力。",
+      "writing_advice": "在设计压轴反转之前，适当加强角色对现有'假象'的深信不疑，会让最终真相暴露时的戏剧落差翻倍。"
+    },
+    "training_prompts": {
+      "show_dont_tell_exercise": "描写一个人十年后的外貌与双手变化，用来体现其经历过残酷体力劳动的摧残，严禁使用'苍老'、'辛苦'、'憔悴'。",
+      "imitation_exercise": "构思一个微型故事梗概：主人公倾尽毕生心血追寻/守护一件极有价值的物品，最后发现其根本价值完全是误解。"
+    }
+  }
+]

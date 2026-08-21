@@ -1,3 +1,5 @@
-import { ProjectDashboard } from "@/components/projects/project-dashboard";
+import { MarketingHome } from "@/components/marketing/marketing-home";
 
-export default function HomePage() { return <ProjectDashboard />; }
+export default function HomePage() {
+  return <MarketingHome />;
+}

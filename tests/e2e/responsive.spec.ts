@@ -1,19 +1,35 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+async function createUserProject(page: Page) {
+  await page.goto("/projects/new");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("作品名称").fill("长篇布局回归");
+  await page.getByLabel("一句话灵感").fill("记录草场与矿井之间不断累积的回声。");
+  await page.getByRole("button", { name: "下一步：人物与世界" }).click();
+  await page.getByRole("button", { name: "下一步：故事蓝图" }).click();
+  await page.getByRole("button", { name: "下一步：写出首段" }).click();
+  await page.getByLabel("作品首段").fill("风穿过草场与矿井之间的旧钢索。");
+  await page.getByRole("button", { name: "完成并进入创作台" }).click();
+  await expect(page).toHaveURL(/\/project\/project-.+\/studio$/);
+}
 
 const routes = [
-  { path: "/", heading: "项目桌面", slug: "dashboard" },
-  { path: "/projects/new", heading: "把一个念头", slug: "new-project" },
-  { path: "/project/demo/studio", heading: "潮声", slug: "studio" },
-  { path: "/project/demo/analysis", heading: "雾港来信", slug: "analysis" },
-  { path: "/knowledge", heading: "文学知识图谱", slug: "knowledge" },
-  { path: "/training", heading: "写作训练", slug: "training" },
-  { path: "/settings", heading: "设置", slug: "settings" },
+  { path: "/", heading: "以叙事智能", slug: "home", visualAlt: "故事熔炉完整品牌标识" },
+  { path: "/projects", heading: "回响的草场", slug: "dashboard", visualAlt: "作品项目档案" },
+  { path: "/projects/new", heading: "三分钟", slug: "new-project", visualAlt: "故事熔炉中的叙事线索" },
+  { path: "/project/demo/studio", heading: "声场的入侵与重返", slug: "studio" },
+  { path: "/project/demo/analysis", heading: "回响的草场", slug: "analysis" },
+  { path: "/project/demo/ip-lab", heading: "文学 IP 实验场", slug: "ip-lab" },
+  { path: "/knowledge", heading: "文学知识图谱", slug: "knowledge", visualAlt: "文学知识关系图谱" },
+  { path: "/training", heading: "写作训练", slug: "training", visualAlt: "文学写作训练工坊" },
+  { path: "/settings", heading: "设置", slug: "settings", visualAlt: "本地优先的数据档案" },
 ];
 
 for (const route of routes) {
   test(`${route.slug} renders without horizontal overflow`, async ({ page }, testInfo) => {
     await page.goto(route.path);
     await expect(page.getByRole("heading", { name: new RegExp(route.heading) }).first()).toBeVisible();
+    if (route.visualAlt) await expect(page.getByRole("img", { name: route.visualAlt })).toBeVisible();
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: `tests/e2e/screenshots/${testInfo.project.name}-${route.slug}.png`, fullPage: true });
   });
@@ -22,7 +38,10 @@ for (const route of routes) {
 test("graph has visible pixels or a mobile list alternative", async ({ page }, testInfo) => {
   await page.goto("/knowledge");
   if (testInfo.project.name === "mobile") {
-    await expect(page.locator(".mobile-graph-list .graph-list button").first()).toBeVisible();
+    const mobileList = page.locator(".mobile-graph-list");
+    await expect(mobileList.locator(".graph-list button").first()).toBeVisible();
+    await expect.poll(() => mobileList.locator(".graph-list button").count()).toBeGreaterThan(10);
+    await expect.poll(() => mobileList.evaluate((element) => element.clientHeight >= 240 && element.scrollHeight > element.clientHeight)).toBe(true);
     return;
   }
   const graph = page.getByTestId("character-graph");
@@ -37,4 +56,88 @@ test("graph has visible pixels or a mobile list alternative", async ({ page }, t
     return colored / (pixels.length / 4);
   }));
   expect(Math.max(...ratios)).toBeGreaterThan(0.001);
+});
+
+test("uploaded knowledge graph keeps table row selection usable", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "桌面图谱交互专用回归");
+  await page.route("**/api/ai", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ result: {
+        sourceKind: "narrative",
+        evidence: [{ id: "e1", source: "observation", quote: "守夜人在码头等待。", note: "原文" }],
+        knowledgeGraph: {
+          nodes: [
+            { id: "character-1", label: "守夜人", type: "character", evidenceIds: ["e1"], confidence: 0.9 },
+            { id: "event-1", label: "等待", type: "event", evidenceIds: ["e1"], confidence: 0.8 },
+          ],
+          edges: [{ id: "edge-1", source: "character-1", target: "event-1", label: "参与", evidenceIds: ["e1"], confidence: 0.8 }],
+        },
+      } }),
+    });
+  });
+  await page.goto("/knowledge");
+  await page.getByRole("tab", { name: "我的文本" }).click();
+  await page.getByLabel("粘贴待分析文本").fill("守夜人在码头等待。");
+  await page.getByRole("button", { name: "分析文本" }).click();
+  await expect(page.getByTestId("academic-graph-canvas")).toBeVisible();
+  await page.getByRole("button", { name: "表格" }).click();
+  const row = page.getByTestId("academic-graph-table").getByRole("button", { name: /守夜人/ });
+  await expect(row).toBeVisible();
+  await row.click();
+  await expect(page.getByRole("complementary", { name: "图谱证据详情" })).toContainText("守夜人在码头等待。");
+});
+
+test("studio center column stays inside the viewport and scrolls independently", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "桌面三栏布局专用回归");
+  await createUserProject(page);
+
+  const writingArea = page.locator(".writing-area");
+  const writingScroll = page.locator(".writing-scroll");
+  const editor = page.getByLabel("正文编辑器");
+  await expect(writingArea).toBeVisible();
+  await expect(editor).toHaveAttribute("contenteditable", "true");
+  await editor.fill(Array.from({ length: 80 }, (_, index) => `第 ${index + 1} 段，风穿过草场与矿井之间的旧钢索。`).join("\n\n"));
+
+  const metrics = await writingScroll.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const writingArea = element.parentElement!.getBoundingClientRect();
+    return {
+      bottom: rect.bottom,
+      right: rect.right,
+      writingAreaRight: writingArea.right,
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+      viewportHeight: window.innerHeight,
+    };
+  });
+  expect(metrics.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
+  expect(metrics.right).toBeLessThanOrEqual(metrics.writingAreaRight + 1);
+  expect(metrics.scrollHeight).toBeGreaterThan(metrics.clientHeight);
+
+  await writingScroll.hover();
+  await page.mouse.wheel(0, 1200);
+  await expect.poll(() => writingScroll.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+  await expect(page.locator(".word-count")).toBeVisible();
+});
+
+test("studio header action labels stay on one line", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "桌面三栏布局专用回归");
+  await page.goto("/project/demo/studio");
+
+  const actionHeights = await page.locator(".writing-actions .button:visible").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().height));
+  expect(Math.max(...actionHeights)).toBeLessThanOrEqual(44);
+});
+
+test("studio title never enters the action toolbar", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "桌面工具栏专用回归");
+  await page.goto("/project/demo/studio");
+
+  const geometry = await page.locator(".writing-head").evaluate((header) => {
+    const title = header.querySelector("h1")!.getBoundingClientRect();
+    const actions = header.querySelector(".writing-actions")!.getBoundingClientRect();
+    return { titleRight: title.right, actionsLeft: actions.left };
+  });
+  expect(geometry.titleRight).toBeLessThanOrEqual(geometry.actionsLeft - 8);
 });

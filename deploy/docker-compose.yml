@@ -1,0 +1,40 @@
+services:
+  story-forge:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_DEMO_LOCKED: ${NEXT_PUBLIC_DEMO_LOCKED:-false}
+    image: story-forge:${APP_VERSION:-candidate}
+    env_file:
+      - ${STORY_FORGE_ENV_FILE:-../.env.production}
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      APP_VERSION: ${APP_VERSION:-candidate}
+      NEXT_PUBLIC_DEMO_LOCKED: ${NEXT_PUBLIC_DEMO_LOCKED:-false}
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /app/.next/cache:size=128m,mode=0750,uid=1001,gid=1001
+    mem_limit: 768m
+    cpus: 1.5
+    pids_limit: 100
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

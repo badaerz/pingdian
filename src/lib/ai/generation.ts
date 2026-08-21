@@ -4,6 +4,8 @@ export interface GenerationInput {
   operation: "continue" | "ideas";
   title: string;
   content: string;
+  targetChapterId?: string;
+  contextRevision?: number;
 }
 
 export interface GenerationConfig {
@@ -22,13 +24,14 @@ export interface GenerationResult {
 
 function fixtureCandidates(input: GenerationInput): Candidate[] {
   const anchor = input.content.trim().slice(-80) || input.title;
+  const target = { type: "chapter" as const, id: input.targetChapterId ?? "chapter-1" };
   return [
-    { id: `demo-${input.operation}-1`, label: "克制推进", content: `夜色没有立刻回答。${anchor}，于是人物先做了一个无法收回的小动作。`, rationale: "保持现有意象与叙述节奏，用行动推进悬念。", tags: ["演示", "行动"], status: "pending" },
-    { id: `demo-${input.operation}-2`, label: "关系转折", content: `门外的人终于开口，却只叫出了作品里一个尚未被解释的名字。${input.title}的旧事因此有了新的方向。`, rationale: "引入关系线索，但不提前解释核心谜底。", tags: ["演示", "关系"], status: "pending" },
+    { id: `demo-${input.operation}-1`, label: "克制推进", content: `夜色没有立刻回答。${anchor}，于是人物先做了一个无法收回的小动作。`, rationale: "保持现有意象与叙述节奏，用行动推进悬念。", tags: ["演示", "行动"], status: "pending", target, applyMode: "append", generatedRevision: input.contextRevision ?? 1, mode: "demo" },
+    { id: `demo-${input.operation}-2`, label: "关系转折", content: `门外的人终于开口，却只叫出了作品里一个尚未被解释的名字。${input.title}的旧事因此有了新的方向。`, rationale: "引入关系线索，但不提前解释核心谜底。", tags: ["演示", "关系"], status: "pending", target, applyMode: "append", generatedRevision: input.contextRevision ?? 1, mode: "demo" },
   ];
 }
 
-function readCandidates(value: unknown): Candidate[] | null {
+function readCandidates(value: unknown, input: GenerationInput): Candidate[] | null {
   if (!value || typeof value !== "object" || !Array.isArray((value as { candidates?: unknown }).candidates)) return null;
   const candidates = (value as { candidates: unknown[] }).candidates;
   if (candidates.length < 2) return null;
@@ -43,6 +46,10 @@ function readCandidates(value: unknown): Candidate[] | null {
       rationale: typeof record.rationale === "string" ? record.rationale : "根据当前作品上下文生成。",
       tags: Array.isArray(record.tags) ? record.tags.filter((tag): tag is string => typeof tag === "string").slice(0, 4) : [],
       status: "pending" as const,
+      target: { type: "chapter" as const, id: input.targetChapterId ?? "chapter-1" },
+      applyMode: "append" as const,
+      generatedRevision: input.contextRevision ?? 1,
+      mode: "live" as const,
     };
   });
   const validCandidates = normalized.filter((candidate): candidate is NonNullable<typeof candidate> => candidate !== null);
@@ -73,7 +80,7 @@ export async function generateCandidates(input: GenerationInput, config: Generat
     const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
     const raw = payload.choices?.[0]?.message?.content;
     if (!raw) return { candidates: fixtureCandidates(input), mode: "demo", reason: "INVALID_RESPONSE" };
-    const candidates = readCandidates(JSON.parse(raw.replace(/^```json\s*|\s*```$/g, "")));
+    const candidates = readCandidates(JSON.parse(raw.replace(/^```json\s*|\s*```$/g, "")), input);
     return candidates ? { candidates, mode: "live" } : { candidates: fixtureCandidates(input), mode: "demo", reason: "INVALID_RESPONSE" };
   } catch {
     return { candidates: fixtureCandidates(input), mode: "demo", reason: "MODEL_ERROR" };
