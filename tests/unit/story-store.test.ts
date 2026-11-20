@@ -422,7 +422,10 @@ describe("story store", () => {
 
     const reconciled = reconcileStoryStore(store);
 
-    expect(reconciled.documents.demo.analysisSnapshots).toEqual([]);
+    const restored = reconciled.documents.demo.analysisSnapshots;
+    expect(restored.map(s => s.id)).toEqual(["invalid-range", "invalid-reference"]);
+    expect(restored[0].themeHeatmap).toEqual(valid.themeHeatmap!.slice(1));
+    expect(restored[1].styleProfile!.metrics).toEqual(valid.styleProfile!.metrics.slice(1));
     expect(reconciled.documents[other.project.id].analysisSnapshots).toHaveLength(1);
     expect(reconciled.documents[other.project.id].analysisSnapshots[0]).toMatchObject({ id: "other-valid", domainAnalysis: { kind: "narrative" } });
   });

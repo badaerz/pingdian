@@ -557,14 +557,15 @@ function sanitizeStrictGraph(value: unknown, observationIds: Set<string>, source
 }
 
 function sanitizeStrictCurve(value: unknown, observationIds: Set<string>): ProjectDocument["plotCurve"] | null {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 48) return null;
+  if (!Array.isArray(value) || value.length > 48) return [];
   const points = value.map((point) => isCurvePoint(point)
     && isNonEmptyString(point.beat)
     && isFiniteInRange(point.value, 0, 100)
     && observationIds.has(point.evidenceId)
     ? sanitizeCurvePoint(point)
     : null);
-  return points.every(Boolean) ? points as ProjectDocument["plotCurve"] : null;
+  const kept = points.filter(point => point !== null);
+  return kept.length < 2 ? [] : kept;
 }
 
 function sanitizeKnowledgeGraph(graph: KnowledgeGraph): KnowledgeGraph {
@@ -688,8 +689,8 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
   const observationIds = new Set(evidence.filter((entry) => entry.source === "observation" || entry.source === "user").map((entry) => entry.id));
   if (observationIds.size === 0) return null;
 
-  if (!Array.isArray(value.analysis) || value.analysis.length === 0 || value.analysis.length > 12 || !value.analysis.every(isAnalysisDimension)) return null;
-  const analysis = value.analysis.map((dimension) => {
+  const dimensions = Array.isArray(value.analysis) && value.analysis.length <= 12 ? value.analysis : [];
+  const analysis = dimensions.filter(isAnalysisDimension).map((dimension) => {
     const evidenceIds = readClosedEvidenceIds(dimension.evidenceIds, knownEvidence);
     return isNonEmptyString(dimension.id)
       && isNonEmptyString(dimension.name)
@@ -700,13 +701,7 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
       && evidenceIds
       ? { ...sanitizeAnalysisDimension(dimension), evidenceIds }
       : null;
-  });
-  if (!analysis.every(Boolean) || new Set(analysis.map((dimension) => dimension!.id)).size !== analysis.length) return null;
-  const dimensionNames = analysis.map((dimension) => dimension!.name);
-  const requiredDomains = value.sourceKind === "narrative"
-    ? [/人物/, /情节|结构|节奏/, /主题/, /语言|风格/]
-    : [/论证|结构/, /证据/, /主题/, /语言|风格/];
-  if (!requiredDomains.every((pattern) => dimensionNames.some((name) => pattern.test(name)))) return null;
+  }).filter(d => d !== null).filter((d, i, all) => all.findIndex(other => other.id === d.id) === i);
 
   const domainAnalysis = sanitizeStrictDomainAnalysis(value.domainAnalysis, value.sourceKind, observationIds);
   const characterGraph = sanitizeStrictGraph(value.characterGraph, observationIds, value.sourceKind);
@@ -714,8 +709,8 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
   const emotionCurve = sanitizeStrictCurve(value.emotionCurve, observationIds);
   if (!domainAnalysis || !characterGraph || !plotCurve || !emotionCurve) return null;
 
-  if (!Array.isArray(value.themeHeatmap) || value.themeHeatmap.length === 0 || value.themeHeatmap.length > 120) return null;
-  const themeHeatmap = value.themeHeatmap.map((cell) => {
+  const cells = Array.isArray(value.themeHeatmap) && value.themeHeatmap.length <= 120 ? value.themeHeatmap : [];
+  const themeHeatmap = cells.map((cell) => {
     const sanitized = sanitizeThemeHeatmapCell(cell);
     return sanitized
       && isNonEmptyString(sanitized.theme)
@@ -724,21 +719,17 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
       && observationIds.has(sanitized.evidenceId)
       ? sanitized
       : null;
-  });
-  if (!themeHeatmap.every(Boolean)) return null;
+  }).filter(cell => cell !== null);
 
-  if (!isRecord(value.styleProfile) || !Array.isArray(value.styleProfile.metrics) || value.styleProfile.metrics.length !== ANALYSIS_STYLE_KEYS.size) return null;
-  const styleMetrics = value.styleProfile.metrics.map((metric) => {
+  const metrics = isRecord(value.styleProfile) && Array.isArray(value.styleProfile.metrics) ? value.styleProfile.metrics : [];
+  const styleMetrics = metrics.map((metric) => {
     const sanitized = sanitizeStyleMetric(metric);
     if (!sanitized || !ANALYSIS_STYLE_KEYS.has(sanitized.key) || !isNonEmptyString(sanitized.dimension) || !isNonEmptyString(sanitized.interpretation)) return null;
     const evidenceIds = readClosedEvidenceIds(sanitized.evidenceIds, observationIds);
     const minimum = sanitized.key === "sentenceLength" ? 1 : 0;
     const maximum = sanitized.key === "sentenceLength" ? 200 : 100;
     return evidenceIds && isFiniteInRange(sanitized.value, minimum, maximum) ? { ...sanitized, evidenceIds } : null;
-  });
-  if (!styleMetrics.every(Boolean)
-    || new Set(styleMetrics.map((metric) => metric!.key)).size !== ANALYSIS_STYLE_KEYS.size
-    || ![...ANALYSIS_STYLE_KEYS].every((key) => styleMetrics.some((metric) => metric?.key === key))) return null;
+  }).filter(m => m !== null).filter((m, i, all) => all.findIndex(other => other.key === m.key) === i);
 
   if (!Array.isArray(value.diagnostics) || value.diagnostics.length === 0 || value.diagnostics.length > 24) return null;
   const diagnostics = value.diagnostics.map((diagnostic) => {
@@ -757,10 +748,8 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
       return isNonEmptyString(linked?.quote) && (linked.quote.includes(sanitized.quote) || sanitized.quote.includes(linked.quote));
     });
     return evidenceIds && hasMatchingObservation ? { ...sanitized, evidenceIds } : null;
-  });
-  if (!diagnostics.every(Boolean)
-    || new Set(diagnostics.map((diagnostic) => diagnostic!.id)).size !== diagnostics.length
-    || (value.sourceKind === "narrative" && !diagnostics.some((diagnostic) => diagnostic && /(铺垫.*不足|不足.*铺垫)/.test(`${diagnostic.effect} ${diagnostic.action}`)))) return null;
+  }).filter(d => d !== null).filter((d, i, all) => all.findIndex(other => other.id === d.id) === i);
+  if (!diagnostics.length) return null;
 
   return {
     id: value.id,
