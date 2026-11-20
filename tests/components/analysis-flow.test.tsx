@@ -66,6 +66,24 @@ it("labels partial live results and shows the rejection without a heatmap tab", 
   expect(screen.queryByRole("tab", { name: "主题演变" })).toBeNull();
 });
 
+it("主题热力 tab 渲染模型返回的主题分布，点格子可定位证据", async () => {
+  const user = userEvent.setup();
+  const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+    mode: "live", task: "analysis-v2", contextRevision: 3, result: completeAnalysisV2, warnings: [], requestId: "analysis-heat",
+  }), { status: 200 }));
+  vi.stubGlobal("fetch", fetcher);
+
+  render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
+  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await screen.findByText("新诊断");
+
+  // PRD 2.0 §5 黄金路径要求「关系图 / 节奏曲线 / 热力图」都在
+  await user.click(screen.getByRole("tab", { name: "主题热力" }));
+  expect(screen.getByRole("table", { name: "主题演变热力图" })).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "选择 · 转折 · 强度 80" }));
+  expect(screen.getByRole("dialog", { name: "原文证据" })).toHaveTextContent("选中的句子");
+});
+
 it("runs analysis-v2, links diagnostics to evidence, and explains selected text without changing prose", async () => {
   const user = userEvent.setup();
   const analysisResponse = new Response(JSON.stringify({
