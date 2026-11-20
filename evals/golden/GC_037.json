@@ -1,0 +1,100 @@
+{
+  "id": "GC_037",
+  "title": "湖心亭看雪·一痕与一粒",
+  "source": {
+    "kind": "user-corpus",
+    "ref": "湖心亭看雪",
+    "locator": "张岱《湖心亭看雪》全文（段 1–4，自“崇祯五年十二月”至“更有痴似相公者”）",
+    "licenseStatus": "public_domain",
+    "genre": "lyric",
+    "register": "classical"
+  },
+  "sourceKind": "narrative",
+  "text": "崇祯五年十二月，余住西湖。大雪三日，湖中人鸟声俱绝。\n\n是日更定矣，余拿一小舟，拥毳衣炉火，独往湖心亭看雪。雾凇沆砀，天与云、与山、与水，上下一白。湖上影子，惟长堤一痕，湖心亭一点，与余舟一芥，舟中人两三粒而已。\n\n到亭上，有两人铺毡对坐，一童子烧酒，炉正沸。见余大喜曰：“湖中焉得更有此人！”拉余同饮，余强饮三大白而别。问其姓氏，是金陵人，客此。\n\n及下船，舟子喃喃曰：“莫说相公痴，更有痴似相公者。”",
+  "expectedFindings": [
+    {
+      "dimension": "具体性与感官",
+      "claim": "雪景不靠形容词，靠量词把空间压成尺寸：「长堤一痕，湖心亭一点，与余舟一芥，舟中人两三粒」——痕、点、芥、粒四个量词各自对应一种实物的轮廓，读者据此能排出远近大小，这是具象细节的样板写法",
+      "mustMention": [
+        "量词",
+        "尺寸",
+        "远近"
+      ],
+      "requiredAnchor": "与余舟一芥",
+      "anchorParagraph": 2,
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    },
+    {
+      "dimension": "视角一致性",
+      "claim": "全篇锁在“余”的知觉里：住处、舟、衣、火、所见、所饮都由第一人称承担；亭上二人的姓氏不是叙述者凭空知道，而是「问其姓氏」问出来的。视角没有越出“我”能听到看到的范围",
+      "mustMention": [
+        "第一人称",
+        "问其姓氏",
+        "不越界"
+      ],
+      "requiredAnchor": "问其姓氏，是金陵人，客此",
+      "anchorParagraph": 3,
+      "criteriaIds": [
+        "V1"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    },
+    {
+      "dimension": "结构组织",
+      "claim": "结尾用舟子一句话收束：「莫说相公痴，更有痴似相公者」。前面写“独往”的孤，收在“更有痴似”的不孤，一句话把整篇的自况翻了个面，收束句同时承担了转意",
+      "mustMention": [
+        "收束",
+        "翻转",
+        "自况"
+      ],
+      "requiredAnchor": "更有痴似相公者",
+      "anchorParagraph": 4,
+      "criteriaIds": [
+        "S1"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    }
+  ],
+  "forbiddenClaims": [
+    {
+      "claim": "篇幅不足三百字，缺少完整情节，属于结构缺陷",
+      "reason": "这是小品，功能是场景加一句收束，不承担情节推进；用长篇小说的完整性标准判它是错置标准",
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "claim": "结尾由舟子发议论，属于叙述者越界干预",
+      "reason": "舟子的话发生在场景内（下船时“喃喃曰”），是第一人称听到的原话，不是叙述者跳出来评论；判为越界属误报",
+      "criteriaIds": [
+        "V1"
+      ]
+    },
+    {
+      "claim": "连续使用“一痕、一点、一芥、两三粒”是量词堆砌，属于修辞过度",
+      "reason": "四个量词各自对应不同实物的轮廓尺度，删掉任何一个都会让远近关系失真；这是以少胜多的压缩，不是堆砌",
+      "criteriaIds": [
+        "P3"
+      ]
+    }
+  ],
+  "annotation": {
+    "by": "AI-draft",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "confidence": "draft",
+    "notes": "短样本之一（171 汉字），用于验证 D1/S1 在短文本上的不适用条件被正确触发。源文本仅删除维基文库的校勘夹注（“现存各本均误作‘沅’，据文意改砀”），正文未改一字。作者张岱（1597–1684），公版。 【短样本】159 汉字，用于验证 D1/D3 与 S1/S2/S3 的不适用条件被正确触发。"
+  }
+}

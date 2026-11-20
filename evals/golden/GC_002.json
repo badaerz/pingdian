@@ -5,7 +5,9 @@
     "kind": "knowledge",
     "ref": "KB_003",
     "locator": "第四至五节·提亲至结局",
-    "licenseStatus": "public_domain"
+    "licenseStatus": "public_domain",
+    "genre": "narrative-fic",
+    "register": "modern"
   },
   "sourceKind": "narrative",
   "text": "天保大老托媒提亲走“车路”，二老傩送愿在山头唱情歌走“马路”。兄弟二人月下相约，天保自知歌声不如弟弟，不愿争夺，驾油船下辰州，不幸于茨滩触礁淹死。顺顺家由此对老船夫生出隔阂。\n\n那一夜，雷雨大作，溪水暴涨。天明时，翠翠醒来，发现白塔在暴风雨中坍塌了，爷爷也已在床上安详地合了眼。\n\n渡口修好了新船，乡邻集资重修了白塔。翠翠接过了爷爷手里的竹篙，依旧在溪口摆渡。\n\n这个人也许永远不回来了，也许“明天”回来。",
@@ -20,7 +22,12 @@
       ],
       "requiredAnchor": "天保自知歌声不如弟弟，不愿争夺",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "S3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 1
     },
     {
       "dimension": "伏笔与铺垫",
@@ -34,7 +41,12 @@
       "idealKbIds": [
         "KB_003"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "S1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 2
     },
     {
       "dimension": "人物弧光",
@@ -46,7 +58,12 @@
       ],
       "requiredAnchor": "翠翠接过了爷爷手里的竹篙",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "S3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 3
     },
     {
       "dimension": "留白与结局",
@@ -59,21 +76,35 @@
       "idealKbIds": [
         "KB_003"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "S1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 4
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "翠翠与傩送已经成婚或明确在一起",
-      "reason": "原文只说「永远不回来」或「明天回来」，无婚配情节"
+      "reason": "原文只说「永远不回来」或「明天回来」，无婚配情节",
+      "criteriaIds": [
+        "S1"
+      ]
     },
     {
       "claim": "天保是被弟弟设计害死的",
-      "reason": "原文写天保自知歌声不如弟弟、不愿争夺而驾船下辰州触礁，非被害"
+      "reason": "原文写天保自知歌声不如弟弟、不愿争夺而驾船下辰州触礁，非被害",
+      "criteriaIds": [
+        "S1"
+      ]
     },
     {
       "claim": "白塔在结尾被彻底放弃、不再重建",
-      "reason": "原文明确写乡邻集资重修了白塔"
+      "reason": "原文明确写乡邻集资重修了白塔",
+      "criteriaIds": [
+        "S1"
+      ]
     }
   ],
   "annotation": {
@@ -81,6 +112,6 @@
     "reviewedBy": null,
     "reviewedAt": null,
     "confidence": "draft",
-    "notes": "四个考点覆盖因果/伏笔/弧光/留白，是全部 case 中维度最全的一条。"
+    "notes": "四个考点覆盖因果/伏笔/弧光/留白，是全部 case 中维度最全的一条。 【短样本】170 汉字，用于验证 D1（≥200 汉字）与 S1/S2/S3（≥3 段）的不适用条件被正确触发；原作《边城》作者沈从文 1988 年卒，未进入公有领域，故不向下扩写以避版权风险。"
   }
 }

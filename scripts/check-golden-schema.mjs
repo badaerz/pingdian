@@ -97,7 +97,12 @@ for (const file of readdirSync(GOLDEN).filter((f) => /^GC_\d+\.json$/.test(f)).s
     if (upgraded && !Array.isArray(f.criteriaIds)) problems.push(`${id}: FC[${i}] 缺 criteriaIds，触发 R1`);
   }
 
-  cases.push({ id, ref: c.source?.ref, locator: c.source?.locator, genre: c.source?.genre, kind: c.sourceKind, ...metrics, upgraded });
+  const findings = c.expectedFindings ?? [];
+  const defectCount = findings.filter((f) => f.basis === "defect").length;
+  const positiveCount = findings.filter((f) => f.basis === "positive").length;
+  // 质量档由 basis 分布推导，不另设字段——少一个字段就少一处可以标歪的地方
+  const quality = defectCount === 0 ? "positive" : positiveCount === 0 ? "defective" : "mixed";
+  cases.push({ id, ref: c.source?.ref, locator: c.source?.locator, genre: c.source?.genre, kind: c.sourceKind, quality, ...metrics, upgraded });
 }
 
 // ---- R5 同作品配额 ----
@@ -123,6 +128,9 @@ const coverage = [
   ["汉字 <300（验证不适用条件）", 2, count((c) => c.hanzi < 300)],
   ["汉字 300–1000", 8, count((c) => c.hanzi >= 300 && c.hanzi <= 1000)],
   ["汉字 1000–3000", 4, count((c) => c.hanzi > 1000 && c.hanzi <= 3000)],
+  // 质量只分两档：反例测误报、缺陷测漏报。中间的"混合档"没有评测含义，不作配额。
+  ["质量·反例样本（测误报）", 3, count((c) => c.quality === "positive")],
+  ["质量·缺陷样本（测漏报）", 3, count((c) => c.quality === "defective")],
 ];
 const gaps = coverage.filter(([, target, actual]) => actual < target);
 

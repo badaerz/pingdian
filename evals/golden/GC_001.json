@@ -5,7 +5,9 @@
     "kind": "knowledge",
     "ref": "KB_003",
     "locator": "第一至三节·地理、渡船、初遇",
-    "licenseStatus": "public_domain"
+    "licenseStatus": "public_domain",
+    "genre": "narrative-fic",
+    "register": "modern"
   },
   "sourceKind": "narrative",
   "text": "由四川过湖南去，靠东有一条官路。这官路将到了湘西边境，到了一个地方名叫“茶峒”的小山城。有一小溪，溪边有座白色小塔，塔下住了一户单独的人家。这人家只一个老人，一个女孩子，一只黄狗。\n\n小溪流下去，绕山岨流，约三里便汇入茶峒大河。人若从茶峒过四川，须过渡河，这小溪便成了一条要道。渡船为公家所有，管渡船的便是那个老人，二十年如一日，不收渡钱。有人硬把铜钱掷在船板上，老人便追过去塞还别人，嘴里唠叨着：“我有口粮，不要这个！”\n\n女孩子名叫翠翠，在风日里长养着，把皮肤晒黑了；触目为青山绿水，把眼睛洗得如水晶一般。自然育养她，活泼得像一只小兽，从不发愁，从不动气。\n\n端午日，茶峒城里赛龙舟，锣鼓喧天。翠翠在河边等爷爷，人群散去，暮色渐合。傩送二老走过来，见翠翠独自立在水边，便道：“落雨了，还不回去，大鱼要咬了你！”翠翠以为二老调戏她，轻轻骂了句：“你个悖时砍头的！”二老笑了，叫家中水手打着火把送翠翠回家。那一晚，翠翠心中留下了一副明朗清澈的笑脸。",
@@ -22,7 +24,12 @@
       "idealKbIds": [
         "KB_003"
       ],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "V2"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 1
     },
     {
       "dimension": "细节与人物",
@@ -36,7 +43,12 @@
       "idealKbIds": [
         "KB_003"
       ],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 1
     },
     {
       "dimension": "人物塑造",
@@ -48,7 +60,12 @@
       ],
       "requiredAnchor": "老人便追过去塞还别人",
       "idealKbIds": [],
-      "severity": "low"
+      "severity": "low",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 2
     },
     {
       "dimension": "对话潜台词",
@@ -62,21 +79,35 @@
       "idealKbIds": [
         "KB_003"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 4
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "开篇存在铺垫不足或伏笔失效的结构缺陷",
-      "reason": "反例防线：本段功能是建立地理空间，不以埋设伏笔为目标，判为缺陷属误报"
+      "reason": "反例防线：本段功能是建立地理空间，不以埋设伏笔为目标，判为缺陷属误报",
+      "criteriaIds": [
+        "S3"
+      ]
     },
     {
       "claim": "翠翠在本段主动向二老表白",
-      "reason": "原文中翠翠误读并骂了对方，无表白动作"
+      "reason": "原文中翠翠误读并骂了对方，无表白动作",
+      "criteriaIds": [
+        "S3"
+      ]
     },
     {
       "claim": "翠翠的父母在本段中登场",
-      "reason": "本段只交代她与爷爷同住，父母未出现"
+      "reason": "本段只交代她与爷爷同住，父母未出现",
+      "criteriaIds": [
+        "S3"
+      ]
     }
   ],
   "annotation": {

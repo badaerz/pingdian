@@ -5,7 +5,9 @@
     "kind": "knowledge",
     "ref": "KB_007",
     "locator": "出海至结尾",
-    "licenseStatus": "public_domain"
+    "licenseStatus": "public_domain",
+    "genre": "narrative-fic",
+    "register": "modern"
   },
   "sourceKind": "narrative",
   "text": "第八十五天黎明，老人将小船划向了深海。钓线动了，一条十八英尺长的巨大马林鱼吞了钩。大鱼拉着小船向西北方向漂流，两天两夜，老人的手掌被勒得鲜血淋漓，背部痉挛抽搐。\n\n“鱼啊，”他在空旷的大海上轻声说，“我爱你，也非常尊敬你。不过今天天黑以前我一定要把你弄死。”\n\n正午时分，大鱼终于浮出水面，银光闪耀，围着小船打转。老人忍受着眩晕，用尽全身残存的力气，将鱼叉高高举起，狠狠刺入了大鱼的心脏。\n\n然而，大鱼流出的鲜血引来了成群的鲨鱼。\n\n第一头鲭鲨浮了上来，老人用鱼叉猛刺它的脑部，鱼叉连同绳索被夺走。随后是铲鼻鲨，老人把小刀绑在船桨柄上，一刀一刀迎战。刀刃折断了，他就用短棍和舵把击打。\n\n夜幕降临，鲨鱼群将大鱼啃食得只剩下一副巨大的雪白骨架。\n\n“不过人不是为失败而生的，”他说，“一个人可以被毁灭，但不能被打败。”\n\n深夜，老人将小船靠岸，拖着疲惫不堪的身体爬回窝棚，倒在床上睡着了。男孩马诺林坐在他床边守护着他，老人正梦见狮子。",
@@ -22,7 +24,12 @@
       "idealKbIds": [
         "KB_007"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "M3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 7
     },
     {
       "dimension": "意象与结构",
@@ -36,7 +43,12 @@
       "idealKbIds": [
         "KB_007"
       ],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "S1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 8
     },
     {
       "dimension": "节奏控制",
@@ -48,21 +60,35 @@
       ],
       "requiredAnchor": "刀刃折断了，他就用短棍和舵把击打",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "D1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 5
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "老人最终把大马林鱼完整带回港口",
-      "reason": "原文明确鲨鱼群将鱼啃食得只剩骨架"
+      "reason": "原文明确鲨鱼群将鱼啃食得只剩骨架",
+      "criteriaIds": [
+        "P3"
+      ]
     },
     {
       "claim": "男孩马诺林随老人一同出海捕鱼",
-      "reason": "男孩在头四十天后已被父母安排离开，本段未随行"
+      "reason": "男孩在头四十天后已被父母安排离开，本段未随行",
+      "criteriaIds": [
+        "P3"
+      ]
     },
     {
       "claim": "老人失去了对自己能力的信念",
-      "reason": "原文的独白明确表达不服输，与「信念丧失」相反"
+      "reason": "原文的独白明确表达不服输，与「信念丧失」相反",
+      "criteriaIds": [
+        "P3"
+      ]
     }
   ],
   "annotation": {

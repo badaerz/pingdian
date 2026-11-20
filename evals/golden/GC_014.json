@@ -5,7 +5,9 @@
     "kind": "demo-project",
     "ref": "demo-demo_002",
     "locator": "正文片段·开盒至读信",
-    "licenseStatus": "original"
+    "licenseStatus": "original",
+    "genre": "narrative-fic",
+    "register": "modern"
   },
   "sourceKind": "narrative",
   "text": "水银色的海雾从防波堤的石缝里渗出来，一点点吞没锈迹斑斑的绞盘。\n\n顾沉用一把生锈的黄铜剪刀撬开了那个饼干铁盒。铁盒密封圈上的橡胶已经老化变脆，一碰就簌簌地掉黑渣。里面没有存折，也没有航海日志，只有整整齐齐码放着的九封信。\n\n信封发黄，边缘泛着受潮后的波浪褶皱。每一封信的右上角，都贴着一张八十年代发行的面值八分的红色帆船邮票，但邮票上干干净净，没有加盖任何邮戳。\n\n“别看了，”阿夏站在配电房门口，两只手插在油渍围裙里，脚上的高筒雨靴还沾着海鲈鱼的细鳞，“那是老陈留给海里人的，阳间的人看了折寿。”\n\n“信封上的收件人写的是‘周伯生’，”顾沉用戴着白棉布手套的手指捻起最上面一封，“既然是写给会长的，为什么二十年都没寄出去？”\n\n阿夏没有回答。窗外，青屿港灯塔的旋转光柱穿透厚重的雾气，像一把钝刀，在混沌的夜空里缓慢地画着圆圈。光芒每隔十二秒扫过一次房间，将顾沉手里的信封照得惨白。\n\n顾沉抽出了信纸。\n\n没有抬头，也没有落款。信纸是极薄的单打红格信笺，第一行只有钢笔重重划下的一句话：\n\n*“一九八四年冬月初三，七号冷藏舱的水闸，是你亲手关上的。”*\n\n字迹是用老式碳素墨水写的，笔画边缘已经渗进了纸浆纤维里，但在“关上”两个字上，力道大得几乎把薄薄的信纸划破。\n\n顾沉感到后背泛起一股海风般的湿冷。门外的雾气更浓了，远洋货轮的汽笛声穿过海面传来，低沉得像是一声闷雷在水底炸开。",
@@ -20,7 +22,12 @@
       ],
       "requiredAnchor": "没有加盖任何邮戳",
       "idealKbIds": [],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "M1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 3
     },
     {
       "dimension": "对话潜台词",
@@ -32,7 +39,12 @@
       ],
       "requiredAnchor": "阳间的人看了折寿",
       "idealKbIds": [],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 4
     },
     {
       "dimension": "意象与节奏",
@@ -44,7 +56,12 @@
       ],
       "requiredAnchor": "光芒每隔十二秒扫过一次房间",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "M2"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 6
     },
     {
       "dimension": "人物塑造",
@@ -56,21 +73,35 @@
       ],
       "requiredAnchor": "戴着白棉布手套的手指",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 5
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "信中明确写出周伯生承认自己关闸",
-      "reason": "信纸只有指控语句，无认罪陈述；周伯生的坦白在蓝图高潮段，不在本段"
+      "reason": "信纸只有指控语句，无认罪陈述；周伯生的坦白在蓝图高潮段，不在本段",
+      "criteriaIds": [
+        "M1"
+      ]
     },
     {
       "claim": "顾沉在本段已读完九封信",
-      "reason": "本段只抽出最上面一封并读到第一行"
+      "reason": "本段只抽出最上面一封并读到第一行",
+      "criteriaIds": [
+        "M1"
+      ]
     },
     {
       "claim": "阿夏在本段承认自己知道信件的全部内容",
-      "reason": "原文她只说「别看了」，未承认知情"
+      "reason": "原文她只说「别看了」，未承认知情",
+      "criteriaIds": [
+        "M1"
+      ]
     }
   ],
   "annotation": {

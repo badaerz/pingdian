@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check, Clapperboard, Download, FileText, ImagePlus, Maximize2, Minus, Palette, Plus, RotateCcw, Sparkles, X } from "lucide-react";
@@ -13,6 +15,7 @@ import { loadAssetBlob, saveAssetBlob } from "@/lib/assets/indexed-db";
 import type { Candidate, ImageGenerationSettings, IpAssetMetadata } from "@/lib/types";
 import { useStory } from "@/providers/story-provider";
 import { aiRequestHeaders } from "@/lib/ai/user-key";
+import { IpVisionPanel } from "@/components/ip-lab/ip-vision-panel";
 
 type LabStatus = "idle" | "loading" | "success" | "error";
 type RecommendationDraft = { settings: ImageGenerationSettings; reasons: Record<string, string>; confidence: number };
@@ -173,10 +176,10 @@ function ProjectIpLabWorkspace({ projectId }: { projectId?: string }) {
       `媒介：${medium}；色彩：${palette}；资产类型：${assetKind === "poster" ? "文学海报" : "角色主视觉"}`,
       aiTask === "storyboard" ? "承接已确认视觉简报，生成六个连续可执行镜头。" : "先生成可编辑视觉简报，所有细节必须服从当前作品设定。",
     ].join("\n");
-    const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task: aiTask, project: contextFromState(state), input: { prompt: visualPrompt, characterId: selectedCharacterId } }) });
+    const response = await fetchAi(aiTask === "visual-brief" ? "视觉简报生成" : "六镜头分镜生成", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task: aiTask, project: contextFromState(state), input: { prompt: visualPrompt, characterId: selectedCharacterId } }) });
     let payload: { mode?: "live" | "demo"; result?: { candidates?: Candidate[]; visualBrief?: { title: string; subject: string; composition: string; palette: string[]; atmosphere: string; negativePrompt: string }; storyboard?: Array<{ shot: number; framing: string; action: string; sound: string; prompt: string }> }; warnings?: string[]; notices?: string[] };
     try {
-      payload = await response.json();
+      payload = await response.json() as typeof payload;
     } catch {
       throw new Error("AI_INVALID_RESPONSE");
     }
@@ -358,7 +361,7 @@ function ProjectIpLabWorkspace({ projectId }: { projectId?: string }) {
     const requestEpoch = projectRequestEpoch.current;
     setTask("recommendation"); setStatus("loading"); setWarning(""); setNotice("");
     try {
-      const response = await fetch("/api/ai", {
+      const response = await fetchAi("AI 参数推荐", {
         method: "POST",
         headers: aiRequestHeaders(),
         body: JSON.stringify({
@@ -456,6 +459,7 @@ function ProjectIpLabWorkspace({ projectId }: { projectId?: string }) {
   const steps = [briefConfirmed, imageConfirmed, Boolean(storyboard)];
   return <main className="ip-lab-page">
     <header className="ip-lab-head"><div><span className="eyebrow">P2 可试用 / Cross-media Lab</span><h1>文学 IP 实验场</h1><p>{project?.title ?? "当前作品"} · 从文学设定生成可确认的视觉资产包</p></div><Link href={`/project/${state.activeProjectId}/studio`} className="button button-secondary"><ArrowLeft size={16} />返回创作台</Link></header>
+    <IpVisionPanel />
     <ol className="ip-lab-steps" aria-label="IP 资产生成进度">{["视觉简报", "主视觉", "六镜头分镜"].map((label, index) => <li className={steps[index] ? "complete" : task === ["brief", "image", "storyboard"][index] ? "active" : ""} key={label}><span>{steps[index] ? <Check size={14} /> : index + 1}</span>{label}</li>)}</ol>
     <div className="ip-lab-grid">
       <aside className="ip-lab-controls"><div className="ip-lab-control-title"><Palette size={18} /><div><strong>视觉设定</strong><small>只影响下一次生成</small></div></div>
@@ -494,7 +498,7 @@ function ProjectIpLabWorkspace({ projectId }: { projectId?: string }) {
         </section>
         <section className="ip-stage"><header><div><span>01 / Visual brief</span><h2>视觉简报候选</h2></div>{brief && <StatusBadge kind={brief.mode === "live" ? "success" : "demo"}>{brief.mode === "live" ? "实时生成" : "演示生成"}</StatusBadge>}</header>{brief ? <article className="brief-candidate"><p>{brief.content}</p><small>{brief.rationale}</small><Button aria-label="确认视觉简报" onClick={() => setBriefConfirmed(true)} disabled={briefConfirmed}>{briefConfirmed ? <><Check size={15} />已确认</> : "确认视觉简报"}</Button></article> : <div className="ip-empty"><Sparkles size={22} /><p>先选择人物和视觉方向，生成一份可编辑前置简报。</p></div>}</section>
         <section className="ip-stage"><header><div><span>02 / Image candidate</span><h2>{assetKind === "poster" ? "文学海报" : "角色主视觉"}</h2></div>{imageCandidate && <StatusBadge kind={imageCandidate.mode === "live" ? "success" : "demo"}>{imageCandidate.mode === "live" ? "实时生成" : "演示兜底"}</StatusBadge>}</header>{task === "image" && <AiProgress status={status} label="图像预览生成进度" />}{imageCandidate && imagePreviewSource ? <figure className="ip-image-candidate"><button type="button" className="ip-image-preview-button" aria-label="查看大图" onClick={() => { setImageZoom(1); setImageViewerOpen(true); }}><Image src={imagePreviewSource} alt={imageCandidate.title} width={1024} height={assetKind === "poster" ? 1536 : 1024} style={{ objectFit: "contain" }} unoptimized /><span><Maximize2 size={15} />查看大图</span></button><figcaption><strong>{imageCandidate.title}</strong><span>单图候选 · 确认后保存到本机</span>{imageCandidate.providerTaskId && <span>任务 ID：{imageCandidate.providerTaskId}</span>}<Button aria-label="确认保存图像" onClick={() => void confirmImage()} disabled={imageConfirmed || status === "loading"}>{imageConfirmed ? <><Check size={15} />已保存</> : "确认保存图像"}</Button><Button variant="secondary" aria-label="下载图像" onClick={() => void downloadImage()} disabled={status === "loading"}><Download size={15} />下载图像</Button></figcaption></figure> : imageCandidate ? <div className="ip-empty ip-empty-image"><ImagePlus size={25} /><p>正在读取本地图片…</p></div> : <div className="ip-empty ip-empty-image"><ImagePlus size={25} /><p>确认视觉简报后生成一个图像候选。</p></div>}<div className="ip-image-actions"><Button onClick={() => void generateImage()} disabled={!briefConfirmed || status === "loading"} aria-label="生成主视觉"><ImagePlus size={16} />生成主视觉</Button>{imageCandidate?.mode === "demo" && !imageConfirmed && <Button variant="secondary" onClick={() => void retryImage()} disabled={status === "loading"} aria-label="重试图像生成"><RotateCcw size={16} />重试实时生成</Button>}</div>{task === "image" && <AiProgress status={status} label="图像生成控制进度" />}{task === "image" && warning && <p className="ip-lab-warning" role="status">{warning}</p>}</section>
-        <section className="ip-stage ip-storyboard"><header><div><span>03 / Six shots</span><h2>六镜头分镜</h2></div></header>{storyboard ? <article className="storyboard-candidate"><pre>{storyboard.content}</pre><small>{storyboard.rationale}</small></article> : <div className="ip-empty"><Clapperboard size={24} /><p>主视觉保存后，按同一设定生成六镜头叙事序列。</p></div>}<Button onClick={generateStoryboard} disabled={!imageConfirmed || status === "loading"}><Clapperboard size={16} />生成六镜头分镜</Button></section>
+        <section className="ip-stage ip-storyboard"><header><div><span>03 / Six shots</span><h2>六镜头分镜</h2></div>{storyboard && <StatusBadge kind={storyboard.mode === "live" ? "success" : "demo"}>{storyboard.mode === "live" ? "实时分镜" : "演示分镜"}</StatusBadge>}</header>{storyboard ? <article className="storyboard-candidate"><pre>{storyboard.content}</pre><small>{storyboard.rationale}</small></article> : <div className="ip-empty"><Clapperboard size={24} /><p>主视觉保存后，按同一设定生成六镜头叙事序列。</p></div>}<Button onClick={generateStoryboard} disabled={!imageConfirmed || status === "loading"}><Clapperboard size={16} />生成六镜头分镜</Button></section>
       </section>
     </div>
      {task !== "image" && task !== "recommendation" && <AiProgress status={status} label={`${task === "brief" ? "视觉简报" : "六镜头分镜"}进度`} />}

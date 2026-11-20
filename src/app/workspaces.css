@@ -1028,3 +1028,16 @@
 .explain-diagnostics q { display: block; margin: 6px 0; border-left: 3px solid var(--line); padding-left: 10px; color: var(--ink); }
 .explain-diagnostics p { margin: 4px 0; }
 .explain-basis { color: var(--muted); font-size: 12px; }
+
+/* IP 实验场愿景层（PRD 2.0 §4）：先讲清商业闭环，再进工具 */
+.ip-vision { display: grid; gap: 16px; margin: 0 0 22px; border: 1px solid #d0c7b9; background: #f9f6ef; padding: 22px; }
+.ip-vision-banner h2 { margin: 6px 0 8px; }
+.ip-vision-banner p { margin: 0; color: var(--muted); max-width: 64ch; line-height: 1.75; }
+.ip-vision-flow { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 4px 0 0; padding: 0; }
+.ip-vision-flow li { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--panel); border-radius: 4px; padding: 9px 12px; font-size: 12.5px; }
+.ip-vision-flow li span:not(.ip-vision-index) { color: var(--muted); }
+.ip-vision-index { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; }
+.ip-vision-path h3 { margin: 0 0 8px; font-size: 13px; }
+.ip-vision-path ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
+.ip-vision-path li { display: grid; gap: 3px; border-left: 2px solid var(--gold); background: var(--panel); padding: 9px 12px; font-size: 12.5px; }
+.ip-vision-path li span { color: var(--muted); }

@@ -5,7 +5,9 @@
     "kind": "knowledge",
     "ref": "KB_004",
     "locator": "第一节·宝黛初会",
-    "licenseStatus": "public_domain"
+    "licenseStatus": "public_domain",
+    "genre": "narrative-fic",
+    "register": "classical"
   },
   "sourceKind": "narrative",
   "text": "黛玉方进入房时，只见两个人搀着一位鬓发如银的老母迎上来，黛玉便知是他外祖母。方欲拜见时，早被贾母抱入怀中，呜咽说道：“我这心肝儿肉！”\n\n一语未了，只听后院中有人笑声，说：“我来迟了，不曾迎接远客！”黛玉纳罕道：“这些人个个皆敛声屏气，恭肃严整如此，这来者系谁，这样放诞无礼？”心下想时，只见一群媳妇丫鬟围拥着一个人从后房门进来。这个人打扮与众姑娘不同，彩绣辉煌，恍若神妃仙子……\n\n厮见毕，贾母笑道：“你不认得他，他是我们这里有名的一个泼皮破落户儿，南省俗谓作‘辣子’，你只叫他‘凤辣子’就是了。”\n\n忽见丫鬟报：“宝玉来了。”宝玉早已进来，看见新客，忙来作揖。及进来看见黛玉，便吃一大惊，心下想道：“好生奇怪，倒像在那里见过一般，何等眼熟到如此！”\n\n宝玉便走近黛玉身边坐下，细细打量：两弯似蹙非蹙罥烟眉，一双似喜非喜含情目。态生两靥之愁，娇袭一身之病。泪光点点，娇喘微微。闲静时如姣花照水，行动处似弱柳扶风。心较比干多一窍，病如西子胜三分。\n\n宝玉看罢，因笑道：“这个妹妹我曾见过的。”贾母笑道：“可又是胡说，你又何曾见过他？”宝玉笑道：“虽然未曾见过，然我看着面善，心里就算是旧相识，今日只作远别重逢，亦未为不可。”",
@@ -22,7 +24,12 @@
       "idealKbIds": [
         "KB_004"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "V1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 5
     },
     {
       "dimension": "对话潜台词",
@@ -36,7 +43,12 @@
       "idealKbIds": [
         "KB_004"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "V2"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 2
     },
     {
       "dimension": "伏笔与铺垫",
@@ -50,17 +62,28 @@
       "idealKbIds": [
         "KB_004"
       ],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "S3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 6
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "宝黛在本段已互诉衷情或确立关系",
-      "reason": "原文为初见，双方仅有眼熟之感，无情感表白"
+      "reason": "原文为初见，双方仅有眼熟之感，无情感表白",
+      "criteriaIds": [
+        "V1"
+      ]
     },
     {
       "claim": "黛玉在本段直接识破王熙凤的身份并当面指出",
-      "reason": "原文中她只在心中纳罕，未说出口"
+      "reason": "原文中她只在心中纳罕，未说出口",
+      "criteriaIds": [
+        "V1"
+      ]
     }
   ],
   "annotation": {

@@ -5,7 +5,9 @@
     "kind": "knowledge",
     "ref": "KB_002",
     "locator": "全文·庙门段",
-    "licenseStatus": "public_domain"
+    "licenseStatus": "public_domain",
+    "genre": "narrative-fic",
+    "register": "classical"
   },
   "sourceKind": "narrative",
   "text": "正是严冬天气，彤云密布，朔风渐起，却早翻翻覆覆飞下一天瑞雪来。林冲想道：“这屋如何过得一冬？待雪晴了，去城中唤个泥水匠来修理。”向了一回火，觉得身上寒冷，寻思：“却才老军指个市井，何不去沽些酒来吃？”\n\n便去包裹里取些碎银子，把花枪挑了酒葫芦，将火炭盖了，也把门拽上，锁了。望那草料场来。看那雪到晚越下得紧了。\n\n信步投东，雪地里踏着碎琼乱玉，迤逦背着北风而行。走不得半里，见一座古庙。林冲顶礼道：“神明庇佑，改日来烧纸钱。”入得庙门，把大石掇过来靠了门。\n\n只听得外面必必剥剥地爆响。林冲跳起身来，就壁缝里看时，只见草料场起火，刮刮杂杂烧着。\n\n林冲正要推门出去救火，只听得外面有人说起话来。三个人直来到庙前。林冲在门缝里瞧时，正是陆虞候、富安、差拨三人。陆虞候道：“便烧得端正，那厮便是吃了飞禽走兽的药，也逃不得这一场大火！”林冲听得，心头那团烈火再也按捺不住。\n\n把身一耸，把庙门推开，大喝一声：“贼徒！哪里去！”",
@@ -22,7 +24,12 @@
       "idealKbIds": [
         "KB_002"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "V2"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 3
     },
     {
       "dimension": "节奏控制",
@@ -36,7 +43,12 @@
       "idealKbIds": [
         "KB_002"
       ],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "D1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 4
     },
     {
       "dimension": "人物塑造",
@@ -48,17 +60,28 @@
       ],
       "requiredAnchor": "神明庇佑，改日来烧纸钱",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 3
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "林冲在本段内与三人正面搏斗并将其杀死",
-      "reason": "片段止于「大喝一声」，搏斗不在本段文本内"
+      "reason": "片段止于「大喝一声」，搏斗不在本段文本内",
+      "criteriaIds": [
+        "S3"
+      ]
     },
     {
       "claim": "林冲在山神庙中先睡了一夜才遇袭",
-      "reason": "本段他只入庙顶礼、搬石靠门，未写就寝"
+      "reason": "本段他只入庙顶礼、搬石靠门，未写就寝",
+      "criteriaIds": [
+        "S3"
+      ]
     }
   ],
   "annotation": {

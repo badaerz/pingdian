@@ -5,7 +5,9 @@
     "kind": "knowledge",
     "ref": "KB_007",
     "locator": "开场·外貌段",
-    "licenseStatus": "public_domain"
+    "licenseStatus": "public_domain",
+    "genre": "narrative-fic",
+    "register": "modern"
   },
   "sourceKind": "narrative",
   "text": "他是个独自坐在小船里在墨西哥湾暖流里捕鱼的老人，连续八十四天，他一条鱼也没有捕到。\n\n头四十天，有个男孩子跟他在一起。可是过了四十天还没捕到一条鱼，孩子的父母便对他说，老人如今准是“萨劳”（salao），也就是倒了血霉的最坏倒霉鬼。\n\n老人消瘦而憔悴，脖颈上有着深深的皱纹。腮帮上长着褐色斑块，那是太阳在热带海面上反光造成的良性皮肤癌变。双手布满深深刻进肉里的老茧，那是拉沉重鱼线留下的伤痕。但是这些伤痕中没有一处是新的，全像无鱼的荒漠里被风蚀的裂缝一样古老。\n\n除了那一双眼睛，他身上的一切都显出老态。唯独那双眼睛像海水一般蔚蓝，显得愉快而毫不服输。",
@@ -22,7 +24,12 @@
       "idealKbIds": [
         "KB_007"
       ],
-      "severity": "high"
+      "severity": "medium",
+      "criteriaIds": [
+        "P3"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 4
     },
     {
       "dimension": "语言控制",
@@ -34,7 +41,12 @@
       ],
       "requiredAnchor": "全像无鱼的荒漠里被风蚀的裂缝一样古老",
       "idealKbIds": [],
-      "severity": "medium"
+      "severity": "medium",
+      "criteriaIds": [
+        "P1"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 3
     },
     {
       "dimension": "视角与叙述者",
@@ -46,17 +58,28 @@
       ],
       "requiredAnchor": "萨劳",
       "idealKbIds": [],
-      "severity": "low"
+      "severity": "low",
+      "criteriaIds": [
+        "V2"
+      ],
+      "basis": "positive",
+      "anchorParagraph": 2
     }
   ],
   "forbiddenClaims": [
     {
       "claim": "老人的皮肤癌变被写成本段的主要危险",
-      "reason": "原文明确为「良性皮肤癌变」，是外貌描写而非情节威胁"
+      "reason": "原文明确为「良性皮肤癌变」，是外貌描写而非情节威胁",
+      "criteriaIds": [
+        "P3"
+      ]
     },
     {
       "claim": "男孩在本段已被父母带走且不再关心老人",
-      "reason": "原文只写父母说老人倒了血霉，男孩此后仍照顾老人"
+      "reason": "原文只写父母说老人倒了血霉，男孩此后仍照顾老人",
+      "criteriaIds": [
+        "P3"
+      ]
     }
   ],
   "annotation": {
@@ -64,6 +87,6 @@
     "reviewedBy": null,
     "reviewedAt": null,
     "confidence": "draft",
-    "notes": "纯静态外貌段，检验模型能否在无强情节时仍给出可锚定的观察。"
+    "notes": "纯静态外貌段，检验模型能否在无强情节时仍给出可锚定的观察。 【短样本】240 汉字，用于验证 D3（>400 汉字）与 S1/S2/S3（≥3 段）的不适用条件被正确触发；《老人与海》中译本非公有领域，故不扩写。"
   }
 }

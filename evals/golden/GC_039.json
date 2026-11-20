@@ -1,0 +1,100 @@
+{
+  "id": "GC_039",
+  "title": "雨巷·丁香的三种感官",
+  "source": {
+    "kind": "user-corpus",
+    "ref": "雨巷",
+    "locator": "戴望舒《雨巷》全文（段 0–41，自“撑着油纸伞”至末节“结着愁怨的姑娘”）",
+    "licenseStatus": "public_domain",
+    "genre": "poetry",
+    "register": "modern"
+  },
+  "sourceKind": "narrative",
+  "text": "撑着油纸伞，独自\n\n彷徨在悠长，悠长\n\n又寂寥的雨巷，\n\n我希望逢着\n\n一个丁香一样地\n\n结着愁怨的姑娘。\n\n她是有\n\n丁香一样的颜色，\n\n丁香一样的芬芳，\n\n丁香一样的忧愁，\n\n在雨中哀怨，\n\n哀怨又彷徨；\n\n她彷徨在这寂寥的雨巷，\n\n撑着油纸伞\n\n像我一样，\n\n像我一样地\n\n默默彳亍着，\n\n冷漠，凄清，又惆怅。\n\n她静默地走近\n\n走近，又投出\n\n太息一般的眼光，\n\n她飘过\n\n像梦一般地，\n\n像梦一般地凄惋迷茫。\n\n像梦中飘过\n\n一枝丁香地，\n\n我身旁飘过这女郎；\n\n她静默地远了，远了，\n\n到了颓圯的篱墙，\n\n走尽这雨巷。\n\n在雨的哀曲里，\n\n消了她的颜色，\n\n散了她的芬芳，\n\n消散了，甚至她的\n\n太息般的眼光，\n\n她丁香般的惆怅。\n\n撑着油纸伞，独自\n\n彷徨在悠长，悠长\n\n又寂寥的雨巷，\n\n我希望飘过\n\n一个丁香一样地\n\n结着愁怨的姑娘。",
+  "expectedFindings": [
+    {
+      "dimension": "意象复现与变体",
+      "claim": "“丁香”是全诗的枢纽意象，且每次复现都换一种官能：先只是“丁香一样地结着愁怨”的整体比附，再分成“丁香一样的颜色”“丁香一样的芬芳”“丁香一样的忧愁”三路，到结尾只剩“她丁香般的惆怅”。同一意象从可看的颜色、可闻的芬芳，退到不可捉摸的情绪，形态变化正好对应姑娘从走近到消散的过程",
+      "mustMention": [
+        "丁香",
+        "官能",
+        "形态变化"
+      ],
+      "requiredAnchor": "她丁香般的惆怅",
+      "anchorParagraph": 36,
+      "criteriaIds": [
+        "M2"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    },
+    {
+      "dimension": "具体性与感官",
+      "claim": "三个感官通道各有落点：视觉是油纸伞、颓圯的篱墙、雨的巷；嗅觉是“丁香一样的芬芳”；听觉是“在雨的哀曲里”。抒情不悬空，每一种情绪都挂在一个能听见或看见的东西上",
+      "mustMention": [
+        "感官通道",
+        "落点",
+        "可感"
+      ],
+      "requiredAnchor": "在雨的哀曲里",
+      "anchorParagraph": 31,
+      "criteriaIds": [
+        "P2"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    },
+    {
+      "dimension": "结构组织",
+      "claim": "首尾两节几乎逐字同构，只把“我希望逢着”换成“我希望飘过”：一字之差把“遇见”的期待改成“经过”的回望，回环因此不是复读，而是把同一场景在经历之后重说一遍",
+      "mustMention": [
+        "首尾",
+        "同构",
+        "一字之差"
+      ],
+      "requiredAnchor": "我希望飘过",
+      "anchorParagraph": 40,
+      "criteriaIds": [
+        "S1"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    }
+  ],
+  "forbiddenClaims": [
+    {
+      "claim": "全诗反复出现“丁香”和“雨巷”，意象单一，属于词汇贫乏",
+      "reason": "复现正是意象建构的手段：丁香在同一首诗里承担颜色、芬芳、忧愁三种所指，末节又收束为惆怅，单一意象被写出了层次，不是贫乏",
+      "criteriaIds": [
+        "M1"
+      ]
+    },
+    {
+      "claim": "句与句之间没有连接词，属于衔接断裂",
+      "reason": "诗歌体不适用连贯衔接判据（C1/C2/C3）：分行与跨行停顿本身就是诗的衔接方式，用散文的连接词标准判诗是判据误用",
+      "criteriaIds": [
+        "C1"
+      ]
+    },
+    {
+      "claim": "一句诗被拆成好几行，形式零碎，属于排版缺陷",
+      "reason": "跨行（enjambment）把“悠长，悠长／又寂寥的雨巷”的拖长感做进停顿里，是诗行节奏的一部分，不是排版问题",
+      "criteriaIds": [
+        "S1"
+      ]
+    }
+  ],
+  "annotation": {
+    "by": "AI-draft",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "confidence": "draft",
+    "notes": "poetry 配额样本之二（355 汉字）。作者戴望舒（1905–1950），《雨巷》1928 年发表，公版。用于验证诗歌体上 C 维不适用条件被正确触发。 【短样本】259 汉字，用于验证 D3 与 S1/S2/S3 的不适用条件被正确触发。"
+  }
+}

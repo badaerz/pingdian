@@ -1,0 +1,100 @@
+{
+  "id": "GC_038",
+  "title": "登高·落木与长江",
+  "source": {
+    "kind": "user-corpus",
+    "ref": "登高",
+    "locator": "杜甫《登高》全文（段 2–9，八句七律）",
+    "licenseStatus": "public_domain",
+    "genre": "poetry",
+    "register": "classical"
+  },
+  "sourceKind": "narrative",
+  "text": "风急天高猿啸哀，\n\n渚清沙白鸟飞回。\n\n无边落木萧萧下，\n\n不尽长江滚滚来。\n\n万里悲秋常作客，\n\n百年多病独登台。\n\n艰难苦恨繁霜鬓，\n\n潦倒新停浊酒杯。",
+  "expectedFindings": [
+    {
+      "dimension": "具体性与感官",
+      "claim": "四句之内视听交替：风急、天高、猿啸（听），渚清、沙白、鸟飞回（视），落木萧萧（视兼听），长江滚滚（视兼听）。每一句都给出可感的单一通道，不是笼统的“秋景萧瑟”",
+      "mustMention": [
+        "视听",
+        "通道",
+        "秋景"
+      ],
+      "requiredAnchor": "无边落木萧萧下",
+      "anchorParagraph": 3,
+      "criteriaIds": [
+        "P2"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    },
+    {
+      "dimension": "意象复现与变体",
+      "claim": "「落木」与「长江」是一组对举意象：一个是无边而落尽的秋叶，一个是不尽而滚滚的江水，短的与被时间带走的对撞长的与不息的；这一对意象随后被“万里悲秋”“百年多病”接着用，空间的远与时间的久各承一半",
+      "mustMention": [
+        "对举",
+        "落木",
+        "长江"
+      ],
+      "requiredAnchor": "不尽长江滚滚来",
+      "anchorParagraph": 4,
+      "criteriaIds": [
+        "M1"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    },
+    {
+      "dimension": "视角一致性",
+      "claim": "全篇不出现“我”，但动作与处境都由一个在场者承担：登台、望落木、看长江、停浊酒杯。人称隐去而视角不散，读者始终站在那个登高的人身后",
+      "mustMention": [
+        "隐含",
+        "登台",
+        "在场者"
+      ],
+      "requiredAnchor": "百年多病独登台",
+      "anchorParagraph": 6,
+      "criteriaIds": [
+        "V1"
+      ],
+      "basis": "positive",
+      "idealKbIds": [],
+      "severity": "medium",
+      "notApplicableChecked": ""
+    }
+  ],
+  "forbiddenClaims": [
+    {
+      "claim": "相邻句之间没有任何连接词，属于衔接断裂",
+      "reason": "诗歌体不适用连贯衔接判据（C1/C2/C3）：律诗靠对仗与意象并置衔接，不靠关系连接词。用散文的衔接标准判诗，是判据误用",
+      "criteriaIds": [
+        "C1"
+      ]
+    },
+    {
+      "claim": "全诗不出现“我”，视角含混，读者不知道是谁在登台",
+      "reason": "“独登台”“新停浊酒杯”都是第一人称隐含动作，视角稳定在登高者身上；不出现代词是有意隐去，不是含混",
+      "criteriaIds": [
+        "V1"
+      ]
+    },
+    {
+      "claim": "四联全用对仗，形式僵化，属于堆砌辞藻",
+      "reason": "对仗在此承担时空对照（无边／不尽、万里／百年），形式与语义同构；判为僵化是把格律当装饰",
+      "criteriaIds": [
+        "S3"
+      ]
+    }
+  ],
+  "annotation": {
+    "by": "AI-draft",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "confidence": "draft",
+    "notes": "短样本之二（约 56 汉字），用于验证诗歌体上 C 维（C1/C2/C3）与 D1/D3 的不适用条件被正确触发。源文本仅删除维基文库的异文夹注（“一作……”），正文未改一字。作者杜甫（712–770），公版。 【短样本】56 汉字，用于验证 C1/C2/C3（诗歌体不适用）、D1/D3、S1/S2/S3 的不适用条件被正确触发。"
+  }
+}
