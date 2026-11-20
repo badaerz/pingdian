@@ -1,0 +1,862 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "巴特尔",
+          "goal": "完成钢丝马头琴的首次演奏，让废弃工业材料发出草原的回响",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002",
+            "ev_006"
+          ]
+        },
+        {
+          "character": "杭盖",
+          "goal": "录下这场演奏，并在风暴中保护琴声与演奏者",
+          "evidenceIds": [
+            "ev_003",
+            "ev_007",
+            "ev_008"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "巴特尔",
+          "action": "从羊皮袄深处掏出布包，层层剥开帆布露出暗红色马头琴",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "character": "巴特尔",
+          "action": "用断指左手搭弦，手腕猛沉，拉出钢丝的尖锐低吟",
+          "evidenceIds": [
+            "ev_002",
+            "ev_006"
+          ]
+        },
+        {
+          "character": "杭盖",
+          "action": "扯掉耳机，跪在冻土上撑开羽绒服，为琴声挡风",
+          "evidenceIds": [
+            "ev_007",
+            "ev_008"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "杭盖对巴特尔的琴感到意外与陌生（“这是……钢丝？”）",
+          "to": "杭盖以身体护琴，成为演奏的共谋与守护者",
+          "evidenceIds": [
+            "ev_003",
+            "ev_007",
+            "ev_008"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "钢丝琴弦在演奏高潮处崩断，在巴特尔手背留下血痕",
+          "before": "巴特尔闭眼拉琴，泛音越来越高，杭盖撑衣挡风",
+          "after": "上弦崩断，钢丝抽出血痕，演奏戛然而止",
+          "evidenceIds": [
+            "ev_009",
+            "ev_010"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "setup": "琴弦由一号电铲主起重臂的牵引钢缆制成，七九年苏联进口，六十四股高碳冷拔钢丝",
+          "evidenceIds": [
+            "ev_004"
+          ]
+        },
+        {
+          "setup": "巴特尔左手断了食指，仍以断指搭弦",
+          "evidenceIds": [
+            "ev_002"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "钢丝弦在剧烈摩擦后崩断，印证了“高碳钢的冰冷硬度将弓毛咬得粉碎”的铺垫",
+          "evidenceIds": [
+            "ev_005",
+            "ev_009",
+            "ev_010"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "工业废料与草原记忆的并置",
+          "change": "从“废弃红松木模”到“钢丝琴弦发出金属撕裂般的低吟”，废料被赋予乐器功能",
+          "reason": "巴特尔用机油淬炼钢缆芯子，将工业事故的残骸转化为草原之声的载体",
+          "evidenceIds": [
+            "ev_001",
+            "ev_004",
+            "ev_006"
+          ]
+        },
+        {
+          "stage": "人与机器的对抗与共生",
+          "change": "从“重型机床车削铸铁件的啸叫”到“杭盖以肉身挡风护琴”，人的身体成为声音的屏障",
+          "reason": "琴声的工业暴力感迫使听者以身体介入，完成从旁观到守护的转变",
+          "evidenceIds": [
+            "ev_005",
+            "ev_007",
+            "ev_008"
+          ]
+        },
+        {
+          "stage": "断裂与回响",
+          "change": "从“泛音越来越高”到“上弦崩断、血痕出现”，声音以断裂收束",
+          "reason": "钢丝弦的物理极限与人物身体的损伤同时抵达，形成悲剧性的完成",
+          "evidenceIds": [
+            "ev_009",
+            "ev_010"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_structure",
+      "name": "结构组织",
+      "summary": "全文以“掏琴—释琴—奏琴—断弦”推进，段落功能清晰：首段建场（掏出布包），中段推进与转折（演奏、风暴、断弦），末段收束于断弦与血痕。末段未引入新情节，以“上弦崩断了”交代演奏的终结状态，并回指前文“钢丝”与“琴弓”，收束功能成立。",
+      "impact": "结构紧凑，因果链完整，读者被带入一个从展示到爆发的完整仪式。",
+      "suggestion": "可在断弦后补一句极简的余响（如“风还在刮”），使收束更具空间感，但需避免引入新事件。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_coherence",
+      "name": "连贯衔接",
+      "summary": "指代词使用明确：“那”回指马头琴，“他”回指巴特尔或杭盖，均有唯一先行词。相邻句主题词重叠充分（琴、弦、风、手），连接词使用自然（“但”“直到”），无语义断层。",
+      "impact": "叙述流畅，读者无需回读即可追踪人物与物件。",
+      "suggestion": "个别长句（如巴特尔解释钢缆来源的引语）可适当断句，降低阅读负荷。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_004",
+        "ev_007"
+      ]
+    },
+    {
+      "id": "dim_density",
+      "name": "信息密度与节奏",
+      "summary": "全文约900字，事件密度高：掏琴、释琴、奏琴、风起、挡风、断弦，每个段落都有可观察动作与结果。无连续200字零信息窗，无单段超400字却事件匮乏的情况。节奏由缓入急，与演奏的推进同步。",
+      "impact": "信息推进有力，读者注意力被持续牵引，高潮处节奏收紧。",
+      "suggestion": "第二段对琴的材质说明稍显密集，可拆分为更短句群，让视觉细节更突出。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_005",
+        "ev_007",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "dim_sensory",
+      "name": "具体性与感官",
+      "summary": "感官通道覆盖视觉（暗红色琴、冷灰色银光、黑色煤屑）、听觉（金属撕裂般低吟、机床啸叫、汽笛）、触觉（冰冷风沙抽打、生疼）、体感（耳膜被抽空、手背血痕），共四类以上。关键转折处（断弦）有可指认细节：钢丝抽出的银光、手背血痕。无空转评价句。",
+      "impact": "多通道感官描写使工业草原的异质声音世界可感可触，增强了沉浸感。",
+      "suggestion": "可补一处嗅觉细节（如机油味、煤烟味），使感官层次更完整。",
+      "score": 92,
+      "evidenceIds": [
+        "ev_001",
+        "ev_005",
+        "ev_006",
+        "ev_008",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_imagery",
+      "name": "意象复现",
+      "summary": "“钢丝”作为核心意象，从“冷灰色银光”到“金属撕裂般低吟”再到“崩断抽出血痕”，形态与功能发生变化，指向工业废料向草原之声转化、最终以断裂完成回响的主题。跨段复现明确（第2、4、8、10段）。",
+      "impact": "钢丝的物理属性与象征意义同步推进，形成贯穿全文的意象弧线。",
+      "suggestion": "可在断弦后让“钢丝”的残段再出现一次（如落在地上），强化意象的终结感。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_004",
+        "ev_005",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_perspective",
+      "name": "视角一致性",
+      "summary": "全文以第三人称有限视角展开，主要跟随杭盖的感知（耳膜被抽空、听清钢丝回弹），同时穿插巴特尔的行动与状态。无越界心理描写，无无来源信息。视角稳定。",
+      "impact": "读者通过杭盖的耳朵和身体感受琴声的冲击，视角统一增强了代入感。",
+      "suggestion": "巴特尔解释钢缆来源的长段引语可稍作精简，避免视角从杭盖的感知滑向纯信息交代。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_003",
+        "ev_006",
+        "ev_007",
+        "ev_008"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "巴特尔从翻领羊皮袄的深处掏出一个布包。油渍斑斑的粗帆布一层层剥开，露出一柄暗红色的马头琴。",
+      "note": "建场：人物与核心物件首次出场，给出动作与视觉细节。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "他没有调音器，只是把那半截断了食指的左手搭在弦上，手腕猛地一沉。",
+      "note": "人物动作细节：断指左手搭弦，暗示演奏者的身体代价与技艺。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "“这是……钢丝？”杭盖一愣，下意识地把枪型麦克风往前递了半寸。",
+      "note": "杭盖的初始反应：意外与职业性动作，建立人物关系与录音场景。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "“一号电铲主起重臂上的牵引钢缆，”巴特尔粗糙的指腹在弦上刮了一下，发出一声极其尖锐、近乎金属撕裂般的低吟，“七九年从苏联进口的货，六十四股高碳冷拔钢丝。那年机器翻下大坡，砸死了你大副舅。老工人用气焊把钢缆割断，我偷抽了三根最细的芯子，拿机油淬了七天七夜。”",
+      "note": "琴弦来源的完整交代：工业事故、亲属死亡、废料转化，构成核心铺垫。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "马尾弓在钢丝上剧烈摩擦，高碳钢的冰冷硬度将弓毛咬得粉碎，发出类似重型机床在车削铸铁件时的啸叫。",
+      "note": "听觉与触觉的工业比喻，强化钢丝弦的暴力质感，为断弦铺垫。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "巴特尔的喉咙深处滚动起浑浊的呼麦声，声带剧烈震颤，泛音一层压着一层，像是一群早已退役的蒸汽机车在暴风雪中集体拉响汽笛。",
+      "note": "呼麦与工业意象的融合，展现演奏的高潮与人物技艺。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "杭盖一把扯掉耳机。他没有去调整衰减档位，而是直接跪倒在冻硬的黑土上，脱下自己身上的羽绒服，双手死死撑开衣角，像一堵单薄的肉墙，挡在巴特尔的琴弓与咆哮的风口之间。",
+      "note": "杭盖的行动转折：从录音师到守护者，身体介入声音现场。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "冰冷的风沙抽打在杭盖光裸的脖颈上，生疼。但在这堵肉墙构筑的狭小空间里，他听清了每一根钢丝纤维在断裂前夕发出的微弱回弹。",
+      "note": "触觉与听觉细节：风沙的疼痛与钢丝的微弱回弹，强化临场感与断弦预兆。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "巴特尔闭着眼，脸上的每一道皱纹都被扬起的黑灰填满，嘴唇干裂，喉咙里的泛音越来越高，直到最后一记重弓在琴码上戛然而止——",
+      "note": "演奏高潮的顶点，戛然而止制造悬念。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "“咔嚓。”\n\n上弦崩断了。钢丝在空中抽出一道凄厉的银光，在巴特尔的手背上留下一道血痕。",
+      "note": "收束：断弦与血痕，以物理断裂完成演奏的终结，回指钢丝意象。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_bateer",
+        "label": "巴特尔",
+        "type": "character",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_006"
+        ]
+      },
+      {
+        "id": "n_hanggai",
+        "label": "杭盖",
+        "type": "character",
+        "evidenceIds": [
+          "ev_003",
+          "ev_007"
+        ]
+      },
+      {
+        "id": "n_qin",
+        "label": "钢丝马头琴",
+        "type": "object",
+        "evidenceIds": [
+          "ev_001",
+          "ev_004"
+        ]
+      },
+      {
+        "id": "n_gangsi",
+        "label": "钢丝琴弦",
+        "type": "object",
+        "evidenceIds": [
+          "ev_004",
+          "ev_005",
+          "ev_010"
+        ]
+      },
+      {
+        "id": "n_feng",
+        "label": "狂风",
+        "type": "environment",
+        "evidenceIds": [
+          "ev_007",
+          "ev_008"
+        ]
+      },
+      {
+        "id": "n_duanxian",
+        "label": "断弦",
+        "type": "event",
+        "evidenceIds": [
+          "ev_009",
+          "ev_010"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_bateer",
+        "to": "n_qin",
+        "relation": "演奏",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002"
+        ]
+      },
+      {
+        "from": "n_bateer",
+        "to": "n_gangsi",
+        "relation": "制作",
+        "evidenceIds": [
+          "ev_004"
+        ]
+      },
+      {
+        "from": "n_hanggai",
+        "to": "n_bateer",
+        "relation": "守护",
+        "evidenceIds": [
+          "ev_007"
+        ]
+      },
+      {
+        "from": "n_hanggai",
+        "to": "n_feng",
+        "relation": "抵挡",
+        "evidenceIds": [
+          "ev_008"
+        ]
+      },
+      {
+        "from": "n_gangsi",
+        "to": "n_duanxian",
+        "relation": "导致",
+        "evidenceIds": [
+          "ev_009",
+          "ev_010"
+        ]
+      },
+      {
+        "from": "n_duanxian",
+        "to": "n_bateer",
+        "relation": "伤害",
+        "evidenceIds": [
+          "ev_010"
+        ]
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第1段",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "value": 40,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第3段",
+      "value": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "value": 55,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第5段",
+      "value": 60,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第6段",
+      "value": 70,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第7段",
+      "value": 75,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第8段",
+      "value": 85,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第9段",
+      "value": 90,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第10段",
+      "value": 95,
+      "evidenceId": "ev_009"
+    },
+    {
+      "segment": "第11段",
+      "value": 100,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第1段",
+      "value": 20,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "value": 35,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第3段",
+      "value": 45,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "value": 60,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第5段",
+      "value": 65,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第6段",
+      "value": 80,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第7段",
+      "value": 85,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第8段",
+      "value": 90,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第9段",
+      "value": 95,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第10段",
+      "value": 100,
+      "evidenceId": "ev_009"
+    },
+    {
+      "segment": "第11段",
+      "value": 90,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第1段",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第2段",
+      "value": 80,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第3段",
+      "value": 40,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第4段",
+      "value": 90,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第5段",
+      "value": 50,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第6段",
+      "value": 70,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第7段",
+      "value": 60,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第8段",
+      "value": 40,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第9段",
+      "value": 50,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第10段",
+      "value": 80,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "工业废料与草原记忆",
+      "segment": "第11段",
+      "value": 90,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第1段",
+      "value": 10,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第2段",
+      "value": 50,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第3段",
+      "value": 30,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第4段",
+      "value": 60,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第5段",
+      "value": 40,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第6段",
+      "value": 80,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第7段",
+      "value": 70,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第8段",
+      "value": 90,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第9段",
+      "value": 95,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第10段",
+      "value": 90,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "人与机器的对抗与共生",
+      "segment": "第11段",
+      "value": 80,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第1段",
+      "value": 10,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第2段",
+      "value": 20,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第3段",
+      "value": 20,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第4段",
+      "value": 40,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第5段",
+      "value": 30,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第6段",
+      "value": 50,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第7段",
+      "value": 60,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第8段",
+      "value": 70,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第9段",
+      "value": 85,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第10段",
+      "value": 95,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "断裂与回响",
+      "segment": "第11段",
+      "value": 100,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "平均句长中等偏长，多含修饰成分与并列结构，适合铺陈工业细节与声音质感。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 18,
+        "interpretation": "对话仅占约五分之一，主要用于交代琴弦来源，其余为叙述与描写，保持叙事密度。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_004"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 85,
+        "interpretation": "视觉、听觉、触觉、体感密集交织，几乎每段都有可指认的感官细节。",
+        "evidenceIds": [
+          "ev_005",
+          "ev_006",
+          "ev_008"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 78,
+        "interpretation": "比喻密集且偏向工业意象（机床啸叫、蒸汽机车汽笛），形成独特的异质修辞系统。",
+        "evidenceIds": [
+          "ev_005",
+          "ev_006"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 40,
+        "interpretation": "叙事贴近杭盖的感知，但保持第三人称外部观察，距离适中偏近。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 88,
+        "interpretation": "节奏由缓入急，短句与长句交替，断弦处戛然而止，形成强烈收束。",
+        "evidenceIds": [
+          "ev_009",
+          "ev_010"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "第4段巴特尔引语",
+      "quote": "“一号电铲主起重臂上的牵引钢缆，”巴特尔粗糙的指腹在弦上刮了一下，发出一声极其尖锐、近乎金属撕裂般的低吟，“七九年从苏联进口的货，六十四股高碳冷拔钢丝。那年机器翻下大坡，砸死了你大副舅。老工人用气焊把钢缆割断，我偷抽了三根最细的芯子，拿机油淬了七天七夜。”",
+      "effect": "信息密集，引语中穿插动作与声音，但连续的技术参数与往事交代使句子偏长，可能分散读者对琴声的注意力。",
+      "action": "可将引语拆为两到三个短句，把“六十四股高碳冷拔钢丝”单独成句，突出其质感。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_004"
+      ],
+      "criteriaIds": [
+        "D1",
+        "C3"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "第2段对琴的材质说明",
+      "quote": "琴筒是用铸造车间废弃的红松木模拼的，边角还残留着白漆刷的零件编号“67-B”；原本该用马尾或尼龙做的琴弦，泛着一种刺目的冷灰色银光。",
+      "effect": "两个分句用分号连接，信息并列但缺乏动作，稍显静态。",
+      "action": "可加入一个巴特尔的手部动作（如“他用指甲刮了刮编号”），使说明与人物动作结合。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "D3",
+        "P1"
+      ]
+    },
+    {
+      "id": "diag_003",
+      "location": "第8段杭盖挡风",
+      "quote": "杭盖一把扯掉耳机。他没有去调整衰减档位，而是直接跪倒在冻硬的黑土上，脱下自己身上的羽绒服，双手死死撑开衣角，像一堵单薄的肉墙，挡在巴特尔的琴弓与咆哮的风口之间。",
+      "effect": "动作链清晰，但“像一堵单薄的肉墙”的比喻稍显常见，可能削弱独特感。",
+      "action": "可替换为更具工业质感的比喻（如“像一块挡在砂轮前的薄铁皮”），与全文意象系统保持一致。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "P2",
+        "M3"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "usedFor": "第三人称限制视角与冷酷客观的实录语气，用于分析本文视角一致性。",
+      "evidenceIds": [
+        "ev_003",
+        "ev_007"
+      ]
+    },
+    {
+      "retrievalId": "KB_007:technique_explanation",
+      "usedFor": "冰山原则与仪式化内心独白，用于分析本文以动作与感官替代心理描写的风格。",
+      "evidenceIds": [
+        "ev_002",
+        "ev_008"
+      ]
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "usedFor": "白描与视觉矛盾法，用于分析琴的材质细节与身份符号。",
+      "evidenceIds": [
+        "ev_001",
+        "ev_004"
+      ]
+    },
+    {
+      "retrievalId": "KB_004:technique_explanation",
+      "usedFor": "多重叙事层与意象预叙，用于分析钢丝意象的跨段复现与主题推进。",
+      "evidenceIds": [
+        "ev_004",
+        "ev_010"
+      ]
+    },
+    {
+      "retrievalId": "KB_002:technique_explanation",
+      "usedFor": "景物烘托与心理共振，用于分析狂风与琴声的同步推进。",
+      "evidenceIds": [
+        "ev_007",
+        "ev_008"
+      ]
+    }
+  ]
+}

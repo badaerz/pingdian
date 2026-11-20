@@ -1,0 +1,598 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "孔乙己",
+          "goal": "用现钱温一碗酒，维持读书人的体面与最低限度的生存需求",
+          "evidenceId": "ev_006"
+        },
+        {
+          "character": "掌柜",
+          "goal": "追讨孔乙己欠下的十九个钱",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "actions": [
+        {
+          "character": "孔乙己",
+          "action": "在柜台下对了门槛坐着，仰面回答掌柜，要求酒要好",
+          "evidenceId": "ev_006"
+        },
+        {
+          "character": "掌柜",
+          "action": "伸出头去，向孔乙己讨要欠账",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "孔乙己作为穿长衫而站着喝酒的唯一的人，与短衣帮和长衫客均保持距离",
+          "to": "孔乙己沦落到柜台下、以蒲包垫身，与掌柜之间只剩债务关系，被当众讨账",
+          "evidenceId": "ev_003"
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "孔乙己从站着喝酒穿长衫的顾客，变为柜台下坐着蒲包、穿破夹袄的残废者，外貌与处境发生不可逆降级",
+          "evidenceId": "ev_005"
+        }
+      ],
+      "setups": [
+        {
+          "description": "开头详细交代咸亨酒店格局、短衣帮与长衫客的阶层区隔，为孔乙己“站着喝酒而穿长衫”的视觉矛盾做铺垫",
+          "evidenceId": "ev_001"
+        },
+        {
+          "description": "交代孔乙己欠十九个钱，为末次出场时掌柜讨账埋下伏笔",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "payoffs": [
+        {
+          "description": "末次出场时掌柜当面讨要十九个钱，呼应前文欠账伏笔",
+          "evidenceId": "ev_007"
+        },
+        {
+          "description": "结尾“大约孔乙己的确死了”以矛盾修辞收束，回应开头的长衫形象与欠账未清",
+          "evidenceId": "ev_008"
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "身份与实相的断裂",
+          "change": "从长衫象征的读书人体面，降级为破夹袄与蒲包所标示的赤贫与残废",
+          "reason": "孔乙己被丁举人打断腿后，失去站立能力，只能以手代步，长衫已不可穿",
+          "evidenceId": "ev_005"
+        },
+        {
+          "stage": "看客的冷漠",
+          "change": "从酒客取笑孔乙己，到末次出场时掌柜只关心欠账、无人过问其伤势",
+          "reason": "叙述者以小伙计视角冷眼旁观，不介入评价，使冷漠成为环境常态",
+          "evidenceId": "ev_007"
+        },
+        {
+          "stage": "死亡的悬置",
+          "change": "从孔乙己长久未露面，到结尾以“大约”与“的确”并置给出不确定的死亡结论",
+          "reason": "叙述者“到现在终于没有见”，只能推测，无法确证",
+          "evidenceId": "ev_008"
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_structure",
+      "name": "结构组织",
+      "summary": "全文四段（含省略号段）分别承担建场、过渡、人物出场、转折与收束功能，末段以“大约孔乙己的确死了”收束，不引入新情节，并回指开头的长衫形象与欠账线索。",
+      "impact": "首尾呼应形成闭环，使孔乙己的消失成为结构上的必然终点，强化冷酷余味。",
+      "suggestion": "可保留现有结构；若需扩展，可在第二段省略号处补入孔乙己教写“茴”字等发展情节，使转折更充分。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_005",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "dim_cohesion",
+      "name": "连贯衔接",
+      "summary": "指代词“他”“这”“那”均有明确先行词，相邻句主题词重叠或使用连接词，无语义断层。",
+      "impact": "叙述流畅，小伙计视角的观察链清晰，读者能顺利跟随场景转换。",
+      "suggestion": "无需修改；注意省略号段“我从十二岁起……”作为过渡，可适当补足与上下段的衔接词。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_002",
+        "ev_004",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_density",
+      "name": "信息密度与节奏",
+      "summary": "全文无连续200字零信息窗口；单段均未超过400字且事件数充足，节奏由建场的舒缓转入末次出场的紧凑。",
+      "impact": "信息推进有效，建场段虽偏静态但承担阶层区隔的必要交代，不显拖沓。",
+      "suggestion": "建场段可再压缩一两句，使孔乙己出场更快；末次出场段可增加一个感官细节（如酒的热气）以强化现场感。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_001",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_sensory",
+      "name": "具体性与感官",
+      "summary": "全篇覆盖视觉（青白脸色、破夹袄、蒲包）、听觉（“温一碗酒”）、触觉（秋风凉、靠着火）等多类感官；转折处有“破夹袄”“蒲包”“草绳”等可指认具象细节。",
+      "impact": "白描式具体细节使孔乙己的降级可触可感，避免抽象评价，增强冷峻客观的叙事张力。",
+      "suggestion": "可在末次出场处补一处嗅觉或味觉细节（如酒气、茴香豆味），使感官层次更丰富。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_003",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_image",
+      "name": "意象复现",
+      "summary": "“长衫”在首段与第三段复现，形态从“又脏又破的长衫”变为“破夹袄”，功能位置从身份标志变为残废者的遮体物，指向人物处境的不可逆降级；“十九个钱”跨段复现，串联欠账与死亡结局。",
+      "impact": "意象的形态变化承载主题推进，使外貌降级成为身份崩塌的视觉隐喻。",
+      "suggestion": "可强化“门槛”意象的复现，使孔乙己坐在门槛下的空间位置与开头柜台格局形成更明显的对照。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_003",
+        "ev_005",
+        "ev_007"
+      ]
+    },
+    {
+      "id": "dim_perspective",
+      "name": "视角一致性",
+      "summary": "全文采用第一人称限制视角（小伙计“我”），叙述人称稳定，心理动词句主语均为“我”，无越界全知信息；孔乙己的死亡以“大约”推测，符合视角限制。",
+      "impact": "限制视角使叙述者只能旁观与推测，强化了看客的冷漠与结局的悬置感。",
+      "suggestion": "无需修改；注意省略号段若扩展，需保持“我”的感知范围，不引入孔乙己的内心独白。",
+      "score": 92,
+      "evidenceIds": [
+        "ev_002",
+        "ev_004",
+        "ev_008"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "鲁镇的酒店的格局，是和别处不同的：都是当街一个曲尺形的大柜台，柜里面预备着热水，可以随时温酒。",
+      "note": "开篇建场，给出时空坐标与酒店格局，为阶层区隔与孔乙己出场做铺垫。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "我从十二岁起，便在镇口的咸亨酒店里当伙计……",
+      "note": "交代叙述者身份与视角，确立第一人称限制视角。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "孔乙己是站着喝酒而穿长衫的唯一的人。他身材很高大；青白脸色，皱纹间时常夹些伤痕；一部乱蓬蓬的花白胡子。穿的虽然是长衫，可是又脏又破，似乎十多年没有补，也没有洗。",
+      "note": "孔乙己首次出场，以“站着喝酒而穿长衫”的视觉矛盾确立身份与实相的断裂，长衫意象首次出现。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "中秋过后，秋风是一天凉比一天，看看将近初冬；我整天的靠着火，也须穿上棉袄了。",
+      "note": "时间推进与季节转换，提供触觉（凉、靠火）与时间坐标，为末次出场设置冷寂氛围。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "他脸上黑而且瘦，已经不成样子；穿一件破夹袄，盘着两腿，下面垫着一个蒲包，用草绳在肩上挂住；见了我，又说道，“温一碗酒。”",
+      "note": "转折处：孔乙己外貌与处境不可逆降级，长衫变为破夹袄，站立变为蒲包垫身，具象细节可指认。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "孔乙己很颓唐的仰面答道，“这……下回还清罢。这一回是现钱，酒要好。”",
+      "note": "孔乙己的动作与对话，显示其仍试图维持体面（酒要好），但已无力还账。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "掌柜也伸出头去，一面说，“孔乙己么？你还欠十九个钱呢！”",
+      "note": "掌柜讨账，呼应前文欠账伏笔，体现看客冷漠，只关心钱不关心伤势。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "我到现在终于没有见——大约孔乙己的确死了。",
+      "note": "末段收束，不引入新情节，以“大约”与“的确”并置给出不确定的死亡结论，回指孔乙己的消失。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "孔乙己",
+        "type": "character",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n2",
+        "label": "掌柜",
+        "type": "character",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n3",
+        "label": "我（小伙计）",
+        "type": "character",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n4",
+        "label": "长衫",
+        "type": "object",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n5",
+        "label": "破夹袄",
+        "type": "object",
+        "evidenceId": "ev_005"
+      },
+      {
+        "id": "n6",
+        "label": "十九个钱",
+        "type": "object",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n7",
+        "label": "柜台",
+        "type": "place",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n8",
+        "label": "门槛",
+        "type": "place",
+        "evidenceId": "ev_005"
+      }
+    ],
+    "edges": [
+      {
+        "from": "n1",
+        "to": "n4",
+        "relation": "穿着",
+        "evidenceId": "ev_003"
+      },
+      {
+        "from": "n1",
+        "to": "n5",
+        "relation": "降级后穿着",
+        "evidenceId": "ev_005"
+      },
+      {
+        "from": "n1",
+        "to": "n6",
+        "relation": "欠账",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n2",
+        "to": "n1",
+        "relation": "讨账",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "relation": "旁观/叙述",
+        "evidenceId": "ev_002"
+      },
+      {
+        "from": "n1",
+        "to": "n7",
+        "relation": "柜台下坐着",
+        "evidenceId": "ev_005"
+      },
+      {
+        "from": "n1",
+        "to": "n8",
+        "relation": "对了门槛坐着",
+        "evidenceId": "ev_005"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "开篇建场",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "过渡段",
+      "value": 20,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "孔乙己出场",
+      "value": 45,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "末次出场",
+      "value": 75,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "结尾收束",
+      "value": 55,
+      "evidenceId": "ev_008"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "开篇建场",
+      "value": 20,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "过渡段",
+      "value": 25,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "孔乙己出场",
+      "value": 40,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "末次出场",
+      "value": 70,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "结尾收束",
+      "value": 85,
+      "evidenceId": "ev_008"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "身份与实相的断裂",
+      "segment": "开篇建场",
+      "value": 20,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "身份与实相的断裂",
+      "segment": "过渡段",
+      "value": 10,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "身份与实相的断裂",
+      "segment": "孔乙己出场",
+      "value": 80,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "身份与实相的断裂",
+      "segment": "末次出场",
+      "value": 90,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "身份与实相的断裂",
+      "segment": "结尾收束",
+      "value": 60,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "看客的冷漠",
+      "segment": "开篇建场",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "看客的冷漠",
+      "segment": "过渡段",
+      "value": 10,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "看客的冷漠",
+      "segment": "孔乙己出场",
+      "value": 40,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "看客的冷漠",
+      "segment": "末次出场",
+      "value": 75,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "看客的冷漠",
+      "segment": "结尾收束",
+      "value": 50,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "死亡的悬置",
+      "segment": "开篇建场",
+      "value": 0,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "死亡的悬置",
+      "segment": "过渡段",
+      "value": 0,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "死亡的悬置",
+      "segment": "孔乙己出场",
+      "value": 10,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "死亡的悬置",
+      "segment": "末次出场",
+      "value": 40,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "死亡的悬置",
+      "segment": "结尾收束",
+      "value": 95,
+      "evidenceId": "ev_008"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "句子以中长句为主，建场段多用长句铺陈，末次出场段短句增多，形成节奏变化。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话占比",
+        "value": 25,
+        "interpretation": "对话集中在末次出场，孔乙己与掌柜的简短对白推动冲突，其余为叙述。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 55,
+        "interpretation": "视觉细节最突出（脸色、衣着、蒲包），触觉（秋风凉、靠火）与听觉（声音极低）辅助，整体感官密度中等偏高。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_004",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 40,
+        "interpretation": "以白描为主，少用比喻夸张；结尾“大约……的确”构成矛盾修辞，是全文最显著的修辞点。",
+        "evidenceIds": [
+          "ev_008"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 70,
+        "interpretation": "第一人称小伙计视角保持较远的情感距离，叙述者不直接评价孔乙己，冷峻客观。",
+        "evidenceIds": [
+          "ev_002",
+          "ev_008"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 58,
+        "interpretation": "开篇舒缓，末次出场紧凑，结尾短句收束，整体节奏由慢转快再顿住。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_005",
+          "ev_008"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "第二段“我从十二岁起，便在镇口的咸亨酒店里当伙计……”",
+      "quote": "我从十二岁起，便在镇口的咸亨酒店里当伙计……",
+      "effect": "该段以省略号截断，仅交代叙述者身份，未展开具体事件，功能上属过渡，但信息量偏低，与前后段衔接稍显突兀。",
+      "action": "可补入一两句小伙计日常工作的具体描写（如温酒、招呼短衣帮），使过渡段承担建场或推进功能，避免空转。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_002"
+      ],
+      "criteriaIds": [
+        "S2",
+        "D1"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "末次出场段“他脸上黑而且瘦，已经不成样子”",
+      "quote": "他脸上黑而且瘦，已经不成样子；穿一件破夹袄，盘着两腿，下面垫着一个蒲包，用草绳在肩上挂住；见了我，又说道，“温一碗酒。”",
+      "effect": "转折处具象细节充分，但“已经不成样子”属概括性评价，紧接具体描写，稍显冗余。",
+      "action": "可删去“已经不成样子”，让“黑而且瘦”“破夹袄”“蒲包”等细节直接呈现降级，避免评价词先行。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_005"
+      ],
+      "criteriaIds": [
+        "P1",
+        "P3"
+      ]
+    },
+    {
+      "id": "diag_003",
+      "location": "结尾“我到现在终于没有见——大约孔乙己的确死了。”",
+      "quote": "我到现在终于没有见——大约孔乙己的确死了。",
+      "effect": "“大约”与“的确”并置形成矛盾修辞，收束有力，但“到现在”与“终于”时间指向稍显模糊，可更明确时间跨度。",
+      "action": "可保留矛盾修辞；若需更清晰，可将“到现在”改为“自此以后”或“年关过后”，使时间收束更具体。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "usedFor": "确认第一人称限制视角、白描、以喜衬悲、首尾呼应与账本伏笔等技法，用于分析视角一致性与结构组织。",
+      "note": "知识参考，非用户原文。"
+    },
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "usedFor": "参考限制视角与心理距离控制，用于评估叙事距离指标。",
+      "note": "知识参考，非用户原文。"
+    },
+    {
+      "retrievalId": "KB_003:technique_explanation",
+      "usedFor": "参考留白与开放结尾技法，用于分析结尾的死亡悬置。",
+      "note": "知识参考，非用户原文。"
+    },
+    {
+      "retrievalId": "KB_004:technique_explanation",
+      "usedFor": "参考多重叙事层与预叙，用于分析欠账伏笔与结构呼应。",
+      "note": "知识参考，非用户原文。"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "usedFor": "参考道具驱动叙事与反转技法，用于分析“十九个钱”的伏笔功能。",
+      "note": "知识参考，非用户原文。"
+    }
+  ]
+}

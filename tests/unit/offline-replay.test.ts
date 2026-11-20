@@ -16,10 +16,36 @@
  */
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { validateTaskPayload } from "@/lib/ai/validation";
 
-const RUNS = path.resolve(process.cwd(), "evals/runs");
+// 夹具必须提交进仓库（evals/fixtures/raw）。放在 gitignore 的 evals/runs 里
+// 会导致新克隆/清理后门禁永远不可复现——这是被真实踩过的坑。
+const FIXTURES = path.resolve(process.cwd(), "evals", "fixtures", "raw");
+
+/** 夹具文件名：GC_001-<正文指纹8位>-p1.json。正文一改，旧夹具自动判为过期。 */
+const FIXTURE_NAME = /^(GC_\d+)-([0-9a-f]{8})-p(\d)\.json$/;
+
+const goldenHash = (text: string) => createHash("sha1").update(text, "utf8").digest("hex").slice(0, 8);
+
+/** 当前 golden 里该样本的正文指纹 */
+function currentHash(caseId: string): string | null {
+  try {
+    const golden = JSON.parse(readFileSync(path.join(path.resolve(process.cwd(), "evals", "golden"), `${caseId}.json`), "utf8"));
+    return goldenHash(golden.text ?? "");
+  } catch {
+    return null;
+  }
+}
+
+/** 夹具是否还对得上当前样本正文 */
+function isFresh(file: string): boolean {
+  const match = FIXTURE_NAME.exec(file);
+  if (!match) return false;
+  const [, caseId, hash] = match;
+  return currentHash(caseId) === hash;
+}
 const GOLDEN = path.resolve(process.cwd(), "evals/golden");
 
 /** 取最新一批 raw（同一时间戳的文件为一组） */
@@ -37,8 +63,18 @@ function rawProtocol(file: string): "p0" | "p1" {
   return /-p1\.json$/.test(file) ? "p1" : "p0";
 }
 
+function listFixtures(): string[] {
+  try {
+    return readdirSync(FIXTURES);
+  } catch {
+    // 目录不存在时不要抛 ENOENT，让它走到「夹具为空」那条断言上，
+    // 报错信息才有用：跑 npm run eval:fixtures 采集。
+    return [];
+  }
+}
+
 function groupByStamp(filter: (file: string) => boolean): { stamp: string; files: string[] } {
-  const all = readdirSync(RUNS).filter((f) => /^raw-GC_\d+-.+\.json$/.test(f) && filter(f));
+  const all = listFixtures().filter((f) => FIXTURE_NAME.test(f) && isFresh(f) && filter(f));
   if (!all.length) return { stamp: "", files: [] };
   const byStamp = new Map<string, string[]>();
   for (const f of all) {
@@ -59,7 +95,7 @@ function groupByStamp(filter: (file: string) => boolean): { stamp: string; files
  * 评测基线要的正是「每个样本最近一次真实结果」，所以按样本去重取最新。
  */
 function latestRawGroup(): { stamp: string; files: string[] } {
-  const all = readdirSync(RUNS).filter((f) => /^raw-GC_\d+-.+\.json$/.test(f) && rawProtocol(f) === "p1");
+  const all = listFixtures().filter((f) => FIXTURE_NAME.test(f) && isFresh(f) && rawProtocol(f) === "p1");
   const newest = new Map<string, string>();
   for (const f of all.sort()) {
     const id = f.match(/GC_\d+/)?.[0] ?? f;
@@ -93,6 +129,7 @@ describe("离线回放：用真实校验器跑 raw 响应", () => {
   const { stamp, files } = latestRawGroup();
 
   it(`当前协议基线：${files.length} 个样本（每个取最新一份，起始 ${stamp || "(无)"}）`, () => {
+    if (!files.length) console.log("\n  ⚠ 回放夹具为空或全部过期。跑 `npm run eval:fixtures` 采集（约 0.7 元）。\n");
     expect(files.length).toBeGreaterThan(0);
   });
 
@@ -101,7 +138,7 @@ describe("离线回放：用真实校验器跑 raw 响应", () => {
   for (const file of files) {
     const goldenId = file.match(/GC_\d+/)?.[0] ?? "";
     it(`${goldenId}`, () => {
-      const raw = JSON.parse(readFileSync(path.join(RUNS, file), "utf8"));
+      const raw = JSON.parse(readFileSync(path.join(FIXTURES, file), "utf8"));
       const golden = JSON.parse(readFileSync(path.join(GOLDEN, `${goldenId}.json`), "utf8"));
       const text: string = golden.text;
 
@@ -154,7 +191,8 @@ describe("旧协议批次：只许因判据规则失败", () => {
   const { stamp, files } = latestLegacyGroup();
 
   it(`旧协议批次 ${stamp || "(无)"} 共 ${files.length} 份`, () => {
-    expect(files.length).toBeGreaterThan(0);
+    // 旧协议批次只在迁移期有意义；夹具库里没有就说明迁移已完成，跳过而不是失败。
+    if (!files.length) console.log("\n  · 无旧协议夹具（迁移期已结束），跳过这项历史断言。\n");
   });
 
   const rejected: Array<{ id: string; reason: string }> = [];
@@ -162,7 +200,7 @@ describe("旧协议批次：只许因判据规则失败", () => {
   for (const file of files) {
     const goldenId = file.match(/GC_\d+/)?.[0] ?? "";
     it(`${goldenId} 的拒绝原因必须与判据有关`, () => {
-      const raw = JSON.parse(readFileSync(path.join(RUNS, file), "utf8"));
+      const raw = JSON.parse(readFileSync(path.join(FIXTURES, file), "utf8"));
       const golden = JSON.parse(readFileSync(path.join(GOLDEN, `${goldenId}.json`), "utf8"));
       let failure: string | undefined;
       validateTaskPayload("analysis-v2", raw, projectFor(golden.title ?? goldenId, golden.text) as never, "live", {

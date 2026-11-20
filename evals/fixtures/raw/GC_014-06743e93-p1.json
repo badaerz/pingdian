@@ -1,0 +1,1037 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "顾沉",
+          "goal": "查明九封信为何二十年未寄出，以及信中指控的真相",
+          "evidenceId": "ev_005"
+        },
+        {
+          "character": "阿夏",
+          "goal": "阻止顾沉阅读信件，维护关于老陈和海里人的禁忌",
+          "evidenceId": "ev_004"
+        }
+      ],
+      "actions": [
+        {
+          "character": "顾沉",
+          "action": "用黄铜剪刀撬开铁盒，发现九封信",
+          "evidenceId": "ev_002"
+        },
+        {
+          "character": "顾沉",
+          "action": "戴上白棉布手套捻起信件，询问阿夏",
+          "evidenceId": "ev_005"
+        },
+        {
+          "character": "顾沉",
+          "action": "抽出信纸阅读，感到后背湿冷",
+          "evidenceId": "ev_010"
+        },
+        {
+          "character": "阿夏",
+          "action": "站在配电房门口警告顾沉别看了",
+          "evidenceId": "ev_004"
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "顾沉与阿夏：调查者与知情旁观者",
+          "to": "顾沉对阿夏的隐瞒产生怀疑，阿夏的沉默加深隔阂",
+          "evidenceId": "ev_006"
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "顾沉发现铁盒里是九封未寄出的信，收件人是周伯生",
+          "evidenceId": "ev_003"
+        },
+        {
+          "description": "信纸第一行揭露一九八四年七号冷藏舱水闸被顾沉（或收信人）亲手关上的指控",
+          "evidenceId": "ev_009"
+        }
+      ],
+      "setups": [
+        {
+          "description": "邮票干净无邮戳，暗示信件从未进入邮政系统，为后文揭示未寄原因埋伏笔",
+          "evidenceId": "ev_003"
+        },
+        {
+          "description": "阿夏说‘留给海里人的，阳间的人看了折寿’，建立禁忌与超自然氛围",
+          "evidenceId": "ev_004"
+        },
+        {
+          "description": "灯塔光柱每隔十二秒扫过，作为时间标记和氛围元素",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "payoffs": [
+        {
+          "description": "信纸上的指控‘水闸是你亲手关上的’初步兑现了‘留给海里人’的凶险暗示，将禁忌具体化为一场可能的人为事故",
+          "evidenceId": "ev_009"
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "秘密的开启",
+          "change": "从日常场景（防波堤、绞盘）转入铁盒的发现，秘密开始浮出水面",
+          "reason": "顾沉主动撬开铁盒，触发调查",
+          "evidenceId": "ev_002"
+        },
+        {
+          "stage": "禁忌与警告",
+          "change": "阿夏的警告将信件与‘海里人’‘折寿’联系起来，赋予信件超自然禁忌色彩",
+          "reason": "阿夏作为知情者试图阻止顾沉",
+          "evidenceId": "ev_004"
+        },
+        {
+          "stage": "指控的浮现",
+          "change": "信纸内容揭示一九八四年冬月初三七号冷藏舱水闸被关，矛头指向收信人周伯生或顾沉",
+          "reason": "顾沉阅读信件，秘密的核心被揭开一角",
+          "evidenceId": "ev_009"
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_s1",
+      "name": "结构组织",
+      "summary": "段落功能可归入建场、推进、转折、抒情评述、收束五类，但末段未完成收束功能，反而引入新信息（信纸内容）和新的悬念。",
+      "impact": "末段以顾沉的感受和汽笛声收尾，未回指开头物件（绞盘、铁盒）或交代人物处境的终结状态，导致结构上缺少闭合感，更像一个章节的悬念收束而非完整故事的结尾。",
+      "suggestion": "若此段为章节结尾，可保留悬念；若为独立完整文本，建议末段回指开头的海雾或铁盒，并给出顾沉处境的阶段性终结（如决定是否继续读信）。",
+      "score": 70,
+      "evidenceIds": [
+        "ev_001",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_s2",
+      "name": "段落功能归类",
+      "summary": "全篇11个段落，均可归入五类功能之一：建场（1、6）、推进（2、3、5、7、8、9、10、11）、转折（9）、抒情评述（10、11）。无归不进去的段落。",
+      "impact": "段落功能清晰，叙事推进流畅，建场与推进交替，转折明确。",
+      "suggestion": "保持现有功能分布，注意末段收束功能可加强。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_008",
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "dim_s3",
+      "name": "转折",
+      "summary": "存在明确转折：信纸内容揭示一九八四年七号冷藏舱水闸被关，使读者已知信息发生不可逆变化，前文对信件的理解被改写。",
+      "impact": "转折将悬疑从‘为何未寄’推向‘谁之罪’，提升了故事的戏剧张力。",
+      "suggestion": "转折处可增加顾沉更具体的身体反应或动作细节，强化冲击力。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_009"
+      ]
+    },
+    {
+      "id": "dim_c2",
+      "name": "指代明确性",
+      "summary": "全篇指代词使用均有明确先行词，无悬空或歧义。",
+      "impact": "指代清晰，阅读顺畅。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_002",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_c3",
+      "name": "语义衔接",
+      "summary": "相邻句主题词有重叠或使用连接词，未发现语义断层。",
+      "impact": "句间衔接自然，逻辑连贯。",
+      "suggestion": "保持。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_008",
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "dim_d1",
+      "name": "信息密度",
+      "summary": "全文约600字，无连续200字零信息窗口，每段均提供新事件、新名词或新事实。",
+      "impact": "信息密度适中，节奏紧凑。",
+      "suggestion": "保持。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_008",
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "dim_d3",
+      "name": "长段事件密度",
+      "summary": "无单段超过400字且事件数≤1的情况，最长段落约150字，事件数充足。",
+      "impact": "段落长度控制得当，无拖沓。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_008",
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "dim_p1",
+      "name": "具体性",
+      "summary": "未发现抽象评价词≥2且具体名词=0的空转评价句，句子多含具体名词或动作。",
+      "impact": "描写具体可感，避免空洞。",
+      "suggestion": "保持。",
+      "score": 92,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_008",
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "dim_p2",
+      "name": "感官覆盖",
+      "summary": "全篇覆盖视觉（海雾、光柱、信封发黄）、听觉（汽笛声）、触觉（湿冷）、嗅觉（海风般的湿冷）等多类感官。",
+      "impact": "多感官描写营造出沉浸式的雾港氛围。",
+      "suggestion": "可增加味觉或体感（如饥饿、疲劳）以进一步丰富。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_007",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "dim_p3",
+      "name": "转折处具象细节",
+      "summary": "转折处（信纸内容）有可指认的具象细节：钢笔重重划下的字迹、碳素墨水渗入纸浆、力道划破信纸。",
+      "impact": "细节强化了信件的真实感和情感冲击力。",
+      "suggestion": "保持，可再增加一个与顾沉身体动作相关的细节。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_009"
+      ]
+    },
+    {
+      "id": "dim_m1",
+      "name": "意象候选",
+      "summary": "具象名词短语中，‘信’（信封、信纸、信件）出现多次，‘灯塔光柱’出现两次，‘海雾’出现两次，均构成候选意象。",
+      "impact": "信件和灯塔作为核心意象，承载秘密与指引的双重含义。",
+      "suggestion": "可强化灯塔光柱与信件之间的象征关联。",
+      "score": 80,
+      "evidenceIds": [
+        "ev_002",
+        "ev_003",
+        "ev_005",
+        "ev_007",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_m2",
+      "name": "跨段复现",
+      "summary": "‘信’（信封、信纸）跨段出现在第2、3、5、7、8、10段；‘灯塔光柱’出现在第6段和第1段（海雾与光柱）；‘海雾’出现在第1段和第11段。",
+      "impact": "核心意象跨段复现，形成结构呼应。",
+      "suggestion": "保持复现节奏，可在结尾再次提及信件或光柱以加强闭环。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_002",
+        "ev_003",
+        "ev_005",
+        "ev_007",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_m3",
+      "name": "意象形态变化",
+      "summary": "‘信’从密封铁盒中的整齐码放（第2段）到被抽出阅读（第7段），功能位置从‘被封存的秘密’变为‘被开启的指控’，形态和功能均发生变化，指向秘密的揭露。",
+      "impact": "意象变化推动叙事，象征禁忌的打破。",
+      "suggestion": "可进一步通过信纸的物理状态（如折痕、污渍）暗示历史。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_002",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "dim_v1",
+      "name": "人称一致性",
+      "summary": "全篇为第三人称有限视角，叙述人称稳定，无无故切换。",
+      "impact": "视角统一，读者跟随顾沉的感知。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_002",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_v2",
+      "name": "心理动词视角",
+      "summary": "心理动词句‘顾沉感到后背泛起一股海风般的湿冷’的主语是顾沉，与视角人物一致。",
+      "impact": "内心描写未越界，维持有限视角。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_v3",
+      "name": "信息来源",
+      "summary": "顾沉的信息均来自目击（阅读信件）或合理推断（询问阿夏），无无来源信息。",
+      "impact": "信息获取合理，无全知越界。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_005",
+        "ev_009"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "水银色的海雾从防波堤的石缝里渗出来，一点点吞没锈迹斑斑的绞盘。",
+      "note": "开篇建场，给出时空氛围和核心物件（绞盘），视觉意象强烈。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "顾沉用一把生锈的黄铜剪刀撬开了那个饼干铁盒。铁盒密封圈上的橡胶已经老化变脆，一碰就簌簌地掉黑渣。里面没有存折，也没有航海日志，只有整整齐齐码放着的九封信。",
+      "note": "核心事件：发现九封信，推动情节。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "信封发黄，边缘泛着受潮后的波浪褶皱。每一封信的右上角，都贴着一张八十年代发行的面值八分的红色帆船邮票，但邮票上干干净净，没有加盖任何邮戳。",
+      "note": "细节描写暗示信件未寄出，设置悬念。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "“别看了，”阿夏站在配电房门口，两只手插在油渍围裙里，脚上的高筒雨靴还沾着海鲈鱼的细鳞，“那是老陈留给海里人的，阳间的人看了折寿。”",
+      "note": "阿夏的警告建立禁忌氛围，引入超自然元素。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "“信封上的收件人写的是‘周伯生’，”顾沉用戴着白棉布手套的手指捻起最上面一封，“既然是写给会长的，为什么二十年都没寄出去？”",
+      "note": "顾沉提出核心疑问，推动调查。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "阿夏没有回答。窗外，青屿港灯塔的旋转光柱穿透厚重的雾气，像一把钝刀，在混沌的夜空里缓慢地画着圆圈。光芒每隔十二秒扫过一次房间，将顾沉手里的信封照得惨白。",
+      "note": "阿夏的沉默与灯塔光柱的意象，强化悬疑和紧张感。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "顾沉抽出了信纸。",
+      "note": "动作推进，引出信件内容。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "没有抬头，也没有落款。信纸是极薄的单打红格信笺，第一行只有钢笔重重划下的一句话：",
+      "note": "信纸的物理特征描写，营造真实感。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "*“一九八四年冬月初三，七号冷藏舱的水闸，是你亲手关上的。”*",
+      "note": "核心转折：信纸内容揭示一九八四年事件，指控某人关水闸，信息量巨大。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "字迹是用老式碳素墨水写的，笔画边缘已经渗进了纸浆纤维里，但在“关上”两个字上，力道大得几乎把薄薄的信纸划破。",
+      "note": "细节描写强调书写者的情绪，增强冲击力。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "顾沉感到后背泛起一股海风般的湿冷。门外的雾气更浓了，远洋货轮的汽笛声穿过海面传来，低沉得像是一声闷雷在水底炸开。",
+      "note": "顾沉的生理反应和汽笛声的比喻，收束段落，渲染紧张氛围。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "顾沉",
+        "type": "character",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n2",
+        "label": "阿夏",
+        "type": "character",
+        "evidenceId": "ev_004"
+      },
+      {
+        "id": "n3",
+        "label": "周伯生",
+        "type": "character",
+        "evidenceId": "ev_005"
+      },
+      {
+        "id": "n4",
+        "label": "老陈",
+        "type": "character",
+        "evidenceId": "ev_004"
+      },
+      {
+        "id": "n5",
+        "label": "九封信",
+        "type": "object",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n6",
+        "label": "铁盒",
+        "type": "object",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n7",
+        "label": "灯塔光柱",
+        "type": "object",
+        "evidenceId": "ev_006"
+      },
+      {
+        "id": "n8",
+        "label": "海雾",
+        "type": "object",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n9",
+        "label": "一九八四年冬月初三",
+        "type": "event",
+        "evidenceId": "ev_009"
+      },
+      {
+        "id": "n10",
+        "label": "七号冷藏舱水闸",
+        "type": "object",
+        "evidenceId": "ev_009"
+      }
+    ],
+    "edges": [
+      {
+        "source": "n1",
+        "target": "n5",
+        "relation": "发现",
+        "evidenceId": "ev_002"
+      },
+      {
+        "source": "n1",
+        "target": "n2",
+        "relation": "询问",
+        "evidenceId": "ev_005"
+      },
+      {
+        "source": "n2",
+        "target": "n5",
+        "relation": "警告关于",
+        "evidenceId": "ev_004"
+      },
+      {
+        "source": "n5",
+        "target": "n3",
+        "relation": "收件人为",
+        "evidenceId": "ev_005"
+      },
+      {
+        "source": "n5",
+        "target": "n4",
+        "relation": "与老陈有关",
+        "evidenceId": "ev_004"
+      },
+      {
+        "source": "n5",
+        "target": "n9",
+        "relation": "内容提及",
+        "evidenceId": "ev_009"
+      },
+      {
+        "source": "n9",
+        "target": "n10",
+        "relation": "涉及",
+        "evidenceId": "ev_009"
+      },
+      {
+        "source": "n7",
+        "target": "n8",
+        "relation": "穿透",
+        "evidenceId": "ev_006"
+      },
+      {
+        "source": "n1",
+        "target": "n7",
+        "relation": "被照耀",
+        "evidenceId": "ev_006"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第1段",
+      "value": 20,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "value": 60,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第3段",
+      "value": 40,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "value": 30,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第5段",
+      "value": 50,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第6段",
+      "value": 35,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第7段",
+      "value": 70,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第8段",
+      "value": 60,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第9段",
+      "value": 80,
+      "evidenceId": "ev_009"
+    },
+    {
+      "segment": "第10段",
+      "value": 50,
+      "evidenceId": "ev_010"
+    },
+    {
+      "segment": "第11段",
+      "value": 40,
+      "evidenceId": "ev_011"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第1段",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "value": 50,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第3段",
+      "value": 40,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "value": 60,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第5段",
+      "value": 55,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第6段",
+      "value": 65,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第7段",
+      "value": 70,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第8段",
+      "value": 75,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第9段",
+      "value": 90,
+      "evidenceId": "ev_009"
+    },
+    {
+      "segment": "第10段",
+      "value": 80,
+      "evidenceId": "ev_010"
+    },
+    {
+      "segment": "第11段",
+      "value": 85,
+      "evidenceId": "ev_011"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "秘密与真相",
+      "segment": "第1段",
+      "value": 10,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第2段",
+      "value": 60,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第3段",
+      "value": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第4段",
+      "value": 40,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第5段",
+      "value": 70,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第6段",
+      "value": 30,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第7段",
+      "value": 80,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第8段",
+      "value": 60,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第9段",
+      "value": 90,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第10段",
+      "value": 70,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "秘密与真相",
+      "segment": "第11段",
+      "value": 50,
+      "evidenceId": "ev_011"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第1段",
+      "value": 20,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第2段",
+      "value": 10,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第3段",
+      "value": 10,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第4段",
+      "value": 80,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第5段",
+      "value": 30,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第6段",
+      "value": 50,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第7段",
+      "value": 40,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第8段",
+      "value": 30,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第9段",
+      "value": 60,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第10段",
+      "value": 40,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "禁忌与超自然",
+      "segment": "第11段",
+      "value": 70,
+      "evidenceId": "ev_011"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第1段",
+      "value": 0,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第2段",
+      "value": 0,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第3段",
+      "value": 0,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第4段",
+      "value": 10,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第5段",
+      "value": 20,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第6段",
+      "value": 10,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第7段",
+      "value": 30,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第8段",
+      "value": 40,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第9段",
+      "value": 90,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第10段",
+      "value": 70,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "罪与责任",
+      "segment": "第11段",
+      "value": 60,
+      "evidenceId": "ev_011"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "句子长度中等偏长，多含修饰成分，营造细腻氛围。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_003",
+          "ev_004",
+          "ev_005",
+          "ev_006",
+          "ev_007",
+          "ev_008",
+          "ev_009",
+          "ev_010",
+          "ev_011"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 25,
+        "interpretation": "对话占比较低，以叙述为主，对话用于揭示冲突和悬念。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 75,
+        "interpretation": "感官描写密集，视觉、听觉、触觉交织，画面感强。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_006",
+          "ev_010",
+          "ev_011"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 80,
+        "interpretation": "修辞丰富，比喻（如‘像一把钝刀’‘像闷雷’）和通感（‘海风般的湿冷’）增强表现力。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_010",
+          "ev_011"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 40,
+        "interpretation": "叙事距离较近，跟随顾沉的感知，但保持第三人称客观叙述。",
+        "evidenceIds": [
+          "ev_002",
+          "ev_004",
+          "ev_005",
+          "ev_006",
+          "ev_007",
+          "ev_009",
+          "ev_010"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 65,
+        "interpretation": "节奏张弛有度，建场段舒缓，发现信件和阅读信纸段加速。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_009"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_s1",
+      "location": "末段（第11段）",
+      "quote": "顾沉感到后背泛起一股海风般的湿冷。门外的雾气更浓了，远洋货轮的汽笛声穿过海面传来，低沉得像是一声闷雷在水底炸开。",
+      "effect": "末段未回指开头的绞盘或铁盒，也未交代顾沉处境的终结状态（如是否继续读信），而是以氛围渲染收尾，结构上缺少闭合感。",
+      "action": "建议在末段增加回指开头的元素（如海雾或绞盘），并给出顾沉的决定或处境变化（如‘他把信纸折好，放回铁盒’），以完成收束。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_001",
+        "ev_011"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "diag_s2",
+      "location": "第7段至第9段",
+      "quote": "顾沉抽出了信纸。没有抬头，也没有落款。信纸是极薄的单打红格信笺，第一行只有钢笔重重划下的一句话：“一九八四年冬月初三，七号冷藏舱的水闸，是你亲手关上的。”",
+      "effect": "第7段‘顾沉抽出了信纸’作为独立段落，功能上属于推进，但篇幅极短，与前后段合并后功能更清晰。",
+      "action": "可考虑将第7段与第8段合并，避免段落碎片化。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_007",
+        "ev_008",
+        "ev_009"
+      ],
+      "criteriaIds": [
+        "S2"
+      ]
+    },
+    {
+      "id": "diag_m1",
+      "location": "第1段与第11段",
+      "quote": "水银色的海雾从防波堤的石缝里渗出来，一点点吞没锈迹斑斑的绞盘。……门外的雾气更浓了，远洋货轮的汽笛声穿过海面传来，低沉得像是一声闷雷在水底炸开。",
+      "effect": "‘海雾’作为意象在首尾复现，但形态未发生明显变化（均为雾气更浓/渗出），未指向人物处境或主题的变化。",
+      "action": "建议在末段赋予海雾以变化（如‘雾气开始消散’或‘雾气吞没了灯塔的光’），使其象征意义与顾沉的心理变化同步。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_001",
+        "ev_011"
+      ],
+      "criteriaIds": [
+        "M3"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_007:technique_explanation",
+      "workId": "KB_007",
+      "chunkType": "technique_explanation",
+      "content": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白\n海明威在此处将'毁灭（物理层面的肉体消亡或物质损失）'与'打败（精神层面的妥协与投降）'做出了截然二分的哲学定义。语言极简，不加论证，以公理式的力量直击人心。\n开端 (Exposition)：老人圣地亚哥84天未捕到鱼被视为'倒了血霉'，小男孩马诺林依然崇拜并照顾他。\n冲突 (Inciting Incident)：第85天黎明，老人独自划船驶向深海未知海域。\n发展 (Rising Action)：巨型马林鱼上钩，将小船拖入更深海域，老人与鱼在饥渴伤痛中展开两天两夜的意志相持。\n转折 (Crisis)：老人终于将大鱼耗尽力气拖近船边，用鱼叉刺中其心脏，取得艰难胜利。\n高潮 (Climax)：血腥味引来成群鲨鱼，老人用鱼叉、刀子、船桨誓死抵抗，直到所有武器折断。\n结局 (Resolution)：老人拖着巨大白骨架夜半归港，爬回窝棚沉睡；游客惊叹骨架，老人梦见狮子。\n意象：大马林鱼、鲨鱼群、狮子之梦",
+      "quote": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白 海明威在此处将'毁灭（物理层面的肉体消亡或物质损失）'与'打败（精神...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/老人與海"
+    },
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "workId": "KB_006",
+      "chunkType": "technique_explanation",
+      "content": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment）\n文学史上最著名的开篇之一。卡夫卡放弃了一切前因后果解释（没有魔法、没有诅咒、没有科学实验），把最大的荒诞直接作为既定事实前置。这迫使读者跳过'为什么'，直接聚焦于'变形之后人际关系的真实崩溃'。\n开端 (Exposition)：格里高尔早晨醒来变成甲虫，但仍满脑子担忧推销员工作与家庭债务。\n冲突 (Inciting Incident)：主任上门催促，格里高尔艰难开门亮相，母亲吓晕，主任逃跑，父亲将其暴力赶回房内。\n发展 (Rising Action)：妹妹格蕾特负责喂食，但逐渐失去耐心；家人为租客腾空间开始搬走他的家具。\n转折 (Crisis)：母亲见其真身再次受惊，父亲用苹果狂掷格里高尔，致其背部严重受创腐烂。\n高潮 (Climax)：妹妹在房客面前公开提议'我们必须摆脱它'，格里高尔在极度绝望与平静中确认了死意。\n结局 (Resolution)：女佣清理尸体，全家如释重负乘车郊游，父母欣慰地看着妹妹舒展身体，象征新周期的开始。\n意象：巨甲虫、嵌在背上的烂苹果、紧闭与锁上的房门",
+      "quote": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment） 文学史上...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/變形記_(卡夫卡)"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "workId": "KB_001",
+      "chunkType": "technique_explanation",
+      "content": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔\n鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识分子和上层体面，而'脏、破、十多年未洗'则属于赤贫阶层的特征。两者的并置在第一句话就确立了孔乙己核心的性格悲剧：身份认同与生活实相的剧烈断裂。\n开端 (Exposition)：咸亨酒店格局介绍，短衣帮与长衫客的阶层区隔建立。\n冲突 (Inciting Incident)：孔乙己出场，因唯一'穿长衫而站着喝酒'成为酒客取笑对象。\n发展 (Rising Action)：孔乙己为偷书辩护、教小伙计写'茴'字、给孩童分豆，展现迂腐与微弱善意。\n转折 (Crisis)：孔乙己因偷丁举人家物事被打断双腿，长久未在酒馆露面。\n高潮 (Climax)：中秋后初冬，孔乙己以手代步坐蒲包来喝最后一次酒，忍受残忍嘲笑后默默爬走。\n结局 (Resolution)：年关掌柜擦去粉板欠账，以'大约孔乙己的确死了'作结，留下无尽冷酷余味。\n意象：长衫、茴香豆、门槛与柜台",
+      "quote": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔 鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识分子和上层体面，而'脏、破、十多年未洗'则属于赤贫阶层的特征。两者的并置在第一句话就确立了孔乙己核心的性格悲剧：身份认同与生活实相的剧烈断裂。",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/孔乙己"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "workId": "KB_008",
+      "chunkType": "technique_explanation",
+      "content": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot)\n莫泊桑在反转揭晓前插入这一段作者议论，看似在抒发生命感慨，实则是巧妙的叙事迷雾（Red Herring）。它强化了读者对'丢失真钻石导致命运被毁'的既有认知，使最后一句话的假钻石反转更具毁灭性张力。\n开端 (Exposition)：玛蒂尔德自认天生丽质，但只能嫁给小书记员，成天幻想奢华生活。\n冲突 (Inciting Incident)：丈夫弄来教育部舞会请帖，玛蒂尔德为配得上礼服向好友佛来思节夫人借了钻石项链。\n发展 (Rising Action)：玛蒂尔德在舞会上艳惊四座，尽情享受虚荣的狂欢。\n转折 (Crisis)：凌晨回家后发现项链丢失，二人四处寻找无果，决定买三万六千法郎的正品暗中替换。\n高潮 (Climax)：夫妇二人借遍高利贷，退租做苦工，整整耗费十年青春还清所有债务。\n结局 (Resolution)：玛蒂尔德在香榭丽舍大街偶遇依然年轻的好友，坦白真相后得知当年借的只是假钻石。\n意象：钻石项链、粗陋的瓦罐与洗碗水",
+      "quote": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot) 莫泊桑在反转揭晓前插入这一段...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/項鍊_(短篇小說)"
+    },
+    {
+      "retrievalId": "KB_004:technique_explanation",
+      "workId": "KB_004",
+      "chunkType": "technique_explanation",
+      "content": "红楼梦（第五回/前八十回架构）｜技法：多重叙事层（神话框式结构 + 全知限制混合视角）、判词预叙 (Prolepsis)、网状复调叙事 (Polyphonic Mesh)\n这是宝玉对史湘云劝其考取功名时的反驳。曹雪芹没有直接写宝黛如何相爱，而是借他人之口反衬黛玉与其他闺秀的根本差异——不劝宝玉做世俗'国贼禄鬼'，以此精准立住'灵魂知己'的根基。\n开端 (Exposition)：神话缘起、太虚幻境判词预言、林黛玉进贾府建立世界观与核心人物群。\n冲突 (Inciting Incident)：宝黛初会建立深厚共鸣，宝钗入府带来'金玉良缘'说，冲突暗生。\n发展 (Rising Action)：元妃省亲建大观园，群芳结社作诗，家族声势达到繁华鼎盛。\n转折 (Crisis)：抄检大观园、尤三姐自刎、晴雯早夭，家族内乱频发，盛极转衰。\n高潮 (Climax)：贾府被抄、黛玉焚稿断痴情、宝玉误娶宝钗，双重悲剧集中爆发。\n结局 (Resolution)：落了片白茫茫大地真干净，宝玉出家归入太虚，神话闭环。\n意象：通灵宝玉与绛珠仙草、大观园、落红与风筝",
+      "quote": "红楼梦（第五回/前八十回架构）｜技法：多重叙事层（神话框式结构 + 全知限制混合视角）、判词预叙 (Prolepsis)、网状复调叙事 (Polyphonic Mesh) 这是宝玉对史湘云劝其考取功名时的反驳。曹雪芹没有直接写宝黛如何相爱，而是借他人之口反衬黛玉与其他闺秀的根本差异——不劝宝玉做世俗'国贼禄鬼'，以此精准立住'灵魂知己'的根基。",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/紅樓夢"
+    }
+  ]
+}

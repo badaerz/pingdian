@@ -1,0 +1,739 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "项王",
+          "goal": "突围求生，证明“天亡我，非战之罪”",
+          "evidenceId": "ev_001"
+        },
+        {
+          "character": "项王",
+          "goal": "为部下溃围、斩将、刈旗，展示勇武",
+          "evidenceId": "ev_002"
+        },
+        {
+          "character": "项王",
+          "goal": "维护尊严，不肯渡江苟活",
+          "evidenceId": "ev_003"
+        }
+      ],
+      "actions": [
+        {
+          "character": "项王",
+          "action": "夜起饮帐中，悲歌慷慨，泣数行下",
+          "evidenceId": "ev_004"
+        },
+        {
+          "character": "项王",
+          "action": "率八百余骑溃围南出，渡淮后仅余百余人",
+          "evidenceId": "ev_005"
+        },
+        {
+          "character": "项王",
+          "action": "阴陵迷道，被田父欺骗，陷大泽",
+          "evidenceId": "ev_006"
+        },
+        {
+          "character": "项王",
+          "action": "东城快战，斩将刈旗，瞋目叱退赤泉侯",
+          "evidenceId": "ev_007"
+        },
+        {
+          "character": "项王",
+          "action": "拒渡乌江，赠马亭长，步战杀数百人，自刎而死",
+          "evidenceId": "ev_008"
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "项王与虞姬、骓马",
+          "to": "诀别",
+          "evidenceId": "ev_009"
+        },
+        {
+          "from": "项王与江东子弟",
+          "to": "八千子弟无一生还，项王自觉无颜见江东父老",
+          "evidenceId": "ev_010"
+        },
+        {
+          "from": "项王与吕马童",
+          "to": "故人相认，吕马童指认项王，项王赠其头以成其功",
+          "evidenceId": "ev_011"
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "四面楚歌，项王大惊，军心瓦解",
+          "evidenceId": "ev_012"
+        },
+        {
+          "description": "阴陵迷道，陷大泽，汉军追及",
+          "evidenceId": "ev_013"
+        },
+        {
+          "description": "东城快战，项王自度不得脱，决心死战",
+          "evidenceId": "ev_014"
+        },
+        {
+          "description": "乌江拒渡，项王自刎",
+          "evidenceId": "ev_015"
+        }
+      ],
+      "setups": [
+        {
+          "description": "“夜闻汉军四面皆楚歌”为楚军士气崩溃埋下伏笔",
+          "evidenceId": "ev_016"
+        },
+        {
+          "description": "“有美人名虞，常幸从；骏马名骓，常骑之”为后文悲歌诀别铺垫",
+          "evidenceId": "ev_017"
+        }
+      ],
+      "payoffs": [
+        {
+          "description": "“虞兮虞兮奈若何”与后文虞姬和之、项王泣下相呼应",
+          "evidenceId": "ev_018"
+        },
+        {
+          "description": "“天亡我，非战之罪”在乌江自刎前再次重申，完成主题闭环",
+          "evidenceId": "ev_019"
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "英雄末路",
+          "change": "从“力拔山兮气盖世”到“兵少食尽”被围",
+          "reason": "军事失败导致处境逆转",
+          "evidenceId": "ev_020"
+        },
+        {
+          "stage": "天命与人事",
+          "change": "从“所当者破”到“此天之亡我，非战之罪”",
+          "reason": "项王将失败归因于天意",
+          "evidenceId": "ev_021"
+        },
+        {
+          "stage": "尊严与羞耻",
+          "change": "从“欲东渡乌江”到“无面目见江东父兄”而拒渡",
+          "reason": "八千子弟无还，项王选择以死维护尊严",
+          "evidenceId": "ev_022"
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_struct",
+      "name": "结构组织",
+      "summary": "全文三段分别承担建场、推进与收束功能，末段以项王自刎及封侯结局收束，无新情节引入，并回指开头“兵少食尽”的处境，结构完整。",
+      "impact": "形成完整的悲剧叙事弧线，从被围到突围再到自刎，节奏紧凑。",
+      "suggestion": "可考虑在末段增加对开头“四面楚歌”的呼应，以强化结构闭环。",
+      "score": 92,
+      "evidenceIds": [
+        "ev_023",
+        "ev_024",
+        "ev_025"
+      ]
+    },
+    {
+      "id": "dim_coherence",
+      "name": "连贯衔接",
+      "summary": "指代词使用明确，无悬空或歧义；相邻句主题词重叠或连接词衔接自然，无断层。",
+      "impact": "叙述流畅，读者能清晰追踪人物与事件。",
+      "suggestion": "保持现有衔接方式，无需修改。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_026",
+        "ev_027"
+      ]
+    },
+    {
+      "id": "dim_density",
+      "name": "信息密度与节奏",
+      "summary": "全文信息密度高，事件密集，无连续200字零信息窗口；单段均未超过400字，节奏张弛有度。",
+      "impact": "叙事紧凑，战争场面与情感高潮交替，吸引读者。",
+      "suggestion": "可在快战与自刎之间适当放缓节奏，增加心理描写以深化悲剧感。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_028",
+        "ev_029"
+      ]
+    },
+    {
+      "id": "dim_sensory",
+      "name": "具体性与感官",
+      "summary": "关键场景具象细节丰富，如“泣数行下”“瞋目而叱之”“身被十馀创”，感官通道以视觉、听觉、体感为主，覆盖≥2类。",
+      "impact": "画面感强，人物形象鲜明。",
+      "suggestion": "可补充触觉或嗅觉细节，如战场的血腥味、兵器的冰冷，以增强沉浸感。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_030",
+        "ev_031"
+      ]
+    },
+    {
+      "id": "dim_imagery",
+      "name": "意象复现",
+      "summary": "“骓马”与“江东子弟”作为意象跨段复现，形态与功能变化指向人物处境与主题变化。",
+      "impact": "强化了英雄末路的悲壮与天命主题。",
+      "suggestion": "可进一步开发“乌江”作为意象，赋予其更多象征意义。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_032",
+        "ev_033"
+      ]
+    },
+    {
+      "id": "dim_perspective",
+      "name": "视角一致性",
+      "summary": "全文为全知视角，叙述者自由进入项王内心，无视角越界问题。",
+      "impact": "全方位展现项王的心理与行动，增强史诗感。",
+      "suggestion": "保持全知视角，无需调整。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_034",
+        "ev_035"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "项王自度不得脱。",
+      "note": "项王意识到无法脱身，目标转向决死战。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "愿为诸君快战，必三胜之，为诸君溃围，斩将，刈旗",
+      "note": "项王以溃围斩将为目标，展示勇武。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "纵江东父兄怜而王我，我何面目见之？",
+      "note": "项王拒绝渡江，选择维护尊严。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "项王则夜起，饮帐中。……于是项王乃悲歌忼慨，自为诗曰……项王泣数行下，左右皆泣，莫能仰视。",
+      "note": "项王夜起悲歌，情感爆发。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "于是项王乃上马骑，麾下壮士骑从者八百馀人，直夜溃围南出，驰走。……项王渡淮，骑能属者百馀人耳。",
+      "note": "项王率八百余骑突围，渡淮后仅余百余人。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "项王至阴陵，迷失道，问一田父，田父绐曰“左”。左，乃陷大泽中。",
+      "note": "项王被田父欺骗，陷入大泽。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "于是项王大呼驰下，汉军皆披靡，遂斩汉一将。……项王瞋目而叱之，赤泉侯人马俱惊，辟易数里",
+      "note": "项王快战，斩将叱敌。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "乃令骑皆下马步行，持短兵接战。独籍所杀汉军数百人。项王身亦被十馀创。……乃自刎而死。",
+      "note": "项王步战杀敌，身负重伤，自刎而死。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "歌数阕，美人和之。项王泣数行下",
+      "note": "虞姬和歌，项王哭泣，诀别在即。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "且籍与江东子弟八千人渡江而西，今无一人还",
+      "note": "八千子弟无一生还，项王自觉无颜见江东父老。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "顾见汉骑司马吕马童，曰：“若非吾故人乎？”马童面之，指王翳曰：“此项王也。”",
+      "note": "项王与吕马童故人相认，吕马童指认项王。"
+    },
+    {
+      "id": "ev_012",
+      "source": "observation",
+      "quote": "夜闻汉军四面皆楚歌，项王乃大惊曰：“汉皆已得楚乎？是何楚人之多也！”",
+      "note": "四面楚歌，项王大惊，军心瓦解。"
+    },
+    {
+      "id": "ev_013",
+      "source": "observation",
+      "quote": "左，乃陷大泽中。以故汉追及之。",
+      "note": "陷大泽导致汉军追及，处境恶化。"
+    },
+    {
+      "id": "ev_014",
+      "source": "observation",
+      "quote": "项王自度不得脱。谓其骑曰：“……今日固决死，愿为诸君快战……”",
+      "note": "项王自度不得脱，决心死战。"
+    },
+    {
+      "id": "ev_015",
+      "source": "observation",
+      "quote": "乃自刎而死。",
+      "note": "项王自刎，结局。"
+    },
+    {
+      "id": "ev_016",
+      "source": "observation",
+      "quote": "夜闻汉军四面皆楚歌",
+      "note": "楚歌为楚军士气崩溃埋下伏笔。"
+    },
+    {
+      "id": "ev_017",
+      "source": "observation",
+      "quote": "有美人名虞，常幸从；骏马名骓，常骑之。",
+      "note": "交代虞姬与骓马，为后文悲歌诀别铺垫。"
+    },
+    {
+      "id": "ev_018",
+      "source": "observation",
+      "quote": "歌数阕，美人和之。项王泣数行下",
+      "note": "虞姬和歌，项王哭泣，呼应前文悲歌。"
+    },
+    {
+      "id": "ev_019",
+      "source": "observation",
+      "quote": "天之亡我，我何渡为！……纵彼不言，籍独不愧于心乎？",
+      "note": "项王重申天亡我，完成主题闭环。"
+    },
+    {
+      "id": "ev_020",
+      "source": "observation",
+      "quote": "力拔山兮气盖世，时不利兮骓不逝。",
+      "note": "英雄气概与时机不利的对比。"
+    },
+    {
+      "id": "ev_021",
+      "source": "observation",
+      "quote": "此天之亡我，非战之罪也。",
+      "note": "项王将失败归因于天意。"
+    },
+    {
+      "id": "ev_022",
+      "source": "observation",
+      "quote": "纵江东父兄怜而王我，我何面目见之？",
+      "note": "项王因羞耻而拒渡，维护尊严。"
+    },
+    {
+      "id": "ev_023",
+      "source": "observation",
+      "quote": "项王军壁垓下，兵少食尽，汉军及诸侯兵围之数重。",
+      "note": "开头建场，交代被围处境。"
+    },
+    {
+      "id": "ev_024",
+      "source": "observation",
+      "quote": "于是项王乃上马骑，麾下壮士骑从者八百馀人，直夜溃围南出，驰走。",
+      "note": "第二段推进突围行动。"
+    },
+    {
+      "id": "ev_025",
+      "source": "observation",
+      "quote": "乃自刎而死。……封吕马童为中水侯，封王翳为杜衍侯，封杨喜为赤泉侯，封杨武为吴防侯，封吕胜为涅阳侯。",
+      "note": "末段收束，项王自刎，封侯结局，无新情节。"
+    },
+    {
+      "id": "ev_026",
+      "source": "observation",
+      "quote": "项王则夜起，饮帐中。有美人名虞，常幸从；骏马名骓，常骑之。",
+      "note": "指代词“之”分别指代虞姬和骓马，先行词明确。"
+    },
+    {
+      "id": "ev_027",
+      "source": "observation",
+      "quote": "项王渡淮，骑能属者百馀人耳。项王至阴陵，迷失道，问一田父",
+      "note": "相邻句主题词“项王”重叠，衔接自然。"
+    },
+    {
+      "id": "ev_028",
+      "source": "observation",
+      "quote": "于是项王大呼驰下，汉军皆披靡，遂斩汉一将。是时，赤泉侯为骑将，追项王，项王瞋目而叱之，赤泉侯人马俱惊，辟易数里",
+      "note": "事件密集，信息密度高。"
+    },
+    {
+      "id": "ev_029",
+      "source": "observation",
+      "quote": "项王身亦被十馀创。顾见汉骑司马吕马童，曰：“若非吾故人乎？”",
+      "note": "单段事件数多，无零信息窗口。"
+    },
+    {
+      "id": "ev_030",
+      "source": "observation",
+      "quote": "项王泣数行下，左右皆泣，莫能仰视。",
+      "note": "视觉细节“泣数行下”，具象可感。"
+    },
+    {
+      "id": "ev_031",
+      "source": "observation",
+      "quote": "项王瞋目而叱之，赤泉侯人马俱惊，辟易数里",
+      "note": "听觉与视觉结合，具象细节丰富。"
+    },
+    {
+      "id": "ev_032",
+      "source": "observation",
+      "quote": "骏马名骓，常骑之。……时不利兮骓不逝。……吾骑此马五岁，所当无敌，尝一日行千里，不忍杀之，以赐公。",
+      "note": "骓马跨段复现，从常骑到赠予，形态与功能变化。"
+    },
+    {
+      "id": "ev_033",
+      "source": "observation",
+      "quote": "且籍与江东子弟八千人渡江而西，今无一人还",
+      "note": "江东子弟意象复现，从八千到无一人还，指向处境变化。"
+    },
+    {
+      "id": "ev_034",
+      "source": "observation",
+      "quote": "项王乃大惊曰：“汉皆已得楚乎？是何楚人之多也！”",
+      "note": "全知视角，叙述者进入项王内心。"
+    },
+    {
+      "id": "ev_035",
+      "source": "observation",
+      "quote": "项王自度不得脱。",
+      "note": "全知视角，叙述者揭示项王心理。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "项王",
+        "type": "character",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n2",
+        "label": "虞姬",
+        "type": "character",
+        "evidenceId": "ev_009"
+      },
+      {
+        "id": "n3",
+        "label": "骓马",
+        "type": "object",
+        "evidenceId": "ev_017"
+      },
+      {
+        "id": "n4",
+        "label": "汉军",
+        "type": "force",
+        "evidenceId": "ev_012"
+      },
+      {
+        "id": "n5",
+        "label": "乌江亭长",
+        "type": "character",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n6",
+        "label": "吕马童",
+        "type": "character",
+        "evidenceId": "ev_011"
+      }
+    ],
+    "edges": [
+      {
+        "from": "n1",
+        "to": "n2",
+        "relation": "诀别",
+        "evidenceId": "ev_009"
+      },
+      {
+        "from": "n1",
+        "to": "n3",
+        "relation": "赠马",
+        "evidenceId": "ev_032"
+      },
+      {
+        "from": "n1",
+        "to": "n4",
+        "relation": "对抗",
+        "evidenceId": "ev_012"
+      },
+      {
+        "from": "n1",
+        "to": "n5",
+        "relation": "拒渡",
+        "evidenceId": "ev_003"
+      },
+      {
+        "from": "n1",
+        "to": "n6",
+        "relation": "故人相认",
+        "evidenceId": "ev_011"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第一段",
+      "pace": 30,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第二段",
+      "pace": 80,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第三段",
+      "pace": 70,
+      "evidenceId": "ev_008"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第一段",
+      "emotion": 70,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第二段",
+      "emotion": 60,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第三段",
+      "emotion": 90,
+      "evidenceId": "ev_015"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "英雄末路",
+      "segment": "第一段",
+      "value": 80,
+      "evidenceId": "ev_020"
+    },
+    {
+      "theme": "英雄末路",
+      "segment": "第二段",
+      "value": 70,
+      "evidenceId": "ev_014"
+    },
+    {
+      "theme": "英雄末路",
+      "segment": "第三段",
+      "value": 90,
+      "evidenceId": "ev_015"
+    },
+    {
+      "theme": "天命与人事",
+      "segment": "第一段",
+      "value": 40,
+      "evidenceId": "ev_021"
+    },
+    {
+      "theme": "天命与人事",
+      "segment": "第二段",
+      "value": 70,
+      "evidenceId": "ev_021"
+    },
+    {
+      "theme": "天命与人事",
+      "segment": "第三段",
+      "value": 80,
+      "evidenceId": "ev_019"
+    },
+    {
+      "theme": "尊严与羞耻",
+      "segment": "第一段",
+      "value": 20,
+      "evidenceId": "ev_022"
+    },
+    {
+      "theme": "尊严与羞耻",
+      "segment": "第二段",
+      "value": 30,
+      "evidenceId": "ev_022"
+    },
+    {
+      "theme": "尊严与羞耻",
+      "segment": "第三段",
+      "value": 90,
+      "evidenceId": "ev_022"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "平均句长约25字，长短句交错，快战段多用短句，抒情段用长句，节奏变化明显。",
+        "evidenceIds": [
+          "ev_028",
+          "ev_004"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 35,
+        "interpretation": "对话占比约35%，主要为项王与骑从、亭长、吕马童的对话，推动情节并展现性格。",
+        "evidenceIds": [
+          "ev_002",
+          "ev_003",
+          "ev_011"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 55,
+        "interpretation": "感官描写以视觉、听觉、体感为主，如“泣数行下”“瞋目而叱之”“身被十馀创”，密度中等。",
+        "evidenceIds": [
+          "ev_030",
+          "ev_031"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 60,
+        "interpretation": "多用排比、对偶（如“所当者破，所击者服”）、夸张（“力拔山兮气盖世”），修辞力度较强。",
+        "evidenceIds": [
+          "ev_020",
+          "ev_021"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 40,
+        "interpretation": "全知视角但贴近项王内心，叙事距离较近，情感投入度高。",
+        "evidenceIds": [
+          "ev_034",
+          "ev_035"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 70,
+        "interpretation": "节奏张弛有度，从悲歌的缓慢到快战的急促，再到自刎的悲壮，起伏明显。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_007",
+          "ev_015"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "第三段“乃自刎而死”后",
+      "quote": "乃自刎而死。王翳取其头，馀骑相蹂践争项王，相杀者数十人。",
+      "effect": "项王自刎后，叙述立即转向汉军争尸封侯，节奏急促，情感冲击被迅速消解。",
+      "action": "可在自刎后增加一句环境或细节描写（如“乌江之水咽而不流”），以延宕悲剧余韵。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_015",
+        "ev_025"
+      ],
+      "criteriaIds": [
+        "S1",
+        "D1"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "第二段“项王自度不得脱”前",
+      "quote": "汉骑追者数千人。项王自度不得脱。",
+      "effect": "从“汉骑追者数千人”直接跳到“项王自度不得脱”，缺少项王观察追兵或权衡处境的过渡，心理转折稍显突兀。",
+      "action": "可补充一句项王环视四周或计算兵力的动作，使心理转折更自然。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_014"
+      ],
+      "criteriaIds": [
+        "C3",
+        "V2"
+      ]
+    },
+    {
+      "id": "diag_003",
+      "location": "第一段“项王则夜起，饮帐中”",
+      "quote": "项王则夜起，饮帐中。有美人名虞，常幸从；骏马名骓，常骑之。",
+      "effect": "“有美人名虞”一句为静态介绍，与前后动作句衔接稍显生硬。",
+      "action": "可改为“虞姬侍侧，骓马在厩”，以动作或场景带出人物。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_017"
+      ],
+      "criteriaIds": [
+        "C3",
+        "P1"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_007:technique_explanation",
+      "workId": "KB_007",
+      "chunkType": "technique_explanation",
+      "content": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白\n海明威在此处将'毁灭（物理层面的肉体消亡或物质损失）'与'打败（精神层面的妥协与投降）'做出了截然二分的哲学定义。语言极简，不加论证，以公理式的力量直击人心。\n开端 (Exposition)：老人圣地亚哥84天未捕到鱼被视为'倒了血霉'，小男孩马诺林依然崇拜并照顾他。\n冲突 (Inciting Incident)：第85天黎明，老人独自划船驶向深海未知海域。\n发展 (Rising Action)：巨型马林鱼上钩，将小船拖入更深海域，老人与鱼在饥渴伤痛中展开两天两夜的意志相持。\n转折 (Crisis)：老人终于将大鱼耗尽力气拖近船边，用鱼叉刺中其心脏，取得艰难胜利。\n高潮 (Climax)：血腥味引来成群鲨鱼，老人用鱼叉、刀子、船桨誓死抵抗，直到所有武器折断。\n结局 (Resolution)：老人拖着巨大白骨架夜半归港，爬回窝棚沉睡；游客惊叹骨架，老人梦见狮子。\n意象：大马林鱼、鲨鱼群、狮子之梦",
+      "quote": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白 海明威在此处将'毁灭（物理层面的肉体消亡或物质损失）'与'打败（精神...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/老人與海"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "workId": "KB_001",
+      "chunkType": "technique_explanation",
+      "content": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔\n鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识分子和上层体面，而'脏、破、十多年未洗'则属于赤贫阶层的特征。两者的并置在第一句话就确立了孔乙己核心的性格悲剧：身份认同与生活实相的剧烈断裂。\n开端 (Exposition)：咸亨酒店格局介绍，短衣帮与长衫客的阶层区隔建立。\n冲突 (Inciting Incident)：孔乙己出场，因唯一'穿长衫而站着喝酒'成为酒客取笑对象。\n发展 (Rising Action)：孔乙己为偷书辩护、教小伙计写'茴'字、给孩童分豆，展现迂腐与微弱善意。\n转折 (Crisis)：孔乙己因偷丁举人家物事被打断双腿，长久未在酒馆露面。\n高潮 (Climax)：中秋后初冬，孔乙己以手代步坐蒲包来喝最后一次酒，忍受残忍嘲笑后默默爬走。\n结局 (Resolution)：年关掌柜擦去粉板欠账，以'大约孔乙己的确死了'作结，留下无尽冷酷余味。\n意象：长衫、茴香豆、门槛与柜台",
+      "quote": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔 鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/孔乙己"
+    },
+    {
+      "retrievalId": "KB_003:technique_explanation",
+      "workId": "KB_003",
+      "chunkType": "technique_explanation",
+      "content": "边城｜技法：全知诗性散文视角，叙述者充满温情与悲悯、情景交融与以乐写哀、留白艺术（Ambiguity & Open Ending）\n结尾没有安排大团圆，也没有写出死亡，而是采用了极具张力的'时间悬置'。'永远'代表了现实宿命的残酷，'明天'代表了生命内生的希望。两词并列，使全书的哀而不伤达到了美学巅峰。\n开端 (Exposition)：描绘湘西茶峒的渡口、老船夫、翠翠与黄狗相依为命的纯朴生活。\n冲突 (Inciting Incident)：端午节龙舟赛，翠翠偶遇二老傩送，情窦初开；大老天保亦爱上翠翠。\n发展 (Rising Action)：兄弟二人相约依湘西规矩在山崖上唱情歌决胜，天保自知歌声不如弟弟，选择退出。\n转折 (Crisis)：天保驾船下辰州不幸溺水身亡，顺顺家对老船夫产生误解与芥蒂。\n高潮 (Climax)：暴风雨之夜白塔倒塌，老船夫在忧患中安详离世，傩送负气远走他乡。\n结局 (Resolution)：乡邻重修白塔，翠翠接替爷爷继续在渡口撑船，陷入无尽的等待。\n意象：渡船与白塔、虎耳草、流水与黄昏",
+      "quote": "边城｜技法：全知诗性散文视角，叙述者充满温情与悲悯、情景交融与以乐写哀、留白艺术（Ambiguity & Open Ending） 结尾没有安排大团圆，也没有写出死亡，而是采用了极具张力的'时间悬置'。'永远'代表了现实宿命的残酷，'...",
+      "sourceStatus": "summary_only"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "workId": "KB_008",
+      "chunkType": "technique_explanation",
+      "content": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot)\n莫泊桑在反转揭晓前插入这一段作者议论，看似在抒发生命感慨，实则是巧妙的叙事迷雾（Red Herring）。它强化了读者对'丢失真钻石导致命运被毁'的既有认知，使最后一句话的假钻石反转更具毁灭性张力。\n开端 (Exposition)：玛蒂尔德自认天生丽质，但只能嫁给小书记员，成天幻想奢华生活。\n冲突 (Inciting Incident)：丈夫弄来教育部舞会请帖，玛蒂尔德为配得上礼服向好友佛来思节夫人借了钻石项链。\n发展 (Rising Action)：玛蒂尔德在舞会上艳惊四座，尽情享受虚荣的狂欢。\n转折 (Crisis)：凌晨回家后发现项链丢失，二人四处寻找无果，决定买三万六千法郎的正品暗中替换。\n高潮 (Climax)：夫妇二人借遍高利贷，退租做苦工，整整耗费十年青春还清所有债务。\n结局 (Resolution)：玛蒂尔德在香榭丽舍大街偶遇依然年轻的好友，坦白真相后得知当年借的只是假钻石。\n意象：钻石项链、粗陋的瓦罐与洗碗水",
+      "quote": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot) 莫泊桑在反转揭晓前插入这一段...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/項鍊_(短篇小說)"
+    },
+    {
+      "retrievalId": "KB_005:technique_explanation",
+      "workId": "KB_005",
+      "chunkType": "technique_explanation",
+      "content": "促织｜技法：第三人称全知志怪传奇体、跌宕波折法 (Rollercoaster Structure)、寓讽于奇 (Satirical Fantasy)\n蒲松龄在小儿投井后，没有用铺张的哭号描写，而是用'茅舍无烟，相对默然'八个字，精准呈现了底层人在遭遇毁灭性打击时极度的麻木与死寂。这种'静'为随后的奇幻化虫积蓄了巨大的心理势能。\n开端 (Exposition)：宫廷好蟋蟀之戏，导致华阴县令层层转嫁摊派，成名被逼破产受杖刑。\n冲突 (Inciting Incident)：成名得驼背巫指点，千辛万苦寻得一头神骏的大蟋蟀。\n发展 (Rising Action)：九岁幼子趁父不在偷看，不慎将虫压死；恐惧之下投井自尽。\n转折 (Crisis)：夫妻哭儿未绝，幼子魂魄苏醒，家中出现一只极小但极机警的青褐色蟋蟀。\n高潮 (Climax)：小促织斗败蟹壳青、斗败公鸡，献入宫中得皇帝大喜，抚军与县令皆受重赏。\n结局 (Resolution)：成名家资巨万，出入裘马；蒲松龄以'异史氏曰'冷峻点破'一人飞升，仙及鸡犬'的本质荒谬。\n意象：蟋蟀（促织）、小儿魂魄化虫",
+      "quote": "促织｜技法：第三人称全知志怪传奇体、跌宕波折法 (Rollercoaster Structure)、寓讽于奇 (Satirical Fantasy) 蒲松龄在小儿投井后，没有用铺张的哭号描写，而是用'茅舍无烟，相对默然'八个字，精准呈现了...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/聊齋志異/第04卷#促織"
+    }
+  ]
+}

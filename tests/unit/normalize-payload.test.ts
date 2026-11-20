@@ -10,7 +10,7 @@ import path from "node:path";
 import { validateTaskPayload } from "@/lib/ai/validation";
 import { normalizeModelPayload } from "@/lib/ai/normalize-payload";
 
-const RUNS = path.resolve(process.cwd(), "evals/runs");
+const RUNS = path.resolve(process.cwd(), "evals", "fixtures", "raw");
 const GOLDEN = path.resolve(process.cwd(), "evals/golden");
 
 function projectFor(title: string, text: string) {
@@ -21,7 +21,7 @@ function projectFor(title: string, text: string) {
   };
 }
 
-const all = readdirSync(RUNS).filter((f) => /^raw-GC_\d+-.+\.json$/.test(f));
+const all = readdirSync(RUNS).filter((f) => /^GC_\d+-[0-9a-f]{8}-p\d\.json$/.test(f));
 const stamps = [...new Set(all.map((f) => f.replace(/^raw-GC_\d+-/, "").replace(/\.json$/, "")))].sort();
 const STAMP = process.env.REPLAY_STAMP ?? stamps[stamps.length - 1] ?? "";
 const FILES = all.filter((f) => f.includes(STAMP)).sort();

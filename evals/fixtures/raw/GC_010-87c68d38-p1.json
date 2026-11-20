@@ -1,0 +1,690 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "宝玉",
+          "goal": "只拣自己家乡的封条看，探知册中内容",
+          "evidenceIds": [
+            "ev_002",
+            "ev_003"
+          ]
+        },
+        {
+          "character": "警幻",
+          "goal": "解释册籍编制原则，点明“择其紧要者录之”",
+          "evidenceIds": [
+            "ev_005",
+            "ev_006"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "宝玉",
+          "action": "进入门来，看封条，开又副册橱，拿册揭开看",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002",
+            "ev_007"
+          ]
+        },
+        {
+          "character": "宝玉",
+          "action": "掷下册子，再开副册橱，又取正册看",
+          "evidenceIds": [
+            "ev_010",
+            "ev_013",
+            "ev_015"
+          ]
+        },
+        {
+          "character": "警幻",
+          "action": "冷笑，回答宝玉之问",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "宝玉对警幻的求教",
+          "to": "宝玉“情知他必不肯泄漏”，不再追问",
+          "evidenceIds": [
+            "ev_014"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "宝玉从“无心看别省”到开橱取册，进入太虚幻境册籍的核心内容",
+          "evidenceIds": [
+            "ev_002",
+            "ev_007"
+          ]
+        },
+        {
+          "description": "宝玉由“不解”到“仍不解”，反复掷册又取册，认知困境加深",
+          "evidenceIds": [
+            "ev_009",
+            "ev_012",
+            "ev_014"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "setup": "封条上皆是各省地名，宝玉只拣家乡封条看",
+          "evidenceIds": [
+            "ev_002"
+          ]
+        },
+        {
+          "setup": "警幻说“择其紧要者录之”，为判词只录紧要女子作解释",
+          "evidenceIds": [
+            "ev_006"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "又副册、副册、正册依次展开，判词与画图逐一呈现",
+          "evidenceIds": [
+            "ev_007",
+            "ev_010",
+            "ev_013"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "判词预叙：以画与诗预示女子命运",
+          "change": "从“又副册”到“正册”，预叙对象由次要女子渐及冠首女子",
+          "reason": "册籍分等，择紧要者录之，形成由次及主的递进",
+          "evidenceIds": [
+            "ev_006",
+            "ev_007",
+            "ev_013"
+          ]
+        },
+        {
+          "stage": "认知隔膜：宝玉“不解”而警幻不泄",
+          "change": "宝玉由“看了不解”到“仍不解”，最终放弃追问",
+          "reason": "天机不可泄漏，警幻“必不肯泄漏”，形成叙事悬念",
+          "evidenceIds": [
+            "ev_009",
+            "ev_014"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_structure",
+      "name": "结构组织",
+      "summary": "全文以宝玉入太虚幻境、开橱取册、观看判词为主线，段落功能清晰：首段建场并推进，中段以对话推进，后段以取册观看推进，末段以“仍不解”与“往后看”收束并留下悬念。",
+      "impact": "结构紧凑，以“取册—观看—不解—再取册”的重复动作形成节奏，末段“待要问时……又不舍”既收束当前册页又暗示后续，符合预叙框架。",
+      "suggestion": "末段“遂又往后看时”已引入新画新词，若作为章节收束，可考虑在“虎兔相逢大梦归”后加一句宝玉的即时反应或处境交代，使收束感更强；但作为长回中的片段，现状可接受。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_001",
+        "ev_007",
+        "ev_014",
+        "ev_015"
+      ]
+    },
+    {
+      "id": "dim_cohesion",
+      "name": "连贯衔接",
+      "summary": "指代词“他”在对话外均指向宝玉，“这/那”作指别或回指均有明确先行词；相邻句主题词重叠或连接词衔接自然。",
+      "impact": "叙述流畅，无明显悬空指代或语义断层。",
+      "suggestion": "无需修改。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_004",
+        "ev_007"
+      ]
+    },
+    {
+      "id": "dim_density",
+      "name": "信息密度与节奏",
+      "summary": "全文以事件推进为主，无连续200字零信息窗；单段均未超过400字，事件数充足。",
+      "impact": "节奏明快，信息推进有效。",
+      "suggestion": "无需修改。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_007",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "dim_sensory",
+      "name": "具体性与感官",
+      "summary": "视觉细节丰富（封条、画图、水墨滃染、枯木玉带等），但感官通道以视觉为主，听觉、触觉、嗅觉、味觉、体感均未出现。",
+      "impact": "画面感强，但感官层次单一，太虚幻境的“幻”境氛围可更立体。",
+      "suggestion": "可在宝玉开橱、揭册时加入触觉（如册页的凉、封条的脆）或嗅觉（如墨香、霉味），以增强沉浸感。",
+      "score": 72,
+      "evidenceIds": [
+        "ev_007",
+        "ev_008",
+        "ev_013"
+      ]
+    },
+    {
+      "id": "dim_imagery",
+      "name": "意象复现",
+      "summary": "“册”作为核心物件反复出现（又副册、副册、正册），跨段复现且形态有变化（橱、册、页），功能位置从“取”到“看”到“掷”再到“取”，推动叙事。",
+      "impact": "“册”成为贯穿全段的意象，承载预叙功能，反复出现强化了“命运已被书写”的主题。",
+      "suggestion": "可考虑在“册”的材质或封皮上增加一次细节复现（如封条的封著状态），使意象更具体。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_007",
+        "ev_010",
+        "ev_013"
+      ]
+    },
+    {
+      "id": "dim_pov",
+      "name": "视角一致性",
+      "summary": "全文以宝玉的有限视角展开，心理动词“看了不解”“情知他必不肯泄漏”均属宝玉，无越界；警幻的“冷笑”是外部观察，未进入其内心。",
+      "impact": "视角统一，读者与宝玉一同面对不解的判词，悬念感强。",
+      "suggestion": "无需修改。",
+      "score": 92,
+      "evidenceIds": [
+        "ev_001",
+        "ev_009",
+        "ev_014"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "宝玉看了，便知感叹。进入门来，只见有十数个大橱，皆用封条封著。",
+      "note": "建场：宝玉进入太虚幻境，看到封条大橱，给出空间坐标与物件。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "宝玉一心只拣自己的家乡封条看，遂无心看别省的了。",
+      "note": "宝玉的行动目标：只关注家乡封条，体现其心理倾向。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "只见那边橱上封条上大书七字云：“金陵十二钗正册”。",
+      "note": "关键物件出现：正册封条，引出后续对话与取册。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "宝玉问道：“何为‘金陵十二钗正册’？”警幻道：“即贵省中十二冠首女子之册，故为‘正册’。”",
+      "note": "对话推进：宝玉提问，警幻解释册名含义。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "警幻冷笑道：“贵省女子固多，不过择其紧要者录之。下边二橱则又次之。馀者庸常之辈，则无册可录矣。”",
+      "note": "警幻的冷笑与解释，点明册籍择录原则，含评价性判断。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "贵省女子固多，不过择其紧要者录之。",
+      "note": "主题句：择紧要者录之，为判词只录部分女子提供理由。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "宝玉便伸手先将“又副册”橱开了，拿出一本册来，揭开一看，只见这首页上画著一幅画，又非人物，也无山水，不过是水墨滃染的满纸乌云浊雾而已。",
+      "note": "事件推进：宝玉开橱取册，看到第一幅画，视觉细节具体。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "不过是水墨滃染的满纸乌云浊雾而已。",
+      "note": "视觉细节：水墨滃染的乌云浊雾，可指认的具象画面。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "宝玉看了不解。遂掷下这个，又去开了副册橱门，拿起一本册来，揭开看时，只见画著一株桂花，下面有一池沼，其中水涸泥干，莲枯藕败，后面书云：",
+      "note": "宝玉的反应“不解”与动作“掷下”“又开”，推进叙事；画图细节具体。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "宝玉看了不解。遂掷下这个，又去开了副册橱门，拿起一本册来，揭开看时，只见画著一株桂花，下面有一池沼，其中水涸泥干，莲枯藕败，后面书云：",
+      "note": "事件推进：宝玉取副册，看到桂花池沼枯败之画。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "根并荷花一茎香，平生遭际实堪伤。自从两地生孤木，致使香魂返故乡。",
+      "note": "判词内容：以诗预叙女子命运，含“堪伤”“香魂返故乡”等评价与结局暗示。"
+    },
+    {
+      "id": "ev_012",
+      "source": "observation",
+      "quote": "宝玉看了仍不解。便又掷了，再去取“正册”看，只见头一页上便画著两株枯木，木上悬著一围玉带，又有一堆雪，雪下一股金簪。",
+      "note": "宝玉“仍不解”与动作“掷了”“再取”，推进至正册；画图细节具体。"
+    },
+    {
+      "id": "ev_013",
+      "source": "observation",
+      "quote": "只见头一页上便画著两株枯木，木上悬著一围玉带，又有一堆雪，雪下一股金簪。",
+      "note": "视觉细节：枯木、玉带、雪、金簪，构成可指认的意象群。"
+    },
+    {
+      "id": "ev_014",
+      "source": "observation",
+      "quote": "宝玉看了仍不解。待要问时，情知他必不肯泄漏，待要丢下，又不舍。",
+      "note": "心理描写：宝玉的犹豫与不舍，属其内心活动，视角一致；同时收束当前册页的观看。"
+    },
+    {
+      "id": "ev_015",
+      "source": "observation",
+      "quote": "遂又往后看时，只见画著一张弓，弓上挂著香橼。也有一首歌词云：",
+      "note": "事件推进：宝玉继续往后看，出现新画新词，末段仍引入新内容。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_baoyu",
+        "label": "宝玉",
+        "type": "character",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_007"
+        ]
+      },
+      {
+        "id": "n_jinghuan",
+        "label": "警幻",
+        "type": "character",
+        "evidenceIds": [
+          "ev_004",
+          "ev_005"
+        ]
+      },
+      {
+        "id": "n_cabinet",
+        "label": "大橱/封条",
+        "type": "object",
+        "evidenceIds": [
+          "ev_001",
+          "ev_003"
+        ]
+      },
+      {
+        "id": "n_album",
+        "label": "册",
+        "type": "object",
+        "evidenceIds": [
+          "ev_007",
+          "ev_010",
+          "ev_013"
+        ]
+      },
+      {
+        "id": "n_judgment",
+        "label": "判词",
+        "type": "object",
+        "evidenceIds": [
+          "ev_008",
+          "ev_011",
+          "ev_013"
+        ]
+      },
+      {
+        "id": "n_theme_pre",
+        "label": "预叙",
+        "type": "theme",
+        "evidenceIds": [
+          "ev_006",
+          "ev_011"
+        ]
+      },
+      {
+        "id": "n_theme_unknown",
+        "label": "不解/隔膜",
+        "type": "theme",
+        "evidenceIds": [
+          "ev_009",
+          "ev_014"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_baoyu",
+        "to": "n_cabinet",
+        "label": "观看/拣选",
+        "evidenceIds": [
+          "ev_002"
+        ]
+      },
+      {
+        "from": "n_baoyu",
+        "to": "n_jinghuan",
+        "label": "提问",
+        "evidenceIds": [
+          "ev_004"
+        ]
+      },
+      {
+        "from": "n_jinghuan",
+        "to": "n_baoyu",
+        "label": "解释/冷笑",
+        "evidenceIds": [
+          "ev_005"
+        ]
+      },
+      {
+        "from": "n_baoyu",
+        "to": "n_album",
+        "label": "开橱取册/掷册",
+        "evidenceIds": [
+          "ev_007",
+          "ev_009",
+          "ev_012"
+        ]
+      },
+      {
+        "from": "n_album",
+        "to": "n_judgment",
+        "label": "载有",
+        "evidenceIds": [
+          "ev_008",
+          "ev_011"
+        ]
+      },
+      {
+        "from": "n_judgment",
+        "to": "n_theme_pre",
+        "label": "体现",
+        "evidenceIds": [
+          "ev_006",
+          "ev_011"
+        ]
+      },
+      {
+        "from": "n_baoyu",
+        "to": "n_theme_unknown",
+        "label": "经历",
+        "evidenceIds": [
+          "ev_009",
+          "ev_014"
+        ]
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "首段（入幻境看封条）",
+      "value": 55,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "对话段（问正册）",
+      "value": 45,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "又副册段",
+      "value": 60,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "副册段",
+      "value": 58,
+      "evidenceId": "ev_010"
+    },
+    {
+      "segment": "正册段",
+      "value": 62,
+      "evidenceId": "ev_013"
+    },
+    {
+      "segment": "末段（仍不解，往后看）",
+      "value": 50,
+      "evidenceId": "ev_014"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "首段",
+      "value": 40,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "对话段",
+      "value": 35,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "又副册段",
+      "value": 55,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "副册段",
+      "value": 60,
+      "evidenceId": "ev_011"
+    },
+    {
+      "segment": "正册段",
+      "value": 65,
+      "evidenceId": "ev_013"
+    },
+    {
+      "segment": "末段",
+      "value": 58,
+      "evidenceId": "ev_014"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "预叙",
+      "segment": "首段",
+      "value": 10,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "预叙",
+      "segment": "对话段",
+      "value": 30,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "预叙",
+      "segment": "又副册段",
+      "value": 70,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "预叙",
+      "segment": "副册段",
+      "value": 75,
+      "evidenceId": "ev_011"
+    },
+    {
+      "theme": "预叙",
+      "segment": "正册段",
+      "value": 80,
+      "evidenceId": "ev_013"
+    },
+    {
+      "theme": "预叙",
+      "segment": "末段",
+      "value": 65,
+      "evidenceId": "ev_015"
+    },
+    {
+      "theme": "不解/隔膜",
+      "segment": "首段",
+      "value": 0,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "不解/隔膜",
+      "segment": "对话段",
+      "value": 20,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "不解/隔膜",
+      "segment": "又副册段",
+      "value": 60,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "不解/隔膜",
+      "segment": "副册段",
+      "value": 55,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "不解/隔膜",
+      "segment": "正册段",
+      "value": 70,
+      "evidenceId": "ev_012"
+    },
+    {
+      "theme": "不解/隔膜",
+      "segment": "末段",
+      "value": 75,
+      "evidenceId": "ev_014"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "句子长短错落，叙述句偏长而判词句短促，形成节奏对比。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_008"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 35,
+        "interpretation": "对话集中在宝玉与警幻之间，约占全文三分之一，承担解释与推进功能。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 40,
+        "interpretation": "视觉细节密集（封条、画图、水墨、枯木等），其他感官通道缺失。",
+        "evidenceIds": [
+          "ev_007",
+          "ev_008",
+          "ev_013"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 55,
+        "interpretation": "判词部分多用对仗、隐喻与双关（如“玉带林中挂，金簪雪里埋”），叙述部分以白描为主。",
+        "evidenceIds": [
+          "ev_011",
+          "ev_013"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 30,
+        "interpretation": "叙述紧贴宝玉的感知与心理，距离较近，读者随宝玉一同观看与困惑。",
+        "evidenceIds": [
+          "ev_009",
+          "ev_014"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 58,
+        "interpretation": "以“取册—观看—不解—再取册”的重复动作形成循环节奏，判词插入使节奏顿挫。",
+        "evidenceIds": [
+          "ev_007",
+          "ev_010",
+          "ev_012"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "末段“遂又往后看时，只见画著一张弓，弓上挂著香橼。也有一首歌词云：”",
+      "quote": "遂又往后看时，只见画著一张弓，弓上挂著香橼。也有一首歌词云：",
+      "effect": "末段在“仍不解”“待要问时”“待要丢下”之后，又引入新的画与词，叙述继续向后推进，未对宝玉当前处境给出终结状态，收束感较弱；但作为长回中的片段，此结尾为后续判词留悬念。",
+      "action": "若此段作为独立章节收束，可在“虎兔相逢大梦归”后补一句宝玉的即时反应或处境交代（如“宝玉看了，越发闷住”），以增强收束；若作为长回片段，可保留现状。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_014",
+        "ev_015"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "全文感官描写",
+      "quote": "不过是水墨滃染的满纸乌云浊雾而已。",
+      "effect": "感官通道集中于视觉，听觉、触觉、嗅觉、味觉、体感均未出现，太虚幻境的“幻”境氛围在感官层次上偏单一。",
+      "action": "可在宝玉开橱、揭册时加入触觉（册页的凉、封条的脆）或嗅觉（墨香、霉味），以丰富感官层次。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_007",
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "P2"
+      ]
+    },
+    {
+      "id": "diag_003",
+      "location": "首段“宝玉看了，便知感叹。”",
+      "quote": "宝玉看了，便知感叹。",
+      "effect": "“便知感叹”为概括性评价，未给出具体可指认的细节，读者不知宝玉因何感叹，略嫌空泛。",
+      "action": "可改为具体动作或感官细节（如“宝玉看了，不觉叹了一声”），使感叹有落点。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "P1"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_004:technique_explanation",
+      "usedFor": "多重叙事层与判词预叙技法参考，用于分析预叙主题与结构。",
+      "quote": "红楼梦（第五回/前八十回架构）｜技法：多重叙事层（神话框式结构 + 全知限制混合视角）、判词预叙（Prolepsis）、网状复调叙事（Polyphonic Mesh）"
+    }
+  ]
+}

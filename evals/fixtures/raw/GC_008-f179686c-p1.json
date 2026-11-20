@@ -1,0 +1,940 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "道士",
+          "goal": "追讨被毁的拂子并收服画皮厉鬼",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002"
+          ]
+        },
+        {
+          "character": "陈氏",
+          "goal": "求回生之法，使丈夫复生",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "character": "二郎",
+          "goal": "代嫂奔走、引路、传告",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        },
+        {
+          "character": "乞人（疯者）",
+          "goal": "以疯颠之态试炼陈氏之诚",
+          "evidenceIds": [
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "道士",
+          "action": "仗木剑立庭心呼喝，击妪，枭其首，以葫芦收烟，卷人皮入囊",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002"
+          ]
+        },
+        {
+          "character": "陈氏",
+          "action": "膝行而前，忍杖击，强啖痰唾，抱尸收肠，合腔束帛",
+          "evidenceIds": [
+            "ev_004",
+            "ev_007",
+            "ev_008"
+          ]
+        },
+        {
+          "character": "乞人",
+          "action": "颠歌道上，笑骂，以杖击陈，咯痰唾令食，起身不顾而入庙",
+          "evidenceIds": [
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "pair": "陈氏—道士",
+          "change": "由求告者与推辞者，转为指引者与被指引者（道士谢不能而指疯者）",
+          "evidenceIds": [
+            "ev_003"
+          ]
+        },
+        {
+          "pair": "陈氏—乞人",
+          "change": "由陌路乞者与求告妇人，转为施辱者与受试者，最终乞人遁去无踪",
+          "evidenceIds": [
+            "ev_006",
+            "ev_007"
+          ]
+        },
+        {
+          "pair": "陈氏—王生",
+          "change": "由生离死别（腔血狼藉之尸）转为复生团聚（渐温、有鼻息、竟活）",
+          "evidenceIds": [
+            "ev_009",
+            "ev_010"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "point": "妪仆，人皮划然而脱，化为厉鬼",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "point": "道士卷人皮如卷画轴，囊之而去",
+          "evidenceIds": [
+            "ev_002"
+          ]
+        },
+        {
+          "point": "陈强啖痰唾，觉入喉中硬如团絮，停结胸间",
+          "evidenceIds": [
+            "ev_007"
+          ]
+        },
+        {
+          "point": "呕出结物落腔中，乃人心也，突突犹跃",
+          "evidenceIds": [
+            "ev_008"
+          ]
+        },
+        {
+          "point": "中夜启视有鼻息，天明竟活",
+          "evidenceIds": [
+            "ev_010"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "setup": "道士曰市上有疯者，时卧粪土中，倘狂辱夫人勿怒",
+          "evidenceIds": [
+            "ev_003"
+          ]
+        },
+        {
+          "setup": "乞人咯痰唾盈把令食",
+          "evidenceIds": [
+            "ev_007"
+          ]
+        },
+        {
+          "setup": "觉入喉中，硬如团絮，格格而下，停结胸间",
+          "evidenceIds": [
+            "ev_007"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "鬲中结物突奔而出，落腔中乃人心",
+          "evidenceIds": [
+            "ev_008"
+          ]
+        },
+        {
+          "payoff": "裂缯帛急束之，以手抚尸渐温，中夜有鼻息，天明竟活",
+          "evidenceIds": [
+            "ev_009",
+            "ev_010"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "开端（收妖）",
+          "change": "由王生已死、腔血狼藉的惨局，转为道士收魅、人皮入囊的了结",
+          "reason": "以拂子之仇引出道士登场，完成妖物伏法",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002"
+          ]
+        },
+        {
+          "stage": "中段（求活）",
+          "change": "由道士谢不能的死局，转为指引疯者、陈氏受辱求法的转机",
+          "reason": "道士自陈术浅而指一人，把复活之望推给乞人",
+          "evidenceIds": [
+            "ev_003",
+            "ev_006"
+          ]
+        },
+        {
+          "stage": "收束（复生）",
+          "change": "由食唾结胸之羞与痛，转为呕心入腔、尸温息复的复活",
+          "reason": "受辱所咽之物化为人心，完成以辱易命的交换",
+          "evidenceIds": [
+            "ev_007",
+            "ev_008",
+            "ev_010"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "an_s1",
+      "name": "结构收束",
+      "summary": "末段以“天明，竟活”“痂结如钱，寻愈”交代人物处境的终结状态，并回指前文“腔血狼藉”的破腔，形成收束。",
+      "impact": "读者获得明确的结局落点，复活闭环完整。",
+      "suggestion": "可保留现状；若求余味，可在“寻愈”后补一句极简的静景，不引入新人物。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "an_s2",
+      "name": "段落功能",
+      "summary": "三段分别承担收妖（转折）、求法（推进）、复生（收束），功能可归，无空转段落。",
+      "impact": "三段式推进清晰，节奏由急到缓再到奇。",
+      "suggestion": "第二段乞人遁去与第三段衔接略跳，可加半句过渡交代归途。",
+      "score": 84,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_006",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "an_s3",
+      "name": "转折定位",
+      "summary": "“人皮划然而脱，化为厉鬼”与“呕出人心入腔”两处构成可定位的不可逆变化。",
+      "impact": "妖物现形与人心归位互为镜像，强化志怪张力。",
+      "suggestion": "现形处可再补一处可指认的声响或气味，使转折更具体。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_001",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_c2",
+      "name": "指代明确",
+      "summary": "“妪”“女子”“即是物矣”指代链清楚，前有“晨间一妪来”作先行词。",
+      "impact": "读者能唯一锁定妖物身份，不产生混淆。",
+      "suggestion": "“女子已失所在”与后文“妪”可加一句“即前日女子”式点明，防读者误分二人。",
+      "score": 80,
+      "evidenceIds": [
+        "ev_012",
+        "ev_001"
+      ]
+    },
+    {
+      "id": "an_d1",
+      "name": "信息密度",
+      "summary": "全篇以事件推动，无连续二百字纯复述或形容词堆叠。",
+      "impact": "密度均匀，叙述不拖沓。",
+      "suggestion": "但评、冯评夹注打断正文节奏，若作正文阅读可移出。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_002",
+        "ev_007",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_p2",
+      "name": "感官覆盖",
+      "summary": "视觉（人皮眉目手足、浓烟、热气腾蒸）、听觉（卧嗥如猪、卷画轴声）、触觉（渐温、硬如团絮）多通道并存。",
+      "impact": "志怪场景具身可感，荒诞获得质感。",
+      "suggestion": "嗅觉可再添一处（如粪土、血腥），使乞人场景更逼真。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_007",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "an_p3",
+      "name": "转折具象",
+      "summary": "转折处有“人皮划然而脱”“卷之如卷画轴声”“突突犹跃”等可摘引的具象细节。",
+      "impact": "关键节点有物可抓，不停留于评价。",
+      "suggestion": "“痂结如钱”已是好细节，可再点明其位置与大小。",
+      "score": 87,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_008",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "an_m1",
+      "name": "意象抽取",
+      "summary": "“人皮”两现（现形、卷之入囊），“心”两现（呕出人心、突突犹跃），构成候选意象。",
+      "impact": "皮与心形成表里对照的意象组。",
+      "suggestion": "可在复生后再提一次“心”，完成三现闭环。",
+      "score": 83,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_m3",
+      "name": "意象形态变化",
+      "summary": "“人皮”由披于妪身到卷如画轴入囊，功能位置由活体伪装变为收贮之物，指向妖物被制服；“心”由喉中结物变为腔中跃动之心，指向复生。",
+      "impact": "意象的形态变化承载了主题的翻转。",
+      "suggestion": "可让“心”的跃动与开头“腔血狼藉”形成呼应句式。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_007",
+        "ev_008"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "妪仆，人皮划然而脱，化为厉鬼，卧嗥如猪。",
+      "note": "妖物现形的转折点，含听觉（嗥）与视觉（人皮脱）具象。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "道士卷之，如卷画轴声，亦囊之，乃别欲去。",
+      "note": "人皮被收贮，含声响细节，意象功能位置变化。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "道士沉思曰：“我术浅，诚不能起死，我指一人，或能之，往求必合有效。”",
+      "note": "道士推辞并指引疯者，构成求法线的设置。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "陈氏拜迎于门，哭求回生之法，道士谢不能；陈益悲，伏地不起。",
+      "note": "陈氏的目标与受挫，人物关系由求告转为被指引。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "二郎亦习知之，乃别道士，与嫂俱往",
+      "note": "二郎承担引路功能，推进求法线。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "见乞人颠歌道上，鼻涕三尺，秽不可近。",
+      "note": "乞人出场的具象描写，含视觉与体感。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "乞人咯痰唾盈把，举向陈吻曰：“食之！”陈红涨于面，有难色；既思道士之嘱，遂强啖焉。觉入喉中，硬如团絮，格格而下，停结胸间。",
+      "note": "受辱吞物的关键设置，含触觉（硬如团絮）。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "觉鬲中结物，突奔而出，不及回首，已落腔中。惊而视之，乃人心也。在腔中突突犹跃，热气腾蒸如烟然。",
+      "note": "设置兑现，人心入腔，转折具象且含视觉热感。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "急以两手合腔，极力抱挤，少懈，则气氤氲自缝中出，乃裂缯帛急束之。以手抚尸，渐温。",
+      "note": "复生过程的动作链与触觉（渐温），收束前奏。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "中夜启视，有鼻息矣。天明，竟活。",
+      "note": "结局标记，人物处境终结状态交代。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "视破处，痂结如钱，寻愈。",
+      "note": "末段收束的具象细节，可摘引。"
+    },
+    {
+      "id": "ev_012",
+      "source": "observation",
+      "quote": "晨间一妪来，欲佣为仆家操作，室人止之，尚在也。",
+      "note": "“妪”的先行词交代，支撑指代明确判断。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_daoshi",
+        "label": "道士",
+        "type": "character",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_003"
+        ]
+      },
+      {
+        "id": "n_chen",
+        "label": "陈氏",
+        "type": "character",
+        "evidenceIds": [
+          "ev_004",
+          "ev_007",
+          "ev_009"
+        ]
+      },
+      {
+        "id": "n_qiren",
+        "label": "乞人（疯者）",
+        "type": "character",
+        "evidenceIds": [
+          "ev_006",
+          "ev_007"
+        ]
+      },
+      {
+        "id": "n_yu",
+        "label": "妪/厉鬼",
+        "type": "character",
+        "evidenceIds": [
+          "ev_012",
+          "ev_001"
+        ]
+      },
+      {
+        "id": "n_pi",
+        "label": "人皮",
+        "type": "object",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002"
+        ]
+      },
+      {
+        "id": "n_xin",
+        "label": "人心",
+        "type": "object",
+        "evidenceIds": [
+          "ev_008"
+        ]
+      },
+      {
+        "id": "n_fuzi",
+        "label": "拂子",
+        "type": "object",
+        "evidenceIds": [
+          "ev_001"
+        ]
+      },
+      {
+        "id": "n_husheng",
+        "label": "复生",
+        "type": "event",
+        "evidenceIds": [
+          "ev_009",
+          "ev_010"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_daoshi",
+        "to": "n_yu",
+        "relation": "追讨并收服",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002"
+        ]
+      },
+      {
+        "from": "n_daoshi",
+        "to": "n_chen",
+        "relation": "指引求法",
+        "evidenceIds": [
+          "ev_003"
+        ]
+      },
+      {
+        "from": "n_chen",
+        "to": "n_qiren",
+        "relation": "受辱求活",
+        "evidenceIds": [
+          "ev_007"
+        ]
+      },
+      {
+        "from": "n_yu",
+        "to": "n_pi",
+        "relation": "披皮伪装",
+        "evidenceIds": [
+          "ev_001"
+        ]
+      },
+      {
+        "from": "n_qiren",
+        "to": "n_xin",
+        "relation": "痰唾化心",
+        "evidenceIds": [
+          "ev_007",
+          "ev_008"
+        ]
+      },
+      {
+        "from": "n_xin",
+        "to": "n_husheng",
+        "relation": "归腔致活",
+        "evidenceIds": [
+          "ev_008",
+          "ev_010"
+        ]
+      },
+      {
+        "from": "n_fuzi",
+        "to": "n_daoshi",
+        "relation": "被毁而引复仇",
+        "evidenceIds": [
+          "ev_001"
+        ]
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第一段（收妖）",
+      "value": 82,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第二段（求法）",
+      "value": 58,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第三段（复生）",
+      "value": 74,
+      "evidenceId": "ev_008"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第一段（收妖）",
+      "value": 70,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第二段（求法）",
+      "value": 40,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第三段（复生）",
+      "value": 78,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "妖物现形与收服",
+      "segment": "第一段（收妖）",
+      "value": 90,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "妖物现形与收服",
+      "segment": "第二段（求法）",
+      "value": 20,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "妖物现形与收服",
+      "segment": "第三段（复生）",
+      "value": 15,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "受辱与诚心",
+      "segment": "第一段（收妖）",
+      "value": 10,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "受辱与诚心",
+      "segment": "第二段（求法）",
+      "value": 85,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "受辱与诚心",
+      "segment": "第三段（复生）",
+      "value": 60,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "死而复生",
+      "segment": "第一段（收妖）",
+      "value": 15,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "死而复生",
+      "segment": "第二段（求法）",
+      "value": 35,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "死而复生",
+      "segment": "第三段（复生）",
+      "value": 95,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 38,
+        "interpretation": "句短促，多在十字上下，动作句密集，符合文言志怪的紧峭笔法。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_008"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话占比",
+        "value": 34,
+        "interpretation": "道士与乞人对话占比可观，承担推演与试炼功能，叙述与话语交替推进。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 72,
+        "interpretation": "视觉、听觉、触觉通道密集，人皮、浓烟、嗥声、团絮、渐温层层落点。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_007",
+          "ev_009"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 60,
+        "interpretation": "比喻取日常物事（如卷画轴、硬如团絮、痂结如钱），以俗物喻奇事，陌生化而可触。",
+        "evidenceIds": [
+          "ev_002",
+          "ev_007",
+          "ev_011"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙述距离",
+        "value": 55,
+        "interpretation": "叙述者与人物保持中距，不深入内心，仅以“惭恨”“大异之”点染，冷峻而克制。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_008"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 68,
+        "interpretation": "收妖段急、求法段缓、复生段再急，三段呈抑扬节奏。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_006",
+          "ev_010"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "dg_s1",
+      "location": "末段“中夜启视……寻愈”",
+      "quote": "中夜启视，有鼻息矣。天明，竟活。为言：“恍惚若梦，但觉（腹）隐痛耳。”视破处，痂结如钱，寻愈。",
+      "effect": "末段不引入新人物新场景，以“竟活”“寻愈”交代处境终结，并回指前文破腔，收束功能成立。",
+      "action": "保持现状；若求余韵，可在“寻愈”后以静景收一笔，不添新事。",
+      "confidence": 0.85,
+      "evidenceIds": [
+        "ev_009",
+        "ev_010",
+        "ev_011"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "dg_s2",
+      "location": "第二段末“追而求之，不知所在……惭恨而归”",
+      "quote": "尾之，入于庙中。追而求之，不知所在；前后冥搜，殊无端兆，惭恨而归。",
+      "effect": "乞人遁去无端兆，与第三段“方欲展血敛尸”之间缺少归途交代，读者需自行补接，段落衔接略跳。",
+      "action": "可在“惭恨而归”后补半句归家所见（如入门见尸尚在），使场景转换有落点。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_006",
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "S2"
+      ]
+    },
+    {
+      "id": "dg_s3",
+      "location": "第一段“女子已失所在”与“晨间一妪来”",
+      "quote": "女子已失所在……晨间一妪来，欲佣为仆家操作，室人止之，尚在也。",
+      "effect": "“女子”与“妪”分指同一妖物，但两处称谓不同，未明言其为一，读者可能误分为二人。",
+      "action": "可在“即是物矣”处加一句点明“妪即前日女子”，使指代链闭合。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_012",
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "C2"
+      ]
+    },
+    {
+      "id": "dg_c3",
+      "location": "第一段“道士塞口入囊，共视人皮”",
+      "quote": "道士塞口入囊，共视人皮，眉目手足，无不备具。",
+      "effect": "前句主语为道士，后句“共视”主语骤转为众人，中间无连接词，句间主题词由葫芦转为人皮，衔接略断。",
+      "action": "可在“共视”前加“乃”或“遂”，使主语转换有标记。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_002"
+      ],
+      "criteriaIds": [
+        "C3"
+      ]
+    },
+    {
+      "id": "dg_d1",
+      "location": "夹注但评、冯评处",
+      "quote": "〈〔但评〕丽人也，而老妪矣、厉鬼矣，且卧嗥如猪，变作浓烟矣。衾裯中得意时，可谓无美不备矣。〉",
+      "effect": "评点夹注嵌入正文，打断叙述节奏，若作正文阅读会造成信息重复与节奏顿挫。",
+      "action": "建议将评点移出正文或作脚注处理，保持叙述流。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_002"
+      ],
+      "criteriaIds": [
+        "D1"
+      ]
+    },
+    {
+      "id": "dg_p1",
+      "location": "第三段“既悼夫亡之惨，又悔食唾之羞”",
+      "quote": "既悼夫亡之惨，又悔食唾之羞，俯仰哀啼，但愿即死",
+      "effect": "此句以“惨”“羞”等评价词为主，但同段紧接“抱尸收肠”“合腔抱挤”等具体动作，未构成空转评价句。",
+      "action": "无需修改；若再凝练，可将“惨”“羞”换为一处具体物象。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_008",
+        "ev_009"
+      ],
+      "criteriaIds": [
+        "P1"
+      ]
+    },
+    {
+      "id": "dg_p2",
+      "location": "第二段乞人场景",
+      "quote": "见乞人颠歌道上，鼻涕三尺，秽不可近。",
+      "effect": "乞人场景以视觉为主，嗅觉通道缺席，粪土、痰唾的秽感未落到气味层。",
+      "action": "可补一处气味（如粪土气、口涎腥气），使秽感更逼真。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_006",
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "P2"
+      ]
+    },
+    {
+      "id": "dg_p3",
+      "location": "第一段“妪仆，人皮划然而脱”",
+      "quote": "妪仆，人皮划然而脱，化为厉鬼，卧嗥如猪。",
+      "effect": "转折处具象充分（划然脱皮、卧嗥如猪），可单独摘引，具象细节达标。",
+      "action": "保持现状。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "P3"
+      ]
+    },
+    {
+      "id": "dg_m1",
+      "location": "第一段与第三段“人皮”“心”",
+      "quote": "共视人皮，眉目手足，无不备具……惊而视之，乃人心也。",
+      "effect": "“人皮”两现、“心”两现，候选意象成立，皮与心形成表里对照。",
+      "action": "可在复生后再提一次“心”，完成三现闭环。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "M1"
+      ]
+    },
+    {
+      "id": "dg_m2",
+      "location": "第一段“人皮划然而脱”与“道士卷之”",
+      "quote": "妪仆，人皮划然而脱……道士卷之，如卷画轴声，亦囊之",
+      "effect": "“人皮”跨段内两现并跨至收贮，跨段复现成立。",
+      "action": "保持现状。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002"
+      ],
+      "criteriaIds": [
+        "M2"
+      ]
+    },
+    {
+      "id": "dg_m3",
+      "location": "“人皮”与“心”的形态变化",
+      "quote": "人皮划然而脱……卷之，如卷画轴声……已落腔中。惊而视之，乃人心也。",
+      "effect": "人皮由活体伪装变为卷贮之物，心由喉中结物变为腔中跃动，形态变化对应妖物被制服与人物复生两种处境。",
+      "action": "可在“心”的跃动处回指开头“腔血狼藉”，强化前后对照。",
+      "confidence": 0.78,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_007",
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "M3"
+      ]
+    },
+    {
+      "id": "dg_v1",
+      "location": "全篇叙述人称",
+      "quote": "陈氏拜迎于门，哭求回生之法，道士谢不能；陈益悲，伏地不起。",
+      "effect": "全篇为第三人称，对话在引号内，人称无无故切换。",
+      "action": "保持现状。",
+      "confidence": 0.85,
+      "evidenceIds": [
+        "ev_004",
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "V1"
+      ]
+    },
+    {
+      "id": "dg_v2",
+      "location": "第三段“既悼夫亡之惨，又悔食唾之羞”",
+      "quote": "既悼夫亡之惨，又悔食唾之羞，俯仰哀啼，但愿即死",
+      "effect": "心理描写主语为陈氏，与本段视角人物（陈氏，动作链与感知均指向她）一致，未越界。",
+      "action": "保持现状。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "V2"
+      ]
+    },
+    {
+      "id": "dg_v3",
+      "location": "第三段“为言：恍惚若梦”",
+      "quote": "为言：“恍惚若梦，但觉（腹）隐痛耳。”",
+      "effect": "王生所述为其亲历（腹隐痛），来源为自身目击与体感，无“知道无人告知的信息”之嫌。",
+      "action": "保持现状。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_010"
+      ],
+      "criteriaIds": [
+        "V3"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "workId": "KB_006",
+      "chunkType": "technique_explanation",
+      "content": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment）",
+      "quote": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment） 文学史上...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/變形記_(卡夫卡)"
+    },
+    {
+      "retrievalId": "KB_007:technique_explanation",
+      "workId": "KB_007",
+      "chunkType": "technique_explanation",
+      "content": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白",
+      "quote": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白 海明威在此处将'毁灭（物理层面的肉体消亡或物质...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/老人與海"
+    },
+    {
+      "retrievalId": "KB_003:technique_explanation",
+      "workId": "KB_003",
+      "chunkType": "technique_explanation",
+      "content": "边城｜技法：全知诗性散文视角，叙述者充满温情与悲悯、情景交融与以乐写哀、留白艺术（Ambiguity & Open Ending）",
+      "quote": "边城｜技法：全知诗性散文视角，叙述者充满温情与悲悯、情景交融与以乐写哀、留白艺术（Ambiguity & Open Ending） 结尾没有安排大团圆，也没有写出死亡，而是采用了极具张力的'时间悬置'。'永远'代表了现实宿命的残酷，'...",
+      "sourceStatus": "summary_only"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "workId": "KB_001",
+      "chunkType": "technique_explanation",
+      "content": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔",
+      "quote": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔 鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/孔乙己"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "workId": "KB_008",
+      "chunkType": "technique_explanation",
+      "content": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot)",
+      "quote": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot) 莫泊桑在反转揭晓前插入这一段...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/項鍊_(短篇小說)"
+    }
+  ]
+}

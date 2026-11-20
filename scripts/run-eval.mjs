@@ -13,11 +13,19 @@
 
 import { readFile, readdir, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
+import { createHash } from "node:crypto";
 import { createJiti } from "jiti";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const GOLDEN_DIR = path.join(ROOT, "evals", "golden");
 const RUNS_DIR = path.join(ROOT, "evals", "runs");
+// 回放夹具必须**提交进仓库**：放在 gitignore 的 evals/runs 里，
+// 新克隆或清理后就没了，门禁永远不可复现——这是被真实踩过的坑。
+const FIXTURES_DIR = path.join(ROOT, "evals", "fixtures", "raw");
+const EMIT_FIXTURES = args.includes("--fixtures");
+
+/** 正文指纹：样本正文一改，旧夹具自动失效，不会被拿去当新样本回放。 */
+const goldenHash = (text) => createHash("sha1").update(text, "utf8").digest("hex").slice(0, 8);
 
 const args = process.argv.slice(2);
 const LIVE = args.includes("--live");
@@ -37,6 +45,7 @@ const jiti = createJiti(import.meta.url, {
 
 const { runAiTask } = await jiti.import(path.join(ROOT, "src", "lib", "ai", "tasks.ts"));
 const { detectLiterarySourceKind } = await jiti.import(path.join(ROOT, "src", "lib", "analysis", "source-kind.ts"));
+const { CRITERIA_VERSION, injectedCriteriaIds } = await jiti.import(path.join(ROOT, "src", "lib", "ai", "criteria.ts"));
 
 // ---------------------------------------------------------------- provider env
 async function readEnvFile() {
@@ -278,6 +287,15 @@ for (const entry of cases) {
     continue;
   }
 
+  if (EMIT_FIXTURES && parsedForEval !== undefined) {
+    // 夹具文件名自带正文指纹，正文一改旧夹具自动作废
+    const name = `${entry.id}-${goldenHash(entry.text)}-p${CRITERIA_PROTOCOL}.json`;
+    await mkdir(FIXTURES_DIR, { recursive: true });
+    const serialized = JSON.stringify(parsedForEval, null, 2);
+    await writeFile(path.join(FIXTURES_DIR, name), (apiKey ? serialized.replaceAll(apiKey, "[REDACTED]") : serialized) + "\n", "utf8");
+    scored.fixtureFile = `evals/fixtures/raw/${name}`;
+  }
+
   const diagnostics = envelope.result?.diagnostics ?? [];
   const scored = scoreCase(entry, diagnostics);
   scored.mode = envelope.mode;
@@ -321,6 +339,10 @@ const report = {
     promptVersion: "taskInstructions@src/lib/ai/tasks.ts",
     retrieval: "server-side keyword/vector hybrid, client-supplied evidence dropped",
     goldenSetVersion: `${cases.length} cases`,
+    // 正文指纹汇总：换了样本、改了正文，这一串一定变，分数是否可比一眼能看出来
+    goldenSetFingerprint: createHash("sha1").update(cases.map((c) => `${c.id}:${goldenHash(c.text)}`).join(",")).digest("hex").slice(0, 12),
+    criteriaVersion: CRITERIA_VERSION,
+    criteriaIdsInjected: injectedCriteriaIds(),
   },
   summary,
   cases: results,

@@ -1,0 +1,779 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "黛玉",
+          "goal": "初入贾府，依礼拜见外祖母并观察陌生环境中的众人",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002"
+          ]
+        },
+        {
+          "character": "贾母",
+          "goal": "迎接远客外孙女黛玉，宣泄思念之情",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "character": "王熙凤（凤辣子）",
+          "goal": "以放诞笑声和张扬打扮登场，确立自己在贾府的特殊地位",
+          "evidenceIds": [
+            "ev_003"
+          ]
+        },
+        {
+          "character": "宝玉",
+          "goal": "初见黛玉便产生强烈熟悉感，主动亲近并表达旧相识之感",
+          "evidenceIds": [
+            "ev_005",
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "黛玉",
+          "action": "进入房中，见贾母迎上来，便知是外祖母；方欲拜见被贾母抱住；见凤姐来纳罕其放诞；见宝玉来心下打量",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002",
+            "ev_004"
+          ]
+        },
+        {
+          "character": "贾母",
+          "action": "迎上来抱住黛玉呜咽；笑向黛玉介绍凤姐；笑驳宝玉胡说",
+          "evidenceIds": [
+            "ev_001",
+            "ev_003",
+            "ev_007"
+          ]
+        },
+        {
+          "character": "王熙凤",
+          "action": "从后房门笑着进来，被媳妇丫鬟围拥，打扮彩绣辉煌",
+          "evidenceIds": [
+            "ev_003"
+          ]
+        },
+        {
+          "character": "宝玉",
+          "action": "进来作揖，看见黛玉吃一大惊，心下想；走近黛玉身边坐下细细打量；笑说曾见过",
+          "evidenceIds": [
+            "ev_005",
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "pair": "黛玉—贾母",
+          "change": "从陌生外孙女与贾府老祖宗的关系，通过拥抱和“心肝儿肉”的呼唤，瞬间建立骨肉亲情",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "pair": "黛玉—王熙凤",
+          "change": "黛玉从纳罕“来者系谁，这样放诞无礼”到经贾母介绍得知是“凤辣子”，完成初次认知",
+          "evidenceIds": [
+            "ev_002",
+            "ev_003"
+          ]
+        },
+        {
+          "pair": "黛玉—宝玉",
+          "change": "从互不相识的初会，到宝玉断言“这个妹妹我曾见过的”，建立“旧相识”式的特殊共鸣",
+          "evidenceIds": [
+            "ev_005",
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "point": "贾母抱住黛玉呜咽，黛玉身份由“客”转为“心肝儿肉”",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "point": "王熙凤放诞笑声与张扬登场，打破敛声屏气的肃整气氛",
+          "evidenceIds": [
+            "ev_002",
+            "ev_003"
+          ]
+        },
+        {
+          "point": "宝玉初见黛玉便吃一大惊，心下想“倒像在那里见过一般”",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        },
+        {
+          "point": "宝玉公开说“这个妹妹我曾见过的”，并解释为“心里就算是旧相识”",
+          "evidenceIds": [
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "setup": "黛玉“便知是他外祖母”建立其敏锐观察力与礼数意识",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "setup": "黛玉纳罕凤姐“放诞无礼”铺垫其对贾府人际秩序的第一印象",
+          "evidenceIds": [
+            "ev_002"
+          ]
+        },
+        {
+          "setup": "宝玉“倒像在那里见过一般”的内心独白为后文“木石前盟”埋下伏笔",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "贾母介绍“凤辣子”回应了黛玉的纳罕，完成人物认知",
+          "evidenceIds": [
+            "ev_002",
+            "ev_003"
+          ]
+        },
+        {
+          "payoff": "宝玉“这个妹妹我曾见过的”将内心独白外化为公开宣言，并与贾母的“胡说”形成轻喜剧式对冲",
+          "evidenceIds": [
+            "ev_005",
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "初入贾府：陌生与观察",
+          "change": "黛玉从进入陌生环境到确认外祖母、观察凤姐、初见宝玉",
+          "reason": "通过黛玉的限知视角逐步展开贾府人物关系",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002",
+            "ev_004"
+          ]
+        },
+        {
+          "stage": "宝黛初会：旧识之感",
+          "change": "宝玉从“吃一大惊”到公开宣称“曾见过”，将前世缘分投射为现世直觉",
+          "reason": "以“面善”“旧相识”点出灵魂共鸣，为后续情感发展奠基",
+          "evidenceIds": [
+            "ev_005",
+            "ev_006",
+            "ev_007"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_struct",
+      "name": "结构组织",
+      "summary": "全文六段，功能分明：首段建场（黛玉入房见贾母），二段推进（凤姐登场），三段推进（贾母介绍凤姐），四段转折（宝玉登场并内心震惊），五段抒情评述（宝玉眼中黛玉容貌），六段收束（宝玉公开宣称曾见过，贾母笑驳）。末段不引入新情节，以宝玉“这个妹妹我曾见过的”回应开头黛玉“便知是他外祖母”的初见认知，并交代二人关系终结状态（旧相识），符合收束功能。",
+      "impact": "段落功能清晰，节奏由外而内、由观察到内心再外化，形成完整的初会场景。",
+      "suggestion": "可考虑在末段增加一处与开头“鬓发如银的老母”相呼应的物件或场景细节，使回指更显性。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005",
+        "ev_006",
+        "ev_007"
+      ]
+    },
+    {
+      "id": "dim_coherence",
+      "name": "连贯衔接",
+      "summary": "指代词使用明确：黛玉、贾母、凤姐、宝玉等均有明确先行词；相邻句主题词重叠或使用连接词（如“方欲拜见时”“一语未了”“及进来”），无语义断层。",
+      "impact": "叙述流畅，视角转换自然。",
+      "suggestion": "无显著问题。",
+      "score": 92,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_004",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "dim_density",
+      "name": "信息密度与节奏",
+      "summary": "全文约528字，无连续200字零信息窗口；各段均有事件或具体名词推进。单段均未超过400字，不存在单段>400字且事件≤1的情况。",
+      "impact": "信息密度适中，节奏紧凑。",
+      "suggestion": "无显著问题。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006",
+        "ev_007"
+      ]
+    },
+    {
+      "id": "dim_sensory",
+      "name": "具体性与感官",
+      "summary": "无空转评价句；感官通道覆盖视觉（鬓发如银、彩绣辉煌、泪光点点）、听觉（笑声、呜咽）、体感（娇喘微微）等≥2类；转折处（宝玉初见）有具象细节“吃一大惊”“走近黛玉身边坐下，细细打量”。",
+      "impact": "场景可感，人物形象鲜明。",
+      "suggestion": "可考虑增加嗅觉或触觉细节，使感官层次更丰富。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_imagery",
+      "name": "意象复现",
+      "summary": "具象名词短语如“鬓发如银”“彩绣辉煌”“泪光点点”“娇喘微微”等，但出现≥2次的候选意象较少；“笑”出现多次（贾母笑、宝玉笑），可视为功能性重复，但形态未发生指向处境或主题的变化。",
+      "impact": "意象复现不明显，主题推进主要依靠情节与对话。",
+      "suggestion": "可考虑让某一具象物件（如“玉”或“帕子”）在后续段落中复现并变化形态，以增强意象纵深。",
+      "score": 65,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_006",
+        "ev_007"
+      ]
+    },
+    {
+      "id": "dim_pov",
+      "name": "视角一致性",
+      "summary": "文本以黛玉的限知视角为主（黛玉纳罕、黛玉便知、心下想），但第四段转入宝玉内心（宝玉心下想），第五段转为宝玉眼中黛玉的客观描写，第六段宝玉对话。存在视角切换，但可归入“显式全知宣告”类（叙述者越出黛玉视角，进入宝玉内心），且宝玉心理描写有“心下想道”标记，属于有限视角内的合理切换。",
+      "impact": "双重限知视角形成对照，增强初会的双向共鸣。",
+      "suggestion": "可在宝玉心理描写前增加类似“黛玉不知”的宣告句，使视角切换更显性。",
+      "score": 78,
+      "evidenceIds": [
+        "ev_002",
+        "ev_004",
+        "ev_005",
+        "ev_006"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "黛玉方进入房时，只见两个人搀着一位鬓发如银的老母迎上来，黛玉便知是他外祖母。方欲拜见时，早被贾母抱入怀中，呜咽说道：“我这心肝儿肉！”",
+      "note": "首段建场：黛玉进入贾府，确认外祖母，贾母拥抱呜咽，建立骨肉关系。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "黛玉纳罕道：“这些人个个皆敛声屏气，恭肃严整如此，这来者系谁，这样放诞无礼？”",
+      "note": "黛玉对凤姐放诞笑声的内心反应，体现其观察与礼数意识。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "只见一群媳妇丫鬟围拥着一个人从后房门进来。这个人打扮与众姑娘不同，彩绣辉煌，恍若神妃仙子……",
+      "note": "凤姐登场，视觉描写突出其张扬打扮与排场。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "厮见毕，贾母笑道：“你不认得他，他是我们这里有名的一个泼皮破落户儿，南省俗谓作‘辣子’，你只叫他‘凤辣子’就是了。”",
+      "note": "贾母介绍凤姐，回应黛玉纳罕，完成人物认知。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "宝玉早已进来，看见新客，忙来作揖。及进来看见黛玉，便吃一大惊，心下想道：“好生奇怪，倒像在那里见过一般，何等眼熟到如此！”",
+      "note": "宝玉初见黛玉的内心震惊，为“旧相识”之感埋下伏笔。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "宝玉便走近黛玉身边坐下，细细打量：两弯似蹙非蹙罥烟眉，一双似喜非喜含情目。态生两靥之愁，娇袭一身之病。泪光点点，娇喘微微。闲静时如姣花照水，行动处似弱柳扶风。心较比干多一窍，病如西子胜三分。",
+      "note": "宝玉眼中黛玉的容貌描写，具象细节丰富，感官通道覆盖视觉与体感。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "宝玉看罢，因笑道：“这个妹妹我曾见过的。”贾母笑道：“可又是胡说，你又何曾见过他？”宝玉笑道：“虽然未曾见过，然我看着面善，心里就算是旧相识，今日只作远别重逢，亦未为不可。”",
+      "note": "宝玉公开宣称曾见过黛玉，将内心独白外化，形成初会的高潮与收束。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_ev_001",
+        "label": "黛玉入房见贾母",
+        "type": "event",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n_ev_002",
+        "label": "黛玉纳罕凤姐",
+        "type": "event",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n_ev_003",
+        "label": "凤姐登场",
+        "type": "event",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n_ev_004",
+        "label": "贾母介绍凤姐",
+        "type": "event",
+        "evidenceId": "ev_004"
+      },
+      {
+        "id": "n_ev_005",
+        "label": "宝玉初见黛玉内心震惊",
+        "type": "event",
+        "evidenceId": "ev_005"
+      },
+      {
+        "id": "n_ev_006",
+        "label": "宝玉打量黛玉",
+        "type": "event",
+        "evidenceId": "ev_006"
+      },
+      {
+        "id": "n_ev_007",
+        "label": "宝玉宣称曾见过黛玉",
+        "type": "event",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n_char_daiyu",
+        "label": "黛玉",
+        "type": "character",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n_char_jiamu",
+        "label": "贾母",
+        "type": "character",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n_char_fengjie",
+        "label": "王熙凤",
+        "type": "character",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n_char_baoyu",
+        "label": "宝玉",
+        "type": "character",
+        "evidenceId": "ev_005"
+      }
+    ],
+    "edges": [
+      {
+        "source": "n_ev_001",
+        "target": "n_char_daiyu",
+        "relation": "involves",
+        "evidenceId": "ev_001"
+      },
+      {
+        "source": "n_ev_001",
+        "target": "n_char_jiamu",
+        "relation": "involves",
+        "evidenceId": "ev_001"
+      },
+      {
+        "source": "n_ev_002",
+        "target": "n_char_daiyu",
+        "relation": "involves",
+        "evidenceId": "ev_002"
+      },
+      {
+        "source": "n_ev_002",
+        "target": "n_char_fengjie",
+        "relation": "anticipates",
+        "evidenceId": "ev_002"
+      },
+      {
+        "source": "n_ev_003",
+        "target": "n_char_fengjie",
+        "relation": "involves",
+        "evidenceId": "ev_003"
+      },
+      {
+        "source": "n_ev_004",
+        "target": "n_char_jiamu",
+        "relation": "involves",
+        "evidenceId": "ev_004"
+      },
+      {
+        "source": "n_ev_004",
+        "target": "n_char_fengjie",
+        "relation": "involves",
+        "evidenceId": "ev_004"
+      },
+      {
+        "source": "n_ev_005",
+        "target": "n_char_baoyu",
+        "relation": "involves",
+        "evidenceId": "ev_005"
+      },
+      {
+        "source": "n_ev_005",
+        "target": "n_char_daiyu",
+        "relation": "involves",
+        "evidenceId": "ev_005"
+      },
+      {
+        "source": "n_ev_006",
+        "target": "n_char_baoyu",
+        "relation": "involves",
+        "evidenceId": "ev_006"
+      },
+      {
+        "source": "n_ev_006",
+        "target": "n_char_daiyu",
+        "relation": "involves",
+        "evidenceId": "ev_006"
+      },
+      {
+        "source": "n_ev_007",
+        "target": "n_char_baoyu",
+        "relation": "involves",
+        "evidenceId": "ev_007"
+      },
+      {
+        "source": "n_ev_007",
+        "target": "n_char_daiyu",
+        "relation": "involves",
+        "evidenceId": "ev_007"
+      },
+      {
+        "source": "n_ev_002",
+        "target": "n_ev_004",
+        "relation": "setup_payoff",
+        "evidenceId": "ev_002"
+      },
+      {
+        "source": "n_ev_005",
+        "target": "n_ev_007",
+        "relation": "setup_payoff",
+        "evidenceId": "ev_005"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第1段",
+      "pace": 40,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "pace": 70,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第3段",
+      "pace": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "pace": 80,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第5段",
+      "pace": 60,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第6段",
+      "pace": 75,
+      "evidenceId": "ev_007"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第1段",
+      "emotion": "悲喜交加",
+      "intensity": 80,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "emotion": "纳罕",
+      "intensity": 60,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第3段",
+      "emotion": "好奇",
+      "intensity": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "emotion": "震惊",
+      "intensity": 85,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第5段",
+      "emotion": "怜惜",
+      "intensity": 70,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第6段",
+      "emotion": "亲切",
+      "intensity": 75,
+      "evidenceId": "ev_007"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "初见与旧识",
+      "segment": "第1段",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "初见与旧识",
+      "segment": "第2段",
+      "value": 20,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "初见与旧识",
+      "segment": "第3段",
+      "value": 20,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "初见与旧识",
+      "segment": "第4段",
+      "value": 80,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "初见与旧识",
+      "segment": "第5段",
+      "value": 50,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "初见与旧识",
+      "segment": "第6段",
+      "value": 90,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "礼数与放诞",
+      "segment": "第1段",
+      "value": 60,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "礼数与放诞",
+      "segment": "第2段",
+      "value": 80,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "礼数与放诞",
+      "segment": "第3段",
+      "value": 70,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "礼数与放诞",
+      "segment": "第4段",
+      "value": 30,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "礼数与放诞",
+      "segment": "第5段",
+      "value": 20,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "礼数与放诞",
+      "segment": "第6段",
+      "value": 40,
+      "evidenceId": "ev_007"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "句子长短相间，以中短句为主，对话句简短，描写句稍长，整体节奏明快。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_005",
+          "ev_006"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 45,
+        "interpretation": "对话约占四成，贾母、凤姐、宝玉的对话推动情节并揭示性格。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_004",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 70,
+        "interpretation": "视觉描写密集（鬓发如银、彩绣辉煌、泪光点点），辅以听觉（笑声、呜咽）与体感（娇喘微微），感官层次丰富。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_003",
+          "ev_006"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 65,
+        "interpretation": "多用比喻（恍若神妃仙子、如姣花照水、似弱柳扶风）和对偶（两弯似蹙非蹙罥烟眉，一双似喜非喜含情目），修辞典雅。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_006"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 50,
+        "interpretation": "叙述者贴近黛玉的限知视角，但第四段转入宝玉内心，形成双重限知，距离适中。",
+        "evidenceIds": [
+          "ev_002",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 60,
+        "interpretation": "节奏由缓渐急：首段舒缓建场，凤姐登场加快，宝玉初会达到高潮，末段以对话收束，张弛有度。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_003",
+          "ev_005",
+          "ev_007"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "第4段（宝玉初见黛玉）",
+      "quote": "宝玉早已进来，看见新客，忙来作揖。及进来看见黛玉，便吃一大惊，心下想道：“好生奇怪，倒像在那里见过一般，何等眼熟到如此！”",
+      "effect": "此处从黛玉限知视角突然转入宝玉内心，虽以“心下想道”标明，但缺少显式视角切换宣告，可能使读者感到视角跳跃。",
+      "action": "可在宝玉心理描写前增加类似“黛玉不知”或“在宝玉眼中”的过渡句，使视角切换更自然。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_005"
+      ],
+      "criteriaIds": [
+        "V1",
+        "V2"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "第6段（宝玉宣称曾见过）",
+      "quote": "宝玉看罢，因笑道：“这个妹妹我曾见过的。”贾母笑道：“可又是胡说，你又何曾见过他？”宝玉笑道：“虽然未曾见过，然我看着面善，心里就算是旧相识，今日只作远别重逢，亦未为不可。”",
+      "effect": "末段以对话收束，回应了开头黛玉“便知是他外祖母”的初见认知，但回指不够显性，未重复开头的物件或场景。",
+      "action": "可考虑在末段加入与开头“鬓发如银的老母”相呼应的细节，如宝玉注意到黛玉的“泪光点点”，使回指更明显。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_007",
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "diag_003",
+      "location": "第5段（宝玉眼中黛玉容貌）",
+      "quote": "宝玉便走近黛玉身边坐下，细细打量：两弯似蹙非蹙罥烟眉，一双似喜非喜含情目。态生两靥之愁，娇袭一身之病。泪光点点，娇喘微微。闲静时如姣花照水，行动处似弱柳扶风。心较比干多一窍，病如西子胜三分。",
+      "effect": "此段为纯静态描写，节奏放缓，但感官通道集中于视觉，缺少听觉、嗅觉等，可能使描写略显单一。",
+      "action": "可考虑加入一处听觉或触觉细节，如宝玉注意到黛玉的呼吸声或衣袖的质感，以丰富感官层次。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_006"
+      ],
+      "criteriaIds": [
+        "P2"
+      ]
+    },
+    {
+      "id": "diag_004",
+      "location": "第2段（凤姐登场）",
+      "quote": "只见一群媳妇丫鬟围拥着一个人从后房门进来。这个人打扮与众姑娘不同，彩绣辉煌，恍若神妃仙子……",
+      "effect": "凤姐登场描写以视觉为主，缺少声音细节（如笑声的具体质感），使“放诞无礼”的印象稍显抽象。",
+      "action": "可在“彩绣辉煌”后补充一句笑声或环佩声响，使听觉与视觉并置，强化放诞效果。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_003"
+      ],
+      "criteriaIds": [
+        "P3"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_004:technique_explanation",
+      "usedFor": "知识参考：红楼梦多重叙事层与全知限制混合视角，用于分析本文双重限知视角。",
+      "quote": "红楼梦（第五回/前八十回架构）｜技法：多重叙事层（神话框式结构 + 全知限制混合视角）、判词预叙（Prolepsis）、网状复调叙事（Polyphonic Mesh）"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "usedFor": "知识参考：第一人称限制视角与白描技法，用于对比本文视角处理。",
+      "quote": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔"
+    },
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "usedFor": "知识参考：第三人称限制视角与心理距离控制，用于分析宝玉内心描写的视角切换。",
+      "quote": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment）"
+    }
+  ]
+}

@@ -18,7 +18,8 @@
     "eval:live": "node scripts/run-eval.mjs --live",
     "seed:supabase": "node scripts/seed-supabase.mjs",
     "verify": "npm run lint && npm run typecheck && npm run check:layering && npm run check:filesize && npm test -- --run && npm run build",
-    "check:golden": "node scripts/check-golden-schema.mjs"
+    "check:golden": "node scripts/check-golden-schema.mjs",
+    "eval:fixtures": "node scripts/run-eval.mjs --live --fixtures"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",

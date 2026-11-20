@@ -1,0 +1,1056 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "华老栓",
+          "goal": "在天亮前赶到丁字街，用一包洋钱换取能救儿子小栓性命的药（人血馒头）",
+          "evidenceIds": [
+            "ev_003",
+            "ev_005",
+            "ev_012"
+          ]
+        },
+        {
+          "character": "华大妈",
+          "goal": "把积攒的洋钱交给丈夫，支持他出门买药，同时照看咳嗽的儿子",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "character": "小栓",
+          "goal": "（被动）被父母要求不要起身，安心睡觉",
+          "evidenceIds": [
+            "ev_004"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "华老栓",
+          "action": "半夜起身、点灯、接钱、按衣袋、点灯笼出门、在檐下避人、在人群后退时几乎被挤倒、面对黑衣人摊手",
+          "evidenceIds": [
+            "ev_001",
+            "ev_003",
+            "ev_005",
+            "ev_007",
+            "ev_010",
+            "ev_012"
+          ]
+        },
+        {
+          "character": "华大妈",
+          "action": "在枕头底下掏钱、交给老栓、照料里屋咳嗽的儿子",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "character": "黑衣人",
+          "action": "向老栓摊开大手要钱，另一只手撮着滴血的馒头",
+          "evidenceIds": [
+            "ev_012"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "change": "老栓与黑衣人的关系由“围观者—行刑现场”转为“买主—卖主”的现钱交易关系",
+          "evidenceIds": [
+            "ev_010",
+            "ev_012"
+          ]
+        },
+        {
+          "change": "老栓对人群的态度由旁观好奇转为惊惧自保（退步、蹩进檐下、被挤）",
+          "evidenceIds": [
+            "ev_007",
+            "ev_010"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "turningPoint": "老栓在丁字街檐下由“赶路的买药人”变为“被攫取目光盯住的猎物式旁观者”",
+          "evidenceIds": [
+            "ev_007",
+            "ev_008"
+          ]
+        },
+        {
+          "turningPoint": "黑衣人出现并以“一手交钱，一手交货”把行刑现场直接转为交易现场，鲜红滴血的馒头亮相",
+          "evidenceIds": [
+            "ev_012"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "setup": "华大妈在枕头底下掏出的“一包洋钱”与老栓“抖抖的装入衣袋，又在外面按了两下”",
+          "evidenceIds": [
+            "ev_003"
+          ]
+        },
+        {
+          "setup": "老栓出门前对里屋叮嘱“小栓……你不要起来”，交代儿子的病与家庭处境",
+          "evidenceIds": [
+            "ev_004"
+          ]
+        },
+        {
+          "setup": "灯笼熄了、老栓“按一按衣袋，硬硬的还在”",
+          "evidenceIds": [
+            "ev_008"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "“一手交钱，一手交货”的吆喝把先前反复按衣袋的洋钱兑现为交易动作",
+          "evidenceIds": [
+            "ev_003",
+            "ev_012"
+          ]
+        },
+        {
+          "payoff": "“鲜红的馒头”与“一点一点的往下滴”兑现了前文“药”的悬念，并暴露其血腥来源",
+          "evidenceIds": [
+            "ev_012"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "theme": "愚昧与救赎的悖论",
+          "stage": "本段（买药—交货）",
+          "change": "由隐（为救儿子买药）转为显（药即人血馒头），救赎手段与杀戮同源被并置呈现",
+          "reason": "黑衣人撮着滴血馒头索钱，交易对象与行刑现场重合",
+          "evidenceIds": [
+            "ev_004",
+            "ev_012"
+          ]
+        },
+        {
+          "theme": "看客与围观",
+          "stage": "丁字街人群",
+          "change": "由三三两两徘徊的“古怪的人”聚成半圆又轰然后退，看客的群体性被推至前台",
+          "reason": "人群动作链“合作一堆—潮一般向前赶—突然立住—轰的一声向后退”完成一次围观循环",
+          "evidenceIds": [
+            "ev_009",
+            "ev_010"
+          ]
+        },
+        {
+          "theme": "阴冷与恐惧的氛围",
+          "stage": "全段",
+          "change": "由“乌蓝的天”“青白的光”到“眼光正像两把刀”，冷色与刀锋意象层层加码",
+          "reason": "色彩词与比喻在段末收束于“缩小了一半”的恐惧体感",
+          "evidenceIds": [
+            "ev_001",
+            "ev_006",
+            "ev_012"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "an_struct_turn",
+      "name": "结构与转折",
+      "summary": "文本以“起身—出门—街市—人群—交易”推进，末段黑衣人索钱交货构成明确转折：老栓的处境由赶路者变为交易买主，读者获知“药”即人血馒头。",
+      "impact": "转折落在末句并以滴血馒头的具象收束，形成悬念兑现与道德冲击的双重效果。",
+      "suggestion": "若续写，可让“硬硬的还在”的洋钱与“鲜红的馒头”在下一段完成交换动作，保持道具闭环。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_003",
+        "ev_010",
+        "ev_012"
+      ]
+    },
+    {
+      "id": "an_pace_density",
+      "name": "信息密度与节奏",
+      "summary": "段落长短交替，动作句密集（点灯、装钱、按衣袋、退步、蹩进檐下），无明显零信息长窗；短句“唔。”“哼，老头子。”制造呼吸停顿。",
+      "impact": "短句与动作链交替使夜行段既紧张又有喘息，节奏张弛有度。",
+      "suggestion": "人群聚集段可再压缩一两句静态描写，使“轰的一声”的爆发更陡。",
+      "score": 84,
+      "evidenceIds": [
+        "ev_001",
+        "ev_005",
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "an_sensory",
+      "name": "具体性与感官",
+      "summary": "视觉（乌蓝的天、青白的光、灰白的路、鲜红的馒头）与体感（发冷、缩小了一半）为主，听觉有咳嗽、脚步声响、轰的一声，触觉有“硬硬的还在”。",
+      "impact": "多通道感官叠加，使夜行与刑场的阴冷可触可闻。",
+      "suggestion": "可在交易前补一处嗅觉（血腥或汗味），让“鲜红”不止于视觉。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_004",
+        "ev_008",
+        "ev_009",
+        "ev_012"
+      ]
+    },
+    {
+      "id": "an_pov",
+      "name": "视角一致性",
+      "summary": "全篇跟随老栓的所见所感（看见丁字街、看灯笼、看人群后背、觉得发冷），心理动词均落在老栓身上，未见越界。",
+      "impact": "限制视角使读者与老栓同步无知，末句馒头的冲击因此更强。",
+      "suggestion": "保持老栓单一视角，避免在人群段插入他人内心。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_006",
+        "ev_007",
+        "ev_010",
+        "ev_012"
+      ]
+    },
+    {
+      "id": "an_imagery",
+      "name": "意象复现",
+      "summary": "“灯笼/灯光”与“衣袋里的洋钱”跨段复现：灯由点到熄，钱由装到按再到待交，形态与功能均发生变化。",
+      "impact": "灯熄暗示保护失效，钱的存在感反复强化交易的临近。",
+      "suggestion": "续写可让“灯笼”在交易后重新点亮或彻底弃置，完成意象收束。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_008",
+        "ev_012"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "秋天的后半夜，月亮下去了，太阳还没有出，只剩下一片乌蓝的天；除了夜游的东西，什么都睡着。",
+      "note": "开篇建场：时间、天色、寂静氛围，奠定阴冷基调。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "华老栓忽然坐起身。擦着火柴，点上遍身油腻的灯盏，茶馆的两间屋子里，便弥满了青白的光。",
+      "note": "人物首次出场与动作链，灯光意象首次出现。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "华大妈在枕头底下掏了半天，掏出一包洋钱，交给老栓，老栓接了，抖抖的装入衣袋，又在外面按了两下",
+      "note": "洋钱道具与“按了两下”的动作，为末段交易埋伏。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "老栓候他平静下去，才低低的叫道：‘小栓……你不要起来。……店么？你娘会安排的。’",
+      "note": "交代儿子病况与家庭处境，确立买药动机。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "街上黑沈沈的一无所有，只有一条灰白的路，看得分明。灯光照着他的两脚，一前一后的走。",
+      "note": "夜行段视觉描写，灯与路的具象。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "天气比屋子里冷得多了；老栓倒觉爽快，仿佛一旦变了少年，得了神通，有给人生命的本领似的，跨步格外高远。",
+      "note": "老栓体感与心理，限制视角证据。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "他便退了几步，寻到一家关着门的铺子，蹩进檐下，靠门立住了。好一会，身上觉得有些发冷。",
+      "note": "老栓躲避动作与体感，处境由赶路转为潜伏。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "老栓看看灯笼，已经熄了。按一按衣袋，硬硬的还在。",
+      "note": "灯熄与钱仍在的对照，道具复现。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "那三三两两的人，也忽然合作一堆，潮一般向前赶；将到丁字街口，便突然立住，簇成一个半圆。",
+      "note": "人群动作链与声响，看客主题证据。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "老栓也向那边看，却只见一堆人的后背；颈项都伸得很长，仿佛许多鸭，被无形的手捏住了的，向上提着。",
+      "note": "老栓视角所见与比喻，围观意象。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "静了一会，似乎有点声音，便又动摇起来，轰的一声，都向后退；一直散到老栓立着的地方，几乎将他挤倒了。",
+      "note": "声响与人群后退，节奏爆发点。"
+    },
+    {
+      "id": "ev_012",
+      "source": "observation",
+      "quote": "‘喂！一手交钱，一手交货！’一个浑身黑色的人，站在老栓面前，眼光正像两把刀。刺得老栓缩小了一半。那人一只大手，向他摊着；一只手却撮着一个鲜红的馒头，那红的还是一点一点的往下滴。",
+      "note": "转折与高潮：交易吆喝、黑衣人、滴血馒头，药的真面目揭晓。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_laoshuan",
+        "label": "华老栓",
+        "type": "character",
+        "evidenceIds": [
+          "ev_002",
+          "ev_005",
+          "ev_007",
+          "ev_012"
+        ]
+      },
+      {
+        "id": "n_huadama",
+        "label": "华大妈",
+        "type": "character",
+        "evidenceIds": [
+          "ev_003"
+        ]
+      },
+      {
+        "id": "n_xiaoshuan",
+        "label": "小栓",
+        "type": "character",
+        "evidenceIds": [
+          "ev_004"
+        ]
+      },
+      {
+        "id": "n_heiyi",
+        "label": "黑衣人",
+        "type": "character",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "id": "n_qian",
+        "label": "一包洋钱",
+        "type": "object",
+        "evidenceIds": [
+          "ev_003",
+          "ev_008",
+          "ev_012"
+        ]
+      },
+      {
+        "id": "n_deng",
+        "label": "灯盏/灯笼",
+        "type": "object",
+        "evidenceIds": [
+          "ev_002",
+          "ev_008"
+        ]
+      },
+      {
+        "id": "n_mantou",
+        "label": "鲜红的馒头",
+        "type": "object",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "id": "n_renqun",
+        "label": "丁字街人群",
+        "type": "group",
+        "evidenceIds": [
+          "ev_009",
+          "ev_010",
+          "ev_011"
+        ]
+      },
+      {
+        "id": "n_dingzi",
+        "label": "丁字街",
+        "type": "place",
+        "evidenceIds": [
+          "ev_007",
+          "ev_009"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_laoshuan",
+        "to": "n_qian",
+        "relation": "携带/守护",
+        "evidenceIds": [
+          "ev_003",
+          "ev_008"
+        ]
+      },
+      {
+        "from": "n_laoshuan",
+        "to": "n_deng",
+        "relation": "持灯夜行",
+        "evidenceIds": [
+          "ev_002",
+          "ev_008"
+        ]
+      },
+      {
+        "from": "n_laoshuan",
+        "to": "n_xiaoshuan",
+        "relation": "父子/为子买药",
+        "evidenceIds": [
+          "ev_004"
+        ]
+      },
+      {
+        "from": "n_huadama",
+        "to": "n_qian",
+        "relation": "交出积蓄",
+        "evidenceIds": [
+          "ev_003"
+        ]
+      },
+      {
+        "from": "n_laoshuan",
+        "to": "n_renqun",
+        "relation": "旁观/被挤",
+        "evidenceIds": [
+          "ev_010",
+          "ev_011"
+        ]
+      },
+      {
+        "from": "n_heiyi",
+        "to": "n_mantou",
+        "relation": "撮持滴血馒头",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "from": "n_heiyi",
+        "to": "n_laoshuan",
+        "relation": "索钱交货",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "from": "n_qian",
+        "to": "n_mantou",
+        "relation": "即将交换",
+        "evidenceIds": [
+          "ev_003",
+          "ev_012"
+        ]
+      },
+      {
+        "from": "n_renqun",
+        "to": "n_dingzi",
+        "relation": "聚集围观",
+        "evidenceIds": [
+          "ev_009"
+        ]
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "开篇夜起",
+      "value": 35,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002"
+      ]
+    },
+    {
+      "segment": "交钱出门",
+      "value": 55,
+      "evidenceIds": [
+        "ev_003",
+        "ev_004"
+      ]
+    },
+    {
+      "segment": "夜行街路",
+      "value": 45,
+      "evidenceIds": [
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "segment": "檐下躲避",
+      "value": 50,
+      "evidenceIds": [
+        "ev_007"
+      ]
+    },
+    {
+      "segment": "人群聚集",
+      "value": 75,
+      "evidenceIds": [
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "segment": "人群后退",
+      "value": 85,
+      "evidenceIds": [
+        "ev_011"
+      ]
+    },
+    {
+      "segment": "黑衣人交货",
+      "value": 95,
+      "evidenceIds": [
+        "ev_012"
+      ]
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "开篇夜起",
+      "value": 30,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002"
+      ]
+    },
+    {
+      "segment": "交钱出门",
+      "value": 45,
+      "evidenceIds": [
+        "ev_003",
+        "ev_004"
+      ]
+    },
+    {
+      "segment": "夜行街路",
+      "value": 55,
+      "evidenceIds": [
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "segment": "檐下躲避",
+      "value": 50,
+      "evidenceIds": [
+        "ev_007"
+      ]
+    },
+    {
+      "segment": "人群聚集",
+      "value": 65,
+      "evidenceIds": [
+        "ev_009",
+        "ev_010"
+      ]
+    },
+    {
+      "segment": "人群后退",
+      "value": 80,
+      "evidenceIds": [
+        "ev_011"
+      ]
+    },
+    {
+      "segment": "黑衣人交货",
+      "value": 92,
+      "evidenceIds": [
+        "ev_012"
+      ]
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "开篇夜起",
+      "value": 20,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "交钱出门",
+      "value": 35,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "夜行街路",
+      "value": 30,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "檐下躲避",
+      "value": 25,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "人群聚集",
+      "value": 40,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "人群后退",
+      "value": 45,
+      "evidenceId": "ev_011"
+    },
+    {
+      "theme": "愚昧与救赎的悖论",
+      "segment": "黑衣人交货",
+      "value": 95,
+      "evidenceId": "ev_012"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "开篇夜起",
+      "value": 5,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "交钱出门",
+      "value": 10,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "夜行街路",
+      "value": 15,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "檐下躲避",
+      "value": 30,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "人群聚集",
+      "value": 85,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "人群后退",
+      "value": 90,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "看客与围观",
+      "segment": "黑衣人交货",
+      "value": 60,
+      "evidenceId": "ev_012"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "开篇夜起",
+      "value": 70,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "交钱出门",
+      "value": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "夜行街路",
+      "value": 65,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "檐下躲避",
+      "value": 75,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "人群聚集",
+      "value": 70,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "人群后退",
+      "value": 75,
+      "evidenceId": "ev_011"
+    },
+    {
+      "theme": "阴冷与恐惧的氛围",
+      "segment": "黑衣人交货",
+      "value": 88,
+      "evidenceId": "ev_012"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 52,
+        "interpretation": "以中短句为主，动作句多为一两个分句，末段黑衣人描写句稍长以承载信息爆发。",
+        "evidenceIds": [
+          "ev_005",
+          "ev_012"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话占比",
+        "value": 28,
+        "interpretation": "对话集中于华大妈问话、老栓应答与黑衣人吆喝，占比不高但均落在情节节点上。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_012"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 78,
+        "interpretation": "视觉与体感密集，听觉点缀，嗅觉味觉基本缺位。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_009",
+          "ev_012"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 65,
+        "interpretation": "比喻集中且锋利（许多鸭被无形的手提着、眼光正像两把刀），白描为主、修辞为辅。",
+        "evidenceIds": [
+          "ev_010",
+          "ev_012"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 30,
+        "interpretation": "紧贴老栓的感知与体感，属近距离限制视角，读者与其同步无知。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 72,
+        "interpretation": "由静到聚到爆，短句“唔。”“哼，老头子。”与“轰的一声”形成顿挫与爆发交替。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_011"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "dg_001",
+      "location": "末段黑衣人交货处",
+      "quote": "那人一只大手，向他摊着；一只手却撮着一个鲜红的馒头，那红的还是一点一点的往下滴。",
+      "effect": "末段不引入新人物新场景新冲突，以滴血馒头兑现前文“药”的悬念，并以“鲜红的馒头”与开篇“青白的光”形成冷色—血色的回指对照，收束功能成立。",
+      "action": "保持此收束力度；若续写，宜另起段落承接交换动作，勿在本段追加新情节。",
+      "confidence": 0.86,
+      "evidenceIds": [
+        "ev_012",
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "dg_002",
+      "location": "全文段落功能",
+      "quote": "‘唔。’老栓一面听，一面应，一面扣上衣服；伸手过去说，‘你给我罢。’",
+      "effect": "各段可归入建场、推进、转折、抒情评述、收束五类，未出现空转或功能超载段落，段落功能清晰。",
+      "action": "维持现有分段；若合并段落，注意勿使建场与收束挤在同段而失主次。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_002",
+        "ev_003",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "S2"
+      ]
+    },
+    {
+      "id": "dg_003",
+      "location": "丁字街人群后退至黑衣人出现",
+      "quote": "一直散到老栓立着的地方，几乎将他挤倒了。",
+      "effect": "人群由聚到散、黑衣人由隐到显，老栓处境由旁观者变为交易对象，属可定位的不可逆转折（变化前：檐下躲避；变化后：被索钱交货）。",
+      "action": "转折已成立，无需改动；续写时应让此转折产生后果（钱与馒头的交换）。",
+      "confidence": 0.84,
+      "evidenceIds": [
+        "ev_007",
+        "ev_011",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "S3"
+      ]
+    },
+    {
+      "id": "dg_004",
+      "location": "全文指代词",
+      "quote": "老栓看看灯笼，已经熄了。按一按衣袋，硬硬的还在。",
+      "effect": "“他”“那”“这”等指代词均有唯一先行词（老栓、馒头、人群），未见悬空或歧义。",
+      "action": "无需修改；后续段落新增人物时注意避免同类实体竞争造成歧义。",
+      "confidence": 0.82,
+      "evidenceIds": [
+        "ev_008",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "C2"
+      ]
+    },
+    {
+      "id": "dg_005",
+      "location": "人群聚集段与后退段之间",
+      "quote": "静了一会，似乎有点声音，便又动摇起来，轰的一声，都向后退；",
+      "effect": "相邻句以“静—声音—动摇—后退”共享主题词与时间连接，语义衔接紧密，未见主题词全空且无连接词的断层。",
+      "action": "无需修改。",
+      "confidence": 0.78,
+      "evidenceIds": [
+        "ev_009",
+        "ev_011"
+      ],
+      "criteriaIds": [
+        "C3"
+      ]
+    },
+    {
+      "id": "dg_006",
+      "location": "夜行段",
+      "quote": "街上黑沈沈的一无所有，只有一条灰白的路，看得分明。灯光照着他的两脚，一前一后的走。",
+      "effect": "该段以具体物象与动作推进，新信息单元（路、灯光、脚步、狗）持续出现，未形成≥200字零信息窗。",
+      "action": "无需修改；若扩写夜行，注意每50字内至少引入一个新事件或具体名词。",
+      "confidence": 0.76,
+      "evidenceIds": [
+        "ev_005",
+        "ev_006"
+      ],
+      "criteriaIds": [
+        "D1"
+      ]
+    },
+    {
+      "id": "dg_007",
+      "location": "全文各段字数与事件数",
+      "quote": "老栓也向那边看，却只见一堆人的后背；颈项都伸得很长，仿佛许多鸭，被无形的手捏住了的，向上提着。",
+      "effect": "各段均未超过400字且事件数≥2（看、伸颈、被提、后退等），不存在单段超长而事件稀薄的段落。",
+      "action": "无需修改；若合并人群段与交易段，需保证事件密度。",
+      "confidence": 0.75,
+      "evidenceIds": [
+        "ev_010",
+        "ev_011"
+      ],
+      "criteriaIds": [
+        "D3"
+      ]
+    },
+    {
+      "id": "dg_008",
+      "location": "黑衣人描写句",
+      "quote": "一个浑身黑色的人，站在老栓面前，眼光正像两把刀。刺得老栓缩小了一半。",
+      "effect": "“眼光正像两把刀”虽含评价性比喻，但同句有“浑身黑色的人”“站在老栓面前”等可指认实体，不构成只堆抽象评价词的空转句。",
+      "action": "无需修改；若强化恐惧，可补一处具体动作（如手指关节的响动）替代再加评价词。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "P1"
+      ]
+    },
+    {
+      "id": "dg_009",
+      "location": "全文感官通道",
+      "quote": "天气比屋子里冷得多了；老栓倒觉爽快",
+      "effect": "视觉（乌蓝的天、青白的光、鲜红的馒头）、听觉（咳嗽、脚步声响、轰的一声）、触觉/体感（发冷、缩小了一半、硬硬的还在）覆盖三类以上，达标。",
+      "action": "可在交易前补嗅觉（血腥味）以增强现场感。",
+      "confidence": 0.85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_004",
+        "ev_008",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "P2"
+      ]
+    },
+    {
+      "id": "dg_010",
+      "location": "转折处（黑衣人交货）",
+      "quote": "一只手却撮着一个鲜红的馒头，那红的还是一点一点的往下滴。",
+      "effect": "转折处有可单独摘出的具象细节（撮着的馒头、往下滴的红），非评价词，具象性达标。",
+      "action": "无需修改；续写交换动作时可延续“滴”这一动态细节。",
+      "confidence": 0.88,
+      "evidenceIds": [
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "P3"
+      ]
+    },
+    {
+      "id": "dg_011",
+      "location": "灯盏/灯笼与洋钱",
+      "quote": "老栓看看灯笼，已经熄了。按一按衣袋，硬硬的还在。",
+      "effect": "“灯笼”与“洋钱”为2–6字具象名词短语，跨段复现（开篇点灯—檐下灯熄—末段待交钱），候选意象集非空。",
+      "action": "无需修改；续写可让灯笼复燃或弃置，完成意象弧线。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_002",
+        "ev_008",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "M1",
+        "M2"
+      ]
+    },
+    {
+      "id": "dg_012",
+      "location": "灯与钱的形态变化",
+      "quote": "老栓接了，抖抖的装入衣袋，又在外面按了两下；便点上灯笼，吹熄灯盏",
+      "effect": "灯由“点上”到“熄了”，钱由“装入”到“按一按”再到“一手交钱”，形态与功能位置均发生变化，且两端对应老栓由守护到交易的不同处境。",
+      "action": "维持此变化；续写时让钱离手、灯的去向有交代，使意象变化闭合。",
+      "confidence": 0.78,
+      "evidenceIds": [
+        "ev_003",
+        "ev_008",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "M3"
+      ]
+    },
+    {
+      "id": "dg_013",
+      "location": "全文叙述人称",
+      "quote": "老栓正在专心走路，忽然吃了一惊，远远里看见一条丁字街，明明白白横着。",
+      "effect": "全篇第三人称跟随老栓，对话引号内人称切换属引语框内，未出现无正当理由的人称切换。",
+      "action": "无需修改。",
+      "confidence": 0.83,
+      "evidenceIds": [
+        "ev_007",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "V1"
+      ]
+    },
+    {
+      "id": "dg_014",
+      "location": "心理动词句",
+      "quote": "天气比屋子里冷得多了；老栓倒觉爽快，仿佛一旦变了少年，得了神通，有给人生命的本领似的，跨步格外高远。",
+      "effect": "“觉爽快”“觉得发冷”等心理动词主语均为本段视角人物老栓，未见越界写他人内心。",
+      "action": "无需修改；后续若写黑衣人心理，需转为老栓的观察或推断。",
+      "confidence": 0.82,
+      "evidenceIds": [
+        "ev_006",
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "V2"
+      ]
+    },
+    {
+      "id": "dg_015",
+      "location": "老栓对交易与人群的认知",
+      "quote": "按一按衣袋，硬硬的还在。",
+      "effect": "老栓知道钱在衣袋、知道要交货，来源为前文华大妈交钱与黑衣人吆喝，均有明确交代，未见无来源的信息使用。",
+      "action": "无需修改。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_003",
+        "ev_008",
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "V3"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "workId": "KB_006",
+      "chunkType": "technique_explanation",
+      "content": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment）",
+      "quote": "变形记 (The Metamorphosis)｜技法：第三人称限制视角（冷酷客观的实录语气叙述极度荒诞事件）、陌生化与超现实实录（Kafkaesque Realism）、心理距离控制（Clinical Detachment） 文学史上...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/變形記_(卡夫卡)"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "workId": "KB_001",
+      "chunkType": "technique_explanation",
+      "content": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔",
+      "quote": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔 鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/孔乙己"
+    },
+    {
+      "retrievalId": "KB_007:technique_explanation",
+      "workId": "KB_007",
+      "chunkType": "technique_explanation",
+      "content": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白",
+      "quote": "老人与海 (The Old Man and the Sea)｜技法：第三人称客观视角与老人内心独白穿插、冰山原则 (Iceberg Theory)、仪式化的内心自白 海明威在此处将'毁灭（物理层面的肉体消亡或物质损失）'与'打败（精神...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/老人與海"
+    },
+    {
+      "retrievalId": "KB_003:technique_explanation",
+      "workId": "KB_003",
+      "chunkType": "technique_explanation",
+      "content": "边城｜技法：全知诗性散文视角，叙述者充满温情与悲悯、情景交融与以乐写哀、留白艺术（Ambiguity & Open Ending）",
+      "quote": "边城｜技法：全知诗性散文视角，叙述者充满温情与悲悯、情景交融与以乐写哀、留白艺术（Ambiguity & Open Ending） 结尾没有安排大团圆，也没有写出死亡，而是采用了极具张力的'时间悬置'。'永远'代表了现实宿命的残酷，'...",
+      "sourceStatus": "summary_only"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "workId": "KB_008",
+      "chunkType": "technique_explanation",
+      "content": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot)",
+      "quote": "项链 (The Necklace)｜技法：第三人称全知视角，兼具冷嘲与悲悯、莫泊桑式反转 (O. Henry / Maupassant Twist)、道具驱动叙事 (Object-Driven Plot) 莫泊桑在反转揭晓前插入这一段...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/項鍊_(短篇小說)"
+    }
+  ]
+}

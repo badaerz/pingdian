@@ -1,0 +1,736 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "id": "goal_01",
+          "text": "太后胡氏营建永宁寺以征信法、彰功德",
+          "evidenceIds": [
+            "ev_005",
+            "ev_014"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_01",
+          "text": "掘基至黄泉下，得金像三十躯，遂营建过度",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        },
+        {
+          "id": "act_02",
+          "text": "装饰毕功后，明帝与太后共登浮图，视宫内如掌中",
+          "evidenceIds": [
+            "ev_014"
+          ]
+        },
+        {
+          "id": "act_03",
+          "text": "诏中书舍人常景为寺碑文",
+          "evidenceIds": [
+            "ev_012"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "id": "rel_01",
+          "text": "太后与明帝由营建者转为共同登临者，并因“目见宫中”而下禁人升之令，权力观看关系由此确立",
+          "evidenceIds": [
+            "ev_014"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "id": "tp_01",
+          "text": "掘基得金像三十躯，被释为信法之征，营建由工程转为过度之举",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        },
+        {
+          "id": "tp_02",
+          "text": "装饰毕功，明帝与太后共登，并因目见宫中而禁人升之",
+          "evidenceIds": [
+            "ev_014"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "id": "setup_01",
+          "text": "开篇交代方位与四邻，为后文“去京师百里已遥见之”的高峻作空间铺垫",
+          "evidenceIds": [
+            "ev_001",
+            "ev_006"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "id": "pay_01",
+          "text": "“去京师百里，已遥见之”回收前文九十丈、一千尺的高度数据",
+          "evidenceIds": [
+            "ev_006"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "id": "th_01",
+          "stage": "营建",
+          "change": "由纪年立寺转入具体工程数据与祥瑞叙事",
+          "reason": "先立时空坐标再以金像之征赋予营建合法性",
+          "evidenceIds": [
+            "ev_001",
+            "ev_005"
+          ]
+        },
+        {
+          "id": "th_02",
+          "stage": "形制",
+          "change": "由浮图单体扩展至佛殿、僧房、门楼与四门绿化",
+          "reason": "以逐层铺陈完成寺院整体规模的呈现",
+          "evidenceIds": [
+            "ev_008",
+            "ev_010",
+            "ev_013"
+          ]
+        },
+        {
+          "id": "th_03",
+          "stage": "登临",
+          "change": "由客观形制转入登临者的主观视角与禁令",
+          "reason": "以“视宫内如掌中”收束全篇，把建筑高度转成权力视点",
+          "evidenceIds": [
+            "ev_014"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "an_01",
+      "name": "结构组织",
+      "summary": "全文以“寺—浮图—佛殿—门楼—登临”逐层展开，四段各归其位：首段建场并推进，二段推进佛殿形制，三段推进门楼与碑文，末段以登临收束，无归不进去的段落。",
+      "impact": "空间由外而内、由下而上，读者随文字逐级登高，形成清晰的营造账目式秩序。",
+      "suggestion": "末段已具收束功能，可保留；若欲增强收束感，可让“禁人不听升之”与开篇“在宫前阊阖门南一里”形成一次方位回指。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_008",
+        "ev_013",
+        "ev_014"
+      ]
+    },
+    {
+      "id": "an_02",
+      "name": "连贯衔接",
+      "summary": "指代以“其寺”“其四门”“之”为主，先行词均为紧邻的寺、门、浮图，无悬空或歧义；相邻句主题词多围绕浮图构件（刹、瓶、盘、铎、铃）重叠，衔接紧密。",
+      "impact": "密集的名物链条使文本读来如营造簿录，专业感强，读者不易迷失指代。",
+      "suggestion": "“所可异者，唯楼两重”处主题词跳转稍快，可补一短句点明与南门楼三重的对照关系。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_002",
+        "ev_009",
+        "ev_011"
+      ]
+    },
+    {
+      "id": "an_03",
+      "name": "信息密度与节奏",
+      "summary": "全文以可指认实体与数据推进（九十丈、十丈、二十五斛、一十一重、一百三十铎、五千四百枚），无连续二百字零信息窗；单段虽长，但事件与具体名词持续产出。",
+      "impact": "数字与名物的密集排列形成账目式节奏，与“营造账目”的题旨相合。",
+      "suggestion": "第三段常景小传插入较长，可考虑将其压缩或另置，以免打断门楼形制的空间节奏。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_003",
+        "ev_006",
+        "ev_007",
+        "ev_012"
+      ]
+    },
+    {
+      "id": "an_04",
+      "name": "具体性与感官",
+      "summary": "感官覆盖视觉（朱漆、金铃、青槐、绿水）与听觉（宝铎和鸣、铿锵之声闻及十馀里）两类，转折处“得金像三十躯”为可指认物件，具象充足。",
+      "impact": "视觉的金朱与听觉的铎声互证，使高塔在纸面上可闻可望。",
+      "suggestion": "嗅觉、触觉通道全缺，可在“藂竹香草”处略补气味，或在“高风永夜”处补风的触感，使登临更具身体性。",
+      "score": 78,
+      "evidenceIds": [
+        "ev_004",
+        "ev_007",
+        "ev_010",
+        "ev_013"
+      ]
+    },
+    {
+      "id": "an_05",
+      "name": "意象复现",
+      "summary": "“金铎/金铃”“浮图”跨段复现，且由“角角皆悬金铎”到“宝铎和鸣”发生功能位置变化——从构件转为声音事件，指向寺院由静态形制转为可感知的存在。",
+      "impact": "同一物象在形制与声响之间转换，使建筑获得时间维度。",
+      "suggestion": "可让末段登临时再闻铎声一次，使金铎意象在收束处完成第三次复现。",
+      "score": 80,
+      "evidenceIds": [
+        "ev_007",
+        "ev_010",
+        "ev_014"
+      ]
+    },
+    {
+      "id": "an_06",
+      "name": "视角一致性",
+      "summary": "文本为志书式全知叙述，叙述者自由出入方位、数据与登临者所见，并插入“衒之尝与……共登之”的第一人称补证，属全知体的正当越出。",
+      "impact": "全知视角使寺院形制得以整体呈现，末句的第一人称补证又添一层亲历可信度。",
+      "suggestion": "若欲强化亲历感，可将“信哉不虚”前的登临描写稍作视角收窄，令读者先随衒之仰望再俯瞰。",
+      "score": 84,
+      "evidenceIds": [
+        "ev_006",
+        "ev_014"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "永宁寺，熙平元年灵太后胡氏所立也，在宫前阊阖门南一里御道西。",
+      "note": "开篇给出寺名、立寺者、年号与方位，完成建场。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "其寺东有太尉府，西对永康里，南界昭玄曹，北邻御史台。",
+      "note": "以“其寺”回指前句永宁寺，指代明确，四邻方位铺陈。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "中有九层浮图一所，架木为之，举高九十丈。",
+      "note": "转入浮图主体，给出层数与高度数据，属推进。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "上有金刹，复高十丈；合去地一千尺。",
+      "note": "继续累加高度数据，具体可核验。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "初掘基至黄泉下，得金像三十躯，太后以为信法之征，是以营建过度也。",
+      "note": "掘基得金像并释为祥瑞，是全文最明确的一处转折（营建性质由工程转为过度之举）。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "去京师百里，已遥见之。",
+      "note": "以远距可见回收前文高度数据，形成前后照应。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "至于高风永夜，宝铎和鸣，铿锵之声，闻及十馀里。",
+      "note": "听觉通道证据，金铎由构件转为声音事件。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "浮图北有佛殿一所，形如太极殿。",
+      "note": "第二段起句，以“浮图北”承接上段方位，转入佛殿形制。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "僧房楼观，一千馀间，雕梁粉壁，青璅绮疏，难得而言。",
+      "note": "以“难得而言”作评述句，同时给出可指认的建筑实体。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "栝柏椿松，扶疏檐霤，藂竹香草，布护阶墀。",
+      "note": "植物名物铺陈，含“香草”可作嗅觉线索。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "其四门外，皆树以青槐，亘以绿水，京邑行人，多庇其下。",
+      "note": "“其四门”回指前文四面各开一门，指代明确；视觉通道证据。"
+    },
+    {
+      "id": "ev_012",
+      "source": "observation",
+      "quote": "诏中书舍人常景为寺碑文。",
+      "note": "引入碑文与常景，属推进；其后小传为插入性说明。"
+    },
+    {
+      "id": "ev_013",
+      "source": "observation",
+      "quote": "拱门有四力士、四狮子，饰以金银，加之珠玉，庄严焕炳，世所未闻。",
+      "note": "门楼装饰的具体物件与材质，视觉通道证据。"
+    },
+    {
+      "id": "ev_014",
+      "source": "observation",
+      "quote": "装饰毕功，明帝与太后共登之。视宫内如掌中，临京师若家庭，以其目见宫中，禁人不听升之。",
+      "note": "末段收束：交代装饰完成、登临与禁令，人物处境终结，具收束功能。"
+    },
+    {
+      "id": "ev_015",
+      "source": "inference",
+      "claim": "全文的叙述动力来自“数据—祥瑞—登临”三段递进，而非人物冲突。",
+      "note": "由ev_003、ev_005、ev_014的数据累加、祥瑞解释与登临禁令可推出，属推断而非原文直述。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_01",
+        "label": "永宁寺",
+        "kind": "place",
+        "evidenceIds": [
+          "ev_001"
+        ]
+      },
+      {
+        "id": "n_02",
+        "label": "灵太后胡氏",
+        "kind": "person",
+        "evidenceIds": [
+          "ev_001",
+          "ev_014"
+        ]
+      },
+      {
+        "id": "n_03",
+        "label": "九层浮图",
+        "kind": "object",
+        "evidenceIds": [
+          "ev_003",
+          "ev_004"
+        ]
+      },
+      {
+        "id": "n_04",
+        "label": "金像三十躯",
+        "kind": "object",
+        "evidenceIds": [
+          "ev_005"
+        ]
+      },
+      {
+        "id": "n_05",
+        "label": "金铎",
+        "kind": "object",
+        "evidenceIds": [
+          "ev_007",
+          "ev_010"
+        ]
+      },
+      {
+        "id": "n_06",
+        "label": "佛殿",
+        "kind": "place",
+        "evidenceIds": [
+          "ev_008"
+        ]
+      },
+      {
+        "id": "n_07",
+        "label": "南门楼",
+        "kind": "place",
+        "evidenceIds": [
+          "ev_013"
+        ]
+      },
+      {
+        "id": "n_08",
+        "label": "常景",
+        "kind": "person",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "id": "n_09",
+        "label": "明帝",
+        "kind": "person",
+        "evidenceIds": [
+          "ev_014"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "id": "e_01",
+        "from": "n_02",
+        "to": "n_01",
+        "label": "立",
+        "evidenceIds": [
+          "ev_001"
+        ]
+      },
+      {
+        "id": "e_02",
+        "from": "n_01",
+        "to": "n_03",
+        "label": "中有",
+        "evidenceIds": [
+          "ev_003"
+        ]
+      },
+      {
+        "id": "e_03",
+        "from": "n_04",
+        "to": "n_02",
+        "label": "被释为信法之征",
+        "evidenceIds": [
+          "ev_005"
+        ]
+      },
+      {
+        "id": "e_04",
+        "from": "n_03",
+        "to": "n_05",
+        "label": "角角皆悬",
+        "evidenceIds": [
+          "ev_007"
+        ]
+      },
+      {
+        "id": "e_05",
+        "from": "n_01",
+        "to": "n_06",
+        "label": "北有",
+        "evidenceIds": [
+          "ev_008"
+        ]
+      },
+      {
+        "id": "e_06",
+        "from": "n_01",
+        "to": "n_07",
+        "label": "南门",
+        "evidenceIds": [
+          "ev_013"
+        ]
+      },
+      {
+        "id": "e_07",
+        "from": "n_08",
+        "to": "n_01",
+        "label": "为寺碑文",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "id": "e_08",
+        "from": "n_09",
+        "to": "n_03",
+        "label": "共登",
+        "evidenceIds": [
+          "ev_014"
+        ]
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第一段·方位与浮图",
+      "value": 72,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第二段·佛殿僧房",
+      "value": 55,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第三段·门楼与碑文",
+      "value": 48,
+      "evidenceId": "ev_012"
+    },
+    {
+      "segment": "第四段·登临收束",
+      "value": 66,
+      "evidenceId": "ev_014"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第一段·方位与浮图",
+      "value": 62,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第二段·佛殿僧房",
+      "value": 45,
+      "evidenceId": "ev_010"
+    },
+    {
+      "segment": "第三段·门楼与碑文",
+      "value": 40,
+      "evidenceId": "ev_012"
+    },
+    {
+      "segment": "第四段·登临收束",
+      "value": 70,
+      "evidenceId": "ev_014"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "营造之盛",
+      "segment": "第一段·方位与浮图",
+      "value": 85,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "营造之盛",
+      "segment": "第二段·佛殿僧房",
+      "value": 70,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "营造之盛",
+      "segment": "第三段·门楼与碑文",
+      "value": 60,
+      "evidenceId": "ev_013"
+    },
+    {
+      "theme": "营造之盛",
+      "segment": "第四段·登临收束",
+      "value": 50,
+      "evidenceId": "ev_014"
+    },
+    {
+      "theme": "佛法灵验",
+      "segment": "第一段·方位与浮图",
+      "value": 75,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "佛法灵验",
+      "segment": "第二段·佛殿僧房",
+      "value": 55,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "佛法灵验",
+      "segment": "第三段·门楼与碑文",
+      "value": 35,
+      "evidenceId": "ev_012"
+    },
+    {
+      "theme": "佛法灵验",
+      "segment": "第四段·登临收束",
+      "value": 30,
+      "evidenceId": "ev_014"
+    },
+    {
+      "theme": "权力与观看",
+      "segment": "第一段·方位与浮图",
+      "value": 30,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "权力与观看",
+      "segment": "第二段·佛殿僧房",
+      "value": 25,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "权力与观看",
+      "segment": "第三段·门楼与碑文",
+      "value": 40,
+      "evidenceId": "ev_012"
+    },
+    {
+      "theme": "权力与观看",
+      "segment": "第四段·登临收束",
+      "value": 80,
+      "evidenceId": "ev_014"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 58,
+        "interpretation": "以短句与四字结构为主，间以长句罗列构件，形成账目式顿挫。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话占比",
+        "value": 4,
+        "interpretation": "全篇无人物对话，仅碑文引语一处，叙述层占绝对主导。",
+        "evidenceIds": [
+          "ev_012"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 46,
+        "interpretation": "视觉（朱漆、金铃、青槐、绿水）与听觉（铎声闻十馀里）较密，嗅觉触觉稀薄。",
+        "evidenceIds": [
+          "ev_007",
+          "ev_011",
+          "ev_013"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 52,
+        "interpretation": "以数字排比与夸饰（不可思议、世所未闻）为主，少比喻。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_013"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 30,
+        "interpretation": "志书式全知叙述距离较远，末句第一人称补证骤然拉近。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_014"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 60,
+        "interpretation": "由方位铺陈的慢起，到浮图数据的密集，再到登临的收束，呈阶梯式加快后回落。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_003",
+          "ev_014"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "dg_01",
+      "location": "第三段·常景小传",
+      "quote": "景字永昌，河内人也。敏学博通，知名海内。",
+      "effect": "门楼形制的空间节奏在此被人物履历打断，读者从建筑视线转入官历叙述，密度与视角同时切换。",
+      "action": "可将常景小传压缩为一句官职与碑文关系，或移至文末附注，保留“诏中书舍人常景为寺碑文”作为主链。",
+      "confidence": 0.72,
+      "evidenceIds": [
+        "ev_012"
+      ],
+      "criteriaIds": [
+        "D1",
+        "S2"
+      ]
+    },
+    {
+      "id": "dg_02",
+      "location": "第一段·四邻铺陈",
+      "quote": "府南有司徒府。司徒府南有国子学，堂内有孔丘像。颜渊问仁、子路问政在侧。",
+      "effect": "连续的“府南有……”句式高度同构，方位信息密集但句式重复，读者易在链条中失去方位感。",
+      "action": "可在每三四处方位后插入一句概括（如“皆夹御道而列”），以分组替代等长并列。",
+      "confidence": 0.68,
+      "evidenceIds": [
+        "ev_002"
+      ],
+      "criteriaIds": [
+        "D1",
+        "C3"
+      ]
+    },
+    {
+      "id": "dg_03",
+      "location": "第二段·佛殿造像",
+      "quote": "中有丈八金像一躯，中长金像十躯，绣珠像三躯，金织成像五躯，玉像二躯。",
+      "effect": "造像以“数词+躯”连列，具体但缺少位置与光线，视觉上偏清单化，与后文“作工奇巧”的评价之间缺一个可指认的细节。",
+      "action": "可补一处造像的局部特征（如衣纹、光下的金色），使“冠于当世”有落点。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "P1",
+        "P3"
+      ]
+    },
+    {
+      "id": "dg_04",
+      "location": "第四段·登临",
+      "quote": "视宫内如掌中，临京师若家庭，以其目见宫中，禁人不听升之。",
+      "effect": "“如掌中”“若家庭”两个比喻紧接，收束有力，但“以其目见宫中”与“禁人不听升之”之间的因果稍显急促。",
+      "action": "可在禁令前补半句登临者的具体所见（如某殿某门），使“目见”落到实处再下禁令。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_014"
+      ],
+      "criteriaIds": [
+        "S1",
+        "P3"
+      ]
+    },
+    {
+      "id": "dg_05",
+      "location": "第一段·金铎",
+      "quote": "铎大小如一石瓮子。",
+      "effect": "以“一石瓮子”比况铎之大小，是全篇少见的日常器物比喻，具体可感，但前后均为数据罗列，此句略显孤立。",
+      "action": "可让此喻在后文“宝铎和鸣”处再回应一次，形成由体量到声音的意象推进。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "M3",
+        "P2"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_004:technique_explanation",
+      "workId": "KB_004",
+      "chunkType": "technique_explanation",
+      "content": "红楼梦（第五回/前八十回架构）｜技法：多重叙事层（神话框式结构 + 全知限制混合视角）、判词预叙（Prolepsis）、网状复调叙事（Polyphonic Mesh）",
+      "quote": "红楼梦（第五回/前八十回架构）｜技法：多重叙事层（神话框式结构 + 全知限制混合视角）、判词预叙（Prolepsis）、网状复调叙事（Polyphonic Mesh）",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/紅樓夢"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "workId": "KB_001",
+      "chunkType": "technique_explanation",
+      "content": "孔乙己｜技法：第一人称限制视角、白描、以喜衬悲、首尾呼应与账本伏笔",
+      "quote": "孔乙己｜技法：第一人称限制视角（孩童/酒馆小伙计视角，形成冷峻客观的叙事张力）、白描（Sketching）、以喜衬悲（Tragedy through Farce）、首尾呼应与账本伏笔",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/孔乙己"
+    },
+    {
+      "retrievalId": "KB_002:technique_explanation",
+      "workId": "KB_002",
+      "chunkType": "technique_explanation",
+      "content": "林冲风雪山神庙｜技法：全知视角但高度附着于林冲行动轨迹、草蛇灰线、景物烘托与心理共振",
+      "quote": "林冲风雪山神庙｜技法：全知视角但高度附着于林冲行动轨迹、草蛇灰线，伏脉千里、景物烘托与心理共振",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/水滸傳/第010回"
+    }
+  ]
+}

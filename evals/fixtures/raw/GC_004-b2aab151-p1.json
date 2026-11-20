@@ -1,0 +1,728 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "林冲",
+          "goal": "熬过严冬、修好草屋、沽酒御寒，维持看守草料场的差事以求安身",
+          "evidenceId": "ev_001"
+        },
+        {
+          "character": "林冲",
+          "goal": "在古庙中避雪、求神明庇佑",
+          "evidenceId": "ev_005"
+        },
+        {
+          "character": "陆虞候、富安、差拨",
+          "goal": "纵火烧草料场，置林冲于死地",
+          "evidenceId": "ev_008"
+        }
+      ],
+      "actions": [
+        {
+          "character": "林冲",
+          "action": "取碎银、花枪挑酒葫芦、盖火炭、拽门锁门，往草料场去",
+          "evidenceId": "ev_002"
+        },
+        {
+          "character": "林冲",
+          "action": "入庙顶礼、掇大石靠门",
+          "evidenceId": "ev_005"
+        },
+        {
+          "character": "林冲",
+          "action": "从壁缝看见草料场起火，跳起身",
+          "evidenceId": "ev_006"
+        },
+        {
+          "character": "林冲",
+          "action": "门缝里认出三人，听见密谋后按捺不住",
+          "evidenceId": "ev_007"
+        },
+        {
+          "character": "林冲",
+          "action": "把身一耸、推开庙门、大喝",
+          "evidenceId": "ev_009"
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "忍让求安的配军与暗中谋害的旧识",
+          "to": "识破真相的复仇者与现身的仇敌",
+          "trigger": "门缝偷听获知陆虞候等三人纵火并确认其杀意",
+          "evidenceId": "ev_007"
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "point": "门缝认出陆虞候、富安、差拨三人并听到其庆贺之语",
+          "before": "林冲只知草料场起火，准备出门救火",
+          "after": "林冲确知纵火者身份与杀意，处境由被动受害转为主动复仇",
+          "evidenceId": "ev_007"
+        },
+        {
+          "point": "把身一耸、推开庙门、大喝",
+          "before": "隔门偷听、按捺不动",
+          "after": "正面现身、冲突公开爆发",
+          "evidenceId": "ev_009"
+        }
+      ],
+      "setups": [
+        {
+          "setup": "花枪挑了酒葫芦、盖火炭、拽门锁门",
+          "payoff": "离开草厅使其免于葬身火场；花枪随身，为后文出手预留",
+          "evidenceId": "ev_002"
+        },
+        {
+          "setup": "把大石掇过来靠了门",
+          "payoff": "门被石挡，外面三人未能入庙，林冲得以隔门偷听",
+          "evidenceId": "ev_005"
+        },
+        {
+          "setup": "就壁缝里看时",
+          "payoff": "壁缝、门缝的观察位置为偷听提供物理条件",
+          "evidenceId": "ev_006"
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "大石靠门→隔门偷听→推门而出，形成完整的空间因果链",
+          "evidenceId": "ev_009"
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "开端：雪寒中的生计盘算",
+          "change": "由景物转入人物对修屋、沽酒的日常筹划，呈现隐忍求安",
+          "reason": "以琐细打算反衬其尚无反抗之意",
+          "evidenceId": "ev_001"
+        },
+        {
+          "stage": "中段：风雪行路与庙中顶礼",
+          "change": "从行路转入避雪祈神，人物仍处于被动承受",
+          "reason": "延续“退、忍、避”的行动基调",
+          "evidenceId": "ev_005"
+        },
+        {
+          "stage": "转折：壁缝火光与门缝人声",
+          "change": "由不知转为确知，信息差被揭开",
+          "reason": "偷听位置使真相直接进入人物感知",
+          "evidenceId": "ev_007"
+        },
+        {
+          "stage": "收束：一耸、推门、大喝",
+          "change": "由压抑转为爆发，退忍基调中断",
+          "reason": "动词链将情绪转为可见动作",
+          "evidenceId": "ev_009"
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "an_struct",
+      "name": "结构组织",
+      "summary": "六段可依次归入建场、推进、建场兼推进、转折、转折、收束，功能归类清晰，无归不进去的段落。",
+      "impact": "段落功能单线推进，读者始终跟随林冲的行动轨迹，节奏由缓入急。",
+      "suggestion": "若扩写，可在第四、五段之间补一处短促的停顿句，使“发现—爆发”的加速更有层次。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_005",
+        "ev_006",
+        "ev_007",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "an_cohere",
+      "name": "连贯衔接",
+      "summary": "指代词均有明确先行词，“他/那厮/三人”指称清楚；相邻句主题词重叠或由连接词承接，未见语义断层。",
+      "impact": "衔接紧密，读者不需回读即可锁定指称对象。",
+      "suggestion": "“三个人直来到庙前”前可加时间承接词，使方位转换更平滑。",
+      "score": 84,
+      "evidenceIds": [
+        "ev_006",
+        "ev_007",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_density",
+      "name": "信息密度与节奏",
+      "summary": "文本以短段推进，事件密度高，无连续零信息窗；单段均远短于400字。",
+      "impact": "节奏紧凑，动作与信息交替出现，无拖沓感。",
+      "suggestion": "保持现有短段切分，扩写时避免在抒情处堆叠同级形容词。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_006",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "an_sensory",
+      "name": "具体性与感官",
+      "summary": "视觉（彤云、瑞雪、火光）、听觉（必必剥剥、刮刮杂杂、人声）、触觉体感（身上寒冷）多通道并置，转折处具象细节扎实。",
+      "impact": "风雪与火光的视听对照强化了紧张感，寒冷体感为后文爆发提供反差。",
+      "suggestion": "可在推门处补一记触觉（如门板冰手或雪粒扑脸），使爆发瞬间更具身体感。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_005",
+        "ev_006",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "an_image",
+      "name": "意象复现",
+      "summary": "“雪”跨段复现且形态推进（飞下瑞雪→越下得紧→雪地里踏着碎琼乱玉），与人物处境由缓入急同步；“花枪”“大石”作为功能性物件参与情节。",
+      "impact": "雪的递进既标时间又压气氛，成为人物受压的具象刻度。",
+      "suggestion": "结尾若续写，可让雪再次落笔，与开篇“一天瑞雪”形成闭环。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "an_pov",
+      "name": "视角一致性",
+      "summary": "叙述高度附着于林冲的感知与行动，心理句主语均为林冲，未见越界或来源不明的信息使用。",
+      "impact": "限制性感知使偷听段落的信息揭示与读者同步，悬念自然生成。",
+      "suggestion": "保持“他听得/瞧时”这类感知动词引导，避免直接进入对方三人的内心。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_006",
+        "ev_007",
+        "ev_008"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "正是严冬天气，彤云密布，朔风渐起，却早翻翻覆覆飞下一天瑞雪来。林冲想道：“这屋如何过得一冬？待雪晴了，去城中唤个泥水匠来修理。”",
+      "note": "开篇建场：给出时节、天象与人物处境，并以内心打算呈现其求安心态。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "便去包裹里取些碎银子，把花枪挑了酒葫芦，将火炭盖了，也把门拽上，锁了。望那草料场来。",
+      "note": "连续动作推进，花枪与酒葫芦随身、火炭盖灭、门已上锁，均为后文埋设条件。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "看那雪到晚越下得紧了。",
+      "note": "雪势递进，标记时间推移并加压气氛。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "信步投东，雪地里踏着碎琼乱玉，迤逦背着北风而行。",
+      "note": "行路描写，视觉与体感并置，延续风雪意象。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "入得庙门，把大石掇过来靠了门。",
+      "note": "关键动作：以石挡门，构成后文隔门偷听的空间前提；庙中顶礼亦见其恭谨。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "只听得外面必必剥剥地爆响。林冲跳起身来，就壁缝里看时，只见草料场起火，刮刮杂杂烧着。",
+      "note": "听觉先入、视觉随后，壁缝观察位置确立；转折启动。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "林冲在门缝里瞧时，正是陆虞候、富安、差拨三人。陆虞候道：“便烧得端正，那厮便是吃了飞禽走兽的药，也逃不得这一场大火！”林冲听得，心头那团烈火再也按捺不住。",
+      "note": "信息揭示：仇敌身份与杀意被确知，人物处境发生不可逆变化。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "林冲正要推门出去救火，只听得外面有人说起话来。三个人直来到庙前。",
+      "note": "行动被外部人声打断，叙述由救火转向偷听，属转折前的过渡。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "把身一耸，把庙门推开，大喝一声：“贼徒！哪里去！”",
+      "note": "收束段：三个动作连成一气，情绪转为可见动作，冲突公开化。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "向了一回火，觉得身上寒冷，寻思：“却才老军指个市井，何不去沽些酒来吃？”",
+      "note": "体感与内心独白并置，呈现日常盘算，为后文突变蓄势。"
+    },
+    {
+      "id": "ev_011",
+      "source": "inference",
+      "claim": "开篇的琐细打算与结尾的爆发构成性格弧线的临界切换",
+      "note": "前段反复出现修屋、沽酒等维持现状的筹划，末段以“一耸、推开、大喝”中断该基调，前后对照可推断为压抑到释放的转折。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_lin",
+        "label": "林冲",
+        "type": "character",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n_lu",
+        "label": "陆虞候",
+        "type": "character",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n_fu",
+        "label": "富安",
+        "type": "character",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n_chai",
+        "label": "差拨",
+        "type": "character",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n_snow",
+        "label": "风雪",
+        "type": "image",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n_spear",
+        "label": "花枪与酒葫芦",
+        "type": "object",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n_stone",
+        "label": "大石倚门",
+        "type": "object",
+        "evidenceId": "ev_005"
+      },
+      {
+        "id": "n_fire",
+        "label": "草料场大火",
+        "type": "event",
+        "evidenceId": "ev_006"
+      },
+      {
+        "id": "n_eaves",
+        "label": "门缝偷听",
+        "type": "event",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n_burst",
+        "label": "推门大喝",
+        "type": "event",
+        "evidenceId": "ev_009"
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_lin",
+        "to": "n_spear",
+        "relation": "携带",
+        "evidenceId": "ev_002"
+      },
+      {
+        "from": "n_lin",
+        "to": "n_stone",
+        "relation": "搬置挡门",
+        "evidenceId": "ev_005"
+      },
+      {
+        "from": "n_lin",
+        "to": "n_fire",
+        "relation": "目睹",
+        "evidenceId": "ev_006"
+      },
+      {
+        "from": "n_lin",
+        "to": "n_eaves",
+        "relation": "参与",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n_lu",
+        "to": "n_fire",
+        "relation": "主使纵火",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n_fu",
+        "to": "n_fire",
+        "relation": "同谋",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n_chai",
+        "to": "n_fire",
+        "relation": "同谋",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n_eaves",
+        "to": "n_burst",
+        "relation": "因果引发",
+        "evidenceId": "ev_009"
+      },
+      {
+        "from": "n_snow",
+        "to": "n_lin",
+        "relation": "环境施压",
+        "evidenceId": "ev_003"
+      },
+      {
+        "from": "n_stone",
+        "to": "n_eaves",
+        "relation": "形成隔门条件",
+        "evidenceId": "ev_005"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第一段 雪起与修屋盘算",
+      "value": 35,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第二段 取银锁门出发",
+      "value": 58,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第三段 雪地行路入庙",
+      "value": 50,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第四段 壁缝见火",
+      "value": 78,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第五段 门缝偷听",
+      "value": 85,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第六段 推门大喝",
+      "value": 96,
+      "evidenceId": "ev_009"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第一段 雪起与修屋盘算",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第二段 取银锁门出发",
+      "value": 38,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第三段 雪地行路入庙",
+      "value": 35,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第四段 壁缝见火",
+      "value": 70,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第五段 门缝偷听",
+      "value": 88,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第六段 推门大喝",
+      "value": 97,
+      "evidenceId": "ev_009"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "隐忍求安",
+      "segment": "第一段 雪起与修屋盘算",
+      "value": 85,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "隐忍求安",
+      "segment": "第二段 取银锁门出发",
+      "value": 60,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "隐忍求安",
+      "segment": "第三段 雪地行路入庙",
+      "value": 55,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "隐忍求安",
+      "segment": "第四段 壁缝见火",
+      "value": 25,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "隐忍求安",
+      "segment": "第五段 门缝偷听",
+      "value": 10,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "隐忍求安",
+      "segment": "第六段 推门大喝",
+      "value": 5,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "逼迫与陷害",
+      "segment": "第一段 雪起与修屋盘算",
+      "value": 10,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "逼迫与陷害",
+      "segment": "第二段 取银锁门出发",
+      "value": 15,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "逼迫与陷害",
+      "segment": "第三段 雪地行路入庙",
+      "value": 20,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "逼迫与陷害",
+      "segment": "第四段 壁缝见火",
+      "value": 70,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "逼迫与陷害",
+      "segment": "第五段 门缝偷听",
+      "value": 92,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "逼迫与陷害",
+      "segment": "第六段 推门大喝",
+      "value": 80,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "反抗爆发",
+      "segment": "第一段 雪起与修屋盘算",
+      "value": 5,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "反抗爆发",
+      "segment": "第二段 取银锁门出发",
+      "value": 10,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "反抗爆发",
+      "segment": "第三段 雪地行路入庙",
+      "value": 10,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "反抗爆发",
+      "segment": "第四段 壁缝见火",
+      "value": 30,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "反抗爆发",
+      "segment": "第五段 门缝偷听",
+      "value": 65,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "反抗爆发",
+      "segment": "第六段 推门大喝",
+      "value": 98,
+      "evidenceId": "ev_009"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 58,
+        "interpretation": "以短句与四六式文言短句为主，最长句亦不过数十字，节奏急促。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_009"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话占比",
+        "value": 45,
+        "interpretation": "对白与内心独白合计约占近半，陆虞候一句道白承担信息揭示功能。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 82,
+        "interpretation": "视觉、听觉、触觉体感三通道密集，火光与爆响尤为突出。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_006",
+          "ev_010"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 62,
+        "interpretation": "多用叠字拟声与四字对举（必必剥剥、刮刮杂杂、碎琼乱玉），修辞服务于声景与雪景。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_006"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 38,
+        "interpretation": "叙述贴近林冲的感知与内心，距离较近，读者与其同步获知真相。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_007"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 80,
+        "interpretation": "由缓入急，末段三个动作连缀成一句，节奏骤紧。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_009"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "dg_001",
+      "location": "第六段“把身一耸，把庙门推开，大喝一声”",
+      "quote": "把身一耸，把庙门推开，大喝一声：“贼徒！哪里去！”",
+      "effect": "三个动作一气贯通，爆发感强；但作为收束段，未回指开篇的雪或草屋，也未交代人物处境的终结状态，收束略嫌悬空。",
+      "action": "若本段为章节结尾，可补一句短促的处境交代（如雪落或火势），与开篇“一天瑞雪”形成回指；若下段另有续写，则不必改。",
+      "confidence": 0.62,
+      "evidenceIds": [
+        "ev_009",
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "dg_002",
+      "location": "第五段“三个人直来到庙前”",
+      "quote": "林冲正要推门出去救火，只听得外面有人说起话来。三个人直来到庙前。",
+      "effect": "“三个人”先以数量引入，随后才在门缝中揭示身份，悬念处理得当；但“直来到庙前”与前后句的动作衔接略显跳脱，方位转换少一个承接。",
+      "action": "可在句首加时间或方位承接（如“少顷”“脚步渐近”），使由听到见的转换更连贯。",
+      "confidence": 0.55,
+      "evidenceIds": [
+        "ev_008",
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "C3"
+      ]
+    },
+    {
+      "id": "dg_003",
+      "location": "第五段“心头那团烈火再也按捺不住”",
+      "quote": "林冲听得，心头那团烈火再也按捺不住。",
+      "effect": "以“烈火”喻怒，与草料场之火形成呼应，是有效的意象叠合；但“按捺不住”属概括性情绪陈述，情绪已由后文动作承担，此处略重复。",
+      "action": "可保留比喻而删去概括词，或改为可指认的身体反应（如指节发紧、喉头一动），避免情绪直陈与动作重复。",
+      "confidence": 0.58,
+      "evidenceIds": [
+        "ev_007",
+        "ev_009"
+      ],
+      "criteriaIds": [
+        "P1"
+      ]
+    },
+    {
+      "id": "dg_004",
+      "location": "第三段“信步投东，雪地里踏着碎琼乱玉”",
+      "quote": "信步投东，雪地里踏着碎琼乱玉，迤逦背着北风而行。",
+      "effect": "“碎琼乱玉”与“迤逦”偏书面雅化，与前后“把身一耸”“大喝”的口语动作语体略有落差，语体不完全统一。",
+      "action": "若追求统一的白话语体，可将“碎琼乱玉”改为更朴素的雪地描写；若保留文言色彩，则末段亦可略添一二文言句式以求匀称。",
+      "confidence": 0.5,
+      "evidenceIds": [
+        "ev_004",
+        "ev_009"
+      ],
+      "criteriaIds": [
+        "P2"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_002:technique_explanation",
+      "workId": "KB_002",
+      "chunkType": "technique_explanation",
+      "content": "林冲风雪山神庙｜技法：全知视角但高度附着于林冲行动轨迹、草蛇灰线，伏脉千里、景物烘托与心理共振；动词'一耸''推开''大喝'完成性格弧光从压抑到释放的临界点切换。",
+      "quote": "施耐庵用动词'一耸'（蓄力、爆发）、'推开'（推倒阻隔）、'大喝'（情绪总宣泄），瞬间完成了人物性格弧光从压抑到释放的临界点切换。",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/水滸傳/第010回"
+    },
+    {
+      "retrievalId": "KB_002:summary",
+      "workId": "KB_002",
+      "chunkType": "summary",
+      "content": "八十万禁军教头林冲发配沧州后一再退让求安，终因陆谦等人设计火烧草料场逼入绝境，于风雪山神庙手刃仇敌、雪夜上梁山。",
+      "quote": "八十万禁军教头林冲发配沧州后一再退让求安，终因陆谦等人设计火烧草料场逼入绝境，于风雪山神庙手刃仇敌、雪夜上梁山。",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/水滸傳/第010回"
+    }
+  ]
+}

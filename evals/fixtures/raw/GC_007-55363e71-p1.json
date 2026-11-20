@@ -1,0 +1,814 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "成名",
+          "goal": "完成里正摊派的促织之贡，以免受杖、免破产",
+          "evidenceId": "ev_002"
+        },
+        {
+          "character": "华阴县令",
+          "goal": "以促织媚上官，求抚军嘉奖与升迁",
+          "evidenceId": "ev_001"
+        },
+        {
+          "character": "成名之子（九岁）",
+          "goal": "窥看父亲盆中促织（好奇），闯祸后求救于母",
+          "evidenceId": "ev_004"
+        },
+        {
+          "character": "抚军/天子",
+          "goal": "收促织为戏、以贡物定赏罚",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "actions": [
+        {
+          "character": "成名",
+          "action": "经巫者指点，于荒坟巨石下捕得体硕色青之虫，置盆严养，拟进献",
+          "evidenceId": "ev_003"
+        },
+        {
+          "character": "成名之子",
+          "action": "窃发盆，虫跃出，急捕时折其股、压毙之；惧而啼告母，后投井",
+          "evidenceId": "ev_004"
+        },
+        {
+          "character": "成名之妻",
+          "action": "闻祸变色，斥子“业根”“尔死期至矣”，未加拦护",
+          "evidenceId": "ev_005"
+        },
+        {
+          "character": "成名",
+          "action": "归闻妻言，搜寻其子，见投井死；夫妻向隅默然",
+          "evidenceId": "ev_006"
+        },
+        {
+          "character": "小虫（异虫）",
+          "action": "咬毙邻家健蟋蟀之喉，又跳跃啄鸡冠，鸡退缩",
+          "evidenceId": "ev_008"
+        },
+        {
+          "character": "抚军/天子",
+          "action": "进虫于天子，天子大悦，赐马锦，免成名赋税，田产骤富",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "before": "成名与胥吏：被猾黠胥吏“名”为里正，属被动受役的上下关系",
+          "after": "成名因虫致富、免赋税，“裘马扬扬”，与权力层的关系由被压榨者变为受赏者",
+          "evidenceId": "ev_009"
+        },
+        {
+          "before": "父子：父严加养虫拟解家难，子窥盆闯祸",
+          "after": "子投井死，父子关系以死亡终结，家中“茅舍无烟，相对默然”",
+          "evidenceId": "ev_006"
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "point": "成名捕得神骏促织，家难有望可解",
+          "position": "第三段",
+          "evidenceId": "ev_003"
+        },
+        {
+          "point": "其子压毙促织，闯下灭顶之祸",
+          "position": "第四段",
+          "evidenceId": "ev_004"
+        },
+        {
+          "point": "子投井死，家庭坠入死寂",
+          "position": "第五段",
+          "evidenceId": "ev_006"
+        },
+        {
+          "point": "门外忽闻虫鸣，小虫斗毙健蟋蟀、啄退公鸡，命运逆转",
+          "position": "第六段",
+          "evidenceId": "ev_008"
+        },
+        {
+          "point": "虫进于天子，成名免赋骤富",
+          "position": "第七段",
+          "evidenceId": "ev_007"
+        }
+      ],
+      "setups": [
+        {
+          "setup": "“岁征民间”“小民破产者甚众”的摊派体制",
+          "payoff": "成名“以促织富”，同一体制先毁人后成人，构成反讽闭环",
+          "evidenceId": "ev_001"
+        },
+        {
+          "setup": "成名“每责一头，往往泣下”的窘迫",
+          "payoff": "末段“当其为里正受杖时，岂料有今日哉”回照其贫窘",
+          "evidenceId": "ev_002"
+        },
+        {
+          "setup": "小虫“极短小”“成意甚轻之”",
+          "payoff": "小虫连胜健蟋蟀与公鸡，轻之者反被其救",
+          "evidenceId": "ev_008"
+        }
+      ],
+      "payoffs": [
+        {
+          "payoff": "“裘马扬扬”在正文与异史氏评中两次出现，赏赐落实",
+          "setup": "成名资产中匮、受役受责",
+          "evidenceId": "ev_009"
+        },
+        {
+          "payoff": "异史氏曰点破“天子偶用一物”与“下官役民，毒流骨髓”",
+          "setup": "开篇宫中尚促织之戏、层层摊派",
+          "evidenceId": "ev_010"
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "开篇（宫廷征戏—地方摊派）",
+          "theme": "上有所好，下必甚焉的体制之毒",
+          "change": "由“宫中尚促织之戏”的娱乐起笔，迅速转为“天下大征”“破产者甚众”的民间灾难",
+          "reason": "以一句岁征民间把宫廷趣味与民间破产直接焊接，确立批判基调",
+          "evidenceId": "ev_001"
+        },
+        {
+          "stage": "中段（成名得虫—子毙虫—子投井）",
+          "theme": "底层在摊派链条中的脆弱与家破",
+          "change": "由“大喜”到“如雷轰顶”“不复聊赖”，一家由有望转为死寂",
+          "reason": "祸福全系于一虫，人命轻于虫命，强化体制压迫的荒诞",
+          "evidenceId": "ev_006"
+        },
+        {
+          "stage": "后段（异虫连胜—进献—骤富）",
+          "theme": "祸福无常与赏罚失据",
+          "change": "同一促织由致祸之源变为致富之由，“以蠹贫，以促织富”",
+          "reason": "祸福反转不经人物努力而由神怪/上意决定，指向世道不公",
+          "evidenceId": "ev_009"
+        },
+        {
+          "stage": "结尾（异史氏曰）",
+          "theme": "讽喻与天道之疑",
+          "change": "由叙事转入评断，质疑“天将以福善祸淫”是否成立",
+          "reason": "以反问收束，把个体奇遇提升为对天道与吏治的双重质询",
+          "evidenceId": "ev_010"
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "an_001",
+      "name": "结构组织",
+      "summary": "八段可清晰归入建场、推进、转折、抒情评述、收束五类，仅末段兼具评述与收束，主功能可定为评述收束，归不进去的段落不超过1个。",
+      "impact": "全文呈“起—承—转—合”的完整传奇结构，节奏紧凑，无空转段落。",
+      "suggestion": "可保留现有段落划分；若需强化收束，可让末段在反问后稍作回指“盆”“井”等前文物件，使闭环更显。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_006",
+        "ev_010"
+      ]
+    },
+    {
+      "id": "an_002",
+      "name": "转折强度",
+      "summary": "全文至少三处不可逆转折：捕得神虫、子毙虫并投井、异虫连胜致富，每处均有变化前后可定位证据。",
+      "impact": "波折法（Rollercoaster）使读者情绪随之起伏，祸福反转的荒诞感被推到极致。",
+      "suggestion": "转折密度已足；可考虑在“子投井”与“门外虫鸣”之间保留更长的静默停顿，让反转更具冲击。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_003",
+        "ev_004",
+        "ev_006",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_003",
+      "name": "连贯与指代",
+      "summary": "全篇第三人称，指代词（其、之、此物）先行词基本明确；相邻句主题词多有重叠或连接词衔接。",
+      "impact": "叙述流畅，文言简省而不失清晰。",
+      "suggestion": "“市各家粮料”“甲裹”等处语义略涩，可校订为更通行的表述以减少读者停顿。",
+      "score": 78,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "an_004",
+      "name": "信息密度与节奏",
+      "summary": "全文约六百字，事件密集，无连续200字零信息窗口；单段均未超过400字，不存在长段空转。",
+      "impact": "节奏明快，符合志怪传奇“简而有味”的文体要求。",
+      "suggestion": "密度已高；可在“夫妻向隅，茅舍无烟”处略作延展，给情感留白。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_004",
+        "ev_006",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_005",
+      "name": "具体性与感官",
+      "summary": "感官以视觉为主（色青而光、梅花翅、黑斑斑、面如死灰），辅以听觉（促织鸣）与体感（如雷轰顶），覆盖三类以上。",
+      "impact": "具象细节支撑了奇幻情节的可信度，关键转折处有可摘引的物件与动作。",
+      "suggestion": "可补一处嗅觉或触觉（如盆中土腥、虫身凉滑），使关键场景更立体。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_003",
+        "ev_005",
+        "ev_008"
+      ]
+    },
+    {
+      "id": "an_006",
+      "name": "意象复现",
+      "summary": "“促织（虫）”跨段多次复现，且形态由“硕大色青”变为“极短小、梅花翅、黑斑斑”，功能由致祸转为致富，符合意象推进要求。",
+      "impact": "同一意象承载祸福两端，形成强烈的反讽与结构对称。",
+      "suggestion": "可在末段评述中再点一次“促织”，让意象与议论咬合更紧。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_003",
+        "ev_008",
+        "ev_009"
+      ]
+    },
+    {
+      "id": "an_007",
+      "name": "视角一致性",
+      "summary": "第三人称全知体，叙述者可自由进入成名、其妻、其子等多人内心与处境，属零聚焦，视角一致无越界。",
+      "impact": "全知视角便于在短篇内快速调度多方反应，并支撑末段“异史氏曰”的跳出评断。",
+      "suggestion": "全知体下无需修改；若改为限制视角则需重写多处心理与评述。",
+      "score": 84,
+      "evidenceIds": [
+        "ev_002",
+        "ev_005",
+        "ev_010"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "宣德间，宫中尚促织之戏，岁征民间。",
+      "note": "开篇建立时代、宫廷趣味与征敛体制，是全文批判的起点。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "成名资产中匮，每责一头，往往泣下。",
+      "note": "交代成名贫窘与被役处境，为后文祸福反转埋伏。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "于荒坟巨石之下捉得一头：体型硕大，双尾尾尖，色青而光。",
+      "note": "捕得神虫，处境由绝望转为有望，是第一处转折与核心意象首次出现。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "窥父不在，窃发盆。蚤跃掷出，急捕之，杖促，折其股，压而毙之。",
+      "note": "子毙虫，闯下灭顶之祸，构成第二处转折。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "母闻之，面如死灰，大骇曰：“业根！尔死期至矣！汝父回，自与汝算账！”",
+      "note": "母亲反应具象（面如死灰）且有直接引语，是感官与人物刻画的关键证据。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "见投井死。夫妻向隅，茅舍无烟，相对默然，不复聊赖。",
+      "note": "子死与家庭死寂，情感最低点，也是后文奇幻反转的心理势能。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "天子大悦，赐抚军良马锦缎，抚军赏令，令免成名赋税，田产骤富，裘马扬扬。",
+      "note": "赏赐落实，处境由贫窘转为骤富，是结局性转折。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "小虫忽振翅一跃，直咬敌喉，敌立毙。又置于鸡前，小虫竟跳跃啄鸡冠，鸡退缩避走。",
+      "note": "异虫连胜，意象形态与功能发生推进，是高潮段的核心具象动作。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "独是成氏子以蠹贫，以促织富，裘马扬扬。",
+      "note": "评述点破祸福反转，与正文“裘马扬扬”形成呼应闭环。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "天将以福善祸淫，抑神怪所托耶？",
+      "note": "末段以反问收束，质疑天道，是收束与主题提升的关键句。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "宫廷征戏",
+        "kind": "事件",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n2",
+        "label": "成名受役破产",
+        "kind": "人物处境",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n3",
+        "label": "捕得神虫",
+        "kind": "事件",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n4",
+        "label": "子毙虫",
+        "kind": "事件",
+        "evidenceId": "ev_004"
+      },
+      {
+        "id": "n5",
+        "label": "子投井死",
+        "kind": "事件",
+        "evidenceId": "ev_006"
+      },
+      {
+        "id": "n6",
+        "label": "异虫连胜",
+        "kind": "事件",
+        "evidenceId": "ev_008"
+      },
+      {
+        "id": "n7",
+        "label": "成名骤富",
+        "kind": "人物处境",
+        "evidenceId": "ev_007"
+      },
+      {
+        "id": "n8",
+        "label": "异史氏评",
+        "kind": "评述",
+        "evidenceId": "ev_010"
+      }
+    ],
+    "edges": [
+      {
+        "from": "n1",
+        "to": "n2",
+        "label": "层层摊派导致",
+        "evidenceId": "ev_001"
+      },
+      {
+        "from": "n2",
+        "to": "n3",
+        "label": "为解家难而求虫",
+        "evidenceId": "ev_002"
+      },
+      {
+        "from": "n3",
+        "to": "n4",
+        "label": "虫被压毙",
+        "evidenceId": "ev_004"
+      },
+      {
+        "from": "n4",
+        "to": "n5",
+        "label": "惧罪投井",
+        "evidenceId": "ev_006"
+      },
+      {
+        "from": "n5",
+        "to": "n6",
+        "label": "门外虫鸣反转",
+        "evidenceId": "ev_008"
+      },
+      {
+        "from": "n6",
+        "to": "n7",
+        "label": "进献受赏",
+        "evidenceId": "ev_007"
+      },
+      {
+        "from": "n7",
+        "to": "n8",
+        "label": "评述反讽",
+        "evidenceId": "ev_009"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第一段",
+      "value": 40,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第二段",
+      "value": 35,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第三段",
+      "value": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第四段",
+      "value": 75,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第五段",
+      "value": 20,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第六段",
+      "value": 85,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第七段",
+      "value": 60,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第八段",
+      "value": 30,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第一段",
+      "value": -30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第二段",
+      "value": -45,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第三段",
+      "value": 45,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第四段",
+      "value": -70,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第五段",
+      "value": -90,
+      "evidenceId": "ev_006"
+    },
+    {
+      "segment": "第六段",
+      "value": 60,
+      "evidenceId": "ev_008"
+    },
+    {
+      "segment": "第七段",
+      "value": 70,
+      "evidenceId": "ev_007"
+    },
+    {
+      "segment": "第八段",
+      "value": -20,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "体制之毒",
+      "segment": "第一段",
+      "value": 85,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第二段",
+      "value": 70,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第三段",
+      "value": 30,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第四段",
+      "value": 20,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第五段",
+      "value": 25,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第六段",
+      "value": 30,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第七段",
+      "value": 55,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "体制之毒",
+      "segment": "第八段",
+      "value": 90,
+      "evidenceId": "ev_010"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第一段",
+      "value": 10,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第二段",
+      "value": 20,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第三段",
+      "value": 55,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第四段",
+      "value": 70,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第五段",
+      "value": 75,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第六段",
+      "value": 65,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第七段",
+      "value": 80,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "祸福无常",
+      "segment": "第八段",
+      "value": 85,
+      "evidenceId": "ev_009"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第一段",
+      "value": 5,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第二段",
+      "value": 30,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第三段",
+      "value": 10,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第四段",
+      "value": 60,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第五段",
+      "value": 95,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第六段",
+      "value": 40,
+      "evidenceId": "ev_008"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第七段",
+      "value": 15,
+      "evidenceId": "ev_007"
+    },
+    {
+      "theme": "家破之痛",
+      "segment": "第八段",
+      "value": 20,
+      "evidenceId": "ev_010"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "文言短句为主，间以长句铺陈事件链，整体偏简劲。",
+        "evidenceIds": [
+          "ev_002",
+          "ev_004"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话占比",
+        "value": 18,
+        "interpretation": "仅母亲一处直接引语，对话稀少，叙述与评述占主导。",
+        "evidenceIds": [
+          "ev_005"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 70,
+        "interpretation": "视觉细节密集（色青而光、梅花翅、黑斑斑、面如死灰），辅以听觉与体感。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_008"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 65,
+        "interpretation": "多用对比与反讽（以蠹贫/以促织富），并借反问收束。",
+        "evidenceIds": [
+          "ev_009",
+          "ev_010"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 55,
+        "interpretation": "正文贴近人物处境，末段叙述者跳出作评，形成远近交替。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_010"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 72,
+        "interpretation": "祸福急转，段落短促，节奏起伏明显。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_008"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "dg_001",
+      "location": "第二段“宰官每责成里正、甲裹，市各家粮料”",
+      "quote": "宰官每责成里正、甲裹，市各家粮料",
+      "effect": "“甲裹”“市各家粮料”语义晦涩，读者需停顿推敲，打断开篇的顺畅推进。",
+      "action": "校订为更通行的表述（如“甲长”“摊派各家粮料”），保留原意而降低阅读摩擦。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_001"
+      ],
+      "criteriaIds": [
+        "C3"
+      ]
+    },
+    {
+      "id": "dg_002",
+      "location": "第四段“急捕之，杖促，折其股，压而毙之”",
+      "quote": "急捕之，杖促，折其股，压而毙之",
+      "effect": "“杖促”疑为讹字或误植，动作链（急捕—折股—压毙）因此出现语义断点，影响转折段的可读性。",
+      "action": "核对底本，若为“仓促”或“急遽”之误，宜改正以保动作连贯。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_004"
+      ],
+      "criteriaIds": [
+        "C3",
+        "P3"
+      ]
+    },
+    {
+      "id": "dg_003",
+      "location": "第五段“见投井死”",
+      "quote": "见投井死",
+      "effect": "子死与父母反应之间省略过渡，情感冲击虽强，但“搜寻其子”到“见投井死”的跳跃略快，读者可能漏读关键信息。",
+      "action": "可补一短句交代搜寻过程（如“遍寻不得，至井畔”），使转折更可定位。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_006"
+      ],
+      "criteriaIds": [
+        "S3",
+        "D3"
+      ]
+    },
+    {
+      "id": "dg_004",
+      "location": "第六段“成意甚轻之”至“敌立毙”",
+      "quote": "成意甚轻之。适有邻人携健蟋蟀来斗，小虫忽振翅一跃，直咬敌喉，敌立毙。",
+      "effect": "由轻视到连胜的反转缺少一句心理或场景铺垫，奇幻转折稍显突兀。",
+      "action": "可在“适有邻人”前加一句成名对虫的犹疑或邻人的挑衅语，使反转更有张力。",
+      "confidence": 0.55,
+      "evidenceIds": [
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "S3",
+        "P3"
+      ]
+    },
+    {
+      "id": "dg_005",
+      "location": "第八段“天将以福善祸淫，抑神怪所托耶”",
+      "quote": "天将以福善祸淫，抑神怪所托耶？",
+      "effect": "末段以反问收束，回指前文“裘马扬扬”，收束功能成立；但未再点“促织”意象，闭环稍弱。",
+      "action": "可在反问前补半句回指促织或盆、井等前文物件，使收束更紧。",
+      "confidence": 0.5,
+      "evidenceIds": [
+        "ev_010",
+        "ev_009"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_005:technique_explanation",
+      "workId": "KB_005",
+      "chunkType": "technique_explanation",
+      "content": "促织｜技法：第三人称全知志怪传奇体、跌宕波折法、寓讽于奇；小儿投井后用“茅舍无烟，相对默然”呈现死寂，为奇幻化虫积蓄心理势能。",
+      "quote": "蒲松龄在小儿投井后，没有用铺张的哭号描写，而是用'茅舍无烟，相对默然'八个字，精准呈现了...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/聊齋志異/第04卷#促織"
+    },
+    {
+      "retrievalId": "KB_005:summary",
+      "workId": "KB_005",
+      "chunkType": "summary",
+      "content": "宣德年间宫中尚斗蟋蟀，地方官吏层层摊派勒索，成名一家因交不起促织家破人亡，其幼子投井化身为斗无不胜的促织以解家难。",
+      "quote": "宣德年间宫中尚斗蟋蟀，地方官吏层层摊派勒索，老实县民成名一家因交不起促织家破人亡，其幼子投井化身为斗无不胜的促织以解家难。",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/聊齋志異/第04卷#促織"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "workId": "KB_001",
+      "chunkType": "technique_explanation",
+      "content": "孔乙己｜技法：白描、以喜衬悲、首尾呼应与账本伏笔；以视觉矛盾法确立身份与实相的断裂。",
+      "quote": "鲁迅在此处精准使用了'视觉矛盾法'。长衫象征着知识分子和上层体面...",
+      "sourceStatus": "pending",
+      "sourceUrl": "https://zh.wikisource.org/wiki/孔乙己"
+    }
+  ]
+}

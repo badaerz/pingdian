@@ -1,0 +1,714 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "史进",
+          "goal": "寻找师父王进，探问其是否在渭州经略府。",
+          "evidenceIds": [
+            "ev_001",
+            "ev_002"
+          ]
+        },
+        {
+          "character": "鲁达",
+          "goal": "结识史进，邀其饮酒；对李忠的拖沓表示不耐烦，欲强行拉走。",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004",
+            "ev_005"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "史进",
+          "action": "入茶坊吃茶，向茶博士打听经略府与王进。",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "character": "鲁达",
+          "action": "大踏步走进茶坊，与史进施礼、通名，告知王进在延安府，并邀史进上街吃酒。",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "character": "鲁达",
+          "action": "在街头见李忠卖药，焦躁之下推搡并喝骂围观者，驱散人群。",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "史进与鲁达素不相识",
+          "to": "鲁达主动挽手邀酒，二人以兄弟相称，建立初步交情。",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "from": "鲁达与李忠初识",
+          "to": "鲁达因李忠磨蹭而焦躁，李忠敢怒不敢言，关系带有压迫性。",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "鲁达出场，从茶博士口中得知史进寻王进，主动介入并邀酒。",
+          "evidenceIds": [
+            "ev_003"
+          ]
+        },
+        {
+          "description": "街头遇李忠，鲁达焦躁驱散人群，展现其性格。",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "description": "史进寻王进未果，王进在延安府的消息为后续情节埋下伏笔。",
+          "evidenceIds": [
+            "ev_002"
+          ]
+        },
+        {
+          "description": "鲁达邀史进、李忠同去饮酒，为后续酒楼情节作铺垫。",
+          "evidenceIds": [
+            "ev_004"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "description": "鲁达与史进结识，为后文二人结伴同行提供合理性。",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "stage": "开端",
+          "theme": "江湖义气与豪杰相惜",
+          "change": "史进独行寻师，鲁达主动结交，义气初显。",
+          "reason": "鲁达闻史进名号即邀酒，体现江湖好汉重名轻利。",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "stage": "发展",
+          "theme": "性格冲突与暴力倾向",
+          "change": "鲁达对李忠的拖沓失去耐心，动手驱散人群。",
+          "reason": "鲁达焦躁性格在细节中暴露，为后文拳打镇关西等情节铺垫。",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_S1",
+      "name": "结构组织",
+      "summary": "末段以鲁达邀酒、驱散人群作结，未引入新情节，但未回指开头，也未交代人物终结状态，收束功能不完整。",
+      "impact": "结尾停留在动作高潮，缺乏收束感，读者期待后续。",
+      "suggestion": "可在末段增加回指开头的元素（如茶坊、寻师）或交代人物处境的暂时终结，以增强收束。",
+      "score": 60,
+      "evidenceIds": [
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_S2",
+      "name": "段落功能",
+      "summary": "各段可归入建场、推进、转折、抒情评述、收束五类，归不进去的段落数为0。",
+      "impact": "段落功能清晰，叙事流畅。",
+      "suggestion": "保持现有功能划分，末段可强化收束功能。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_S3",
+      "name": "明确转折",
+      "summary": "鲁达出场并主动邀酒，史进寻师信息从无到有，构成明确转折。",
+      "impact": "情节推进有力，人物关系迅速建立。",
+      "suggestion": "转折处可增加细节描写以强化效果。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_003",
+        "ev_004"
+      ]
+    },
+    {
+      "id": "dim_C2",
+      "name": "指代明确",
+      "summary": "全篇指代词均有明确先行词，无悬空或歧义。",
+      "impact": "阅读顺畅，无理解障碍。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "dim_C3",
+      "name": "语义连贯",
+      "summary": "相邻句主题词重叠或使用连接词，无语义断层。",
+      "impact": "叙事连贯，逻辑清晰。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_D1",
+      "name": "信息密度",
+      "summary": "全文无连续200字零信息窗，信息密度适中。",
+      "impact": "节奏紧凑，无拖沓感。",
+      "suggestion": "保持。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_D3",
+      "name": "长段事件密度",
+      "summary": "无单段超过400字且事件数≤1的情况。",
+      "impact": "段落长度与事件密度匹配。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_001",
+        "ev_002",
+        "ev_003",
+        "ev_004",
+        "ev_005",
+        "ev_006"
+      ]
+    },
+    {
+      "id": "dim_P1",
+      "name": "空转评价句",
+      "summary": "无仅堆砌抽象评价词而无具体名词的句子。",
+      "impact": "描写具体，避免空泛。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "dim_P2",
+      "name": "感官覆盖",
+      "summary": "全篇覆盖视觉、听觉、触觉等多类感官通道。",
+      "impact": "场景生动，代入感强。",
+      "suggestion": "可增加嗅觉或味觉描写以丰富感官层次。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "dim_P3",
+      "name": "转折处具象细节",
+      "summary": "转折处有可指认的具象细节，如鲁达挽史进手、推搡围观者等。",
+      "impact": "转折具体可感，人物形象鲜明。",
+      "suggestion": "保持。",
+      "score": 90,
+      "evidenceIds": [
+        "ev_003",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "dim_M1",
+      "name": "候选意象",
+      "summary": "全篇具象名词短语中，出现≥2次的有“茶坊”“酒”“提辖”等，候选意象集非空。",
+      "impact": "意象复现为叙事提供连贯性。",
+      "suggestion": "可强化核心意象的象征意义。",
+      "score": 80,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_004"
+      ]
+    },
+    {
+      "id": "dim_M2",
+      "name": "跨段复现",
+      "summary": "“茶坊”跨段出现，“酒”在对话中多次提及，存在跨段复现候选。",
+      "impact": "跨段复现增强结构统一感。",
+      "suggestion": "保持。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_004"
+      ]
+    },
+    {
+      "id": "dim_M3",
+      "name": "意象形态变化",
+      "summary": "“茶坊”从史进独自进入，到鲁达进入并邀酒，功能位置变化，指向人物关系变化。",
+      "impact": "意象变化与人物处境变化呼应。",
+      "suggestion": "可进一步明确意象变化的象征意义。",
+      "score": 80,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003"
+      ]
+    },
+    {
+      "id": "dim_V1",
+      "name": "视角一致性",
+      "summary": "全篇为第三人称全知视角，无无故人称切换。",
+      "impact": "视角稳定，叙事流畅。",
+      "suggestion": "保持。",
+      "score": 95,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_005"
+      ]
+    },
+    {
+      "id": "dim_V2",
+      "name": "心理动词越界",
+      "summary": "全知视角下不适用V2。",
+      "impact": "无。",
+      "suggestion": "无。",
+      "score": 100,
+      "evidenceIds": [
+        "ev_001"
+      ]
+    },
+    {
+      "id": "dim_V3",
+      "name": "无来源信息",
+      "summary": "全知视角下不适用V3。",
+      "impact": "无。",
+      "suggestion": "无。",
+      "score": 100,
+      "evidenceIds": [
+        "ev_001"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "史进便入茶坊里来，拣一付座位坐了。茶博士问道：“客官吃甚茶？”史进道：“吃个泡茶。”",
+      "note": "史进入茶坊，与茶博士对话，建立场景。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "史进道：“借问经略府内有个东京来的教头王进么？”茶博士道：“这府里教头极多，有三四个姓王的，不知那个是王进？”",
+      "note": "史进打听王进，茶博士不知，引出下文鲁达。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "道犹未了，只见一个大汉，大踏步竟入，走进茶坊里来。",
+      "note": "鲁达出场，动作描写突出其豪迈。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "鲁提辖挽了史进的手，便出茶坊来。鲁达回头道：“茶钱洒家自还你。”",
+      "note": "鲁达邀史进吃酒，并主动付茶钱，体现义气。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "鲁达焦燥，把那看的人，一推一交，便骂道：“这厮们挟著屁眼撒开！不去的洒家便打。”",
+      "note": "鲁达焦躁驱散人群，展现其暴躁性格。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "三个人转弯抹角，来到州桥之下，一个潘家有名的酒店。门前挑出望竿，挂著酒旆，漾在空中飘荡。",
+      "note": "三人到达酒店，场景转换，但未交代后续，收束不完整。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_ev_001",
+        "label": "史进入茶坊",
+        "type": "event",
+        "evidenceId": "ev_001"
+      },
+      {
+        "id": "n_ev_002",
+        "label": "史进寻王进",
+        "type": "event",
+        "evidenceId": "ev_002"
+      },
+      {
+        "id": "n_ev_003",
+        "label": "鲁达出场",
+        "type": "event",
+        "evidenceId": "ev_003"
+      },
+      {
+        "id": "n_ev_004",
+        "label": "鲁达邀酒",
+        "type": "event",
+        "evidenceId": "ev_004"
+      },
+      {
+        "id": "n_ev_005",
+        "label": "鲁达驱散人群",
+        "type": "event",
+        "evidenceId": "ev_005"
+      },
+      {
+        "id": "n_ev_006",
+        "label": "三人到酒店",
+        "type": "event",
+        "evidenceId": "ev_006"
+      }
+    ],
+    "edges": [
+      {
+        "source": "n_ev_001",
+        "target": "n_ev_002",
+        "relation": "因果",
+        "evidenceId": "ev_001"
+      },
+      {
+        "source": "n_ev_002",
+        "target": "n_ev_003",
+        "relation": "引出",
+        "evidenceId": "ev_002"
+      },
+      {
+        "source": "n_ev_003",
+        "target": "n_ev_004",
+        "relation": "因果",
+        "evidenceId": "ev_003"
+      },
+      {
+        "source": "n_ev_004",
+        "target": "n_ev_005",
+        "relation": "后续",
+        "evidenceId": "ev_004"
+      },
+      {
+        "source": "n_ev_005",
+        "target": "n_ev_006",
+        "relation": "后续",
+        "evidenceId": "ev_005"
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第1段",
+      "pace": 50,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "pace": 40,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第3段",
+      "pace": 70,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "pace": 80,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第5段",
+      "pace": 90,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第6段",
+      "pace": 60,
+      "evidenceId": "ev_006"
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第1段",
+      "emotion": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "segment": "第2段",
+      "emotion": 40,
+      "evidenceId": "ev_002"
+    },
+    {
+      "segment": "第3段",
+      "emotion": 60,
+      "evidenceId": "ev_003"
+    },
+    {
+      "segment": "第4段",
+      "emotion": 70,
+      "evidenceId": "ev_004"
+    },
+    {
+      "segment": "第5段",
+      "emotion": 85,
+      "evidenceId": "ev_005"
+    },
+    {
+      "segment": "第6段",
+      "emotion": 65,
+      "evidenceId": "ev_006"
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "江湖义气",
+      "segment": "第1段",
+      "value": 20,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "江湖义气",
+      "segment": "第2段",
+      "value": 30,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "江湖义气",
+      "segment": "第3段",
+      "value": 50,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "江湖义气",
+      "segment": "第4段",
+      "value": 80,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "江湖义气",
+      "segment": "第5段",
+      "value": 60,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "江湖义气",
+      "segment": "第6段",
+      "value": 70,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "性格冲突",
+      "segment": "第1段",
+      "value": 0,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "性格冲突",
+      "segment": "第2段",
+      "value": 0,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "性格冲突",
+      "segment": "第3段",
+      "value": 10,
+      "evidenceId": "ev_003"
+    },
+    {
+      "theme": "性格冲突",
+      "segment": "第4段",
+      "value": 20,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "性格冲突",
+      "segment": "第5段",
+      "value": 90,
+      "evidenceId": "ev_005"
+    },
+    {
+      "theme": "性格冲突",
+      "segment": "第6段",
+      "value": 30,
+      "evidenceId": "ev_006"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "平均句长中等，以短句和对话为主，节奏明快。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_003",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 55,
+        "interpretation": "对话占比较高，推动情节和塑造人物。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_002",
+          "ev_004"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 45,
+        "interpretation": "视觉描写突出（如鲁达装束），听觉和触觉较少。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 30,
+        "interpretation": "修辞使用较少，以白描和口语为主，偶有比喻。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_005"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 50,
+        "interpretation": "第三人称全知视角，叙事距离适中，客观呈现。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_003"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 70,
+        "interpretation": "节奏紧凑，动作与对话交替，推进迅速。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_004",
+          "ev_005"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "末段",
+      "quote": "三个人转弯抹角，来到州桥之下，一个潘家有名的酒店。门前挑出望竿，挂著酒旆，漾在空中飘荡。",
+      "effect": "末段未回指开头，也未交代人物处境终结，收束功能不完整。",
+      "action": "可在末段增加回指茶坊或寻师未果的语句，或交代三人暂时安顿，以增强收束感。",
+      "confidence": 0.8,
+      "evidenceIds": [
+        "ev_006"
+      ],
+      "criteriaIds": [
+        "S1"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "第5段",
+      "quote": "鲁达焦燥，把那看的人，一推一交，便骂道：“这厮们挟著屁眼撒开！不去的洒家便打。”",
+      "effect": "动作描写生动，但感官细节可进一步丰富。",
+      "action": "可增加触觉或听觉细节（如被推者的反应、声音），使场景更立体。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_005"
+      ],
+      "criteriaIds": [
+        "P2"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_007:technique_explanation",
+      "usedFor": "第三人称客观视角与内心独白穿插的技法参考",
+      "note": "本文为全知视角，可借鉴客观叙述与心理描写的平衡。"
+    },
+    {
+      "retrievalId": "KB_003:technique_explanation",
+      "usedFor": "全知诗性散文视角与留白艺术",
+      "note": "本文结尾可借鉴留白手法，但需确保收束功能。"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "usedFor": "道具驱动叙事与反转技法",
+      "note": "本文以人物行动驱动，可参考道具伏笔。"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "usedFor": "白描与视觉矛盾法",
+      "note": "本文鲁达装束描写可借鉴白描手法。"
+    },
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "usedFor": "第三人称限制视角与陌生化",
+      "note": "本文为全知视角，可参考其客观实录语气。"
+    }
+  ]
+}

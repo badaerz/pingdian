@@ -1,0 +1,806 @@
+{
+  "sourceKind": "narrative",
+  "domainAnalysis": {
+    "characters": {
+      "goals": [
+        {
+          "character": "叶生",
+          "goal": "以文章词赋博取功名，报知己之恩",
+          "evidenceIds": [
+            "ev_001",
+            "ev_004",
+            "ev_012"
+          ]
+        },
+        {
+          "character": "丁乘鹤",
+          "goal": "提携叶生，使其成名；离任后仍待叶生同行",
+          "evidenceIds": [
+            "ev_002",
+            "ev_006",
+            "ev_009"
+          ]
+        },
+        {
+          "character": "叶生妻",
+          "goal": "安葬亡夫，保全家庭",
+          "evidenceIds": [
+            "ev_017",
+            "ev_018"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "character": "叶生",
+          "action": "科试夺冠后闱战铩羽，形销骨立，杜门不出，后寝疾",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004",
+            "ev_005"
+          ]
+        },
+        {
+          "character": "叶生",
+          "action": "病中持书啜泣，寄语请丁公先行；后忽至官署随丁公北归",
+          "evidenceIds": [
+            "ev_007",
+            "ev_008"
+          ]
+        },
+        {
+          "character": "叶生",
+          "action": "授业丁再昌，使其入邑庠、中亚魁；后自身入北闱领乡荐，锦还淮阳",
+          "evidenceIds": [
+            "ev_010",
+            "ev_011",
+            "ev_013",
+            "ev_014"
+          ]
+        },
+        {
+          "character": "叶生",
+          "action": "归家见妻，闻妻言己死，入室见灵柩，仆地而灭",
+          "evidenceIds": [
+            "ev_015",
+            "ev_016",
+            "ev_019"
+          ]
+        },
+        {
+          "character": "丁乘鹤",
+          "action": "免官后函致叶生，待其同行；抵里后命子师事叶生；后闻叶生死，哭诸其室，营丧葬，厚遗其子",
+          "evidenceIds": [
+            "ev_006",
+            "ev_009",
+            "ev_020"
+          ]
+        }
+      ],
+      "relationshipChanges": [
+        {
+          "from": "叶生与丁乘鹤：知县与寒士的知遇关系",
+          "to": "叶生随丁公北归，成为丁再昌之师，关系转为宾主兼师友",
+          "evidenceIds": [
+            "ev_002",
+            "ev_009",
+            "ev_010"
+          ]
+        },
+        {
+          "from": "叶生与妻：生者与家人",
+          "to": "叶生实已死，妻见其魂而骇走，关系变为生死殊途",
+          "evidenceIds": [
+            "ev_015",
+            "ev_016",
+            "ev_017"
+          ]
+        },
+        {
+          "from": "丁再昌：十六岁尚不能文的公子",
+          "to": "中亚魁、捷南宫、授部中主政，成为叶生功名的承继者",
+          "evidenceIds": [
+            "ev_010",
+            "ev_011",
+            "ev_013"
+          ]
+        }
+      ]
+    },
+    "plot": {
+      "turningPoints": [
+        {
+          "description": "叶生科试夺冠后闱战铩羽，由期望之巅跌入失意之谷",
+          "evidenceIds": [
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "description": "叶生病重，丁公免官待其同行，叶生忽至官署随丁公北归——此处为魂离躯壳的暗转",
+          "evidenceIds": [
+            "ev_007",
+            "ev_008"
+          ]
+        },
+        {
+          "description": "叶生归家，妻言其死已久，见灵柩而灭——揭示前文北归、授业、中举皆为魂之所为",
+          "evidenceIds": [
+            "ev_016",
+            "ev_017",
+            "ev_019"
+          ]
+        }
+      ],
+      "setups": [
+        {
+          "description": "开篇“所如不偶，因于名场”预设叶生功名坎坷的命运基调",
+          "evidenceIds": [
+            "ev_001"
+          ]
+        },
+        {
+          "description": "“服药百裹，殊罔所效”暗示叶生病重难起，为后文魂归埋下伏笔",
+          "evidenceIds": [
+            "ev_005"
+          ]
+        },
+        {
+          "description": "叶生“辞而归，杜门不出”后“寝疾”，其病中忽至官署，叙述未交代其如何起身，为魂行留白",
+          "evidenceIds": [
+            "ev_005",
+            "ev_008"
+          ]
+        }
+      ],
+      "payoffs": [
+        {
+          "description": "“君死已久”揭破前文所有功名成就皆为魂之所为，完成志怪反转",
+          "evidenceIds": [
+            "ev_017",
+            "ev_019"
+          ]
+        },
+        {
+          "description": "丁公“葬以孝廉礼”回应叶生“领乡荐”的功名，使其死后得享孝廉之礼",
+          "evidenceIds": [
+            "ev_014",
+            "ev_020"
+          ]
+        },
+        {
+          "description": "“逾年游泮”以叶生子继志收束，回应开篇“文章词赋，冠绝当时”的才学传承",
+          "evidenceIds": [
+            "ev_021"
+          ]
+        }
+      ]
+    },
+    "themes": {
+      "stages": [
+        {
+          "theme": "科举制度对才士的摧折",
+          "stage": "开篇至铩羽",
+          "change": "由“冠绝当时”的才名到“依然铩羽”的落第，形成才命相悖的强烈反差",
+          "reason": "以科场结果否定才学，揭示制度性不公",
+          "evidenceIds": [
+            "ev_001",
+            "ev_003",
+            "ev_004"
+          ]
+        },
+        {
+          "theme": "知己之情与生死相报",
+          "stage": "丁公待叶生至叶生授业丁子",
+          "change": "丁公由县令提携寒士，至免官后仍待其同行；叶生以魂相随，授业报恩",
+          "reason": "知遇之恩超越生死，成为叙事的情感内核",
+          "evidenceIds": [
+            "ev_002",
+            "ev_006",
+            "ev_009",
+            "ev_010"
+          ]
+        },
+        {
+          "theme": "功名与生命的错位",
+          "stage": "叶生中举至归家见柩",
+          "change": "叶生“领乡荐”“锦还”之时，实为已死之魂；功名成就与生命实存彻底错位",
+          "reason": "以魂归的荒诞反转，将功名追求置于生死之上审视",
+          "evidenceIds": [
+            "ev_014",
+            "ev_016",
+            "ev_017",
+            "ev_019"
+          ]
+        }
+      ]
+    }
+  },
+  "analysis": [
+    {
+      "id": "dim_structure",
+      "name": "结构组织",
+      "summary": "全文三段，分别承担建场与推进、推进与转折、转折与收束功能；末段以叶生魂灭、丁公营葬、其子游泮收束，不引入新情节，并以“灵柩”“衣冠”回指前文病亡线索。",
+      "impact": "三段式结构清晰，末段收束有力，志怪反转在收束段完成，余韵悠长。",
+      "suggestion": "可考虑在第二段“门者忽通叶生至”处稍增一笔环境或感官细节，使魂归的暗转更显幽微。",
+      "score": 88,
+      "evidenceIds": [
+        "ev_001",
+        "ev_008",
+        "ev_019",
+        "ev_020",
+        "ev_021"
+      ]
+    },
+    {
+      "id": "dim_cohesion",
+      "name": "连贯衔接",
+      "summary": "全篇指代词使用克制，第三人称“生”“公”“妻”等称谓明确，相邻句主题词多围绕同一人物或事件推进，未见明显悬空指代或语义断层。",
+      "impact": "叙事连贯，读者可顺畅跟随人物与事件转换。",
+      "suggestion": "第二段“传之卧榻”“使人返白”等处主语隐含，可酌情补出施事者以使指代更显豁。",
+      "score": 85,
+      "evidenceIds": [
+        "ev_007",
+        "ev_008",
+        "ev_016"
+      ]
+    },
+    {
+      "id": "dim_density",
+      "name": "信息密度与节奏",
+      "summary": "全文以事件推进为主，科试、铩羽、寝疾、北归、授业、中举、归家、魂灭等事件密集，无连续200字零信息窗口；单段均未超过400字且事件数充足。",
+      "impact": "节奏紧凑，志怪反转在密集事件中骤然揭示，冲击力强。",
+      "suggestion": "第二段授业、中举部分事件排列较密，可适当插入一两处叶生的心理或对话细节以调节节奏。",
+      "score": 86,
+      "evidenceIds": [
+        "ev_003",
+        "ev_010",
+        "ev_011",
+        "ev_014"
+      ]
+    },
+    {
+      "id": "dim_sensory",
+      "name": "具体性与感官",
+      "summary": "全篇以视觉细节为主（灵柩、衣冠、簸具、结驷），兼有听觉（啜泣、大恸）与体感（形销骨立、仆地），感官通道覆盖≥2类；转折处“见灵柩俨然，仆地而灭”具象可指认。",
+      "impact": "关键场景以具象细节支撑，魂灭瞬间因“灵柩”“衣冠”而可触可感。",
+      "suggestion": "可在叶生归家见“门户萧条”处增一嗅觉或触觉细节（如尘气、门环的凉），使萧条之感更具体。",
+      "score": 84,
+      "evidenceIds": [
+        "ev_015",
+        "ev_016",
+        "ev_019"
+      ]
+    },
+    {
+      "id": "dim_imagery",
+      "name": "意象复现",
+      "summary": "“灵柩”与“衣冠”在末段复现并发生形态与功能变化：灵柩由隐含的卧榻背景变为赫然在室的实体，衣冠由身上之物变为脱委于地的遗蜕，指向人物生死处境的逆转。",
+      "impact": "意象在收束处完成含义推进，使志怪反转获得物质依托。",
+      "suggestion": "可考虑在第二段叶生“束装戒旦”处预置“衣冠”一笔，使末段“衣冠履上臼下与如脱委焉”的复现更具伏笔意味。",
+      "score": 82,
+      "evidenceIds": [
+        "ev_009",
+        "ev_019"
+      ]
+    },
+    {
+      "id": "dim_perspective",
+      "name": "视角一致性",
+      "summary": "全篇为第三人称全知视角，叙述者自由进入叶生、丁公、妻、子等多人内心与行动，未见人称无故切换；心理描写均与各人处境相符。",
+      "impact": "全知视角便于在叶生与丁公、妻之间切换，使魂归反转得以从多角度呈现。",
+      "suggestion": "全知视角下可考虑在叶生“闻之，怃然惆怅”处稍作内心聚焦，使魂灭前的心理层次更丰富。",
+      "score": 87,
+      "evidenceIds": [
+        "ev_004",
+        "ev_016",
+        "ev_018"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_001",
+      "source": "observation",
+      "quote": "淮阳叶生者，失其名字。文章词赋，冠绝当时；而所如不偶，因于名场。",
+      "note": "开篇建场，交代叶生才学与科场失意的矛盾基调。"
+    },
+    {
+      "id": "ev_002",
+      "source": "observation",
+      "quote": "会关东丁乘鹤来令是邑，见其文，奇之；召与语，大悦。使即官署，受灯火；时赐钱谷恤其家。",
+      "note": "丁公出场，知遇关系建立。"
+    },
+    {
+      "id": "ev_003",
+      "source": "observation",
+      "quote": "值科试，公游扬于学使，遂领冠军。",
+      "note": "叶生科试夺冠，处境一度上升。"
+    },
+    {
+      "id": "ev_004",
+      "source": "observation",
+      "quote": "不意时数限人，文章憎命，榜既放，依然铩羽。生嗒丧而归，愧负知己，形销骨立，痴若木偶。",
+      "note": "闱战铩羽，处境逆转，为全文第一个明确转折。"
+    },
+    {
+      "id": "ev_005",
+      "source": "observation",
+      "quote": "无何，寝疾。公遗问不绝；而服药百裹，殊罔所效。",
+      "note": "叶生病重，为后文魂归埋下伏笔。"
+    },
+    {
+      "id": "ev_006",
+      "source": "observation",
+      "quote": "公适以忤上官免，将解任去。函致生，其略云：“仆东归有日；所以迟迟者，待足下耳。足下朝至，则仆夕发矣。”",
+      "note": "丁公免官待叶生同行，知己之情深化。"
+    },
+    {
+      "id": "ev_007",
+      "source": "observation",
+      "quote": "传之卧榻。生持书啜泣。寄语来使：“疾革难遽瘥，请先发。”",
+      "note": "叶生病中持书啜泣，交代其病重难行。"
+    },
+    {
+      "id": "ev_008",
+      "source": "observation",
+      "quote": "逾数日，门者忽通叶生至。公喜，逆而问之。生曰：“以犬马病，劳夫子久待，万虑不宁。今幸可从杖履。”",
+      "note": "叶生忽至官署，叙述未交代其如何起身，为魂行留白。"
+    },
+    {
+      "id": "ev_009",
+      "source": "observation",
+      "quote": "公乃束装戒旦。抵里，命子师事生，夙夜与俱。",
+      "note": "叶生随丁公北归，成为丁子之师。"
+    },
+    {
+      "id": "ev_010",
+      "source": "observation",
+      "quote": "公子名再昌，时年十六，尚不能文。然绝慧，凡文艺三两过，辄无遗忘。居之期岁，便能落笔成文。益之公力，遂入邑庠。",
+      "note": "丁再昌在叶生教导下成才，入邑庠。"
+    },
+    {
+      "id": "ev_011",
+      "source": "observation",
+      "quote": "生以生平所拟举子业，悉录授读。闱中七题，并无脱漏，中亚魁。",
+      "note": "叶生授举子业，丁再昌中亚魁。"
+    },
+    {
+      "id": "ev_012",
+      "source": "observation",
+      "quote": "生曰：“是殆有命。借福泽为文章吐气，使天下人知半生沦落，非战之罪也，愿亦足矣。”",
+      "note": "叶生自陈心志，以文章吐气为愿，回应开篇才命之叹。"
+    },
+    {
+      "id": "ev_013",
+      "source": "observation",
+      "quote": "公子又捷南宫，授部中主政。携生赴监，与共晨夕。",
+      "note": "丁再昌捷南宫，叶生随赴监。"
+    },
+    {
+      "id": "ev_014",
+      "source": "observation",
+      "quote": "逾岁，生入北闱，竟领乡荐。会公子差南河典务，因谓生曰：“此去离贵乡不远。先生奋迹云霄，锦还为快。”生亦喜，择吉就道。",
+      "note": "叶生领乡荐，锦还淮阳，功名成就达到顶点。"
+    },
+    {
+      "id": "ev_015",
+      "source": "observation",
+      "quote": "归见门户萧条，意甚悲恻。逡巡至庭中，妻携簸具以出，见生，掷具骇走。",
+      "note": "叶生归家见萧条，妻见之骇走，处境开始逆转。"
+    },
+    {
+      "id": "ev_016",
+      "source": "observation",
+      "quote": "生凄然曰：“我今贵矣。三四年不觌，何遂顿不相识？”妻遥谓曰：“君死已久，何复言贵？”",
+      "note": "妻言叶生已死，揭示前文功名皆为魂之所为。"
+    },
+    {
+      "id": "ev_017",
+      "source": "observation",
+      "quote": "所以久淹君柩者，以家贫子幼耳。今阿大亦已成立，将卜窀穸。勿作怪异吓生人。",
+      "note": "妻交代灵柩久停之由，坐实叶生已死。"
+    },
+    {
+      "id": "ev_018",
+      "source": "observation",
+      "quote": "生闻之，怃然惆怅。逡巡入室，见灵柩俨然，仆地而灭。",
+      "note": "叶生见灵柩而灭，魂归反转完成。"
+    },
+    {
+      "id": "ev_019",
+      "source": "observation",
+      "quote": "妻惊视之，衣冠履上臼下与如脱委焉。大恸，抱衣悲哭。",
+      "note": "衣冠脱委于地，具象呈现魂灭，意象发生形态变化。"
+    },
+    {
+      "id": "ev_020",
+      "source": "observation",
+      "quote": "从者返，公子闻之，涕堕垂膺。即命驾哭诸其室；出橐营丧，葬以孝廉礼。又厚遗其子，为延师教读。",
+      "note": "丁公闻叶生死，营丧葬，厚遗其子，知己之情至终。"
+    },
+    {
+      "id": "ev_021",
+      "source": "observation",
+      "quote": "言于学使，逾年游泮。",
+      "note": "叶生子游泮，以继志收束全文。"
+    }
+  ],
+  "relationGraph": {
+    "nodes": [
+      {
+        "id": "n_yesheng",
+        "label": "叶生",
+        "type": "character",
+        "evidenceIds": [
+          "ev_001"
+        ]
+      },
+      {
+        "id": "n_ding",
+        "label": "丁乘鹤",
+        "type": "character",
+        "evidenceIds": [
+          "ev_002"
+        ]
+      },
+      {
+        "id": "n_wife",
+        "label": "叶生妻",
+        "type": "character",
+        "evidenceIds": [
+          "ev_015"
+        ]
+      },
+      {
+        "id": "n_zaichang",
+        "label": "丁再昌",
+        "type": "character",
+        "evidenceIds": [
+          "ev_010"
+        ]
+      },
+      {
+        "id": "n_keju",
+        "label": "科举功名",
+        "type": "theme",
+        "evidenceIds": [
+          "ev_003",
+          "ev_004"
+        ]
+      },
+      {
+        "id": "n_zhiji",
+        "label": "知己之情",
+        "type": "theme",
+        "evidenceIds": [
+          "ev_006",
+          "ev_020"
+        ]
+      },
+      {
+        "id": "n_lingjiu",
+        "label": "灵柩",
+        "type": "motif",
+        "evidenceIds": [
+          "ev_017",
+          "ev_018"
+        ]
+      },
+      {
+        "id": "n_yiguan",
+        "label": "衣冠",
+        "type": "motif",
+        "evidenceIds": [
+          "ev_019"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_yesheng",
+        "to": "n_ding",
+        "relation": "知遇与报恩",
+        "evidenceIds": [
+          "ev_002",
+          "ev_006",
+          "ev_009"
+        ]
+      },
+      {
+        "from": "n_yesheng",
+        "to": "n_zaichang",
+        "relation": "授业与承志",
+        "evidenceIds": [
+          "ev_010",
+          "ev_011"
+        ]
+      },
+      {
+        "from": "n_yesheng",
+        "to": "n_wife",
+        "relation": "生死殊途",
+        "evidenceIds": [
+          "ev_015",
+          "ev_016"
+        ]
+      },
+      {
+        "from": "n_yesheng",
+        "to": "n_keju",
+        "relation": "才命相悖",
+        "evidenceIds": [
+          "ev_001",
+          "ev_004"
+        ]
+      },
+      {
+        "from": "n_yesheng",
+        "to": "n_lingjiu",
+        "relation": "魂归见柩而灭",
+        "evidenceIds": [
+          "ev_018"
+        ]
+      },
+      {
+        "from": "n_yesheng",
+        "to": "n_yiguan",
+        "relation": "魂灭衣冠脱委",
+        "evidenceIds": [
+          "ev_019"
+        ]
+      },
+      {
+        "from": "n_ding",
+        "to": "n_zhiji",
+        "relation": "始终不渝的知己之情",
+        "evidenceIds": [
+          "ev_006",
+          "ev_020"
+        ]
+      }
+    ]
+  },
+  "paceCurve": [
+    {
+      "segment": "第一段（开篇至杜门不出）",
+      "value": 62,
+      "evidenceIds": [
+        "ev_001",
+        "ev_003",
+        "ev_004"
+      ]
+    },
+    {
+      "segment": "第二段（寝疾至送生归）",
+      "value": 78,
+      "evidenceIds": [
+        "ev_005",
+        "ev_008",
+        "ev_014"
+      ]
+    },
+    {
+      "segment": "第三段（归家至游泮）",
+      "value": 88,
+      "evidenceIds": [
+        "ev_015",
+        "ev_018",
+        "ev_021"
+      ]
+    }
+  ],
+  "emotionCurve": [
+    {
+      "segment": "第一段（开篇至杜门不出）",
+      "value": 35,
+      "evidenceIds": [
+        "ev_001",
+        "ev_004"
+      ]
+    },
+    {
+      "segment": "第二段（寝疾至送生归）",
+      "value": 55,
+      "evidenceIds": [
+        "ev_006",
+        "ev_008",
+        "ev_014"
+      ]
+    },
+    {
+      "segment": "第三段（归家至游泮）",
+      "value": 85,
+      "evidenceIds": [
+        "ev_016",
+        "ev_019",
+        "ev_020"
+      ]
+    }
+  ],
+  "themeHeatmap": [
+    {
+      "theme": "科举制度对才士的摧折",
+      "segment": "第一段（开篇至杜门不出）",
+      "value": 90,
+      "evidenceId": "ev_004"
+    },
+    {
+      "theme": "科举制度对才士的摧折",
+      "segment": "第二段（寝疾至送生归）",
+      "value": 55,
+      "evidenceId": "ev_012"
+    },
+    {
+      "theme": "科举制度对才士的摧折",
+      "segment": "第三段（归家至游泮）",
+      "value": 40,
+      "evidenceId": "ev_016"
+    },
+    {
+      "theme": "知己之情与生死相报",
+      "segment": "第一段（开篇至杜门不出）",
+      "value": 60,
+      "evidenceId": "ev_002"
+    },
+    {
+      "theme": "知己之情与生死相报",
+      "segment": "第二段（寝疾至送生归）",
+      "value": 85,
+      "evidenceId": "ev_006"
+    },
+    {
+      "theme": "知己之情与生死相报",
+      "segment": "第三段（归家至游泮）",
+      "value": 80,
+      "evidenceId": "ev_020"
+    },
+    {
+      "theme": "功名与生命的错位",
+      "segment": "第一段（开篇至杜门不出）",
+      "value": 30,
+      "evidenceId": "ev_001"
+    },
+    {
+      "theme": "功名与生命的错位",
+      "segment": "第二段（寝疾至送生归）",
+      "value": 70,
+      "evidenceId": "ev_014"
+    },
+    {
+      "theme": "功名与生命的错位",
+      "segment": "第三段（归家至游泮）",
+      "value": 95,
+      "evidenceId": "ev_016"
+    }
+  ],
+  "styleProfile": {
+    "metrics": [
+      {
+        "key": "sentenceLength",
+        "dimension": "句长",
+        "value": 62,
+        "interpretation": "以短句和中句为主，四字、六字句频出，节奏简洁，符合文言志怪的凝练笔法。",
+        "evidenceIds": [
+          "ev_001",
+          "ev_004",
+          "ev_016"
+        ]
+      },
+      {
+        "key": "dialogueRatio",
+        "dimension": "对话比例",
+        "value": 28,
+        "interpretation": "对话集中于丁公函语、叶生自陈与妻言，占比不高但均处关键转折，承担揭示功能。",
+        "evidenceIds": [
+          "ev_006",
+          "ev_012",
+          "ev_016"
+        ]
+      },
+      {
+        "key": "sensoryDensity",
+        "dimension": "感官密度",
+        "value": 45,
+        "interpretation": "视觉细节为主，兼有听觉与体感，感官描写集中于魂灭与妻骇走处，整体密度中等。",
+        "evidenceIds": [
+          "ev_015",
+          "ev_019"
+        ]
+      },
+      {
+        "key": "rhetoric",
+        "dimension": "修辞",
+        "value": 55,
+        "interpretation": "多用对偶与用典（“时数限人，文章憎命”“黄钟长弃”“非战之罪”），修辞服务于才命之叹。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_012"
+        ]
+      },
+      {
+        "key": "narrativeDistance",
+        "dimension": "叙事距离",
+        "value": 50,
+        "interpretation": "全知叙述保持中等距离，既交代事件又偶入人物内心（嗒丧、怃然惆怅），冷峻中见悲悯。",
+        "evidenceIds": [
+          "ev_004",
+          "ev_018"
+        ]
+      },
+      {
+        "key": "rhythm",
+        "dimension": "节奏",
+        "value": 70,
+        "interpretation": "前段缓起，中段事件密集推进，末段反转后骤收，整体节奏由缓入急再归于沉痛。",
+        "evidenceIds": [
+          "ev_003",
+          "ev_010",
+          "ev_019"
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "diag_001",
+      "location": "第二段“逾数日，门者忽通叶生至”",
+      "quote": "逾数日，门者忽通叶生至。公喜，逆而问之。",
+      "effect": "叶生病重卧榻，忽能起身至官署，叙述未交代其如何起身，形成魂归暗转的留白。此处理解为志怪笔法的刻意省略，效果幽微，但初读易生疑。",
+      "action": "可考虑在“门者忽通”前增一句环境或门者视角的细节（如“门者见其衣冠如常”），使魂至的异样感更可感知，同时不破坏留白。",
+      "confidence": 0.7,
+      "evidenceIds": [
+        "ev_007",
+        "ev_008"
+      ],
+      "criteriaIds": [
+        "S3"
+      ]
+    },
+    {
+      "id": "diag_002",
+      "location": "第二段“传之卧榻”“使人返白”",
+      "quote": "传之卧榻。生持书啜泣。寄语来使：“疾革难遽瘥，请先发。”使人返白，公不忍去，徐待之。",
+      "effect": "“传之卧榻”“使人返白”主语隐含，读者需自行补出施事者（使者、门者），衔接稍显跳跃。",
+      "action": "可考虑在“传之卧榻”前补出“公遣使”或“使者”等施事主语，使指代更显豁。",
+      "confidence": 0.65,
+      "evidenceIds": [
+        "ev_007"
+      ],
+      "criteriaIds": [
+        "C2"
+      ]
+    },
+    {
+      "id": "diag_003",
+      "location": "第三段“衣冠履上臼下与如脱委焉”",
+      "quote": "妻惊视之，衣冠履上臼下与如脱委焉。",
+      "effect": "此句以衣冠脱委具象呈现魂灭，意象鲜明；但“上臼下与”字面生僻，读者理解易受阻，可能削弱魂灭瞬间的冲击。",
+      "action": "可考虑保留原句古奥质感，同时在前后文增一细节（如“衣冠委地，如蝉蜕然”）以助理解，不损原文。",
+      "confidence": 0.6,
+      "evidenceIds": [
+        "ev_019"
+      ],
+      "criteriaIds": [
+        "P3"
+      ]
+    }
+  ],
+  "retrievalEvidence": [
+    {
+      "retrievalId": "KB_006:technique_explanation",
+      "usedFor": "参照“超现实实录”与“心理距离控制”技法，审视叶生魂归反转的叙述语气与留白处理。",
+      "note": "知识参考仅用于技法对照，不冒充用户原文事实。"
+    },
+    {
+      "retrievalId": "KB_001:technique_explanation",
+      "usedFor": "参照白描与首尾呼应技法，评估灵柩、衣冠等意象的复现与收束功能。",
+      "note": "知识参考仅用于技法对照。"
+    },
+    {
+      "retrievalId": "KB_008:technique_explanation",
+      "usedFor": "参照反转与道具驱动叙事技法，分析“君死已久”揭示的叙事效果。",
+      "note": "知识参考仅用于技法对照。"
+    }
+  ]
+}
