@@ -11,6 +11,7 @@ import { aggregateTrainingTrend, diffSummary, normalizeTrainingFeedback, TREND_D
 import { useStory } from "@/providers/story-provider";
 import { knowledgeRecords } from "@/lib/knowledge/catalog";
 import exerciseData from "../../../incoming/exercises/writing_exercises.json";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 interface Exercise {
   id: string;
@@ -107,7 +108,7 @@ export function TrainingWorkspace({ exerciseId, diagnosticId }: { exerciseId?: s
     ].join("\n");
     setStatus("loading"); setWarning(""); setFeedback(null);
     try {
-      const response = await fetch("/api/ai", { method: "POST", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task: "training-feedback-v2", project: emptyProject, input: { exerciseId: exerciseSnapshot.id, answer: answerSnapshot, sourceText: answerSnapshot, prompt } }) });
+      const response = await fetch("/api/ai", { method: "POST", signal: controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "training-feedback-v2", project: emptyProject, input: { exerciseId: exerciseSnapshot.id, answer: answerSnapshot, sourceText: answerSnapshot, prompt } }) });
       const data = await response.json() as { mode?: "live" | "demo"; result?: unknown; warnings?: string[] };
       if (controller.signal.aborted || !mountedRef.current || sequence !== requestSequenceRef.current || answerRevision !== answerRevisionRef.current || exerciseSnapshot.id !== active.id) return;
       const next = normalizeTrainingFeedback(data.result, answerSnapshot, attemptNo, previous?.answer, new Set(TREND_DIMENSIONS));

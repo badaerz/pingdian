@@ -13,6 +13,7 @@ import { extractTextGraph, MAX_TEXT_SOURCE_CHARS, validateTextUpload, type Acade
 import { contextFromState } from "@/lib/ai/story-context";
 import { searchKnowledge } from "@/lib/supabase/sync";
 import { useStoryOptional } from "@/providers/story-provider";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 const nodeTypeLabels: Record<string, string> = {
   work: "作品",
@@ -109,7 +110,7 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
     setMyStatus("loading"); setMyError(""); setMyNotice("");
     try {
       if (!state) throw new Error("STORY_CONTEXT_REQUIRED");
-      const response = await fetch("/api/ai", { method: "POST", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task: "knowledge-extract", project: contextFromState(state), input: { sourceText, sourceKind: mySourceKind, prompt: "仅分析本次会话文本，输出带逐字证据的知识图谱；不要写入项目。" } }) });
+      const response = await fetch("/api/ai", { method: "POST", signal: controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "knowledge-extract", project: contextFromState(state), input: { sourceText, sourceKind: mySourceKind, prompt: "仅分析本次会话文本，输出带逐字证据的知识图谱；不要写入项目。" } }) });
       const data = await response.json() as { result?: { knowledgeGraph?: unknown; evidence?: unknown[]; sourceKind?: "narrative" | "argumentative" }; warnings?: string[] };
       if (!response.ok || !data.result?.knowledgeGraph) throw new Error("INVALID_GRAPH");
       if (controller.signal.aborted || requestEpoch !== requestEpochRef.current) return;

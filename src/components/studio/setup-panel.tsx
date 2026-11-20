@@ -9,6 +9,7 @@ import { contextFromState } from "@/lib/ai/story-context";
 import type { AiTaskPayload } from "@/lib/ai/tasks";
 import type { Candidate, Character } from "@/lib/types";
 import { useStory } from "@/providers/story-provider";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 type SetupTab = "ideas" | "characters" | "world" | "blueprint";
 
@@ -46,7 +47,7 @@ export function SetupPanel() {
     try {
       const response = await fetch("/api/ai", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: aiRequestHeaders(),
         body: JSON.stringify({ task, project: contextFromState(state), input: { prompt: task === "characters" ? "基于当前作品灵感、世界观和蓝图补全人物卡，保留已有事实。" : task === "world" ? "基于当前作品灵感、人物目标和蓝图补全世界观，保留已有规则与时间限制。" : task === "blueprint" ? "基于当前作品灵感、人物和世界观组织故事蓝图。" : "基于当前作品设定提出具体故事方向。" } }),
       });
       const data = await response.json() as { mode?: "live" | "demo"; result?: AiTaskPayload; warnings?: string[]; notices?: string[] };

@@ -17,6 +17,7 @@ import { saveConsistencyReport as upsertConsistencyReport } from "@/lib/story-st
 import type { Candidate, ConsistencyReport, MentorResponse, StoryState } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useStory } from "@/providers/story-provider";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 export interface AssistantRequest {
   id: number;
@@ -142,7 +143,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     setCheckFailures((current) => { const next = new Set(current); next.delete(candidate.id); return next; });
     try {
       const request = buildConsistencyInput(snapshot, candidate);
-      const response = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" }, signal: controller.signal, body: JSON.stringify(request) });
+      const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), signal: controller.signal, body: JSON.stringify(request) });
       const payload = await response.json() as { mode?: "live" | "demo"; result?: { consistencyReport?: ConsistencyReport }; warnings?: string[]; notices?: string[] };
       if (!response.ok || !payload.result?.consistencyReport) throw new Error("Consistency failed");
       if (!mountedRef.current || scopeRef.current !== scope) return;
@@ -218,7 +219,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     try {
       const response = await fetch("/api/ai", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: aiRequestHeaders(),
         signal: controller.signal,
         body: JSON.stringify(requestSnapshot.body),
       });
@@ -249,7 +250,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     controllersRef.current.add(controller);
     setStatus("loading"); setWarning(""); setNotice("");
     try {
-      const response = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" }, signal: controller.signal, body: JSON.stringify({ task: "mentor", project: contextFromState(snapshot), input: { prompt, selectedText: selectionText } }) });
+      const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), signal: controller.signal, body: JSON.stringify({ task: "mentor", project: contextFromState(snapshot), input: { prompt, selectedText: selectionText } }) });
       const payload = await response.json() as { mode?: "live" | "demo"; result?: { mentor?: MentorResponse }; warnings?: string[]; notices?: string[] };
       if (!response.ok || !payload.result?.mentor) throw new Error("Mentor failed");
       if (!mountedRef.current || scopeRef.current !== scope || generationRequest.current !== requestId) return;

@@ -12,6 +12,7 @@ import type { AssetCapabilities, AssetGenerationInput } from "@/lib/assets/gener
 import { loadAssetBlob, saveAssetBlob } from "@/lib/assets/indexed-db";
 import type { Candidate, ImageGenerationSettings, IpAssetMetadata } from "@/lib/types";
 import { useStory } from "@/providers/story-provider";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 type LabStatus = "idle" | "loading" | "success" | "error";
 type RecommendationDraft = { settings: ImageGenerationSettings; reasons: Record<string, string>; confidence: number };
@@ -172,7 +173,7 @@ function ProjectIpLabWorkspace({ projectId }: { projectId?: string }) {
       `媒介：${medium}；色彩：${palette}；资产类型：${assetKind === "poster" ? "文学海报" : "角色主视觉"}`,
       aiTask === "storyboard" ? "承接已确认视觉简报，生成六个连续可执行镜头。" : "先生成可编辑视觉简报，所有细节必须服从当前作品设定。",
     ].join("\n");
-    const response = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task: aiTask, project: contextFromState(state), input: { prompt: visualPrompt, characterId: selectedCharacterId } }) });
+    const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task: aiTask, project: contextFromState(state), input: { prompt: visualPrompt, characterId: selectedCharacterId } }) });
     let payload: { mode?: "live" | "demo"; result?: { candidates?: Candidate[]; visualBrief?: { title: string; subject: string; composition: string; palette: string[]; atmosphere: string; negativePrompt: string }; storyboard?: Array<{ shot: number; framing: string; action: string; sound: string; prompt: string }> }; warnings?: string[]; notices?: string[] };
     try {
       payload = await response.json();
@@ -359,7 +360,7 @@ function ProjectIpLabWorkspace({ projectId }: { projectId?: string }) {
     try {
       const response = await fetch("/api/ai", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: aiRequestHeaders(),
         body: JSON.stringify({
           task: "image-parameter-recommendation",
           project: contextFromState(state),

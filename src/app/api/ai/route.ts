@@ -8,6 +8,7 @@ import { AI_TASKS, runAiTask, type AiTask, type AiTaskConfig, type AiTaskDepende
 import { knowledgeRecords } from "@/lib/knowledge/catalog";
 import { matchLiteratureKnowledge, type SupabaseVectorRpcClient } from "@/lib/supabase/sync";
 import { noStoreJson } from "@/lib/http/no-store";
+import { AI_KEY_HEADER, isValidUserAiKey, normalizeUserAiKey } from "@/lib/ai/user-key";
 import { aiRequestBudget, type RequestBudget } from "@/lib/http/request-budget";
 
 const tasks = new Set<string>(AI_TASKS);
@@ -112,6 +113,24 @@ export function aiConfigFromEnvironment(): AiTaskConfig {
   };
 }
 
+/**
+ * 用户自带密钥：从 header 读取。
+ *
+ * 安全约束（改动前请先读）：
+ * - 只在内存里传递一次，不落库、不写日志、不回显
+ * - 答辩锁定模式下完全忽略，不允许外部调用
+ * - 格式不合法直接拒绝，不带着坏密钥去调供应商
+ *
+ * 返回 undefined = 没带密钥（走服务端配置）；返回 "" = 带了但不合法（拒绝请求）。
+ */
+export function userKeyFromRequest(request: Request, demoLocked = isDemoLocked()): string | undefined {
+  if (demoLocked) return undefined;
+  const raw = request.headers.get(AI_KEY_HEADER);
+  if (raw === null) return undefined;
+  const key = normalizeUserAiKey(raw);
+  return isValidUserAiKey(key) ? key : "";
+}
+
 function publicVectorClientFromEnvironment(): SupabaseVectorRpcClient | null {
   if (isDemoLocked()) return null;
   const dimensionValue = process.env.EMBEDDING_DIMENSIONS;
@@ -202,7 +221,10 @@ export function createAiPostHandler(options: {
       return noStoreJson({ error: "INVALID_REQUEST" }, { status: 400 });
     }
     if (!isTaskInput(body)) return noStoreJson({ error: "INVALID_REQUEST" }, { status: 400 });
-    const config = aiConfigFromEnvironment();
+    const userKey = userKeyFromRequest(request);
+    if (userKey === "") return noStoreJson({ error: "INVALID_AI_KEY" }, { status: 400 });
+    const baseConfig = aiConfigFromEnvironment();
+    const config = userKey ? { ...baseConfig, apiKey: userKey } : baseConfig;
     const result = await runAiTask(body, config, options.fetcher ?? fetch, config.apiKey ? productionRetrievalDependencies() : {});
     return noStoreJson(result);
   };

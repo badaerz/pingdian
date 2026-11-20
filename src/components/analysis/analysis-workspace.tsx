@@ -17,6 +17,7 @@ import { contextFromState } from "@/lib/ai/story-context";
 import type { AiTaskPayload } from "@/lib/ai/tasks";
 import type { LiteraryAnalysisResult, LiteraryDiagnostic, MentorResponse, StoryState } from "@/lib/types";
 import { useStory } from "@/providers/story-provider";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 type AnalysisStatus = "success" | "loading" | "error";
 type SourceMode = "snapshot" | "project" | "import";
@@ -221,7 +222,7 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     const request = beginRequest(sourceToken);
     setStatus("loading"); setAiStatus("loading"); setProgressTask("analysis"); setAnalysisWarnings([]);
     try {
-      const response = await fetch("/api/ai", { method: "POST", signal: request.controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task: "analysis-v2", project: requestContext(), input: { sourceText: analysisText, sourceKind, prompt: sourceMode === "import" ? "分析用户临时导入文本；文本仅用于本次请求，不保存为项目。" : "对当前作品来源做完整、可定位的文学诊断。" } }) });
+      const response = await fetch("/api/ai", { method: "POST", signal: request.controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "analysis-v2", project: requestContext(), input: { sourceText: analysisText, sourceKind, prompt: sourceMode === "import" ? "分析用户临时导入文本；文本仅用于本次请求，不保存为项目。" : "对当前作品来源做完整、可定位的文学诊断。" } }) });
       const data = await response.json() as { mode?: "live" | "demo"; result?: AiTaskPayload; warnings?: string[]; notices?: string[]; contextRevision?: number };
       if (!isCurrentRequest(request)) return;
       if (!response.ok || !data.result || !isLiteraryAnalysis(data.result)) throw new Error("INVALID_ANALYSIS");
@@ -246,7 +247,7 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     const request = beginRequest(`${sourceToken}|${analysisSourceHash(activeText)}`);
     setStatus("loading"); setAiStatus("loading"); setProgressTask("mentor"); setMentorWarnings([]);
     try {
-      const response = await fetch("/api/ai", { method: "POST", signal: request.controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task: "mentor", project: requestContext(), input: { prompt: "为什么这样写？请区分观察、推断和知识参考。", selectedText: activeText, sourceText: activeText } }) });
+      const response = await fetch("/api/ai", { method: "POST", signal: request.controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "mentor", project: requestContext(), input: { prompt: "为什么这样写？请区分观察、推断和知识参考。", selectedText: activeText, sourceText: activeText } }) });
       const data = await response.json() as { mode?: "live" | "demo"; result?: { mentor?: MentorResponse }; warnings?: string[]; notices?: string[] };
       if (!isCurrentMentorRequest(request)) return;
       if (!response.ok || !data.result?.mentor) throw new Error("MENTOR_FAILED");

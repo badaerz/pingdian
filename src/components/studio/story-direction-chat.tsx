@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import type { AiEnvelope, StoryContext } from "@/lib/ai/tasks";
 import type { StoryDirectionMessage, StoryDirectionResult } from "@/lib/types";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 export const STORY_DIRECTION_TAGS = ["跌宕起伏", "轻松日常", "推进冲突", "深化人物关系", "埋设悬念", "强化情感"] as const;
 
@@ -124,7 +125,7 @@ function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onG
     try {
       const response = await fetch("/api/ai", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: aiRequestHeaders(),
         signal: controller.signal,
         body: JSON.stringify(request.body),
       });

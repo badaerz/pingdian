@@ -11,6 +11,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import type { AiTask, AiTaskPayload, StoryContext } from "@/lib/ai/tasks";
 import type { BlueprintNode, Candidate, Character, WorldEntry } from "@/lib/types";
 import { useStory } from "@/providers/story-provider";
+import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 type Pending =
   | { kind: "ideas" | "opening"; candidates: Candidate[] }
@@ -48,7 +49,7 @@ export function NewProjectForm() {
     characters: character.name ? [character] : [], worldEntries, blueprint,
   });
   const call = async (task: AiTask) => {
-    const response = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task, project: context() }) });
+    const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task, project: context() }) });
     const data = await response.json() as { result?: AiTaskPayload; warnings?: string[]; notices?: string[] };
     if (!response.ok || !data.result) throw new Error("AI_TASK_FAILED");
     if (data.warnings?.length) setWarning(data.warnings.join(" "));
