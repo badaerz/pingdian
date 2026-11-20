@@ -38,6 +38,7 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
   const [myText, setMyText] = useState("");
   const [myTextName, setMyTextName] = useState("");
   const [myGraph, setMyGraph] = useState<AcademicKnowledgeGraph | null>(null);
+  const [myLive, setMyLive] = useState<boolean | null>(null);
   const [myError, setMyError] = useState("");
   const [myNotice, setMyNotice] = useState("");
   const [myStatus, setMyStatus] = useState<AiProgressStatus>("idle");
@@ -111,12 +112,18 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
     try {
       if (!state) throw new Error("STORY_CONTEXT_REQUIRED");
       const response = await fetch("/api/ai", { method: "POST", signal: controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "knowledge-extract", project: contextFromState(state), input: { sourceText, sourceKind: mySourceKind, prompt: "仅分析本次会话文本，输出带逐字证据的知识图谱；不要写入项目。" } }) });
-      const data = await response.json() as { result?: { knowledgeGraph?: unknown; evidence?: unknown[]; sourceKind?: "narrative" | "argumentative" }; warnings?: string[] };
+      const data = await response.json() as { mode?: "live" | "demo"; result?: { knowledgeGraph?: unknown; evidence?: unknown[]; sourceKind?: "narrative" | "argumentative" }; warnings?: string[] };
       if (!response.ok || !data.result?.knowledgeGraph) throw new Error("INVALID_GRAPH");
       if (controller.signal.aborted || requestEpoch !== requestEpochRef.current) return;
       setMyGraph(extractTextGraph(sourceText, data.result as Parameters<typeof extractTextGraph>[1]));
+      // 结果来源必须让用户看见：演示图谱摆在真实图谱的位置上而不标注，
+      // 就等于让用户以为模型真的分析了这篇文本。
+      setMyLive(data.mode === "live");
       setMyStatus("success");
-      if (data.warnings?.length) setMyNotice(`图谱已基于本次上传文本生成。${data.warnings.join(" ")}`);
+      // 保留服务端给的原因，再补一句明确标注：演示图谱不代表对这篇文本的真实分析。
+      if (data.mode !== "live") {
+        setMyNotice(`图谱已基于本次上传文本生成。但请注意：这是离线演示结果（未调用模型），不是对你这篇文本的真实分析。想要真实结果，请到设置页填入自己的密钥后重试。${data.warnings?.length ? `（${data.warnings.join(" ")}）` : ""}`);
+      } else if (data.warnings?.length) setMyNotice(`图谱已基于本次上传文本生成。${data.warnings.join(" ")}`);
     } catch (error) { if (!controller.signal.aborted && requestEpoch === requestEpochRef.current && !(error instanceof DOMException && error.name === "AbortError")) { setMyError("文本分析暂不可用；请检查 AI 服务或继续使用经典知识库。"); setMyStatus("error"); } }
     finally { if (requestRef.current === controller) requestRef.current = null; }
   };
@@ -141,7 +148,7 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
       </div>
 
       {mode === "mine" && <section className="knowledge-import-panel" aria-label="我的文本分析">
-        <div className="knowledge-import-head"><div><span className="eyebrow">SESSION-BOUND TEXT ANALYSIS</span><h2>把作品变成可核验的知识图谱</h2><p>当前项目或临时 TXT / MD 只在本次会话使用，不写入项目文档或云端。</p></div><StatusBadge kind={myGraph ? "success" : "knowledge"}>{myGraph ? `${myGraph.nodes.length} 节点 · ${myGraph.edges.length} 关系` : "等待文本"}</StatusBadge></div>
+        <div className="knowledge-import-head"><div><span className="eyebrow">SESSION-BOUND TEXT ANALYSIS</span><h2>把作品变成可核验的知识图谱</h2><p>当前项目或临时 TXT / MD 只在本次会话使用，不写入项目文档或云端。</p></div><StatusBadge kind={!myGraph ? "knowledge" : myLive === false ? "warning" : "success"}>{!myGraph ? "等待文本" : `${myGraph.nodes.length} 节点 · ${myGraph.edges.length} 关系${myLive === false ? " · 演示结果" : myLive ? " · 真实分析" : ""}`}</StatusBadge></div>
         <div className="knowledge-import-actions"><Button variant="secondary" onClick={chooseProjectText}><FileText size={15} />读取当前项目</Button><label className="knowledge-upload"><Upload size={15} /><span>{myTextName || "上传 TXT / MD"}</span><input type="file" aria-label="上传知识图谱文本" accept=".txt,.md,text/plain,text/markdown" onChange={(event) => void readUpload(event.target.files?.[0])} /></label><label className="knowledge-source-kind">文本类型<select aria-label="文本类型" value={mySourceKind} onChange={(event) => { setMySourceKind(event.target.value as "narrative" | "argumentative"); setMyGraph(null); setMyNotice(""); setMyError(""); setMyStatus("idle"); }}><option value="narrative">叙事文本</option><option value="argumentative">议论文</option></select></label><Button onClick={() => void analyzeMyText()} disabled={!myText.trim() || myStatus === "loading"}>{myStatus === "loading" ? <LoaderCircle size={15} className="spin" /> : <BookMarked size={15} />}分析文本</Button></div>
         <AiProgress status={myStatus} label="知识图谱生成进度" />
         <textarea className="knowledge-import-text" aria-label="粘贴待分析文本" value={myText} maxLength={MAX_TEXT_SOURCE_CHARS} onChange={(event) => { setMyText(event.target.value); setMyTextName("粘贴文本"); setMyGraph(null); setMyError(""); setMyNotice(""); setMyStatus("idle"); }} placeholder="粘贴学生作文、小说片段或当前项目文本……" />
