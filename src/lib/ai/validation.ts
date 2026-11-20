@@ -490,15 +490,14 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
     if (!evidenceIds || !hasObservationEvidence) { discard("no_observation_evidence"); continue; }
     if (isProofreadingClaim(item.effect, item.action)) { discard("proofreading_not_allowed"); continue; }
     // 判据 ID 校验：引用了本次未注入的编号 → 丢弃该条（防模型自造编号）
-    // 缺失则放行——字段刚引入，模型需要几轮适应期，先观察引用率再决定是否强制
     const rawCriteria = Array.isArray(item.criteriaIds)
       ? item.criteriaIds.filter((x): x is string => typeof x === "string" && x.trim().length > 0).map(x => x.trim().replace(/@.*$/, ""))
       : [];
+    if (!rawCriteria.length) { discard("missing_criteria"); continue; }
     const known = new Set(injectedCriteriaIds());
     const unknown = rawCriteria.filter(id => !known.has(id));
     if (unknown.length) { discard("unknown_criteria"); continue; }
-    const criteriaIds = rawCriteria.length ? stampCriteriaVersion(rawCriteria) : undefined;
-    diagnostics.push({ id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action, confidence: item.confidence, evidenceIds, ...(criteriaIds ? { criteriaIds } : {}), ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}) });
+    diagnostics.push({ id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action, confidence: item.confidence, evidenceIds, criteriaIds: stampCriteriaVersion(rawCriteria), ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}) });
   }
   if (!diagnostics.length) return fail(`diagnostics 全部未通过校验：${discardedDiagnostics.map(d => d.reason).join("、")}`);
   const supplied = value.retrievalEvidence === undefined ? [] : value.retrievalEvidence;

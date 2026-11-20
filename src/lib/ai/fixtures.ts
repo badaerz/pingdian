@@ -183,8 +183,8 @@ export function fixtureForTask(task: AiTask, context: StoryContext, input?: AiTa
           { key: "rhythm", dimension: "节律", value: 72, unit: "分", interpretation: "短停顿与信息延后共同塑造节律。", evidenceIds: [evidenceId(1)] },
         ] },
         diagnostics: [
-          { id: "demo-diagnostic-setup", location: segments.at(-1)?.label ?? "当前片段", quote: quoteFrom(segments.at(-1)?.text ?? sourceText(context, input)), effect: "转折信息出现后，读者能感到变化，但前文可回收的先兆不足。", action: "此处铺垫不足：在前一分段补入一个相同意象或异常动作，后文再回收。", confidence: 0.72, evidenceIds: [evidenceId(Math.max(0, segments.length - 1))], trainingExerciseId: "EX_006" },
-          { id: "demo-diagnostic-style", location: segments[0]?.label ?? "当前片段", quote: quoteFrom(segments[0]?.text ?? sourceText(context, input)), effect: "具体动作让判断能够回到原文核验。", action: "保留该动作，只改一个句式变量并比较阅读节奏。", confidence: 0.68, evidenceIds: [evidenceId(0)] },
+          { id: "demo-diagnostic-setup", location: segments.at(-1)?.label ?? "当前片段", quote: quoteFrom(segments.at(-1)?.text ?? sourceText(context, input)), effect: "转折信息出现后，读者能感到变化，但前文可回收的先兆不足。", action: "此处铺垫不足：在前一分段补入一个相同意象或异常动作，后文再回收。", criteriaIds: ["M2"], confidence: 0.72, evidenceIds: [evidenceId(Math.max(0, segments.length - 1))], trainingExerciseId: "EX_006" },
+          { id: "demo-diagnostic-style", location: segments[0]?.label ?? "当前片段", quote: quoteFrom(segments[0]?.text ?? sourceText(context, input)), effect: "具体动作让判断能够回到原文核验。", action: "保留该动作，只改一个句式变量并比较阅读节奏。", criteriaIds: ["P1"], confidence: 0.68, evidenceIds: [evidenceId(0)] },
         ],
         retrievalEvidence: input?.retrievalEvidence ?? [],
       };

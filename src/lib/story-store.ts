@@ -404,6 +404,7 @@ function sanitizeLiteraryDiagnostic(value: unknown): NonNullable<AnalysisSnapsho
     action: value.action,
     confidence: value.confidence,
     evidenceIds: filterStrings(value.evidenceIds),
+    ...(Array.isArray(value.criteriaIds) ? { criteriaIds: filterStrings(value.criteriaIds) } : {}),
     ...(value.trainingExerciseId === undefined ? {} : { trainingExerciseId: value.trainingExerciseId }),
   };
 }

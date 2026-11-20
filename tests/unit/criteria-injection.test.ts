@@ -5,12 +5,13 @@ import { criteriaBlock } from "@/lib/ai/tasks";
  * 判据注入回归测试。
  *
  * 守住两条纪律：
- * 1. analysis-v2 必须注入六条判据，否则模型无从引用 → 命中率会掉回 11/44
+ * 1. analysis-v2 注入六维全部可判定条目
  * 2. pending 判据（C1/D2）不得注入 —— 阈值未定，注入了模型会强行判定
  */
 describe("判据注入", () => {
-  it("analysis-v2 注入六条判据", () => {
+  it("analysis-v2 注入 16 条不同判据", () => {
     const block = criteriaBlock("analysis-v2");
+    expect(new Set(block.match(/^\[[A-Z]\d+\]/gm)).size).toBe(16);
     console.log("\n注入块长度:", block.length);
     for (const id of ["P1","P2","P3","M1","M2","M3"]) {
       console.log(`  含 [${id}]:`, block.includes(`[${id}]`));

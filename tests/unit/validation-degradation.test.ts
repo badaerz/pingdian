@@ -80,6 +80,7 @@ function validPayload() {
     },
     diagnostics: [{
       id: "dg-1",
+      criteriaIds: ["P1"],
       location: "第一段",
       quote: "他站在门口，手里捏着一封没有署名的信。",
       effect: "用未署名的信代替说明，读者被迫自行补齐来历。",
@@ -223,6 +224,18 @@ describe("单点损坏一律降级，不许整包回退", () => {
 });
 
 describe("降级不许放水：两条底线任何时候都要守住", () => {
+  it.each([
+    [undefined, "missing_criteria"], ["C1", "unknown_criteria"], ["D2", "unknown_criteria"],
+  ] as const)("逐条丢弃无依据的诊断 %s", (id, reason) => {
+    const { result } = validate(payload => {
+      const extra = { ...payload.diagnostics[0], id: "dg-2", criteriaIds: id ? [id] : [] };
+      if (!id) Reflect.deleteProperty(extra, "criteriaIds");
+      payload.diagnostics.push(extra);
+    });
+    expect(result?.diagnostics.map(item => item.id)).toEqual(["dg-1"]);
+    expect(result?.discardedDiagnostics?.map(item => item.reason)).toEqual([reason]);
+  });
+
   it("诊断引文不在原文：该条被丢且不转成别的来源，全部丢完就回退", () => {
     const { result, failure } = validate((payload) => { payload.diagnostics[0].quote = "他站在门口，手里捏着一封署名的信。"; });
     expect(result).toBeNull();

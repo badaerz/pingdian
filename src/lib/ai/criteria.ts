@@ -76,8 +76,7 @@ export function serializeCriteriaForPrompt(hits: CriterionHit[]): string {
     .join("\n\n");
 }
 
-/** analysis-v2 一期注入的两个维度（依据检索契约 §3.3：单次最多 2 维 6 条） */
-export const INJECTED_DIMENSIONS: DimensionId[] = ["具体性与感官", "意象复现"];
+export const INJECTED_DIMENSIONS: DimensionId[] = ["结构组织", "连贯衔接", "信息密度与节奏", "具体性与感官", "意象复现", "视角一致性"];
 
 /** 取本期要注入的全部判据（已跳过 pending） */
 export function getInjectedCriteria(): CriterionHit[] {

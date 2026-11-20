@@ -26,6 +26,7 @@ const DISCARD_REASONS: Record<string, string> = {
   no_observation_evidence: "没有可核验的原文证据",
   proofreading_not_allowed: "属于校对意见，不属于文学诊断",
   unknown_criteria: "引用了本次未提供的判据编号",
+  missing_criteria: "没有标明依据的判据",
 };
 
 export function AnalysisIntegrity({ result }: { result: LiteraryAnalysisResult }) {

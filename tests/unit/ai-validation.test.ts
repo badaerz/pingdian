@@ -121,6 +121,7 @@ function analysisPayload() {
     ] },
     diagnostics: [{
       id: "diagnostic-1",
+      criteriaIds: ["S2"],
       location: "第一章",
       quote: "他没有拆开那封信。",
       effect: "动作延迟形成悬念。",

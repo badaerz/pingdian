@@ -150,7 +150,7 @@ export type LiteraryDomainAnalysis = {
 };
 
 export interface LiteraryAnalysisResult {
-  discardedDiagnostics?: { attempted: Partial<Pick<LiteraryDiagnostic, "id" | "location" | "quote" | "effect" | "action">>; reason: "field_invalid" | "duplicate_id" | "quote_not_in_source" | "no_observation_evidence" | "proofreading_not_allowed" | "unknown_criteria" }[];
+  discardedDiagnostics?: { attempted: Partial<Pick<LiteraryDiagnostic, "id" | "location" | "quote" | "effect" | "action">>; reason: "field_invalid" | "duplicate_id" | "quote_not_in_source" | "no_observation_evidence" | "proofreading_not_allowed" | "unknown_criteria" | "missing_criteria" }[];
   sourceKind: LiterarySourceKind;
   domainAnalysis: LiteraryDomainAnalysis;
   analysis: AnalysisDimension[];

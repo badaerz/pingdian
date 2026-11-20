@@ -128,7 +128,7 @@ const taskMaxTokens: Record<AiTask, number> = {
  * 这是「结论必须引用判据」的落点——不注入判据，模型只能凭感觉说"这里不好"，
  * 说不出按的是哪条标准。注入用于明确判定依据，不代表预期发现覆盖率必然提高。
  *
- * 成本：两维 6 条约 2.8k 字符，占 maxInputChars 的 12%，安全。
+ * 六维判据排除尚无阈值的条目。
  */
 export function criteriaBlock(task: AiTask): string {
   if (task !== "analysis-v2") return "";
