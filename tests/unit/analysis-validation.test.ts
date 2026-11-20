@@ -45,8 +45,12 @@ describe("analysis-v2 competition diagnosis", () => {
     const evidenceIds = fixture.domainAnalysis.characters.relationshipChanges[0].evidenceIds;
     const check = (finding: unknown) => validateTaskPayload("analysis-v2", { ...fixture, domainAnalysis: { ...fixture.domainAnalysis, characters: { ...("characters" in fixture.domainAnalysis ? fixture.domainAnalysis.characters : {}), relationshipChanges: [finding] } } }, project, "live", { sourceText });
     expect(check({ from: "陌生", to: "熟悉", evidenceIds })).not.toBeNull();
-    expect(check({ id: "empty", evidenceIds })).toBeNull();
-    expect(check({ from: "陌生", to: "熟悉", evidenceIds: ["missing"] })).toBeNull();
+    for (const invalid of [{ id: "empty", evidenceIds }, { from: "陌生", to: "熟悉", evidenceIds: ["missing"] }]) {
+      expect(check(invalid)).toMatchObject({
+        domainAnalysis: { characters: { relationshipChanges: [] } },
+        degraded: expect.arrayContaining([expect.objectContaining({ path: expect.stringContaining("relationshipChanges") })]),
+      });
+    }
   });
 
   it.each([false, true])("accepts dimension aliases and independent literary labels (Chinese=%s)", (chinese) => {

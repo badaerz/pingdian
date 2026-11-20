@@ -252,7 +252,9 @@ describe("validateTaskPayload strict AI task contracts", () => {
 
     const inferredCurve = analysisPayload();
     inferredCurve.paceCurve[0].evidenceId = "e-inference";
-    expect(validateTaskPayload("analysis-v2", inferredCurve, project, "live", evidenceContext)).toBeNull();
+    expect(validateTaskPayload("analysis-v2", inferredCurve, project, "live", evidenceContext)).toMatchObject({
+      paceCurve: [], degraded: expect.arrayContaining([expect.objectContaining({ path: "paceCurve[0].evidenceId" })]),
+    });
 
     const incompleteStyle = analysisPayload();
     incompleteStyle.styleProfile.metrics = incompleteStyle.styleProfile.metrics.slice(0, 3);

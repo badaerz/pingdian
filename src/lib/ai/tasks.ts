@@ -107,7 +107,7 @@ const taskInstructions: Record<AiTask, string> = {
   training: "返回 { feedback: { strengths, evidence, issue, nextStep, questions } }，只给过程反馈，不代写成稿。",
   "story-direction": "只返回 { direction: { understanding, recommendation, risks, question, suggestedTags } }；suggestedTags 只能来自指定六个标签，不能返回正文或候选段落。",
   "consistency-check": "只返回 { consistencyReport }；只报告可核验矛盾，不自动修改候选，candidateQuote 与 priorEvidence 必须逐字可核验。",
-  "analysis-v2": "返回 LiteraryAnalysisResult：sourceKind、domainAnalysis、analysis、evidence、relationGraph、paceCurve、emotionCurve、themeHeatmap、styleProfile、diagnostics、retrievalEvidence。narrative 的 domainAnalysis 必含 characters.goals/actions/relationshipChanges、plot.turningPoints/setups/payoffs、themes.stages（含 change/reason）；argumentative 改为 argument.claims/evidenceUnits/reasoningSteps 与 themes.stages，不得使用人物叙事节点。styleProfile.metrics 必须是 6 个元素的数组，每个元素形如 {\"key\":\"sentenceLength\",\"dimension\":\"句长\",\"value\":62,\"interpretation\":\"…\",\"evidenceIds\":[\"ev_001\"]}，key 取值为 sentenceLength/dialogueRatio/sensoryDensity/rhetoric/narrativeDistance/rhythm 各一次。所有图节点/边、曲线、热力、style 与 domainAnalysis evidenceId 必须至少引用本次 source 的 observation evidence，禁止仅引用 inference/knowledge。analysis 和 diagnostics 都必须是 JSON 对象数组。元素结构示例（尖括号内是占位说明，不得照抄）：`analysis: [{\"id\":\"<维度ID>\",\"name\":\"<维度名>\",\"summary\":\"<分析结论>\",\"impact\":\"<文本效果>\",\"suggestion\":\"<建议>\",\"score\":80,\"evidenceIds\":[\"<本次证据ID>\"]}]`；`diagnostics: [{\"id\":\"<诊断ID>\",\"location\":\"<原文位置>\",\"quote\":\"<逐字摘录的原文>\",\"effect\":\"<该处的具体效果>\",\"action\":\"<针对该处的建议>\",\"confidence\":0.8,\"evidenceIds\":[\"<与引句匹配的原文证据ID>\"]}]`。score 为 0 至 100 的数值，confidence 为 0 至 1 的数值；示例数值不是默认值。",
+  "analysis-v2": "返回 LiteraryAnalysisResult：sourceKind、domainAnalysis、analysis、evidence、relationGraph、paceCurve、emotionCurve、styleProfile、diagnostics、retrievalEvidence。narrative 的 domainAnalysis 必含 characters.goals/actions/relationshipChanges、plot.turningPoints/setups/payoffs、themes.stages（含 change/reason）；argumentative 改为 argument.claims/evidenceUnits/reasoningSteps 与 themes.stages，不得使用人物叙事节点。styleProfile.metrics 必须是 6 个元素的数组，每个元素形如 {\"key\":\"sentenceLength\",\"dimension\":\"句长\",\"value\":62,\"interpretation\":\"…\",\"evidenceIds\":[\"ev_001\"]}，key 取值为 sentenceLength/dialogueRatio/sensoryDensity/rhetoric/narrativeDistance/rhythm 各一次。所有图节点/边、曲线、style 与 domainAnalysis evidenceId 必须至少引用本次 source 的 observation evidence，禁止仅引用 inference/knowledge。analysis 和 diagnostics 都必须是 JSON 对象数组。元素结构示例（尖括号内是占位说明，不得照抄）：`analysis: [{\"id\":\"<维度ID>\",\"name\":\"<维度名>\",\"summary\":\"<分析结论>\",\"impact\":\"<文本效果>\",\"suggestion\":\"<建议>\",\"score\":80,\"evidenceIds\":[\"<本次证据ID>\"]}]`；`diagnostics: [{\"id\":\"<诊断ID>\",\"location\":\"<原文位置>\",\"quote\":\"<逐字摘录的原文>\",\"effect\":\"<该处的具体效果>\",\"action\":\"<针对该处的建议>\",\"confidence\":0.8,\"evidenceIds\":[\"<与引句匹配的原文证据ID>\"]}]`。score 为 0 至 100 的数值，confidence 为 0 至 1 的数值；示例数值不是默认值。",
   "knowledge-extract": "返回 { knowledgeGraph, evidence, sourceKind }；节点 ID 唯一，边端点与 evidenceIds 必须存在。argumentative 不得使用 character、event、place 节点。",
   "image-parameter-recommendation": "返回 { imageRecommendation: { settings, reasons, confidence } }；只建议图像参数，不生成图片。settings 必须强化当前人物、场景、媒介、色彩和正文证据，正向词具体到主体、构图、光线、材质和镜头语言，负向词覆盖文字/水印/畸形与时代冲突；model 只能沿用当前设置或当前能力列表中的模型 ID，不得臆造模型。每个 reasons 说明必须能回指当前正文或项目设定。",
   "training-feedback-v2": "返回 { trainingFeedback: { strengths, evidenceQuotes, issues, nextExperiment, questions, scores } }；训练不代写，不得返回 replacement prose，evidenceQuotes 必须逐字来自用户回答或 sourceText；scores.dimension 必须严格映射到固定六维：证据具体性、动作设计、感官细节、结构节律、语言控制、自主修订，量规维度只用于解释，不得创建其他维度。",
@@ -117,7 +117,7 @@ const taskMaxTokens: Record<AiTask, number> = {
   ideas: 2_400, characters: 3_200, world: 2_400, blueprint: 3_200,
   opening: 2_400, prose: 2_400, continue: 2_400, rewrite: 2_400, expand: 2_400, condense: 1_800, sensory: 2_400,
   analysis: 4_000, mentor: 2_800, "visual-brief": 1_600, storyboard: 2_800, training: 1_800,
-  "story-direction": 1_600, "consistency-check": 2_800, "analysis-v2": 9_000, "knowledge-extract": 4_000,
+  "story-direction": 1_600, "consistency-check": 2_800, "analysis-v2": 12_000, "knowledge-extract": 4_000,
   "image-parameter-recommendation": 1_800, "training-feedback-v2": 2_400,
 };
 
@@ -125,7 +125,7 @@ const taskMaxTokens: Record<AiTask, number> = {
  * 判据注入块：只对 analysis-v2 生效。
  *
  * 这是「结论必须引用判据」的落点——不注入判据，模型只能凭感觉说"这里不好"，
- * 说不出按的是哪条标准。实测命中率 11/44 的主因就是判据从未进过 prompt。
+ * 说不出按的是哪条标准。注入用于明确判定依据，不代表预期发现覆盖率必然提高。
  *
  * 成本：两维 6 条约 2.8k 字符，占 maxInputChars 的 12%，安全。
  */
