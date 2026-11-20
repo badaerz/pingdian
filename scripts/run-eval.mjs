@@ -22,13 +22,14 @@ const RUNS_DIR = path.join(ROOT, "evals", "runs");
 // 回放夹具必须**提交进仓库**：放在 gitignore 的 evals/runs 里，
 // 新克隆或清理后就没了，门禁永远不可复现——这是被真实踩过的坑。
 const FIXTURES_DIR = path.join(ROOT, "evals", "fixtures", "raw");
-const EMIT_FIXTURES = args.includes("--fixtures");
 
 /** 正文指纹：样本正文一改，旧夹具自动失效，不会被拿去当新样本回放。 */
 const goldenHash = (text) => createHash("sha1").update(text, "utf8").digest("hex").slice(0, 8);
 
 const args = process.argv.slice(2);
 const LIVE = args.includes("--live");
+// 采集回放夹具：写到受版本控制的 evals/fixtures/raw
+const EMIT_FIXTURES = args.includes("--fixtures");
 const caseFilter = (() => {
   const index = args.indexOf("--case");
   return index >= 0 ? args[index + 1] : null;
@@ -175,14 +176,42 @@ function scoreCase(entry, diagnostics) {
     return quote.length > 0 && source.includes(quote);
   });
 
+  // ---- badcase 归因（PRD §3.4 要求分三类）----
+  // 归因是启发式，不是真理：只能回答「模型有没有机会说对」，
+  // 不能回答「它为什么没说」。所以在报告里必须标明这是推断。
+  const injected = new Set(injectedCriteriaIds());
+  const attributeMiss = (finding) => {
+    const ids = Array.isArray(finding.criteriaIds) ? finding.criteriaIds : [];
+    // 该结论依据的判据根本没进 prompt → 知识库/注入层面就没给机会
+    if (ids.length > 0 && ids.every((id) => !injected.has(id))) return "criteria_not_injected";
+    // 模型的证据有没有碰到过这条结论所在的位置 → 没碰到就是没走到那段
+    const anchor = normalize(finding.requiredAnchor);
+    const touched = diagnostics.some((d) => {
+      const quote = normalize(d.quote);
+      if (!quote || !anchor) return false;
+      return anchor.includes(quote) || quote.includes(anchor) || quote.slice(0, 8) === anchor.slice(0, 8);
+    });
+    return touched ? "not_expressed" : "not_located";
+  };
+
+  const missed = entry.expectedFindings.filter((f) => !matchedFindings.has(f.claim));
+  const missedAttribution = {};
+  for (const finding of missed) {
+    const key = attributeMiss(finding);
+    missedAttribution[key] = (missedAttribution[key] ?? 0) + 1;
+  }
+
   return {
     id: entry.id,
     title: entry.title,
     diagnostics: diagnostics.length,
+    // 精确率用：有多少条诊断真的对上了某条预期发现（其余算多报）
+    usedPredictions: usedPredictions.size,
     expected: entry.expectedFindings.length,
     matched: matchedFindings.size,
     matchedClaims: [...matchedFindings],
-    missedClaims: entry.expectedFindings.filter((f) => !matchedFindings.has(f.claim)).map((f) => f.claim),
+    missedClaims: missed.map((f) => f.claim),
+    missedAttribution,
     unpredictedCount: diagnostics.length - usedPredictions.size,
     forbiddenHits: forbiddenHits.map((hit) => ({ claim: hit.forbidden.claim, quote: hit.diagnostic.quote })),
     anchoredCount: anchored.length,
@@ -207,6 +236,8 @@ function aggregate(results, entryById) {
   let forbiddenTotal = 0;
   let expectedTotal = 0;
   let matchedTotal = 0;
+  let usedTotal = 0;
+  const attributionTotals = { criteria_not_injected: 0, not_located: 0, not_expressed: 0 };
   const empties = [];
 
   for (const result of results) {
@@ -214,6 +245,10 @@ function aggregate(results, entryById) {
     expectedTotal += result.expected;
     matchedTotal += result.matched;
     diagnosticsTotal += result.diagnostics;
+    usedTotal += result.usedPredictions ?? 0;
+    for (const [key, value] of Object.entries(result.missedAttribution ?? {})) {
+      attributionTotals[key] = (attributionTotals[key] ?? 0) + value;
+    }
     anchoredTotal += result.anchoredCount;
     forbiddenTotal += result.forbiddenHits.length;
     if (result.empty) empties.push(result.id);
@@ -226,6 +261,10 @@ function aggregate(results, entryById) {
   return {
     conclusionAccuracy: pct(weightMatched, weightTotal),
     recall: pct(matchedTotal, expectedTotal),
+    // 精确率：对上的诊断 / 全部诊断。模型多报废话会被这里扣分——
+    // 之前只算召回，"说得多但说不对"零成本。
+    precision: pct(usedTotal, diagnosticsTotal),
+    missedAttribution: attributionTotals,
     traceabilityRate: pct(anchoredTotal, diagnosticsTotal),
     hallucinationRate: pct(diagnosticsTotal - anchoredTotal, diagnosticsTotal),
     confidenceHits: forbiddenTotal,
@@ -361,10 +400,12 @@ console.log(`cases: ${summary.counts.cases}   expected findings: ${summary.count
 console.log("");
 console.log(`  结论准确率 (severity-weighted)  ${fmt(summary.conclusionAccuracy)}`);
 console.log(`  覆盖率     (recall of findings)  ${fmt(summary.recall)}`);
+console.log(`  精确率     (对上的诊断占比)       ${fmt(summary.precision)}`);
 console.log(`  证据可溯源率                     ${fmt(summary.traceabilityRate)}`);
 console.log(`  幻觉率                            ${fmt(summary.hallucinationRate)}`);
 console.log("");
 console.log(`  forbidden-claim hits: ${summary.confidenceHits}`);
+console.log(`  漏报归因：知识库未注入 ${summary.missedAttribution.criteria_not_injected} · 未定位到位置 ${summary.missedAttribution.not_located} · 定位到但没说 ${summary.missedAttribution.not_expressed}`);
 if (summary.emptyCases.length) console.log(`  EMPTY cases (no diagnostics at all): ${summary.emptyCases.join(", ")}`);
 if (report.scoringModeWarning) console.log(`  ! ${report.scoringModeWarning}`);
 console.log("");

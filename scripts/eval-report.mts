@@ -9,7 +9,15 @@ interface Case {
 }
 export interface Run {
   file: string; ranAt: string; mode: string; cases: Case[];
-  summary: { counts: Counts; conclusionAccuracy: number | null; traceabilityRate: number | null; hallucinationRate: number | null };
+  summary: {
+    counts: Counts;
+    conclusionAccuracy: number | null;
+    traceabilityRate: number | null;
+    hallucinationRate: number | null;
+    // 这两项是后加的：老报告文件里没有，所以都可选
+    precision?: number | null;
+    missedAttribution?: Record<string, number>;
+  };
 }
 
 const pct = (n: number | null) => n === null ? "—" : n.toFixed(2) + "%";
@@ -34,14 +42,14 @@ export function renderReport(input: Run[], now: Date) {
     "", "|运行|时间（UTC）|模式|源文件|", "|---|---|---|---|"];
   rows.forEach((r,i) => lines.push(`|R${i+1}|${r.ranAt}|${r.mode}|${sources.get(r)!.map(cell).join("、")}|`));
   lines.push("", "## 三大指标", "", "下表逐项抄录 summary，百分比保留两位。结论准确率按 severity 加权。原始分包含回退结果，不能用作纯模型分数。破折号表示分母为零或无法计算。",
-    "", "|运行|结论准确率|证据可溯源率|幻觉率|cases|expectedTotal|matchedTotal|diagnosticsTotal|anchoredTotal|",
-    "|---|---:|---:|---:|---:|---:|---:|---:|---:|");
+    "", "|运行|结论准确率|精确率|证据可溯源率|幻觉率|cases|expectedTotal|matchedTotal|diagnosticsTotal|anchoredTotal|",
+    "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|");
   const batches = new Map<string, Run[]>();
   const sampleIds = new Set<string>();
   const misses = new Map<string, string[]>();
   rows.forEach((r,i) => {
     const s = r.summary, c = s.counts;
-    lines.push(`|R${i+1}|${pct(s.conclusionAccuracy)}|${pct(s.traceabilityRate)}|${pct(s.hallucinationRate)}|${c.cases}|${c.expectedTotal}|${c.matchedTotal}|${c.diagnosticsTotal}|${c.anchoredTotal}|`);
+    lines.push(`|R${i+1}|${pct(s.conclusionAccuracy)}|${pct(s.precision ?? null)}|${pct(s.traceabilityRate)}|${pct(s.hallucinationRate)}|${c.cases}|${c.expectedTotal}|${c.matchedTotal}|${c.diagnosticsTotal}|${c.anchoredTotal}|`);
     if (r.mode === "live") {
       const day = dateOf(new Date(r.ranAt));
       batches.set(day, [...(batches.get(day) ?? []), r]);
@@ -69,6 +77,15 @@ export function renderReport(input: Run[], now: Date) {
     lines.push(`|${day}|${batch.map(r=>"R"+(rows.indexOf(r)+1)).join("、")}|${valid.length}/${latest.size}|${rates("conclusionAccuracy")}|${rates("traceabilityRate")}|${rates("hallucinationRate")}|${expected ? matched+"/"+expected : "—"}|`);
     gate = day + "，" + valid.length + "/" + latest.size + "，" + (latest.size !== 14 ? "批次样本数与门槛分母不一致，无法判定" : valid.length >= 10 ? "达到门槛" : "未达到门槛");
   }
+  lines.push("", "## 漏报归因（PRD §3.4 三分类）", "",
+    "归因是**启发式推断**，只回答「模型有没有机会说对」，不回答「它为什么没说」。",
+    "口径：`知识库未注入` = 该结论依据的判据本次没进 prompt；`未定位到位置` = 模型的证据没碰到过该处；`定位到但没说` = 走到了位置但没给出结论。",
+    "", "|运行|知识库未注入|未定位到位置|定位到但没说|", "|---|---:|---:|---:|");
+  rows.forEach((r, i) => {
+    const a = (r.summary as { missedAttribution?: Record<string, number> }).missedAttribution ?? {};
+    lines.push(`|R${i+1}|${a.criteria_not_injected ?? 0}|${a.not_located ?? 0}|${a.not_expressed ?? 0}|`);
+  });
+
   lines.push("", "## Badcase 归因", "", "相同样本、状态及漏项合并列出运行编号。仅“有效 live”行进入模型命中统计。漏项记录来自 missedClaims。", "",
     "|运行|输出状态|ID|标题|命中/预期|漏掉的预期发现|", "|---|---|---|---|---:|---|");
   for (const [detail, refs] of misses) lines.push(`|${refs.join("、")}|${detail}|`);
