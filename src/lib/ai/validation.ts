@@ -403,29 +403,50 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
   const rawCells = record(rawHeatmap) ? rawHeatmap.themes : rawHeatmap;
   const invalidTheme = Array.isArray(rawCells) ? rawCells.findIndex(cell =>
     !record(cell) || ![cell.theme, cell.name, cell.label].some(name => text(name, 200))) : -1;
-  if (record(value)) value = normalizeModelPayload(value as Record<string, unknown>);
-  if (!record(value)
-    || !isSourceKind(value.sourceKind)
-    || (evidenceValue.expectedSourceKind !== undefined && value.sourceKind !== evidenceValue.expectedSourceKind)) return fail("sourceKind 缺失、未知或与输入不符");
+  // 模型偶尔把整个 payload 包在数组里返回（[{...}]）。这是可恢复的形态：
+  // 取第一个对象元素，记账后继续校验。不是对象才真的没法处理。
+  const wrappedInArray = Array.isArray(value) ? value.find(record) : undefined;
+  if (wrappedInArray) value = wrappedInArray;
+  if (!record(value)) return fail("返回内容不是对象");
   const degraded: Degradation[] = [];
+  if (wrappedInArray) degraded.push({ path: "payload", reason: "模型把整体包在数组里返回，已取首个对象" });
   const drop = (message: string): null => {
     const [path, ...reason] = message.split(" ");
     degraded.push({ path, reason: reason.join(" "), ...(/\[\d+\]/.test(path) ? { dropped: 1 } : {}) });
     return null;
   };
-  const evidence = readEvidence(value.evidence, context, evidenceValue, fail, drop);
+  // sourceKind 必须在归一化**之前**定下来：归一化会按它把 domainAnalysis 重排成
+  // 叙事/论证对应的形状，先归一化再改 sourceKind，形状就错位了。
+  // 它本身是服务端事实（detectLiterarySourceKind 判定 + 用户可修正），
+  // 模型的职责不是复述它。漏写或判错一律以服务端为准并记账；
+  // 只有服务端也没给（纯离线调用）时才要求模型自己写对。
+  const rawKind = value.sourceKind;
+  let effectiveKind: LiterarySourceKind;
+  if (isSourceKind(rawKind)) {
+    effectiveKind = rawKind;
+    if (evidenceValue.expectedSourceKind && rawKind !== evidenceValue.expectedSourceKind) {
+      degraded.push({ path: "sourceKind", reason: `模型判为 ${rawKind}，与服务端 ${evidenceValue.expectedSourceKind} 不一致，已按服务端口径` });
+      effectiveKind = evidenceValue.expectedSourceKind;
+    }
+  } else {
+    if (!evidenceValue.expectedSourceKind) return fail("sourceKind 缺失、未知或与输入不符");
+    degraded.push({ path: "sourceKind", reason: `模型未给出有效值，已按服务端判定使用 ${evidenceValue.expectedSourceKind}` });
+    effectiveKind = evidenceValue.expectedSourceKind;
+  }
+  const normalized = normalizeModelPayload({ ...value, sourceKind: effectiveKind });
+  const evidence = readEvidence(normalized.evidence, context, evidenceValue, fail, drop);
   if (!evidence) return null;
   const knownEvidence = new Set(evidence.map((item) => item.id));
   const sources = userTexts(context, evidenceValue);
   const observationEvidence = new Set(evidence.filter(item => item.quote && literaryQuoteExists(item.quote, sources)).map(item => item.id));
   if (observationEvidence.size === 0) return fail("evidence 缺少原文观察证据（0 条）");
-  const analysis = readAnalysisDimensions(value.analysis, knownEvidence);
-  const domainAnalysis = readDomainAnalysis(value.domainAnalysis, value.sourceKind, observationEvidence, fail, drop);
-  const relationGraph = readGraph(value.relationGraph, observationEvidence, value.sourceKind, true);
-  const paceCurve = readCurves(value.paceCurve, observationEvidence, "paceCurve", drop);
-  const emotionCurve = readCurves(value.emotionCurve, observationEvidence, "emotionCurve", drop);
+  const analysis = readAnalysisDimensions(normalized.analysis, knownEvidence);
+  const domainAnalysis = readDomainAnalysis(normalized.domainAnalysis, effectiveKind, observationEvidence, fail, drop);
+  const relationGraph = readGraph(normalized.relationGraph, observationEvidence, effectiveKind, true);
+  const paceCurve = readCurves(normalized.paceCurve, observationEvidence, "paceCurve", drop);
+  const emotionCurve = readCurves(normalized.emotionCurve, observationEvidence, "emotionCurve", drop);
   if (!analysis || !domainAnalysis || !relationGraph || !relationGraph.edges.length || !paceCurve || !emotionCurve) return fail(`${!analysis ? "analysis" : !domainAnalysis ? "domainAnalysis" : !relationGraph?.edges.length ? "relationGraph" : !paceCurve ? "paceCurve" : "emotionCurve"} 结构或证据引用无效`);
-  const heatmap = record(value.themeHeatmap) ? value.themeHeatmap.themes : value.themeHeatmap;
+  const heatmap = record(normalized.themeHeatmap) ? normalized.themeHeatmap.themes : normalized.themeHeatmap;
   if (!Array.isArray(heatmap) || heatmap.length > 120) drop("themeHeatmap 不是数组或超过 120 项");
   const heatmapCells = (Array.isArray(heatmap) && heatmap.length <= 120 ? heatmap : []).map((item, i) => {
     if (!record(item) || !text(item.theme, 200) || !text(item.segment, 200) || !finiteInRange(item.value, 0, 100)) return drop(`themeHeatmap[${i}] 字段无效`);
@@ -495,7 +516,7 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
     if (!verified) return fail(`retrievalEvidence[${i}].retrievalId 不在服务端检索结果中`);
     retrievalEvidence.push(verified);
   }
-  return { sourceKind: value.sourceKind, domainAnalysis, analysis, evidence, relationGraph, paceCurve, emotionCurve, themeHeatmap: themeHeatmap as LiteraryAnalysisResult["themeHeatmap"], styleProfile: { metrics: metrics as LiteraryAnalysisResult["styleProfile"]["metrics"] }, diagnostics, discardedDiagnostics, degraded, retrievalEvidence, ...(degradedRetrievalIds.length ? { degradedRetrievalIds } : {}) };
+  return { sourceKind: effectiveKind, domainAnalysis, analysis, evidence, relationGraph, paceCurve, emotionCurve, themeHeatmap: themeHeatmap as LiteraryAnalysisResult["themeHeatmap"], styleProfile: { metrics: metrics as LiteraryAnalysisResult["styleProfile"]["metrics"] }, diagnostics, discardedDiagnostics, degraded, retrievalEvidence, ...(degradedRetrievalIds.length ? { degradedRetrievalIds } : {}) };
 }
 
 function readMentor(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext): MentorResponse | null {

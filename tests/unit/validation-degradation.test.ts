@@ -91,7 +91,9 @@ function validPayload() {
   };
 }
 
-interface LiteraryAnalysisLike { degraded?: Array<{ path?: string; reason?: string; dropped?: number }> }
+interface DegradationRow { path?: string; reason?: string; dropped?: number }
+interface LiteraryAnalysisLike { degraded?: DegradationRow[] }
+type LiteralPayload = LiteraryAnalysisResult & { degraded?: DegradationRow[] };
 
 function validate(mutate: (payload: ReturnType<typeof validPayload>) => void) {
   const payload = validPayload();
@@ -158,6 +160,43 @@ describe("单点损坏一律降级，不许整包回退", () => {
     expect(result?.paceCurve.length).toBe(2);
     expect(result?.paceCurve.every((point) => point.evidenceId !== "ev_999")).toBe(true);
     expect(degradedPaths.some((path) => path.startsWith("paceCurve"))).toBe(true);
+  });
+
+  it("sourceKind 模型漏写：以服务端判定为准，不整包回退", () => {
+    // sourceKind 是服务端事实（detectLiterarySourceKind + 用户可修正），
+    // 模型的职责不是复述它。漏写不该毁掉整份诊断。
+    const payload = validPayload() as Record<string, unknown>;
+    delete payload.sourceKind;
+    let failure: string | undefined;
+    const result = validateTaskPayload("analysis-v2", payload, project(), "live", {
+      sourceText: TEXT, expectedSourceKind: "narrative", onFailure: (reason: string) => { failure = reason; },
+    }) as LiteralPayload | null;
+    expect(failure).toBeUndefined();
+    expect(result).not.toBeNull();
+    expect(result?.sourceKind).toBe("narrative");
+    expect(result?.diagnostics.length).toBe(1);
+    expect((result?.degraded ?? []).some((entry) => entry.path === "sourceKind")).toBe(true);
+  });
+
+  it("sourceKind 模型判错：按服务端口径继续，记账但不作废", () => {
+    const payload = validPayload();
+    payload.sourceKind = "argumentative" as never;
+    const result = validateTaskPayload("analysis-v2", payload, project(), "live", {
+      sourceText: TEXT, expectedSourceKind: "narrative",
+    }) as LiteralPayload | null;
+    expect(result).not.toBeNull();
+    expect(result?.sourceKind).toBe("narrative");
+    expect((result?.degraded ?? []).some((entry) => entry.path === "sourceKind")).toBe(true);
+  });
+
+  it("整体被包在数组里返回：取首个对象继续校验", () => {
+    const payload = validPayload();
+    const result = validateTaskPayload("analysis-v2", [payload], project(), "live", {
+      sourceText: TEXT, expectedSourceKind: "narrative",
+    }) as LiteralPayload | null;
+    expect(result).not.toBeNull();
+    expect(result?.diagnostics.length).toBe(1);
+    expect((result?.degraded ?? []).some((entry) => entry.path === "payload")).toBe(true);
   });
 
   it("曲线只剩一个有效点：保留该点，不因点数少就清空", () => {
