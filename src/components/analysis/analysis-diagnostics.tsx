@@ -12,7 +12,7 @@ export function AnalysisDiagnostics({ diagnostics, selectedId, onSelect }: {
   return <section className="analysis-diagnostics" aria-labelledby="analysis-diagnostics-title">
     <header><div><span className="eyebrow">可执行诊断</span><h2 id="analysis-diagnostics-title">具体修改建议</h2></div><AlertTriangle size={18} /></header>
     <div className="diagnostic-list">{diagnostics.map((diagnostic) => <article key={diagnostic.id} data-selected={diagnostic.id === selectedId}>
-      <div className="diagnostic-location"><MapPin size={14} /><span>{diagnostic.location}</span><small>置信提示 {Math.round(diagnostic.confidence * 100)}%</small></div>
+      <div className="diagnostic-location"><MapPin size={14} /><span>{diagnostic.location}</span><small>{Number.isFinite(diagnostic.confidence) ? `置信提示 ${Math.round(diagnostic.confidence * 100)}%` : "未给出置信度"}</small></div>
       <q>{diagnostic.quote}</q>
       <p>{diagnostic.effect}</p>
       <button type="button" onClick={() => onSelect(diagnostic)} aria-label={`${diagnostic.action}，定位原文证据`}>
