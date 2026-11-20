@@ -1,7 +1,6 @@
 "use client";
 
 import { AlertTriangle, Check, ChevronDown, Pencil, Send, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { ProseSelection } from "@/components/studio/prose-editor";
@@ -359,7 +358,6 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
         {warning && <p className="candidate-warning"><AlertTriangle size={14} />{warning}</p>}
         {notice && <p className="ai-notice" role="status">{notice}</p>}
         {mentor && <div className="mentor-result"><section><span>核心判断</span><h3>{mentor.thesis}</h3></section><section><span>原文证据</span>{mentor.evidence.map((item, index) => <article key={`${item.quote}-${index}`}><StatusBadge kind={item.source === "observation" ? "success" : item.source === "knowledge" ? "knowledge" : "demo"}>{sourceLabel(item.source)}</StatusBadge><q>{item.quote}</q>{item.note && <p>{item.note}</p>}</article>)}</section>{[["文学技法", mentor.craft], ["阅读效果", mentor.effect], ["一致性问题", mentor.consistency], ["修改实验", mentor.experiments], ["启发式追问", mentor.questions]].map(([label, items]) => <section key={label as string}><span>{label as string}</span><ul>{(items as string[]).map((item) => <li key={item}>{item}</li>)}</ul></section>)}{mentor.references.length > 0 && <section><span>知识库参考</span>{mentor.references.map((item) => <p key={item.title}><strong>{item.title}</strong>：{item.note}</p>)}</section>}</div>}
-        <Link className="mentor-analysis-link" href={`/project/${state.activeProjectId}/analysis${selectedText ? `?selection=${encodeURIComponent(selectedText)}` : ""}`}>带当前项目与选区进入完整诊断</Link>
       </TabsContent>
     </Tabs>
     <details className="context-budget"><summary>上下文详情 <ChevronDown size={14} /></summary><div className="context-meter"><span style={{ width: `${Math.min(100, contextPacket.usedCharacters / contextPacket.maxCharacters * 100)}%` }} /></div><p>已用 {contextPacket.usedCharacters} / {contextPacket.maxCharacters} 字，剩余 {contextPacket.remainingCharacters} 字</p>{contextPacket.sections.map((section) => <div key={section.kind}><strong>{section.label}</strong><span>{section.usedCharacters} 字{section.trimmed ? " · 已裁剪" : ""}</span></div>)}</details>

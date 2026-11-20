@@ -63,6 +63,7 @@ export interface RetrievalEvidence {
 export type LiterarySourceKind = "narrative" | "argumentative";
 
 export interface AiEvidence {
+  verification?: "unverified";
   id: string;
   source: "user" | "observation" | "knowledge" | "inference";
   quote?: string;
@@ -80,6 +81,13 @@ export interface LiteraryDiagnostic {
   confidence: number;
   evidenceIds: string[];
   trainingExerciseId?: string;
+  /**
+   * 本条诊断依据的判据编号，形如 ["P3@v1.0"]。
+   *
+   * 版本号由服务端在校验通过后拼上（见 criteria.ts 的 stampCriteriaVersion），
+   * 模型只回填裸 ID（"P3"）——让模型复述版本号只会多一个编造机会。
+   */
+  criteriaIds?: string[];
 }
 
 export interface LiteraryCurvePoint {
@@ -142,6 +150,7 @@ export type LiteraryDomainAnalysis = {
 };
 
 export interface LiteraryAnalysisResult {
+  discardedDiagnostics?: { attempted: Partial<Pick<LiteraryDiagnostic, "id" | "location" | "quote" | "effect" | "action">>; reason: "field_invalid" | "duplicate_id" | "quote_not_in_source" | "no_observation_evidence" | "proofreading_not_allowed" | "unknown_criteria" }[];
   sourceKind: LiterarySourceKind;
   domainAnalysis: LiteraryDomainAnalysis;
   analysis: AnalysisDimension[];
@@ -152,6 +161,7 @@ export interface LiteraryAnalysisResult {
   themeHeatmap: ThemeHeatmapCell[];
   styleProfile: { metrics: LiteraryStyleMetric[] };
   diagnostics: LiteraryDiagnostic[];
+  degradedRetrievalIds?: string[];
   retrievalEvidence: RetrievalEvidence[];
 }
 

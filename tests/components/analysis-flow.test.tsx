@@ -57,6 +57,15 @@ it("shows six dimensions and opens cited evidence", async () => {
 
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
+it("labels partial live results and shows the rejection without a heatmap tab", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ mode: "live", task: "analysis-v2", warnings: [], result: { ...completeAnalysisV2, discardedDiagnostics: [{ attempted: { id: "bad" }, reason: "field_invalid" }] } })));
+  render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
+  await userEvent.click(screen.getByRole("button", { name: "真实重跑" }));
+  expect(await screen.findByText("真实分析（部分通过）")).toBeVisible();
+  expect(screen.getByText(/bad：字段缺失或格式不符/)).toBeVisible();
+  expect(screen.queryByRole("tab", { name: "主题演变" })).toBeNull();
+});
+
 it("runs analysis-v2, links diagnostics to evidence, and explains selected text without changing prose", async () => {
   const user = userEvent.setup();
   const analysisResponse = new Response(JSON.stringify({

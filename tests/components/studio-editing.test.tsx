@@ -62,14 +62,10 @@ it("keeps the defense case formal editing area read-only", () => {
   expect(screen.getAllByRole("button", { name: /^删除/ }).every((button) => (button as HTMLButtonElement).disabled)).toBe(true);
 });
 
-it("links the active studio chapter to literary diagnosis with scoped source context", () => {
+it("does not render the duplicate scoped diagnosis link", () => {
   render(<StoryProvider><StudioWorkspace /></StoryProvider>);
 
-  const link = screen.getByRole("link", { name: "文学诊断" });
-  expect(link).toHaveAttribute("href", expect.stringMatching(/^\/project\/demo\/analysis\?/));
-  expect(link).toHaveAttribute("href", expect.stringContaining("projectId=demo"));
-  expect(link).toHaveAttribute("href", expect.stringContaining("chapterId=demo-chapter-1"));
-  expect(link).toHaveAttribute("href", expect.stringContaining("source=studio"));
+  expect(screen.queryByRole("link", { name: "文学诊断" })).not.toBeInTheDocument();
 });
 
 it("shows stale candidates and returns structured mentor evidence", async () => {

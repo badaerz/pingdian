@@ -105,8 +105,6 @@ export function fixtureForTask(task: AiTask, context: StoryContext, input?: AiTa
         plotCurve: [{ beat: "当前片段", value: 52, evidenceId: "demo-analysis-evidence-1" }],
         emotionCurve: [{ beat: "当前片段", value: 18, evidenceId: "demo-analysis-evidence-1" }],
       };
-    case "explain":
-      return { explanation: "这段文字通过具体动作承载人物的回避心理，让读者从物理细节推导情绪。", evidence: [{ id: "demo-explain-1", source: "observation", quote: quoteFrom(sourceText(context, input)), note: "仅引用当前选区或当前项目文本。" }], suggestions: ["保留动作细节", "避免直接命名情绪"] };
     case "mentor":
       return { mentor: { thesis: "动作延迟让人物的回避变得可观察。", evidence: [{ quote: quoteFrom(sourceText(context, input)), source: "observation", note: "仅引用当前选区或当前项目文本。" }, { quote: "可能害怕旧事返回", source: "inference", note: "这是文学推断，不是情节事实。" }], craft: ["延宕", "以动作替代心理说明"], effect: ["让读者参与推断，维持克制张力"], consistency: ["与人物长期守候的设定一致"], experiments: ["把关键动作拆为两个短句，比较节奏变化"], questions: ["人物最不愿在信里看见哪一个名字？"], references: (input?.retrievalEvidence ?? []).slice(0, 3).map((item) => ({ title: item.chunkType, sourceTitle: item.workId ?? item.sourceUrl ?? "文学知识库", note: "知识参考用于说明技法，不作为原文事实。", retrievalId: item.retrievalId, sourceStatus: item.sourceStatus })) } };
     case "visual-brief":

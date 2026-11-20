@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock3, Download, FileSearch, FileText, FolderOpen, Images, PanelRightClose, PanelRightOpen, Sparkles } from "lucide-react";
+import { Clock3, Download, FileText, FolderOpen, Images, PanelRightClose, PanelRightOpen, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import { CandidatePanel, type AssistantRequest } from "@/components/studio/candidate-panel";
@@ -120,8 +120,6 @@ export function StudioWorkspace({ projectId }: { projectId?: string }) {
     link.click(); URL.revokeObjectURL(url);
   };
   const selectedTitle = activeSelection.type === "chapter" ? chapter.title : activeSelection.type === "character" ? state.characters.find((item) => item.id === activeSelection.id)?.name : activeSelection.type === "world" ? state.worldEntries.find((item) => item.id === activeSelection.id)?.label : state.blueprint.find((item) => item.id === activeSelection.id)?.title;
-  const analysisQuery = new URLSearchParams({ projectId: state.activeProjectId, chapterId: chapter.id, source: "studio" });
-  if (proseSelection?.text.trim() && chapter.content.slice(proseSelection.from, proseSelection.to) === proseSelection.text) analysisQuery.set("selection", proseSelection.text.slice(0, 8_000));
 
   return <div ref={studioRef} className={`studio ${candidateOpen ? "" : "studio-focus"} ${focusMode ? "studio-writing-focus" : ""} ${binderOpen ? "studio-binder-open" : ""}`} style={{ "--studio-binder-share": `${binderShare}fr`, "--studio-content-share": `${100 - binderShare}fr` } as CSSProperties}>
     {!focusMode && <StoryNavigator selection={activeSelection} onSelect={(next) => { setSelection(next); setBinderOpen(false); }} readOnly={structureReadOnly} />}
@@ -132,7 +130,6 @@ export function StudioWorkspace({ projectId }: { projectId?: string }) {
         <span className={`save-state save-${saveStatus}`}>{saveStatus === "saving" ? "保存中…" : saveStatus === "failed" ? "保存失败" : "已保存"}</span>
         <Button variant="secondary" className="binder-mobile-toggle" onClick={() => setBinderOpen((value) => !value)}><FolderOpen size={16} />档案</Button>
         <Button variant="secondary" onClick={() => download("markdown")}><Download size={16} />Markdown</Button><Button variant="secondary" onClick={() => download("text")}><FileText size={16} />TXT</Button>
-        <Link href={`/project/${state.activeProjectId}/analysis?${analysisQuery.toString()}`} className="button button-secondary"><FileSearch size={16} />文学诊断</Link>
         <Link href={`/project/${state.activeProjectId}/ip-lab`} className="button button-secondary"><Images size={16} />IP 实验场</Link>
         <Button variant="secondary" onClick={() => setVersionsOpen(true)}><Clock3 size={16} />版本 {state.versions.at(-1)?.versionNo ?? 0}</Button>
         {!focusMode && <Tooltip label={candidateOpen ? "关闭协作区" : "打开协作区"}><Button variant="icon" className="desktop-candidate-toggle" aria-label={candidateOpen ? "关闭协作区" : "打开协作区"} onClick={() => setCandidateOpen((value) => !value)}>{candidateOpen ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}</Button></Tooltip>}

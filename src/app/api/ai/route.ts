@@ -170,7 +170,7 @@ export function isTaskInput(value: unknown): value is AiTaskInput {
   const input = record(value.input) ? value.input : undefined;
   if (value.task === "consistency-check" && !record(input?.candidate)) return false;
   if (value.task === "training-feedback-v2" && !boundedText(input?.answer, 5_000, false) && !boundedText(input?.sourceText, 20_000, false)) return false;
-  if (value.task === "analysis" || value.task === "analysis-v2" || value.task === "knowledge-extract" || value.task === "mentor" || value.task === "explain") {
+  if (value.task === "analysis" || value.task === "analysis-v2" || value.task === "knowledge-extract" || value.task === "mentor") {
     const activeChapter = project.chapters.find((chapter) => record(chapter) && chapter.id === project.activeChapterId);
     if (!resolveAiSourceText(input, activeChapter?.content)) return false;
   }

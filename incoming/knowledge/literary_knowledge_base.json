@@ -184,10 +184,10 @@
     "era": "民国 / 中国现代文学 (1934)",
     "genre": "中篇小说 / 抒情乡土文学",
     "copyright": {
-      "status": "public_domain",
-      "source_url": "https://zh.wikisource.org/wiki/邊城",
-      "license": "CC0 / 公共领域",
-      "display_scope": "全篇文本、田园意象、诗性叙事及留白技法完全公开"
+      "status": "in_copyright",
+      "source_status": "summary_only",
+      "license": "著作权保护期内（作者沈从文，1988 年逝世）",
+      "display_scope": "仅收录摘要、结构分析与个别短句引用，不收录原文；用于介绍与评论的适当引用"
     },
     "core_summary": "湘西茶峒小镇上，渡船老人的外孙女翠翠与船总顺顺的两个儿子天保、傩送之间纯洁而充满宿命阴差阳错的爱情悲剧。",
     "themes": {

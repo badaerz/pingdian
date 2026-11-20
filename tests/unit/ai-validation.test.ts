@@ -395,7 +395,12 @@ describe("validateTaskPayload strict AI task contracts", () => {
   it("rejects dangling evidence references and graph endpoints", () => {
     const danglingEvidence = analysisPayload();
     danglingEvidence.analysis[0].evidenceIds = ["missing"];
-    expect(validateTaskPayload("analysis-v2" as AiTask, danglingEvidence, project, "live", evidenceContext)).toBeNull();
+    // 2026-11-19 变更：单条维度证据悬空 → 丢弃该维度，其余保留（契约 AC6 逐条裁定）。
+    // 之前整包 null 会导致"一条坏证据毁掉全部诊断"。
+    const rD = validateTaskPayload("analysis-v2" as AiTask, danglingEvidence, project, "live", evidenceContext) as { analysis?: Array<{ id: string }> } | null;
+    expect(rD).not.toBeNull();
+    expect(rD?.analysis?.some((d) => d.id === "dimension-character")).toBe(false);
+    expect((rD?.analysis?.length ?? 0) > 0).toBe(true);
 
     const danglingNode = {
       sourceKind: "narrative",
@@ -450,7 +455,7 @@ describe("validateTaskPayload strict AI task contracts", () => {
   it("keeps every legacy task fixture compatible with validation", () => {
     const legacyTasks = [
       "ideas", "characters", "world", "blueprint", "opening", "prose", "continue", "rewrite", "expand", "condense", "sensory",
-      "analysis", "explain", "mentor", "visual-brief", "storyboard", "training",
+      "analysis", "mentor", "visual-brief", "storyboard", "training",
     ] as AiTask[];
     const legacyInput: NonNullable<AiTaskInput["input"]> = { selectedText: "他没有拆开那封信。" };
 
@@ -514,27 +519,6 @@ describe("validateTaskPayload strict AI task contracts", () => {
     });
   });
 
-  it("strictly validates legacy explain evidence and suggestions", () => {
-    const valid = {
-      explanation: "动作延迟制造了阅读预期。",
-      evidence: [
-        { id: "explain-user", source: "observation", quote: "他没有拆开那封信。", note: "用户原文" },
-        { id: "explain-knowledge", source: "knowledge", quote: "延宕通过推迟关键动作", retrievalId: "knowledge-1", note: "知识参考" },
-      ],
-      suggestions: ["保留动作证据"],
-    };
-    expect(validateTaskPayload("explain", valid, project, "live", evidenceContext)).not.toBeNull();
-
-    const fakeObservation = structuredClone(valid);
-    fakeObservation.evidence[0].quote = "原文不存在";
-    expect(validateTaskPayload("explain", fakeObservation, project, "live", evidenceContext)).toBeNull();
-
-    const fakeKnowledge = structuredClone(valid);
-    delete fakeKnowledge.evidence[1].retrievalId;
-    expect(validateTaskPayload("explain", fakeKnowledge, project, "live", evidenceContext)).toBeNull();
-
-    expect(validateTaskPayload("explain", { ...valid, suggestions: ["字".repeat(2_001)] }, project, "live", evidenceContext)).toBeNull();
-  });
 
   it("allows conceptual argumentative graphs and rejects narrative person nodes", () => {
     const validAnalysis = analysisPayload();

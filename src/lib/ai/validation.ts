@@ -1,8 +1,11 @@
 import type { AiTask, AiTaskPayload, StoryContext } from "@/lib/ai/tasks";
 import { resolveAiSourceText } from "@/lib/ai/story-context";
+import { normalizeModelPayload } from "@/lib/ai/normalize-payload";
+import { injectedCriteriaIds, stampCriteriaVersion } from "@/lib/ai/criteria";
 import { TRAINING_FEEDBACK_DIMENSIONS, type AiEvidence, type AnalysisDimension, type BlueprintNode, type Candidate, type Character, type ConsistencyFinding, type Evidence, type GraphEdge, type GraphNode, type ImageGenerationSettings, type KnowledgeGraph, type LiteraryAnalysisResult, type LiteraryDomainAnalysis, type LiteraryDomainFinding, type LiterarySourceKind, type LiteraryThemeStage, type MentorResponse, type RetrievalEvidence, type StoryState, type TrainingFeedbackResult, type WorldEntry } from "@/lib/types";
 
 export interface PayloadEvidenceContext {
+  onFailure?: (reason: string) => void;
   sourceText?: string;
   evidenceText?: string;
   answer?: string;
@@ -62,6 +65,22 @@ function lockedFacts(context: StoryContext) {
 
 function exactQuoteExists(quote: string, sources: string[]) {
   return sources.some((source) => source.includes(quote));
+}
+
+function literaryQuoteExists(quote: string, sources: string[]) {
+  if (exactQuoteExists(quote, sources)) return true;
+  const clean = (s: string) => s.replace(/^\s{0,3}(?:>+|#{1,6}|-)\s+/gm, "").replace(/[\s*_`]/g, "");
+  const parts = quote.split(/…+|\.{3,}/).map(clean);
+  if (parts.some(p => p.length < (parts.length > 1 ? 6 : 1))) return false;
+  return sources.some(source => {
+    const body = clean(source);
+    let start = 0;
+    return parts.every(p => {
+      const at = body.indexOf(p, start);
+      start = at + p.length;
+      return at >= 0;
+    });
+  });
 }
 
 function isSourceKind(value: unknown): value is LiterarySourceKind {
@@ -172,31 +191,49 @@ function readBlueprint(value: unknown, context: StoryContext): BlueprintNode[] |
   return result.every(Boolean) ? result as BlueprintNode[] : null;
 }
 
-function readEvidence(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext): AiEvidence[] | null {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 50) return null;
+function readEvidence(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext, analysisFailure?: (reason: string) => null): AiEvidence[] | null {
+  const fail = (reason: string) => analysisFailure?.(reason) ?? null;
+  if (!Array.isArray(value) || value.length === 0 || value.length > 50) return fail("evidence 必须是 1–50 项数组");
   const sources = userTexts(context, evidenceValue);
   const retrievalById = new Map((evidenceValue.retrievalEvidence ?? []).map((item) => [item.retrievalId, item]));
-  const result = value.map((item) => {
-    if (!record(item) || !text(item.id, 120) || !text(item.note, 2_000)) return null;
+  const result: AiEvidence[] = [];
+  const ids = new Set<string>();
+  const discardedEvidence: Array<{ index: number; id?: string; reason: string }> = [];
+  for (const [i, raw] of value.entries()) {
+    const field = `evidence[${i}]`;
+    if (!record(raw)) {
+      if (analysisFailure) { discardedEvidence.push({ index: i, reason: "not_object" }); continue; }
+      return fail(`${field} 不是对象`);
+    }
+    const item = analysisFailure ? { ...raw,
+      source: typeof raw.source === "string" && !/^(source|sourceText)$/i.test(raw.source) ? raw.source : raw.type ?? (text(raw.quote) || text(raw.text) ? "observation" : undefined),
+      quote: typeof raw.quote === "string" && raw.quote.trim() ? raw.quote : raw.text,
+    } : raw;
+    if (!text(item.id, 120)) { if (analysisFailure) { discardedEvidence.push({ index: i, reason: "id_invalid" }); continue; } return fail(`${field}.id 缺失或无效`); }
+    if (ids.has(item.id)) { if (analysisFailure) { discardedEvidence.push({ index: i, id: String(item.id), reason: "duplicate_id" }); continue; } return fail(`${field}.id 重复`); }
+    ids.add(item.id);
+    const blank = item.note == null || (typeof item.note === "string" && !item.note.trim());
+    const note = analysisFailure && blank ? "（模型未提供说明）" : item.note;
+    if (!text(note, 2_000)) { if (analysisFailure) { discardedEvidence.push({ index: i, id: String(item.id), reason: "note_invalid" }); continue; } return fail(`${field}.note 缺失或无效`); }
     if (item.source === "observation" || item.source === "user") {
-      if (!text(item.quote, 2_000) || !exactQuoteExists(item.quote, sources)) return null;
-      return { id: item.id, source: item.source, quote: item.quote, note: item.note } as AiEvidence;
-    }
-    if (item.source === "knowledge") {
-      if (!text(item.quote, 2_000) || !text(item.retrievalId, 200)) return null;
+      if (!text(item.quote, 2_000)) return fail(`${field}.quote 缺失或无效（source=${item.source}）`);
+      if (!(analysisFailure ? literaryQuoteExists : exactQuoteExists)(item.quote, sources)) { if (analysisFailure) { discardedEvidence.push({ index: i, id: String(item.id), reason: "quote_not_in_source" }); continue; } return fail(`${field}.quote 不在原文（「${item.quote.slice(0, 20)}」）`); }
+      result.push({ id: item.id, source: item.source, quote: item.quote, note });
+    } else if (item.source === "knowledge") {
+      if (!text(item.quote, 2_000)) return fail(`${field}.quote 缺失或无效（source=knowledge）`);
+      if (!text(item.retrievalId, 200)) return fail(`${field}.retrievalId 缺失或无效`);
       const retrieval = retrievalById.get(item.retrievalId);
-      if (!retrieval || (!retrieval.content.includes(item.quote) && !retrieval.quote.includes(item.quote))) return null;
-      return { id: item.id, source: "knowledge", quote: item.quote, retrievalId: item.retrievalId, note: item.note } as AiEvidence;
-    }
-    if (item.source === "inference") {
-      if (text(item.quote, 2_000) || !text(item.claim, 2_000)) return null;
-      return { id: item.id, source: "inference", claim: item.claim, note: item.note } as AiEvidence;
-    }
-    return null;
-  });
-  if (!result.every(Boolean)) return null;
-  const ids = result.map((item) => item!.id);
-  return new Set(ids).size === ids.length ? result as AiEvidence[] : null;
+      if (!retrieval && !(analysisFailure && retrievalById.size === 0)) return fail(`${field}.retrievalId 不在检索结果中（${item.retrievalId}）`);
+      if (retrieval && !retrieval.content.includes(item.quote) && !retrieval.quote.includes(item.quote)) return fail(`${field}.quote 不在检索结果中（retrievalId=${item.retrievalId}）`);
+      result.push({ id: item.id, source: "knowledge", quote: item.quote, retrievalId: item.retrievalId, note, ...(!retrieval ? { verification: "unverified" as const } : {}) });
+    } else if (item.source === "inference") {
+      if (text(item.quote, 2_000)) return fail(`${field}.quote 不应出现在 inference 条目中`);
+      if (!text(item.claim, 2_000)) return fail(`${field}.claim 缺失或无效`);
+      result.push({ id: item.id, source: "inference", claim: item.claim, note });
+    } else return fail(`${field}.source 非法（source=${String(raw.source).slice(0, 80)}，type=${String(raw.type).slice(0, 80)}）`);
+  }
+  if (analysisFailure && result.length === 0) return fail("evidence 全部未通过校验（无一条可用）");
+  return result;
 }
 
 function readEvidenceIds(value: unknown, knownEvidence: Set<string>, maximum = 20): string[] | null {
@@ -208,143 +245,236 @@ function readObservationEvidenceIds(value: unknown, observationEvidence: Set<str
   return readEvidenceIds(value, observationEvidence, maximum);
 }
 
-function readGraph(value: unknown, observationEvidence: Set<string>, sourceKind?: LiterarySourceKind): KnowledgeGraph | null {
+function readGraph(value: unknown, observationEvidence: Set<string>, sourceKind?: LiterarySourceKind, lenient = false): KnowledgeGraph | null {
   if (!record(value) || !Array.isArray(value.nodes) || !Array.isArray(value.edges) || value.nodes.length === 0 || value.nodes.length > 80 || value.edges.length > 120) return null;
   const nodes = value.nodes.map((item) => {
     if (!record(item) || !text(item.id, 120) || !text(item.label, 300) || !isGraphNodeType(item.type) || (sourceKind === "argumentative" && !ARGUMENTATIVE_GRAPH_NODE_TYPES.has(item.type))) return null;
-    const evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence);
+    const evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence)
+      ?? filterEvidenceIds(item.evidenceIds, observationEvidence);
     if (!evidenceIds) return null;
     return { id: item.id, label: item.label, type: item.type, evidenceIds, ...(text(item.era, 300) ? { era: item.era } : {}), ...(text(item.description, 2_000) ? { description: item.description } : {}) } as GraphNode;
   });
-  if (!nodes.every(Boolean)) return null;
-  const nodeIds = nodes.map((node) => node!.id);
+  const cleanNodes = lenient ? nodes.filter((n): n is GraphNode => Boolean(n)) : (nodes.every(Boolean) ? (nodes as GraphNode[]) : null);
+  if (!cleanNodes || !cleanNodes.length) return null;
+  const nodeIds = cleanNodes.map((node) => node.id);
   if (new Set(nodeIds).size !== nodeIds.length) return null;
   const nodeIdSet = new Set(nodeIds);
   const edges = value.edges.map((item) => {
     if (!record(item) || !text(item.id, 120) || !text(item.source, 120) || !text(item.target, 120) || !text(item.label, 300) || !nodeIdSet.has(item.source) || !nodeIdSet.has(item.target)) return null;
-    const evidenceIds = readObservationEvidenceIds(item.evidenceIds ?? item.sourceEvidenceIds, observationEvidence);
+    const evidenceIds = readObservationEvidenceIds(item.evidenceIds ?? item.sourceEvidenceIds, observationEvidence)
+      ?? filterEvidenceIds(item.evidenceIds ?? item.sourceEvidenceIds, observationEvidence);
     if (!evidenceIds || (item.confidence !== undefined && !finiteInRange(item.confidence, 0, 1))) return null;
     return { id: item.id, source: item.source, target: item.target, label: item.label, evidenceIds, ...(item.confidence === undefined ? {} : { confidence: item.confidence }) } as GraphEdge;
   });
-  if (!edges.every(Boolean)) return null;
-  const edgeIds = edges.map((edge) => edge!.id);
-  return new Set(edgeIds).size === edgeIds.length ? { nodes: nodes as GraphNode[], edges: edges as GraphEdge[] } : null;
+  const cleanEdges = lenient ? edges.filter((e): e is GraphEdge => Boolean(e)) : (edges.every(Boolean) ? (edges as GraphEdge[]) : null);
+  if (!cleanEdges) return null;
+  const edgeIds = cleanEdges.map((edge) => edge.id);
+  return new Set(edgeIds).size === edgeIds.length ? { nodes: cleanNodes, edges: cleanEdges } : null;
+}
+
+
+/**
+ * L2 容错：部分证据失效时，保留仍有效的那些。
+ * 全部失效则返回 null —— 该条结论失去全部凭证，必须丢弃，不能用 fallback 掩盖。
+ * 这是"防幻觉"的底线：编造的证据不能因为"还有别的真证据"就蒙混过关。
+ */
+function filterEvidenceIds(value: unknown, known: Set<string>): string[] | null {
+  const given = Array.isArray(value) ? value.filter((x): x is string => typeof x === "string") : [];
+  const kept = given.filter((id) => known.has(id));
+  return kept.length ? kept : null;
 }
 
 function readAnalysisDimensions(value: unknown, knownEvidence: Set<string>): AnalysisDimension[] | null {
   if (!Array.isArray(value) || value.length === 0 || value.length > 12) return null;
   const result = value.map((item) => {
     if (!record(item) || !text(item.id, 120) || !text(item.name, 200) || !text(item.summary, 2_000) || !text(item.impact, 2_000) || !text(item.suggestion, 2_000) || !finiteInRange(item.score, 0, 100)) return null;
-    const evidenceIds = readEvidenceIds(item.evidenceIds, knownEvidence);
+    const evidenceIds = readEvidenceIds(item.evidenceIds, knownEvidence) ?? filterEvidenceIds(item.evidenceIds, knownEvidence);
     return evidenceIds ? { id: item.id, name: item.name, summary: item.summary, impact: item.impact, suggestion: item.suggestion, score: item.score, evidenceIds } : null;
   });
-  if (!result.every(Boolean)) return null;
-  const ids = result.map((item) => item!.id);
-  return new Set(ids).size === ids.length ? result as AnalysisDimension[] : null;
+  const kept = result.filter((x): x is AnalysisDimension => Boolean(x));
+  // 一个维度都没剩下 → 整包拒绝（没有任何可展示的分析）
+  if (!kept.length) return null;
+  const ids = kept.map((item) => item.id);
+  return new Set(ids).size === ids.length ? kept : null;
 }
 
-function readCurves(value: unknown, observationEvidence: Set<string>) {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 48) return null;
-  const points = value.map((item) => record(item) && text(item.segment, 200) && finiteInRange(item.value, 0, 100) && text(item.evidenceId, 120) && observationEvidence.has(item.evidenceId) ? { segment: item.segment, value: item.value, evidenceId: item.evidenceId } : null);
+function readCurves(raw: unknown, observationEvidence: Set<string>, path: string, fail: (reason: string) => null) {
+  const value = record(raw) ? raw.points : raw;
+  if (!Array.isArray(value) || value.length === 0 || value.length > 48) return fail(`${path} 必须是 1–48 项数组`);
+  const points = value.map((item, i) => {
+    if (!record(item) || !text(item.segment, 200) || !finiteInRange(item.value, 0, 100)) return fail(`${path}[${i}].segment/value 无效`);
+    // 证据必须真实存在于 observation 集合；不接受"随便挂一个"——那是防幻觉底线
+    if (!text(item.evidenceId, 120) || !observationEvidence.has(item.evidenceId)) return fail(`${path}[${i}].evidenceId 不是有效的原文证据`);
+    return { segment: item.segment, value: item.value, evidenceId: item.evidenceId };
+  });
   return points.every(Boolean) ? points as LiteraryAnalysisResult["paceCurve"] : null;
 }
 
-function readDomainFindings(value: unknown, observationEvidence: Set<string>): LiteraryDomainFinding[] | null {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 24) return null;
-  const findings = value.map((item) => {
-    if (!record(item) || !text(item.label, 300) || !text(item.description, 2_000)) return null;
-    const evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence);
-    return evidenceIds ? { label: item.label, description: item.description, evidenceIds } : null;
+const findingMeta = new Set(["id", "evidenceIds", "evidenceQuotes", "degraded"]);
+function describeFinding(item: Record<string, unknown>) {
+  return Object.entries(item).filter(([key]) => !findingMeta.has(key)).flatMap(([, v]) => Array.isArray(v) ? v : [v]).filter((s): s is string => typeof s === "string" && !!s.trim()).map(s => s.trim()).join("｜").slice(0, 2000);
+}
+
+export function isProofreadingClaim(effect: string, action: string) {
+  if (!/生硬|直白|冗长|费解|混淆|不搭|用词不当|错别字|标点|语病|表述不清/.test(effect + action)) return false;
+  const token = /一词|一字|该词|这个词|此句|这句|用词|标点|错别字|['‘’“"][^'‘’“”"]{1,6}['’”"]/.test(effect);
+  if (!token && /缺乏|缺少|不足|仅用|只用|没有|带过|支撑|铺垫|具体事件|具体场景|具体细节|可推断/.test(effect + action)) return false;
+  return token || /可改为|建议改为|应改为|改成|换成|通常用|可写成|不如改成|可精简/.test(action) || /比喻费解/.test(effect);
+}
+
+function readDomainFindings(value: unknown, observationEvidence: Set<string>, path: string, fail: (reason: string) => null): LiteraryDomainFinding[] | null {
+  if (!Array.isArray(value) || value.length === 0 || value.length > 24) return fail(`${path} 必须是 1–24 项数组`);
+  const findings = value.map((item, i) => {
+    if (!record(item)) return fail(`${path}[${i}] 不是对象`);
+    const description = text(item.description, 2000) ? item.description : describeFinding(item);
+    if (!description) return fail(`${path}[${i}] 没有文本内容`);
+    const label = text(item.label, 300) ? item.label : description.slice(0, 60);
+    let evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence);
+    if (!evidenceIds) {
+      // L2 容错：过滤掉失效的 id，只保留仍有效的；一个都不剩才判无效
+      const given = Array.isArray(item.evidenceIds) ? item.evidenceIds : [];
+      const kept = given.filter((x: unknown): x is string => typeof x === "string" && observationEvidence.has(x));
+      if (kept.length) evidenceIds = kept;
+    }
+    return evidenceIds ? { label, description, evidenceIds } : fail(`${path}[${i}].evidenceIds 无效`);
   });
   return findings.every(Boolean) ? findings as LiteraryDomainFinding[] : null;
 }
 
-function readThemeStages(value: unknown, observationEvidence: Set<string>): LiteraryThemeStage[] | null {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 24) return null;
-  const stages = value.map((item) => {
-    if (!record(item) || !text(item.stage, 300) || !text(item.theme, 300) || !text(item.change, 2_000) || !text(item.reason, 2_000)) return null;
+function readThemeStages(value: unknown, observationEvidence: Set<string>, fail: (reason: string) => null): LiteraryThemeStage[] | null {
+  if (!Array.isArray(value) || value.length === 0 || value.length > 24) return fail("themes.stages 必须是 1–24 项数组");
+  const stages = value.map((item, i) => {
+    if (!record(item)) return fail(`themes.stages[${i}] 不是对象`);
+    const description = describeFinding(item);
+    if (!description) return fail(`themes.stages[${i}] 没有文本内容`);
+    const stage = text(item.stage, 300) ? item.stage : description.slice(0, 40);
+    const theme = text(item.theme, 300) ? item.theme : stage;
     const evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence);
-    return evidenceIds ? { stage: item.stage, theme: item.theme, change: item.change, reason: item.reason, evidenceIds } : null;
+    return evidenceIds ? { stage, theme, change: text(item.change, 2000) ? item.change : description, reason: text(item.reason, 2000) ? item.reason : description, evidenceIds } : fail(`themes.stages[${i}].evidenceIds 无效`);
   });
   return stages.every(Boolean) ? stages as LiteraryThemeStage[] : null;
 }
 
-function readDomainAnalysis(value: unknown, sourceKind: LiterarySourceKind, observationEvidence: Set<string>): LiteraryDomainAnalysis | null {
-  if (!record(value) || value.kind !== sourceKind || !record(value.themes)) return null;
-  const stages = readThemeStages(value.themes.stages, observationEvidence);
+function readDomainAnalysis(value: unknown, sourceKind: LiterarySourceKind, observationEvidence: Set<string>, fail: (reason: string) => null): LiteraryDomainAnalysis | null {
+  if (!record(value) || !record(value.themes)) return fail("domainAnalysis.themes 缺失或无效");
+  if (value.kind !== undefined && value.kind !== sourceKind) return fail("domainAnalysis.kind 与 sourceKind 不一致");
+  const stages = readThemeStages(value.themes.stages, observationEvidence, fail);
   if (!stages) return null;
   if (sourceKind === "narrative") {
-    if (!record(value.characters) || !record(value.plot)) return null;
-    const goals = readDomainFindings(value.characters.goals, observationEvidence);
-    const actions = readDomainFindings(value.characters.actions, observationEvidence);
-    const relationshipChanges = readDomainFindings(value.characters.relationshipChanges, observationEvidence);
-    const turningPoints = readDomainFindings(value.plot.turningPoints, observationEvidence);
-    const setups = readDomainFindings(value.plot.setups, observationEvidence);
-    const payoffs = readDomainFindings(value.plot.payoffs, observationEvidence);
+    if (!record(value.characters) || !record(value.plot)) return fail("domainAnalysis.characters/plot 缺失或无效");
+    const goals = readDomainFindings(value.characters.goals, observationEvidence, "domainAnalysis.characters.goals", fail);
+    const actions = readDomainFindings(value.characters.actions, observationEvidence, "domainAnalysis.characters.actions", fail);
+    const relationshipChanges = readDomainFindings(value.characters.relationshipChanges, observationEvidence, "domainAnalysis.characters.relationshipChanges", fail);
+    const turningPoints = readDomainFindings(value.plot.turningPoints, observationEvidence, "domainAnalysis.plot.turningPoints", fail);
+    const setups = readDomainFindings(value.plot.setups, observationEvidence, "domainAnalysis.plot.setups", fail);
+    const payoffs = readDomainFindings(value.plot.payoffs, observationEvidence, "domainAnalysis.plot.payoffs", fail);
     return goals && actions && relationshipChanges && turningPoints && setups && payoffs
       ? { kind: "narrative", characters: { goals, actions, relationshipChanges }, plot: { turningPoints, setups, payoffs }, themes: { stages } }
       : null;
   }
-  if (!record(value.argument)) return null;
-  const claims = readDomainFindings(value.argument.claims, observationEvidence);
-  const evidenceUnits = readDomainFindings(value.argument.evidenceUnits, observationEvidence);
-  const reasoningSteps = readDomainFindings(value.argument.reasoningSteps, observationEvidence);
+  if (!record(value.argument)) return fail("domainAnalysis.argument 缺失或无效");
+  const claims = readDomainFindings(value.argument.claims, observationEvidence, "domainAnalysis.argument.claims", fail);
+  const evidenceUnits = readDomainFindings(value.argument.evidenceUnits, observationEvidence, "domainAnalysis.argument.evidenceUnits", fail);
+  const reasoningSteps = readDomainFindings(value.argument.reasoningSteps, observationEvidence, "domainAnalysis.argument.reasoningSteps", fail);
   return claims && evidenceUnits && reasoningSteps
     ? { kind: "argumentative", argument: { claims, evidenceUnits, reasoningSteps }, themes: { stages } }
     : null;
 }
 
 function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext): LiteraryAnalysisResult | null {
+  let firstFailure: string | undefined;
+  const fail = (reason: string): null => {
+    if (!firstFailure) evidenceValue.onFailure?.(firstFailure = reason);
+    return null;
+  };
+  // 模型输出归一化：把领域词映射成 schema 固定名（详见 normalize-payload.ts）
+  // 只处理字段命名，不放宽证据要求——引文仍须逐字在原文。
+  if (record(value)) value = normalizeModelPayload(value as Record<string, unknown>);
   if (!record(value)
     || !isSourceKind(value.sourceKind)
-    || (evidenceValue.expectedSourceKind !== undefined && value.sourceKind !== evidenceValue.expectedSourceKind)) return null;
-  const evidence = readEvidence(value.evidence, context, evidenceValue);
+    || (evidenceValue.expectedSourceKind !== undefined && value.sourceKind !== evidenceValue.expectedSourceKind)) return fail("sourceKind 缺失、未知或与输入不符");
+  const evidence = readEvidence(value.evidence, context, evidenceValue, fail);
   if (!evidence) return null;
   const knownEvidence = new Set(evidence.map((item) => item.id));
-  const observationEvidence = new Set(evidence.filter((item) => item.source === "observation" || item.source === "user").map((item) => item.id));
-  if (observationEvidence.size === 0) return null;
-  const analysis = readAnalysisDimensions(value.analysis, knownEvidence);
-  const domainAnalysis = readDomainAnalysis(value.domainAnalysis, value.sourceKind, observationEvidence);
-  const relationGraph = readGraph(value.relationGraph, observationEvidence, value.sourceKind);
-  const paceCurve = readCurves(value.paceCurve, observationEvidence);
-  const emotionCurve = readCurves(value.emotionCurve, observationEvidence);
-  if (!analysis || !domainAnalysis || !relationGraph || relationGraph.edges.length === 0 || !paceCurve || !emotionCurve) return null;
-  const dimensionNames = analysis.map((item) => item.name);
-  const requiredDomains = value.sourceKind === "narrative"
-    ? [/人物/, /情节|结构|节奏/, /主题/, /语言|风格/]
-    : [/论证|结构/, /证据/, /主题/, /语言|风格/];
-  if (!requiredDomains.every((pattern) => dimensionNames.some((name) => pattern.test(name)))) return null;
-  if (!Array.isArray(value.themeHeatmap) || value.themeHeatmap.length === 0 || value.themeHeatmap.length > 120) return null;
-  const themeHeatmap = value.themeHeatmap.map((item) => record(item) && text(item.theme, 200) && text(item.segment, 200) && finiteInRange(item.value, 0, 100) && text(item.evidenceId, 120) && observationEvidence.has(item.evidenceId) ? { theme: item.theme, segment: item.segment, value: item.value, evidenceId: item.evidenceId } : null);
-  if (!themeHeatmap.every(Boolean) || !record(value.styleProfile) || !Array.isArray(value.styleProfile.metrics) || value.styleProfile.metrics.length === 0 || value.styleProfile.metrics.length > 32) return null;
-  const styleKeys = new Set<LiteraryAnalysisResult["styleProfile"]["metrics"][number]["key"]>(["sentenceLength", "dialogueRatio", "sensoryDensity", "rhetoric", "narrativeDistance", "rhythm"]);
-  const metrics = value.styleProfile.metrics.map((item) => {
-    if (!record(item) || typeof item.key !== "string" || !styleKeys.has(item.key as LiteraryAnalysisResult["styleProfile"]["metrics"][number]["key"]) || !text(item.dimension, 200) || !text(item.interpretation, 2_000)) return null;
-    const maximum = item.key === "sentenceLength" ? 200 : 100;
-    if (!finiteInRange(item.value, item.key === "sentenceLength" ? 1 : 0, maximum)) return null;
-    const evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence);
-    return evidenceIds ? { key: item.key, dimension: item.dimension, value: item.value, interpretation: item.interpretation, ...(text(item.unit, 60) ? { unit: item.unit } : {}), evidenceIds } : null;
-  });
-  if (new Set(metrics.filter(Boolean).map((item) => item!.key)).size !== styleKeys.size || ![...styleKeys].every((key) => metrics.some((item) => item?.key === key))) return null;
-  if (!metrics.every(Boolean) || !Array.isArray(value.diagnostics) || value.diagnostics.length === 0 || value.diagnostics.length > 24) return null;
   const sources = userTexts(context, evidenceValue);
-  const diagnostics = value.diagnostics.map((item) => {
-    if (!record(item) || !text(item.id, 120) || !text(item.location, 300) || !text(item.quote, 2_000) || !exactQuoteExists(item.quote, sources) || !text(item.effect, 2_000) || !text(item.action, 2_000) || !finiteInRange(item.confidence, 0, 1)) return null;
+  const observationEvidence = new Set(evidence.filter(item => item.quote && literaryQuoteExists(item.quote, sources)).map(item => item.id));
+  if (observationEvidence.size === 0) return fail("evidence 缺少原文观察证据（0 条）");
+  const analysis = readAnalysisDimensions(value.analysis, knownEvidence);
+  const domainAnalysis = readDomainAnalysis(value.domainAnalysis, value.sourceKind, observationEvidence, fail);
+  const relationGraph = readGraph(value.relationGraph, observationEvidence, value.sourceKind, true);
+  const paceCurve = readCurves(value.paceCurve, observationEvidence, "paceCurve", fail);
+  const emotionCurve = readCurves(value.emotionCurve, observationEvidence, "emotionCurve", fail);
+  if (!analysis || !domainAnalysis || !relationGraph || !relationGraph.edges.length || !paceCurve || !emotionCurve) return fail(`${!analysis ? "analysis" : !domainAnalysis ? "domainAnalysis" : !relationGraph?.edges.length ? "relationGraph" : !paceCurve ? "paceCurve" : "emotionCurve"} 结构或证据引用无效`);
+  const heatmap = (record(value.themeHeatmap) ? value.themeHeatmap.themes : value.themeHeatmap) ?? [];
+  if (!Array.isArray(heatmap) || heatmap.length > 120) return fail("themeHeatmap 不是数组或超过 120 项");
+  const themeHeatmap = heatmap.map((item, i) => {
+    if (!record(item) || !text(item.theme, 200) || !text(item.segment, 200) || !finiteInRange(item.value, 0, 100)) return fail(`themeHeatmap[${i}] 字段无效`);
+    if (!text(item.evidenceId, 120) || !observationEvidence.has(item.evidenceId)) return fail(`themeHeatmap[${i}].evidenceId 不是有效的原文证据`);
+    return { theme: item.theme, segment: item.segment, value: item.value, evidenceId: item.evidenceId };
+  });
+  if (!themeHeatmap.every(Boolean)) return null;
+  if (!record(value.styleProfile) || !Array.isArray(value.styleProfile.metrics) || value.styleProfile.metrics.length !== 6) return fail("styleProfile.metrics 必须恰好包含六项");
+  const keys = ["sentenceLength", "dialogueRatio", "sensoryDensity", "rhetoric", "narrativeDistance", "rhythm"] as const;
+  const aliases = new Map<string, typeof keys[number]>(keys.map(key => [key, key]));
+  for (const [label, key] of [["句子长度", "sentenceLength"], ["对话比例", "dialogueRatio"], ["感官密度", "sensoryDensity"], ["修辞手法", "rhetoric"], ["修辞", "rhetoric"], ["叙事距离", "narrativeDistance"], ["节奏", "rhythm"]] as const) aliases.set(label, key);
+  const metrics = value.styleProfile.metrics.map((item, i) => {
+    const path = `styleProfile.metrics[${i}]`;
+    if (!record(item)) return fail(`${path} 不是对象`);
+    const rawKey = item.key ?? item.dimension;
+    const key = typeof rawKey === "string" ? aliases.get(rawKey.trim()) : undefined;
+    if (!key) return fail(`${path}.key 缺失或无效，dimension 未能提供有效别名`);
+    if (!text(item.dimension, 200) || !text(item.interpretation, 2_000)) return fail(`${path}.${!text(item.dimension, 200) ? "dimension" : "interpretation"} 缺失或无效`);
+    if (!finiteInRange(item.value, key === "sentenceLength" ? 1 : 0, key === "sentenceLength" ? 200 : 100)) return fail(`${path}.value 超出 ${key} 的范围或不是数值`);
+    const evidenceIds = readObservationEvidenceIds(item.evidenceIds, observationEvidence)
+      ?? filterEvidenceIds(item.evidenceIds, observationEvidence);
+    return evidenceIds ? { key, dimension: item.dimension, value: item.value, interpretation: item.interpretation, ...(text(item.unit, 60) ? { unit: item.unit } : {}), evidenceIds } : fail(`${path}.evidenceIds 缺少有效原文证据`);
+  });
+  if (!metrics.every(Boolean)) return null;
+  if (new Set(metrics.map(item => item!.key)).size !== 6) return fail("styleProfile.metrics.key 六项未各出现一次");
+  if (!Array.isArray(value.diagnostics) || value.diagnostics.length === 0 || value.diagnostics.length > 24) return fail("diagnostics 必须包含 1 至 24 项");
+  const diagnostics: LiteraryAnalysisResult["diagnostics"] = [];
+  const discardedDiagnostics: NonNullable<LiteraryAnalysisResult["discardedDiagnostics"]> = [];
+  for (const item of value.diagnostics) {
+    const attempted = record(item) ? Object.fromEntries(["id", "location", "quote", "effect", "action"].filter(k => text(item[k], 2000)).map(k => [k, item[k]])) : {};
+    const discard = (reason: typeof discardedDiagnostics[number]["reason"]) => discardedDiagnostics.push({ attempted, reason });
+    if (!record(item) || !text(item.id, 120) || !text(item.location, 300) || !text(item.quote, 2_000) || !text(item.effect, 2_000) || !text(item.action, 2_000) || !finiteInRange(item.confidence, 0, 1)) { discard("field_invalid"); continue; }
+    if (diagnostics.some(d => d.id === item.id)) { discard("duplicate_id"); continue; }
+    if (!literaryQuoteExists(item.quote, sources)) { discard("quote_not_in_source"); continue; }
     const evidenceIds = readEvidenceIds(item.evidenceIds, knownEvidence);
     const hasObservationEvidence = evidenceIds?.some((id) => {
       const linked = evidence.find((entry) => entry.id === id);
-      return (linked?.source === "observation" || linked?.source === "user") && Boolean(linked.quote && (linked.quote.includes(item.quote as string) || (item.quote as string).includes(linked.quote)));
+      return observationEvidence.has(id) && Boolean(linked?.quote && (linked.quote.includes(item.quote as string) || (item.quote as string).includes(linked.quote)));
     });
-    return evidenceIds && hasObservationEvidence ? { id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action, confidence: item.confidence, evidenceIds, ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}) } : null;
-  });
-  if (!diagnostics.every(Boolean)) return null;
-  if (value.sourceKind === "narrative" && !diagnostics.some((item) => item && /(铺垫.*不足|不足.*铺垫)/.test(`${item.effect} ${item.action}`))) return null;
-  const diagnosticIds = diagnostics.map((item) => item!.id);
-  if (new Set(diagnosticIds).size !== diagnosticIds.length || !Array.isArray(value.retrievalEvidence) || value.retrievalEvidence.length > 8) return null;
+    if (!evidenceIds || !hasObservationEvidence) { discard("no_observation_evidence"); continue; }
+    if (isProofreadingClaim(item.effect, item.action)) { discard("proofreading_not_allowed"); continue; }
+    // 判据 ID 校验：引用了本次未注入的编号 → 丢弃该条（防模型自造编号）
+    // 缺失则放行——字段刚引入，模型需要几轮适应期，先观察引用率再决定是否强制
+    const rawCriteria = Array.isArray(item.criteriaIds)
+      ? item.criteriaIds.filter((x): x is string => typeof x === "string" && x.trim().length > 0).map(x => x.trim().replace(/@.*$/, ""))
+      : [];
+    const known = new Set(injectedCriteriaIds());
+    const unknown = rawCriteria.filter(id => !known.has(id));
+    if (unknown.length) { discard("unknown_criteria"); continue; }
+    const criteriaIds = rawCriteria.length ? stampCriteriaVersion(rawCriteria) : undefined;
+    diagnostics.push({ id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action, confidence: item.confidence, evidenceIds, ...(criteriaIds ? { criteriaIds } : {}), ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}) });
+  }
+  if (!diagnostics.length) return fail(`diagnostics 全部未通过校验：${discardedDiagnostics.map(d => d.reason).join("、")}`);
+  const supplied = value.retrievalEvidence === undefined ? [] : value.retrievalEvidence;
+  if (!Array.isArray(supplied) || supplied.length > 8) return fail("retrievalEvidence 应为不超过 8 项的数组");
   const allowedRetrieval = new Map((evidenceValue.retrievalEvidence ?? []).map((item) => [item.retrievalId, item]));
-  const retrievalEvidence = value.retrievalEvidence.map((item) => record(item) && text(item.retrievalId, 200) ? allowedRetrieval.get(item.retrievalId) ?? null : null);
-  if (!retrievalEvidence.every(Boolean)) return null;
-  return { sourceKind: value.sourceKind, domainAnalysis, analysis, evidence, relationGraph, paceCurve, emotionCurve, themeHeatmap: themeHeatmap as LiteraryAnalysisResult["themeHeatmap"], styleProfile: { metrics: metrics as LiteraryAnalysisResult["styleProfile"]["metrics"] }, diagnostics: diagnostics as LiteraryAnalysisResult["diagnostics"], retrievalEvidence: retrievalEvidence as RetrievalEvidence[] };
+  const degradedRetrievalIds: string[] = [];
+  const retrievalEvidence: RetrievalEvidence[] = [];
+  for (const [i, item] of supplied.entries()) {
+    if (!record(item) || !text(item.retrievalId, 200)) {
+      if (!allowedRetrieval.size) continue;
+      return fail(`retrievalEvidence[${i}].retrievalId 缺失或无效`);
+    }
+    if (!allowedRetrieval.size) { degradedRetrievalIds.push(item.retrievalId); continue; }
+    const verified = allowedRetrieval.get(item.retrievalId);
+    if (!verified) return fail(`retrievalEvidence[${i}].retrievalId 不在服务端检索结果中`);
+    retrievalEvidence.push(verified);
+  }
+  return { sourceKind: value.sourceKind, domainAnalysis, analysis, evidence, relationGraph, paceCurve, emotionCurve, themeHeatmap: themeHeatmap as LiteraryAnalysisResult["themeHeatmap"], styleProfile: { metrics: metrics as LiteraryAnalysisResult["styleProfile"]["metrics"] }, diagnostics, discardedDiagnostics, retrievalEvidence, ...(degradedRetrievalIds.length ? { degradedRetrievalIds } : {}) };
 }
 
 function readMentor(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext): MentorResponse | null {
@@ -512,13 +642,6 @@ function readLegacyTraining(value: unknown) {
   return { feedback: { ...(strengths === undefined ? {} : { strengths }), ...(feedback.evidence === undefined ? {} : { evidence: feedback.evidence }), ...(feedback.issue === undefined ? {} : { issue: feedback.issue }), ...(feedback.nextStep === undefined ? {} : { nextStep: feedback.nextStep }), ...(questions === undefined ? {} : { questions }) } };
 }
 
-function readExplain(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext): Extract<AiTaskPayload, { explanation: string }> | null {
-  if (!record(value) || !text(value.explanation, 4_000)) return null;
-  const evidence = readEvidence(value.evidence, context, evidenceValue);
-  const suggestions = uniqueTexts(value.suggestions, 12);
-  return evidence && suggestions ? { explanation: value.explanation, evidence, suggestions } : null;
-}
-
 function normalizePalette(value: unknown) {
   if (Array.isArray(value)) return value;
   if (typeof value !== "string") return null;
@@ -556,7 +679,6 @@ export function validateTaskPayload(task: AiTask, value: unknown, context: Story
   if (task === "world") { const worldEntries = readWorldEntries(value, context); return worldEntries ? { worldEntries } : null; }
   if (task === "blueprint") { const blueprint = readBlueprint(value, context); return blueprint ? { blueprint } : null; }
   if (task === "analysis") return readLegacyAnalysis(value, context, taskEvidence);
-  if (task === "explain") return readExplain(value, context, taskEvidence);
   if (task === "mentor") { const mentor = readMentor(value, context, taskEvidence); return mentor ? { mentor } : null; }
   if (task === "visual-brief") return readVisualBrief(value);
   if (task === "storyboard") return readStoryboard(value);

@@ -44,3 +44,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# eval artifacts
+# raw-GC_*.json holds full model output plus the source passage — never commit it.
+/evals/runs/raw-*
+# Superseded golden-set drafts from the first build; safe to delete locally.
+/evals/archive/
+*.json.bak
+
+# scratch probes
+/scripts/.jiti-probe.mjs
+
+# scratch probe outputs
+/.probe-trash/
+
+# build artifacts from local verification
+/.next.prebuild.bak/

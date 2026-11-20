@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     ".worktrees/**",
+    ".probe-trash/**",
     ".npm-cache/**",
     ".superpowers/**",
     "test-results/**",

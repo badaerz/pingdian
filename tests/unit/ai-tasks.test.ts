@@ -361,6 +361,32 @@ describe("runAiTask", () => {
     expect(request.messages[1].content).toContain("知识参考");
   });
 
+  it("names the bad evidence when every entry is rejected", async () => {
+    const taskInput: AiTaskInput = { ...input, task: "analysis-v2", input: { sourceText: input.project.chapters[0].content, sourceKind: "narrative" } };
+    const fixture = fixtureForTask("analysis-v2", taskInput.project, taskInput.input);
+    // 两条证据全坏：一条引文不在原文、一条不是对象。
+    // 2026-11-19 变更：单条坏证据会被丢弃、其余保留（契约 AC6）；
+    // 只有**全部**证据都不可用时才整包回退——这里正是全部不可用。
+    const payload = { ...fixture, evidence: [{ id: "e", source: "observation", quote: "不属于这段原文" }, {}] };
+    const fetcher = vi.fn().mockResolvedValue(Response.json({ choices: [{ message: { content: JSON.stringify(payload) } }] }));
+    const result = await runAiTask(taskInput, config, fetcher);
+    expect(result.mode).toBe("demo");
+    // 两条都被丢弃；回退警告要能指出**具体位置**（下标 + 字段），而不是一句笼统的话
+    expect(result.warnings.join("\n")).toMatch(/evidence\[\d+\]\..+/);
+  });
+
+  it("names the first rejected metric in the demo warning", async () => {
+    const taskInput: AiTaskInput = { ...input, task: "analysis-v2", input: { sourceText: input.project.chapters[0].content, sourceKind: "narrative" } };
+    const fixture = fixtureForTask("analysis-v2", taskInput.project, taskInput.input);
+    if (!("styleProfile" in fixture)) throw new Error("expected literary analysis fixture");
+    const metrics = fixture.styleProfile.metrics.map((item, i) => i === 0 ? { ...item, key: undefined, dimension: "未知指标" } : item);
+    const payload = { ...fixture, styleProfile: { metrics } };
+    const fetcher = vi.fn().mockResolvedValue(Response.json({ choices: [{ message: { content: JSON.stringify(payload) } }] }));
+    const result = await runAiTask(taskInput, config, fetcher);
+    expect(result.mode).toBe("demo");
+    expect(result.warnings.join("\n")).toContain("styleProfile.metrics[0].key");
+  });
+
   it("does not let client retrieval evidence override trusted server evidence", async () => {
     const forged = {
       retrievalId: "same-id",
@@ -450,7 +476,7 @@ describe("runAiTask", () => {
     const evidenceOnly = "ZXQV_EVIDENCE_9173";
     const noActiveProject = { ...input.project, activeChapterId: "missing", chapters: [] };
 
-    for (const task of ["analysis", "analysis-v2", "knowledge-extract", "mentor", "explain"] as const) {
+    for (const task of ["analysis", "analysis-v2", "knowledge-extract", "mentor"] as const) {
       for (const project of [input.project, noActiveProject]) {
         const response = await POST(new Request("http://localhost/api/ai", {
           method: "POST",
@@ -573,7 +599,7 @@ describe("POST /api/ai input validation", () => {
       activeChapterId: "chapter-empty",
       chapters: [{ id: "chapter-empty", title: "空章", content: "   ", wordCount: 0, summary: "", order: 0 }],
     };
-    for (const task of ["analysis", "analysis-v2", "knowledge-extract", "mentor", "explain"] as const) {
+    for (const task of ["analysis", "analysis-v2", "knowledge-extract", "mentor"] as const) {
       const response = await POST(new Request("http://localhost/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
