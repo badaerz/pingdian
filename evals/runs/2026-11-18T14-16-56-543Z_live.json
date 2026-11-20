@@ -1,0 +1,340 @@
+{
+  "ranAt": "2026-11-18T14:16:56.543Z",
+  "mode": "live",
+  "scoringModeWarning": "This run produced demo fallbacks. Those cases measure the deterministic fallback, not the model.",
+  "config": {
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "baseUrl": "https://api.deepseek.com/v1",
+    "promptVersion": "taskInstructions@src/lib/ai/tasks.ts",
+    "retrieval": "server-side keyword/vector hybrid, client-supplied evidence dropped",
+    "goldenSetVersion": "14 cases"
+  },
+  "summary": {
+    "conclusionAccuracy": 0,
+    "recall": 0,
+    "traceabilityRate": 100,
+    "hallucinationRate": 0,
+    "confidenceHits": 0,
+    "emptyCases": [],
+    "counts": {
+      "cases": 14,
+      "expectedTotal": 44,
+      "matchedTotal": 0,
+      "diagnosticsTotal": 28,
+      "anchoredTotal": 28
+    }
+  },
+  "cases": [
+    {
+      "id": "GC_001",
+      "title": "边城·地理开场与端午初见",
+      "diagnostics": 2,
+      "expected": 4,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "全知叙述者以地理方位起笔（由四川过湖南去），先建空间再进人物，是传统说部的地理开场法",
+        "「只一个老人，一个女孩子，一只黄狗」用三重递减的数量词完成家户交代，全句无一个形容字",
+        "老人追着塞还铜钱并说「我有口粮」，一个动作同时交代了他的穷、他的自尊与他在此地的位置",
+        "「大鱼要咬了你」表面是玩笑恐吓，实为二老的试探与好感表达；翠翠「以为调戏」是叙述者明示的误读"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_002",
+      "title": "边城·白塔坍塌与结局留白",
+      "diagnostics": 2,
+      "expected": 4,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "天保之死被处理为「不愿争夺」的主动退出而非意外，因果链指向兄弟情义；触礁只是执行方式，不是原因",
+        "白塔在第一段已被交代位置，本段坍塌与爷爷之死在同一句内并置，塔与人构成征兆关系",
+        "翠翠从被渡船老人照顾到接过竹篙摆渡，完成照护者身份接替；新船与重修白塔同时复位，恢复的是秩序而非旧生活",
+        "结尾把「明天」加引号，不确定性被显式标记，叙述者拒绝给读者闭合答案"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_003",
+      "title": "孔乙己·末次出场的外貌降级",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "长衫从「又脏又破」降级为「破夹袄」，衣着变化承担人物彻底坠落的全部信息，叙述者不作任何评判",
+        "以小伙计视角叙述，限制视角使孔乙己的悲剧只呈现外部可见部分，读者与叙述者同样被隔绝在人物内心之外",
+        "结尾「大约……的确」把推测词与肯定词强行并置，用语法矛盾表达无人确知的社会性死亡"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_004",
+      "title": "林冲·山神庙隔门偷听",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "「把大石掇过来靠了门」既是自救的物理条件，也是他无法推门出去、只能隔缝听见真相的技术前提；缺此动作偷听不成立",
+        "动作被拆成「跳起身—壁缝看—推门—大喝」四节点，信息逐层递进；爆发前的停顿由「必必剥剥」的拟声词承担",
+        "入庙先说「神明庇佑，改日来烧纸钱」，逃命中仍守着礼数与许愿，与其后「大喝一声」形成同一人的两面"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_005",
+      "title": "老人与海·外貌与眼睛的例外",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "「眼睛像海水一般蔚蓝」是全身老态中唯一的例外，人物精神被压缩到一个身体部位上",
+        "伤疤被写成「像无鱼的荒漠里被风蚀的裂缝」，把身体痕迹并入全篇的海洋—荒漠意象系统",
+        "「萨劳」以方言词加括号释义的方式引入，叙述者为读者提供本地语汇，是报告体叙述的典型标记"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_006",
+      "title": "老人与海·鲨鱼夺鱼与硬汉独白",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "「可以被毁灭，但不能被打败」把失败重新定义为物质损失而非精神屈服，与只剩骨架的结局形成直接对照",
+        "狮子只出现在结尾睡梦中，与开篇的老人形象呼应，且始终不出现在现实层，因此是精神图腾而非现实事件",
+        "鲨鱼段落用「随后是……」「刀刃折断了，他就……」的连续短句推进，逐级降级武器而非一次写完失败"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_007",
+      "title": "促织·成名丧子与异史氏评",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "儿子投井与虫斗获胜在文本中前后紧邻，喜与悲在同一推进段内并置，叙述者不加评论，反讽由结构本身产生",
+        "「异史氏曰」是明确的叙述者介入，把志怪故事升格为政论；它与正文的冷静叙述构成两层声音",
+        "小虫由儿子魂魄所化这层含义未被明写，只靠前后紧邻与「忽闻门外促织鸣」的时机暗示，属留白型因果"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_008",
+      "title": "项链·十年偿还与结尾反转",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "结局以一句对话推翻此前全部因果，属欧·亨利式反转；反转能成立，依赖前文对项链真伪的持续假设从未被质疑",
+        "十年劳作被一句廉价估价清零，讽刺同时指向诚实与虚荣的双重代价，而非单纯嘲笑虚荣",
+        "「粗暴、嗓门大、头发蓬乱」与「依旧会坐在窗前回想」并置，外在磨蚀与内在记忆不同步，人物未被完全改写"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_009",
+      "title": "红楼梦·宝黛初会的双重限知视角",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "同一场相见被连写两遍：先由黛玉看宝玉，再由宝玉看黛玉。视角切换制造互相打量的对等感，而非单向凝视",
+        "王熙凤未到声先到，黛玉心中的「放诞无礼」与贾母的「泼皮破落户」介绍互补，人物由他人反应定义",
+        "「这个妹妹我曾见过的」在情节内被当作胡话带过，却与太虚幻境的前缘构成预叙，是宿命结构的第一次显影"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_010",
+      "title": "红楼梦·太虚幻境判词预叙",
+      "diagnostics": 2,
+      "expected": 2,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "判词以韵文提前给出人物结局，是全书最大的结构性预叙装置；首次阅读时不可解，重读时意义反转",
+        "图与诗成对出现（画两株枯木悬玉带，配「玉带林中挂」），图像先给谜面，韵文再给半个谜底"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_011",
+      "title": "变形记·叙述语气与存在危机的降格",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "荒诞事件以完全平实的日常语气交代，叙述者不给惊讶；人物第一反应是确认「这并不是梦」然后照常思考现实事务",
+        "变形后的第一个长段念头抱怨的是出差、换乘与饮食，把存在危机降格为职场焦虑，构成核心反讽",
+        "结尾家人用「它不是格里高尔」完成除名，而他死前「心头充满对全家人的温情」，讽刺落在被爱者的单向温情上"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_012",
+      "title": "回响的草场·钢丝马头琴首次演奏",
+      "diagnostics": 2,
+      "expected": 4,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "琴弦是废旧进口钢缆改制、琴筒是车间木模拼合，工业材料被强行纳入游牧乐器，器物本身即两种文明的杂交伤口",
+        "声音被写成「金属毛刺感」「车削铸铁件的啸叫」，以工业听觉替换草原长调的柔和原型，完成逆向通感",
+        "杭盖脱下羽绒服撑开挡风，主动放弃调增益这一技术手段，用身体替代设备；这是他态度转变的唯一实证动作",
+        "「咔嚓。」与「上弦崩断了。」各自独立成段，用极短句强制停顿，把高潮收在声音消失处而非情绪顶点"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_013",
+      "title": "反例·回响的草场开篇声景",
+      "diagnostics": 2,
+      "expected": 2,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "32 赫兹次声波被写成「隔着鞋底叩击脚底板」，把不可听频率转译为体感，完成感官换轨",
+        "「掺了煤灰的重油」一个比喻同时给出颜色、质地与工业属性，无一字冗余"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    },
+    {
+      "id": "GC_014",
+      "title": "雾港来信·九封信与灯塔光柱",
+      "diagnostics": 2,
+      "expected": 4,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "九封信有邮票无邮戳，是「从未寄出」的单一物证；凭此一点即可推出有人刻意不寄，无需任何外部信息",
+        "阿夏用「折寿」的迷信说辞劝阻，同时以「没有回答」回避收件人是谁的追问，是全镇集体沉默的微型预演",
+        "光柱「每隔十二秒扫过一次」把时间量化成可数间隔，既承担节奏标记，又暗示真相的周期性逼近",
+        "顾沉戴白棉布手套取信，把调查记者的职业习惯写成一个动作，无需交代他的过往职业"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合要求：evidence 条目或其引用未通过证据校验，已使用离线演示结果。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "id": "GC_002",
+  "title": "边城·白塔坍塌与结局留白",
+  "source": {
+    "kind": "knowledge",
+    "ref": "KB_003",
+    "locator": "第四至五节·提亲至结局",
+    "licenseStatus": "public_domain"
+  },
+  "sourceKind": "narrative",
+  "text": "天保大老托媒提亲走“车路”，二老傩送愿在山头唱情歌走“马路”。兄弟二人月下相约，天保自知歌声不如弟弟，不愿争夺，驾油船下辰州，不幸于茨滩触礁淹死。顺顺家由此对老船夫生出隔阂。\n\n那一夜，雷雨大作，溪水暴涨。天明时，翠翠醒来，发现白塔在暴风雨中坍塌了，爷爷也已在床上安详地合了眼。\n\n渡口修好了新船，乡邻集资重修了白塔。翠翠接过了爷爷手里的竹篙，依旧在溪口摆渡。\n\n这个人也许永远不回来了，也许“明天”回来。",
+  "expectedFindings": [
+    {
+      "dimension": "情节因果",
+      "claim": "天保之死被处理为「不愿争夺」的主动退出而非意外，因果链指向兄弟情义；触礁只是执行方式，不是原因",
+      "mustMention": [
+        "不愿争夺",
+        "因果",
+        "退出"
+      ],
+      "requiredAnchor": "天保自知歌声不如弟弟，不愿争夺",
+      "idealKbIds": [],
+      "severity": "medium"
+    },
+    {
+      "dimension": "伏笔与铺垫",
+      "claim": "白塔在第一段已被交代位置，本段坍塌与爷爷之死在同一句内并置，塔与人构成征兆关系",
+      "mustMention": [
+        "白塔",
+        "征兆",
+        "并置"
+      ],
+      "requiredAnchor": "发现白塔在暴风雨中坍塌了",
+      "idealKbIds": [
+        "KB_003"
+      ],
+      "severity": "high"
+    },
+    {
+      "dimension": "人物弧光",
+      "claim": "翠翠从被渡船老人照顾到接过竹篙摆渡，完成照护者身份接替；新船与重修白塔同时复位，恢复的是秩序而非旧生活",
+      "mustMention": [
+        "接替",
+        "摆渡",
+        "身份"
+      ],
+      "requiredAnchor": "翠翠接过了爷爷手里的竹篙",
+      "idealKbIds": [],
+      "severity": "medium"
+    },
+    {
+      "dimension": "留白与结局",
+      "claim": "结尾把「明天」加引号，不确定性被显式标记，叙述者拒绝给读者闭合答案",
+      "mustMention": [
+        "留白",
+        "不确定"
+      ],
+      "requiredAnchor": "也许“明天”回来",
+      "idealKbIds": [
+        "KB_003"
+      ],
+      "severity": "high"
+    }
+  ],
+  "forbiddenClaims": [
+    {
+      "claim": "翠翠与傩送已经成婚或明确在一起",
+      "reason": "原文只说「永远不回来」或「明天回来」，无婚配情节"
+    },
+    {
+      "claim": "天保是被弟弟设计害死的",
+      "reason": "原文写天保自知歌声不如弟弟、不愿争夺而驾船下辰州触礁，非被害"
+    },
+    {
+      "claim": "白塔在结尾被彻底放弃、不再重建",
+      "reason": "原文明确写乡邻集资重修了白塔"
+    }
+  ],
+  "annotation": {
+    "by": "AI-draft",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "confidence": "draft",
+    "notes": "四个考点覆盖因果/伏笔/弧光/留白，是全部 case 中维度最全的一条。"
+  }
+}

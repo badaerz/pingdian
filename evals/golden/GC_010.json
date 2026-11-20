@@ -1,0 +1,59 @@
+{
+  "id": "GC_010",
+  "title": "红楼梦·太虚幻境判词预叙",
+  "source": {
+    "kind": "knowledge",
+    "ref": "KB_004",
+    "locator": "第二节·判词",
+    "licenseStatus": "public_domain"
+  },
+  "sourceKind": "narrative",
+  "text": "### 二、太虚幻境判词预叙（第五回）\n\n又见一册，画着两株枯木，木上悬着一围玉带；又有一堆雪，雪下一股金簪。也有四句诗道：\n\n> 可叹停机德，堪怜咏絮才。\n> 玉带林中挂，金簪雪里埋。\n\n后面又画着一张弓，弓上挂着香橼。也有一首歌词云：\n\n> 二十年来辨是非，榴花开处照宫闱。\n> 三春争及初春景，虎兕相逢大梦归。",
+  "expectedFindings": [
+    {
+      "dimension": "伏笔与铺垫",
+      "claim": "判词以韵文提前给出人物结局，是全书最大的结构性预叙装置；首次阅读时不可解，重读时意义反转",
+      "mustMention": [
+        "判词",
+        "预叙",
+        "伏笔"
+      ],
+      "requiredAnchor": "玉带林中挂，金簪雪里埋",
+      "idealKbIds": [
+        "KB_004"
+      ],
+      "severity": "high"
+    },
+    {
+      "dimension": "意象与结构",
+      "claim": "图与诗成对出现（画两株枯木悬玉带，配「玉带林中挂」），图像先给谜面，韵文再给半个谜底",
+      "mustMention": [
+        "图",
+        "诗",
+        "谜"
+      ],
+      "requiredAnchor": "画着两株枯木，木上悬着一围玉带",
+      "idealKbIds": [
+        "KB_004"
+      ],
+      "severity": "high"
+    }
+  ],
+  "forbiddenClaims": [
+    {
+      "claim": "本段中判词已被人物当场解读透彻",
+      "reason": "判词在情节内的解读逐步展开，本段人物并未完全理解"
+    },
+    {
+      "claim": "判词明确写出林黛玉与薛宝钗的最终死因",
+      "reason": "判词以谐音与意象暗示，未直陈死因"
+    }
+  ],
+  "annotation": {
+    "by": "AI-draft",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "confidence": "draft",
+    "notes": "纯韵文段，测模型能否处理非叙述性文本。"
+  }
+}

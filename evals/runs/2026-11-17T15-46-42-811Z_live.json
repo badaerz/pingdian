@@ -1,0 +1,52 @@
+{
+  "ranAt": "2026-11-17T15:46:42.811Z",
+  "mode": "live",
+  "scoringModeWarning": "This run produced demo fallbacks. Those cases measure the deterministic fallback, not the model.",
+  "config": {
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "baseUrl": "https://api.deepseek.com/v1",
+    "promptVersion": "taskInstructions@src/lib/ai/tasks.ts",
+    "retrieval": "server-side keyword/vector hybrid, client-supplied evidence dropped",
+    "goldenSetVersion": "1 cases"
+  },
+  "summary": {
+    "conclusionAccuracy": 0,
+    "recall": 0,
+    "traceabilityRate": 100,
+    "hallucinationRate": 0,
+    "confidenceHits": 0,
+    "emptyCases": [],
+    "counts": {
+      "cases": 1,
+      "expectedTotal": 3,
+      "matchedTotal": 0,
+      "diagnosticsTotal": 2,
+      "anchoredTotal": 2
+    }
+  },
+  "cases": [
+    {
+      "id": "GC_003",
+      "title": "孔乙己·末次出场的外貌降级",
+      "diagnostics": 2,
+      "expected": 3,
+      "matched": 0,
+      "matchedClaims": [],
+      "missedClaims": [
+        "长衫从「又脏又破」降级为「破夹袄」，衣着变化承担人物彻底坠落的全部信息，叙述者不作任何评判",
+        "以小伙计视角叙述，限制视角使孔乙己的悲剧只呈现外部可见部分，读者与叙述者同样被隔绝在人物内心之外",
+        "结尾「大约……的确」把推测词与肯定词强行并置，用语法矛盾表达无人确知的社会性死亡"
+      ],
+      "unpredictedCount": 2,
+      "forbiddenHits": [],
+      "anchoredCount": 2,
+      "reviewed": false,
+      "empty": false,
+      "mode": "demo",
+      "warnings": [
+        "模型返回结构或证据不符合任务要求，已使用与当前项目上下文绑定的离线演示结果（不是本次远端原始结果）。"
+      ]
+    }
+  ]
+}
