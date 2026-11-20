@@ -70,6 +70,26 @@ describe("降级产生的空块不许把整条快照弄死", () => {
     }, "pro-dimension-names")).toBe(true);
   });
 
+  it("曲线只剩一个有效点：快照存活，且那一个点要留下来", () => {
+    const store = createStoryStore();
+    const context = contextFromState(initialStoryState);
+    const sourceText = context.chapters[0].content;
+    const result = fixtureForTask("analysis-v2", context, { sourceText, sourceKind: "narrative" }) as LiteraryAnalysisResult;
+    result.paceCurve = [{ segment: "开端", value: 40, evidenceId: result.paceCurve[0].evidenceId }];
+    result.emotionCurve = [{ segment: "开端", value: 30, evidenceId: result.emotionCurve[0].evidenceId }];
+    const snapshot = createAnalysisSnapshot({
+      projectId: "demo", chapterId: "demo-chapter-1", sourceText, contextRevision: 3,
+      mode: "live", warnings: [], result, id: "single-point-curve", now: "2026-08-21T00:00:00.000Z",
+    });
+    const document = { ...structuredClone(store.documents.demo), analysisSnapshots: [snapshot] };
+    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as never);
+    const kept = reconciled.documents.demo.analysisSnapshots;
+    expect(kept.length).toBe(1);
+    expect(kept[0]!.plotCurve).toHaveLength(1);
+    expect(kept[0]!.emotionCurve).toHaveLength(1);
+    expect(kept[0]!.plotCurve[0]!.value).toBe(40);
+  });
+
   it("样式指标不足六项：保留有效项，不否决整条", () => {
     expect(survives((result) => { result.styleProfile = { metrics: result.styleProfile.metrics.slice(0, 3) }; }, "partial-style")).toBe(true);
   });

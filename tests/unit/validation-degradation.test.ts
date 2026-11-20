@@ -160,6 +160,18 @@ describe("单点损坏一律降级，不许整包回退", () => {
     expect(degradedPaths.some((path) => path.startsWith("paceCurve"))).toBe(true);
   });
 
+  it("曲线只剩一个有效点：保留该点，不因点数少就清空", () => {
+    // 短文本只有一段时，曲线天然是单点。这是诊断规则的正常结果，不是缺陷。
+    const { result, degradedPaths } = validate((payload) => {
+      payload.paceCurve = [{ segment: "开端", value: 40, evidenceId: "ev_001" }];
+      payload.emotionCurve = [{ segment: "开端", value: 30, evidenceId: "ev_002" }];
+    });
+    expect(result).not.toBeNull();
+    expect(result?.paceCurve).toEqual([{ segment: "开端", value: 40, evidenceId: "ev_001" }]);
+    expect(result?.emotionCurve).toEqual([{ segment: "开端", value: 30, evidenceId: "ev_002" }]);
+    expect(degradedPaths.some((path) => path.startsWith("paceCurve"))).toBe(false);
+  });
+
   it("单个 stage 证据无效：丢该 stage，保留其余", () => {
     const { result, degradedPaths } = validate((payload) => {
       payload.domainAnalysis.themes.stages.push({ stage: "转折", theme: "决定", change: "塞回衣袋", reason: "拒绝拆开", evidenceIds: ["ev_999"] });

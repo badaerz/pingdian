@@ -312,8 +312,9 @@ function readCurves(raw: unknown, observationEvidence: Set<string>, path: string
     if (!text(item.evidenceId, 120) || !observationEvidence.has(item.evidenceId)) return fail(`${path}[${i}].evidenceId 不是有效的原文证据`);
     return { segment: item.segment, value: item.value, evidenceId: item.evidenceId };
   });
+  // 一个点也保留：诊断规则成立就该显示，短文本只有一段时曲线退化成单点，不是错误。
   const kept = points.filter(p => p !== null);
-  if (kept.length < 2) { fail(`${path} 有效点不足两个`); return []; }
+  if (!kept.length) { fail(`${path} 没有有效点`); return []; }
   return kept;
 }
 

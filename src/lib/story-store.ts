@@ -564,8 +564,8 @@ function sanitizeStrictCurve(value: unknown, observationIds: Set<string>): Proje
     && observationIds.has(point.evidenceId)
     ? sanitizeCurvePoint(point)
     : null);
-  const kept = points.filter(point => point !== null);
-  return kept.length < 2 ? [] : kept;
+  // 与校验层一致：一个点也保留，短文本的曲线退化成单点属于正常形态。
+  return points.filter(point => point !== null);
 }
 
 function sanitizeKnowledgeGraph(graph: KnowledgeGraph): KnowledgeGraph {
