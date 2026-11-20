@@ -289,8 +289,11 @@ function filterEvidenceIds(value: unknown, known: Set<string>): string[] | null 
   return kept.length ? kept : null;
 }
 
+/** 维度上限：判据注入 16 条后，模型按每条判据出一个维度是合理响应，上限与 diagnostics 对齐为 24。 */
+const MAX_ANALYSIS_DIMENSIONS = 24;
+
 function readAnalysisDimensions(value: unknown, knownEvidence: Set<string>): AnalysisDimension[] | null {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 12) return null;
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_ANALYSIS_DIMENSIONS) return null;
   const result = value.map((item) => {
     if (!record(item) || !text(item.id, 120) || !text(item.name, 200) || !text(item.summary, 2_000) || !text(item.impact, 2_000) || !text(item.suggestion, 2_000) || !finiteInRange(item.score, 0, 100)) return null;
     const evidenceIds = readEvidenceIds(item.evidenceIds, knownEvidence) ?? filterEvidenceIds(item.evidenceIds, knownEvidence);

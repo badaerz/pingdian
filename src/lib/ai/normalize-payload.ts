@@ -202,7 +202,15 @@ export function normalizeModelPayload(raw: Record<string, unknown>): Record<stri
           const d = describe(o);
           const label = firstOf(o, ["label", "character", "event", "setup", "payoff", "point", "name", "pair", "stage"], 300)
             ?? d.slice(0, 60);
-          const evIds = Array.isArray(o.evidenceIds) && o.evidenceIds.length ? o.evidenceIds : (o.__needsEv ? [fallbackEv] : []);
+          // 证据字段的单复数漂移：模型在同一份输出里会混用 evidenceIds / evidenceId。
+          // 这里统一接住，一处收口——否则每漏一个分支，整块 domainAnalysis 就作废。
+          const evIds = Array.isArray(o.evidenceIds) && o.evidenceIds.length
+            ? o.evidenceIds
+            : typeof o.evidenceId === "string" && o.evidenceId.trim()
+              ? [o.evidenceId.trim()]
+              : Array.isArray(o.evidenceId) && o.evidenceId.length
+                ? o.evidenceId
+                : (o.__needsEv ? [fallbackEv] : []);
           return { id: o.id, label, description: d || label, evidenceIds: evIds, ...(o.evidenceQuotes ? { evidenceQuotes: o.evidenceQuotes } : {}) };
         });
     };

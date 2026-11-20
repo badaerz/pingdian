@@ -690,7 +690,7 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
   const observationIds = new Set(evidence.filter((entry) => entry.source === "observation" || entry.source === "user").map((entry) => entry.id));
   if (observationIds.size === 0) return null;
 
-  const dimensions = Array.isArray(value.analysis) && value.analysis.length <= 12 ? value.analysis : [];
+  const dimensions = Array.isArray(value.analysis) && value.analysis.length <= 24 ? value.analysis : [];
   const analysis = dimensions.filter(isAnalysisDimension).map((dimension) => {
     const evidenceIds = readClosedEvidenceIds(dimension.evidenceIds, knownEvidence);
     return isNonEmptyString(dimension.id)

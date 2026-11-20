@@ -28,8 +28,17 @@ const GOLDEN = path.resolve(process.cwd(), "evals/golden");
  * 不用「最新」——评测中途可能有只跑几条的调试批次，会让门槛误报。
  * 可用 REPLAY_STAMP 环境变量指定批次。
  */
-function latestRawGroup(): { stamp: string; files: string[] } {
-  const all = readdirSync(RUNS).filter((f) => /^raw-GC_\d+-.+\.json$/.test(f));
+/**
+ * 判据协议版本：文件名带 `-p1` 的是「诊断必须回填 criteriaIds」之后的批次。
+ * 不带版本戳的历史文件是旧协议产物——用新规则回放它们，只会得到假的「全线回归」，
+ * 所以旧批次单独断言「只许因判据规则失败，不许因别的原因失败」。
+ */
+function rawProtocol(file: string): "p0" | "p1" {
+  return /-p1\.json$/.test(file) ? "p1" : "p0";
+}
+
+function groupByStamp(filter: (file: string) => boolean): { stamp: string; files: string[] } {
+  const all = readdirSync(RUNS).filter((f) => /^raw-GC_\d+-.+\.json$/.test(f) && filter(f));
   if (!all.length) return { stamp: "", files: [] };
   const byStamp = new Map<string, string[]>();
   for (const f of all) {
@@ -40,6 +49,29 @@ function latestRawGroup(): { stamp: string; files: string[] } {
   if (pinned) return { stamp: pinned, files: (byStamp.get(pinned) ?? []).sort() };
   const [stamp, files] = [...byStamp.entries()].sort((a, b) => b[1].length - a[1].length)[0];
   return { stamp, files: files.sort() };
+}
+
+/**
+ * 当前协议批次 = 每个样本取**最新一份** p1 raw。
+ *
+ * 不能按时间戳分组：一次评测可能分成几次调用跑完（分片跑是为了避开超时），
+ * 每次都会得到不同的时间戳，按戳分组会把 14 条切成几组，门槛就永远凑不齐。
+ * 评测基线要的正是「每个样本最近一次真实结果」，所以按样本去重取最新。
+ */
+function latestRawGroup(): { stamp: string; files: string[] } {
+  const all = readdirSync(RUNS).filter((f) => /^raw-GC_\d+-.+\.json$/.test(f) && rawProtocol(f) === "p1");
+  const newest = new Map<string, string>();
+  for (const f of all.sort()) {
+    const id = f.match(/GC_\d+/)?.[0] ?? f;
+    newest.set(id, f); // 文件名含时间戳，排序后后者即最新
+  }
+  const files = [...newest.values()].sort();
+  const stamp = files.length ? files[0].replace(/^raw-GC_\d+-/, "").replace(/-p1\.json$/, "") : "";
+  return { stamp, files };
+}
+
+function latestLegacyGroup(): { stamp: string; files: string[] } {
+  return groupByStamp((f) => rawProtocol(f) === "p0");
 }
 
 /** 与 run-eval.mjs 完全一致的 project 结构 */
@@ -60,7 +92,7 @@ function projectFor(title: string, text: string) {
 describe("离线回放：用真实校验器跑 raw 响应", () => {
   const { stamp, files } = latestRawGroup();
 
-  it(`raw 批次 ${stamp || "(无)"} 共 ${files.length} 份`, () => {
+  it(`当前协议基线：${files.length} 个样本（每个取最新一份，起始 ${stamp || "(无)"}）`, () => {
     expect(files.length).toBeGreaterThan(0);
   });
 
@@ -97,15 +129,58 @@ describe("离线回放：用真实校验器跑 raw 响应", () => {
     });
   }
 
-  it("汇总：回归门槛 10/14", () => {
+  it("汇总：当前协议批次的回归门槛 10/14", () => {
     const pass = outcomes.filter((o) => o.ok).length;
-    console.log(`\n\n════ 离线回放：${pass}/${outcomes.length} 通过（门槛 10）════\n`);
+    console.log(`\n\n════ 离线回放（协议 p1）：${pass}/${outcomes.length} 通过（门槛 10）════\n`);
     for (const o of outcomes.filter((x) => !x.ok)) {
       console.log(`  ❌ ${o.id}  ${o.reason ?? "(未记录)"}`);
     }
-    // 契约 AC4 门槛：14 条里至少 10 条能通过真实校验器。
-    // 这是**离线回归**，用已保存的 raw 复算，不花钱、不限次数。
+    // 门槛只对**当前协议**的批次生效。没有当前协议批次时不能假装通过——
+    // 那会让「一次都没在新规则下跑过」看起来像过了回归。
     expect(outcomes.length).toBeGreaterThan(0);
     expect(pass).toBeGreaterThanOrEqual(10);
+  });
+});
+
+/**
+ * 旧协议批次（文件名没有 -p1）单独断言。
+ *
+ * 它们是在「criteriaIds 可缺失」的年代产出的，用新规则回放必然全灭。
+ * 但「必然全灭」和「管线坏了」是两件事，必须能分开：
+ * 旧批次现在只许因为判据规则被拒，**不许因为引文、证据、结构这些早已修好的地方被拒**。
+ * 这条断言等于给旧批次保留了一份「其他环节没退化」的保险。
+ */
+describe("旧协议批次：只许因判据规则失败", () => {
+  const { stamp, files } = latestLegacyGroup();
+
+  it(`旧协议批次 ${stamp || "(无)"} 共 ${files.length} 份`, () => {
+    expect(files.length).toBeGreaterThan(0);
+  });
+
+  const rejected: Array<{ id: string; reason: string }> = [];
+
+  for (const file of files) {
+    const goldenId = file.match(/GC_\d+/)?.[0] ?? "";
+    it(`${goldenId} 的拒绝原因必须与判据有关`, () => {
+      const raw = JSON.parse(readFileSync(path.join(RUNS, file), "utf8"));
+      const golden = JSON.parse(readFileSync(path.join(GOLDEN, `${goldenId}.json`), "utf8"));
+      let failure: string | undefined;
+      validateTaskPayload("analysis-v2", raw, projectFor(golden.title ?? goldenId, golden.text) as never, "live", {
+        sourceText: golden.text,
+        expectedSourceKind: raw.sourceKind,
+        onFailure: (reason: string) => { failure = reason; },
+      });
+      if (failure) rejected.push({ id: goldenId, reason: failure });
+      expect(failure === undefined || /criteria|判据/.test(failure)).toBe(true);
+    });
+  }
+
+  it("汇总：没有一条是因为引文/证据/结构被拒", () => {
+    const wrongReason = rejected.filter((item) => !/criteria|判据/.test(item.reason));
+    if (wrongReason.length) {
+      for (const item of wrongReason) console.log(`  ❌ ${item.id}  非判据原因：${item.reason}`);
+    }
+    console.log(`\n\n════ 旧协议批次：${rejected.length}/${files.length} 因判据规则被拒（预期行为）════\n`);
+    expect(wrongReason).toEqual([]);
   });
 });

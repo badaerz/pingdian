@@ -88,6 +88,9 @@ async function loadCases() {
 }
 
 // ---------------------------------------------------------------- scoring
+/** 判据协议版本：p1 = 诊断必须回填 criteriaIds；p0（历史文件）= 允许缺失。 */
+const CRITERIA_PROTOCOL = "1";
+
 const SEVERITY_WEIGHT = { high: 3, medium: 2, low: 1 };
 
 /** Normalized text used for key-term matching: strip punctuation and whitespace. */
@@ -279,8 +282,14 @@ for (const entry of cases) {
   const scored = scoreCase(entry, diagnostics);
   scored.mode = envelope.mode;
   scored.warnings = envelope.warnings ?? [];
-  if (LIVE && envelope.mode === "demo" && parsedForEval !== undefined && /^GC_\d+$/.test(entry.id)) {
-    const rawFile = `raw-${entry.id}-${startedAt.replace(/[:.]/g, "-")}.json`;
+  // 落盘所有样本的原始返回，而不只是回退的：
+  // 离线回放要做「回归门禁」，就必须能复算**通过的**样本，否则只能回放失败样本，
+  // 无法证明修好的地方没被改坏。
+  if (LIVE && parsedForEval !== undefined && /^GC_\d+$/.test(entry.id)) {
+    // 文件名带协议版本戳：-p1 表示「诊断必须回填 criteriaIds」这一版规则。
+    // 没有 -p1 的历史文件是旧协议产物，回放时要按旧口径断言，
+    // 否则拿旧尺子量新标准，只会得到一个假的「全线回归」。
+    const rawFile = `raw-${entry.id}-${startedAt.replace(/[:.]/g, "-")}-p${CRITERIA_PROTOCOL}.json`;
     const raw = JSON.stringify(parsedForEval, (key, value) => /^(?:authorization|api[_-]?key|password|secret|access[_-]?token)$/i.test(key) ? "[REDACTED]" : value, 2);
     await mkdir(RUNS_DIR, { recursive: true });
     await writeFile(path.join(RUNS_DIR, rawFile), (apiKey ? raw.replaceAll(apiKey, "[REDACTED]") : raw) + "\n", { flag: "wx" });
@@ -305,6 +314,7 @@ const report = {
       ? "This run produced demo fallbacks. Those cases measure the deterministic fallback, not the model."
       : null,
   config: {
+    criteriaProtocol: CRITERIA_PROTOCOL,
     provider: "deepseek",
     model: config.model,
     baseUrl: config.baseUrl,
