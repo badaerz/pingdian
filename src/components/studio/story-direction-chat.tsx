@@ -76,6 +76,7 @@ interface ScopedStoryDirectionChatProps extends StoryDirectionChatProps {
 function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onGenerateCandidates, onRecordRun, draft, setDraft, selectedTags, setSelectedTags }: ScopedStoryDirectionChatProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [failedRequest, setFailedRequest] = useState<DirectionRequestSnapshot | null>(null);
   const scope = `${projectKey}:${project.activeChapterId}:${project.contextRevision}`;
   const scopeRef = useRef(scope);
@@ -131,6 +132,9 @@ function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onG
       });
       const payload = await response.json() as AiEnvelope<{ direction: StoryDirectionResult }>;
       if (!response.ok || !payload.result?.direction) throw new Error("DIRECTION_FAILED");
+      // 故事方向是给用户「照着写」的建议，演示结果必须标明来源。
+      // 故事方向是给用户「照着写」的建议，演示结果必须标明来源。
+      setNotice(payload.mode === "demo" ? "本次为离线演示结果（未调用模型），仅供参考。到设置页填入自己的密钥可获取真实建议。" : "");
       if (!mountedRef.current || scopeRef.current !== scope || requestRef.current !== requestId) return;
       const direction = payload.result.direction;
       onAppend({
@@ -176,6 +180,7 @@ function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onG
     </div>
     <div className="direction-tags" aria-label="本轮方向标签">{STORY_DIRECTION_TAGS.map((tag) => <Button key={tag} type="button" variant={selectedTags.includes(tag) ? "primary" : "secondary"} aria-pressed={selectedTags.includes(tag)} onClick={() => setSelectedTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag])}>{tag}</Button>)}</div>
     <label className="field direction-input"><span>本轮补充</span><textarea className="textarea" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="例如：先让冲突从舅甥之间的一次误解开始，不要揭晓谜底。" /></label>
+    {notice && <div className="ai-notice" role="status"><span>{notice}</span></div>}
     {error && <div className="candidate-warning" role="alert"><AlertTriangle size={14} /><span>{error}</span>{failedRequest && <Button type="button" variant="ghost" onClick={() => void submit(failedRequest)}>重试本轮讨论</Button>}</div>}
     <div className="direction-actions"><Button type="button" variant="secondary" onClick={() => void submit()} disabled={status === "loading" || (!draft.trim() && selectedTags.length === 0)}><Send size={15} />{status === "loading" ? "分析中…" : "发送并继续讨论"}</Button><Button type="button" onClick={() => onGenerateCandidates(discussionSummary(messages))}><Sparkles size={15} />生成续写候选</Button></div>
   </section>;

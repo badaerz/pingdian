@@ -50,9 +50,12 @@ export function NewProjectForm() {
   });
   const call = async (task: AiTask) => {
     const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task, project: context() }) });
-    const data = await response.json() as { result?: AiTaskPayload; warnings?: string[]; notices?: string[] };
+    const data = await response.json() as { mode?: "live" | "demo"; result?: AiTaskPayload; warnings?: string[]; notices?: string[] };
     if (!response.ok || !data.result) throw new Error("AI_TASK_FAILED");
-    if (data.warnings?.length) setWarning(data.warnings.join(" "));
+    // 演示结果必须标明来源：新建向导里生成的人物/世界观会被用户直接采纳，
+    // 不标注就等于让用户以为自己拿到了真实生成。
+    if (data.mode === "demo") setWarning(`本次为离线演示结果（未调用模型），不是针对你输入的生成内容。到设置页填入自己的密钥可获取真实结果。${data.warnings?.length ? ` ${data.warnings.join(" ")}` : ""}`);
+    else if (data.warnings?.length) setWarning(data.warnings.join(" "));
     if (data.notices?.length) setNotice(data.notices.join(" "));
     return data.result;
   };
