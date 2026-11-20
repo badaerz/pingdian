@@ -95,6 +95,35 @@ describe("runAiTask", () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
+  it("模型返回被截断的 JSON 时用 jsonrepair 修复，不直接回退成演示结果", async () => {
+    // 2026-11-20 AC19 实测：同一输入模型时好时坏，约 1/5 的样本返回残缺 JSON。
+    // 修复只让它能解析，内容仍要过完整校验；防幻觉底线不受影响。
+    const complete = JSON.stringify({ candidates: [
+      { label: "推进", content: "雾里传来第二声汽笛。", rationale: "用动作推进", tags: ["悬念"] },
+      { label: "停顿", content: "他把信封放回灯下。", rationale: "保持克制", tags: ["节奏"] },
+    ] });
+    const truncated = complete.slice(0, complete.length - 1); // 少了最后的 }
+    const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      choices: [{ message: { content: truncated } }],
+    }), { status: 200, headers: { "Content-Type": "application/json" } }));
+
+    const result = await runAiTask(input, config, fetcher);
+
+    expect(result.mode).toBe("live");
+    expect(result.result).toMatchObject({ candidates: expect.any(Array) });
+  });
+
+  it("修复也救不回来的内容仍然回退（不许因为加了修复就放宽）", async () => {
+    const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      choices: [{ message: { content: "这不是 JSON，只是一段散文。" } }],
+    }), { status: 200, headers: { "Content-Type": "application/json" } }));
+
+    const result = await runAiTask(input, config, fetcher);
+
+    expect(result.mode).toBe("demo");
+    expect(result.warnings.join(" ")).toContain("演示结果");
+  });
+
   it("normalizes a valid live response into pending candidates", async () => {
     const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({
       choices: [{ message: { content: JSON.stringify({ candidates: [
