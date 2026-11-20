@@ -72,6 +72,7 @@ it("keeps the visual brief and image as candidates until the user confirms them"
   await waitFor(() => expect(JSON.parse(localStorage.getItem(STORY_STORE_KEY) ?? "{}").documents.demo.ipAssets[0].previewUrl).toBe("indexeddb://asset-1"));
   await user.click(screen.getByRole("button", { name: "生成六镜头分镜" }));
   expect(await screen.findByText(/06 中景/)).toBeVisible();
+  expect(screen.getByText("演示分镜")).toBeVisible();
 });
 
 it("keeps image generation progress beside the image controls and preview instead of at page level", async () => {

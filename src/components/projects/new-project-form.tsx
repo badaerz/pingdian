@@ -1,10 +1,12 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AiProgress, type AiProgressStatus } from "@/components/ui/ai-progress";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -42,6 +44,7 @@ export function NewProjectForm() {
   const [warning, setWarning] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
+  const generationRef = useRef(0);
 
   const context = (): StoryContext => ({
     title: title || "未命名作品", genre, logline, activeChapterId: "wizard-chapter-1", contextRevision: step,
@@ -49,43 +52,51 @@ export function NewProjectForm() {
     characters: character.name ? [character] : [], worldEntries, blueprint,
   });
   const call = async (task: AiTask) => {
-    const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task, project: context() }) });
+    const response = await fetchAi(task === "characters" ? "人物生成" : task === "world" ? "世界观生成" : "向导候选生成", { method: "POST", headers: aiRequestHeaders(), body: JSON.stringify({ task, project: context() }) });
     const data = await response.json() as { mode?: "live" | "demo"; result?: AiTaskPayload; warnings?: string[]; notices?: string[] };
     if (!response.ok || !data.result) throw new Error("AI_TASK_FAILED");
-    // 演示结果必须标明来源：新建向导里生成的人物/世界观会被用户直接采纳，
-    // 不标注就等于让用户以为自己拿到了真实生成。
-    if (data.mode === "demo") setWarning(`本次为离线演示结果（未调用模型），不是针对你输入的生成内容。到设置页填入自己的密钥可获取真实结果。${data.warnings?.length ? ` ${data.warnings.join(" ")}` : ""}`);
-    else if (data.warnings?.length) setWarning(data.warnings.join(" "));
-    if (data.notices?.length) setNotice(data.notices.join(" "));
-    return data.result;
+    return { ...data, result: data.result };
   };
   const generate = async () => {
+    const generation = ++generationRef.current;
     setStatus("loading"); setWarning(""); setNotice(""); setPending(null);
     try {
-      if (step === 1) {
-        const result = await call("ideas");
-        if (!("candidates" in result)) throw new Error("INVALID_RESULT");
-        setPending({ kind: "ideas", candidates: result.candidates });
-      } else if (step === 2) {
-        const [people, world] = await Promise.all([call("characters"), call("world")]);
-        if (!("characters" in people) || !("worldEntries" in world)) throw new Error("INVALID_RESULT");
-        setPending({ kind: "setting", characters: people.characters, worldEntries: world.worldEntries });
-      } else if (step === 3) {
-        const result = await call("blueprint");
-        if (!("blueprint" in result)) throw new Error("INVALID_RESULT");
+      const tasks: AiTask[] = step === 1 ? ["ideas"] : step === 2 ? ["characters", "world"] : step === 3 ? ["blueprint"] : ["opening"];
+      const responses = await Promise.all(tasks.map(call));
+      if (generation !== generationRef.current) return;
+      const [first, second] = responses;
+      const result = first.result;
+      if ((step === 1 || step === 4) && "candidates" in result) {
+        setPending({ kind: step === 1 ? "ideas" : "opening", candidates: result.candidates });
+      } else if (step === 2 && "characters" in result && second && "worldEntries" in second.result) {
+        setPending({ kind: "setting", characters: result.characters, worldEntries: second.result.worldEntries });
+      } else if (step === 3 && "blueprint" in result) {
         setPending({ kind: "blueprint", blueprint: result.blueprint });
       } else {
-        const result = await call("opening");
-        if (!("candidates" in result)) throw new Error("INVALID_RESULT");
-        setPending({ kind: "opening", candidates: result.candidates });
+        throw new Error("INVALID_RESULT");
       }
+      const warnings = responses.flatMap((response) => response.warnings ?? []);
+      if (step === 2) {
+        if (first.mode !== "live") warnings.unshift("人物设定为离线演示结果。");
+        if (second?.mode !== "live") warnings.unshift("世界设定为离线演示结果。");
+      } else if (first.mode !== "live") {
+        warnings.unshift("本次为离线演示结果，仅供参考。");
+      }
+      setWarning([...new Set(warnings)].join(" "));
+      setNotice([...new Set(responses.flatMap((response) => response.notices ?? []))].join(" "));
       setStatus("success");
-    } catch { setStatus("error"); setWarning("AI 暂时不可用，可继续手动完成这一步。"); }
+    } catch {
+      if (generation !== generationRef.current) return;
+      setStatus("error"); setWarning("AI 暂时不可用，可继续手动完成这一步。");
+    }
+  };
+  const moveTo = (newStep: number) => {
+    generationRef.current += 1;
+    setStep(newStep); setError(""); setPending(null); setStatus("idle"); setWarning(""); setNotice("");
   };
   const next = () => {
-    setError(""); setPending(null); setStatus("idle");
     if (step === 1 && (!title.trim() || !logline.trim())) { setError("请先填写作品名称和一句话灵感。"); return; }
-    setStep((current) => Math.min(4, current + 1));
+    moveTo(step + 1);
   };
   const finish = () => {
     if (!opening.trim()) { setError("请写下或采用一个首段候选。"); return; }
@@ -116,7 +127,7 @@ export function NewProjectForm() {
         {pending?.kind === "blueprint" && <div className="wizard-preview"><strong>蓝图候选</strong><p>{pending.blueprint.map((item) => item.title).join(" → ")}</p><Button variant="secondary" onClick={() => setBlueprint(pending.blueprint)}>采用这份蓝图</Button></div>}
         {error && <p className="form-error" role="alert">{error}</p>}
       </section>
-      <footer className="wizard-footer">{step > 1 ? <Button variant="ghost" onClick={() => { setStep((current) => current - 1); setPending(null); setStatus("idle"); }}><ArrowLeft size={16} />上一步</Button> : <span />}{step < 4 ? <Button onClick={next}>下一步：{["人物与世界", "故事蓝图", "写出首段"][step - 1]}<ArrowRight size={16} /></Button> : <Button onClick={finish}>完成并进入创作台<ArrowRight size={16} /></Button>}</footer>
+      <footer className="wizard-footer">{step > 1 ? <Button variant="ghost" onClick={() => moveTo(step - 1)}><ArrowLeft size={16} />上一步</Button> : <span />}{step < 4 ? <Button onClick={next}>下一步：{["人物与世界", "故事蓝图", "写出首段"][step - 1]}<ArrowRight size={16} /></Button> : <Button onClick={finish}>完成并进入创作台<ArrowRight size={16} /></Button>}</footer>
     </main>
   </div>;
 }

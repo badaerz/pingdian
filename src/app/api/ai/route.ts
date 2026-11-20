@@ -225,8 +225,15 @@ export function createAiPostHandler(options: {
     if (userKey === "") return noStoreJson({ error: "INVALID_AI_KEY" }, { status: 400 });
     const baseConfig = aiConfigFromEnvironment();
     const config = userKey ? { ...baseConfig, apiKey: userKey } : baseConfig;
-    const result = await runAiTask(body, config, options.fetcher ?? fetch, config.apiKey ? productionRetrievalDependencies() : {});
-    return noStoreJson(result);
+    try {
+      const result = await runAiTask(body, config, options.fetcher ?? fetch, {
+        ...(config.apiKey ? productionRetrievalDependencies() : {}), signal: request.signal,
+      });
+      return noStoreJson(result);
+    } catch (error) {
+      if (request.signal.aborted) return noStoreJson({ error: "REQUEST_CANCELLED" }, { status: 499 });
+      throw error;
+    }
   };
 }
 

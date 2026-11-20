@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import { AlertTriangle, MessageSquareText, Send, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
@@ -124,7 +126,7 @@ function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onG
     controllersRef.current.add(controller);
 
     try {
-      const response = await fetch("/api/ai", {
+      const response = await fetchAi("故事方向讨论", {
         method: "POST",
         headers: aiRequestHeaders(),
         signal: controller.signal,
@@ -132,10 +134,9 @@ function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onG
       });
       const payload = await response.json() as AiEnvelope<{ direction: StoryDirectionResult }>;
       if (!response.ok || !payload.result?.direction) throw new Error("DIRECTION_FAILED");
-      // 故事方向是给用户「照着写」的建议，演示结果必须标明来源。
-      // 故事方向是给用户「照着写」的建议，演示结果必须标明来源。
-      setNotice(payload.mode === "demo" ? "本次为离线演示结果（未调用模型），仅供参考。到设置页填入自己的密钥可获取真实建议。" : "");
       if (!mountedRef.current || scopeRef.current !== scope || requestRef.current !== requestId) return;
+      const mode = payload.mode === "live" ? "live" : "demo";
+      setNotice(mode === "demo" ? "本次为离线演示建议，仅供参考。" : "");
       const direction = payload.result.direction;
       onAppend({
         id: messageId("direction-assistant"),
@@ -145,10 +146,10 @@ function ScopedStoryDirectionChat({ projectKey, project, messages, onAppend, onG
         createdAt: new Date().toISOString(),
         contextRevision: payload.contextRevision,
         direction,
-        mode: payload.mode,
+        mode,
         warnings: payload.warnings,
       });
-      onRecordRun?.({ mode: payload.mode, request: { content, thread }, result: payload.result });
+      onRecordRun?.({ mode, request: { content, thread }, result: payload.result });
       setDraft("");
       setSelectedTags([]);
       setStatus("idle");

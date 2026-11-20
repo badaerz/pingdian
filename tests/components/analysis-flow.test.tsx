@@ -1,9 +1,17 @@
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AnalysisWorkspace } from "@/components/analysis/analysis-workspace";
+import { AnalysisDiagnostics } from "@/components/analysis/analysis-diagnostics";
 import { StoryProvider } from "@/providers/story-provider";
 import * as StoryProviderModule from "@/providers/story-provider";
 import { afterEach, vi } from "vitest";
+
+it("offers the exercise directory when the diagnosis has no linked exercise", () => {
+  const diagnostic = { ...completeAnalysisV2.diagnostics[0], trainingExerciseId: undefined };
+  render(<AnalysisDiagnostics diagnostics={[diagnostic]} onSelect={vi.fn()} />);
+  expect(screen.getByText("本次诊断未关联练习。")).toBeVisible();
+  expect(screen.getByRole("link", { name: "浏览专项练习" })).toHaveAttribute("href", "/training");
+});
 
 const completeAnalysisV2 = {
   sourceKind: "narrative" as const,
@@ -56,6 +64,36 @@ it("shows six dimensions and opens cited evidence", async () => {
 });
 
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+
+it("explains an empty relationship graph and offers a new analysis", async () => {
+  const user = userEvent.setup();
+  const result = { ...completeAnalysisV2, relationGraph: { nodes: [], edges: [] } };
+  const fetcher = vi.fn().mockImplementation(() => Promise.resolve(Response.json({ mode: "demo", task: "analysis-v2", warnings: [], result })));
+  vi.stubGlobal("fetch", fetcher);
+  render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
+  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  const graph = await screen.findByRole("tabpanel");
+  expect(await within(graph).findByText(/没有可展示的关系网络数据/)).toBeVisible();
+  await user.click(within(graph).getByRole("button", { name: "重新分析" }));
+  expect(fetcher).toHaveBeenCalledTimes(2);
+});
+
+it("explains empty pace and heatmap panels without drawing unsupported charts", async () => {
+  const user = userEvent.setup();
+  const result = { ...completeAnalysisV2, paceCurve: [], themeHeatmap: [] };
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ mode: "demo", task: "analysis-v2", warnings: [], result })));
+  render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
+  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await screen.findByText("新诊断");
+  await user.click(screen.getByRole("tab", { name: "情节节奏" }));
+  expect(screen.getByText(/没有可展示的情节节奏数据/)).toBeVisible();
+  expect(screen.queryByLabelText("曲线数据列表")).not.toBeInTheDocument();
+  await user.click(screen.getByRole("tab", { name: "主题热力" }));
+  const panel = screen.getByRole("tabpanel");
+  expect(within(panel).getByText(/没有可展示的主题热力数据/)).toBeVisible();
+  expect(within(panel).getByRole("button", { name: "重新分析" })).toBeEnabled();
+  expect(within(panel).queryByRole("table")).not.toBeInTheDocument();
+});
 
 it("labels partial live results and shows the rejection without a heatmap tab", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ mode: "live", task: "analysis-v2", warnings: [], result: { ...completeAnalysisV2, discardedDiagnostics: [{ attempted: { id: "bad" }, reason: "field_invalid" }] } })));

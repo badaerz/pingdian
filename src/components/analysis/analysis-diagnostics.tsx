@@ -4,6 +4,8 @@ import { AlertTriangle, ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import type { LiteraryDiagnostic } from "@/lib/types";
 
+const hasExercise = (id?: string): id is string => Boolean(id && /^EX_[0-9]{3}$/.test(id));
+
 export function AnalysisDiagnostics({ diagnostics, selectedId, onSelect }: {
   diagnostics: LiteraryDiagnostic[];
   selectedId?: string;
@@ -18,7 +20,9 @@ export function AnalysisDiagnostics({ diagnostics, selectedId, onSelect }: {
       <button type="button" onClick={() => onSelect(diagnostic)} aria-label={`${diagnostic.action}，定位原文证据`}>
         <span>{diagnostic.action}</span><ArrowRight size={15} />
       </button>
-      {diagnostic.trainingExerciseId && /^EX_[0-9]{3}$/.test(diagnostic.trainingExerciseId) && <Link className="diagnostic-training-link" href={`/training?exercise=${encodeURIComponent(diagnostic.trainingExerciseId)}&diagnostic=${encodeURIComponent(diagnostic.id)}`}>去专项训练</Link>}
+      {hasExercise(diagnostic.trainingExerciseId) && <Link className="diagnostic-training-link" href={`/training?exercise=${encodeURIComponent(diagnostic.trainingExerciseId)}&diagnostic=${encodeURIComponent(diagnostic.id)}`}>去专项训练</Link>}
     </article>)}</div>
+    {diagnostics.length > 0 && !diagnostics.some(item => hasExercise(item.trainingExerciseId)) &&
+      <p className="muted">本次诊断未关联练习。<Link className="diagnostic-training-link" href="/training">浏览专项练习</Link></p>}
   </section>;
 }

@@ -2,6 +2,7 @@ import type { AiTask, AiTaskPayload, StoryContext } from "@/lib/ai/tasks";
 import { resolveAiSourceText } from "@/lib/ai/story-context";
 import { normalizeModelPayload } from "@/lib/ai/normalize-payload";
 import { injectedCriteriaIds, stampCriteriaVersion } from "@/lib/ai/criteria";
+import { readCriteriaEvaluation } from "@/lib/ai/criteria-evaluation";
 import { TRAINING_FEEDBACK_DIMENSIONS, type AiEvidence, type AnalysisDimension, type BlueprintNode, type Candidate, type Character, type ConsistencyFinding, type Evidence, type GraphEdge, type GraphNode, type ImageGenerationSettings, type KnowledgeGraph, type LiteraryAnalysisResult, type LiteraryDomainAnalysis, type LiteraryDomainFinding, type LiterarySourceKind, type LiteraryThemeStage, type MentorResponse, type RetrievalEvidence, type StoryState, type TrainingFeedbackResult, type WorldEntry } from "@/lib/types";
 
 export interface PayloadEvidenceContext {
@@ -478,6 +479,9 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
   if (new Set(metrics.map(item => item!.key)).size !== 6) return fail("styleProfile.metrics.key 六项未各出现一次");
   if (!Array.isArray(value.diagnostics) || value.diagnostics.length === 0 || value.diagnostics.length > 24) return fail("diagnostics 必须包含 1 至 24 项");
   const diagnostics: LiteraryAnalysisResult["diagnostics"] = [];
+  const countableEvidence = new Set(evidence
+    .filter(({ id, source }) => (source === "observation" || source === "user") && observationEvidence.has(id))
+    .map(({ id }) => id));
   const discardedDiagnostics: NonNullable<LiteraryAnalysisResult["discardedDiagnostics"]> = [];
   for (const item of value.diagnostics) {
     const attempted = record(item) ? Object.fromEntries(["id", "location", "quote", "effect", "action"].filter(k => text(item[k], 2000)).map(k => [k, item[k]])) : {};
@@ -500,7 +504,13 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
     const known = new Set(injectedCriteriaIds());
     const unknown = rawCriteria.filter(id => !known.has(id));
     if (unknown.length) { discard("unknown_criteria"); continue; }
-    diagnostics.push({ id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action, confidence: item.confidence, evidenceIds, criteriaIds: stampCriteriaVersion(rawCriteria), ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}) });
+    const criteriaEvaluation = readCriteriaEvaluation(item.criteriaEvaluation, countableEvidence);
+    diagnostics.push({
+      id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action,
+      confidence: item.confidence, evidenceIds, criteriaIds: stampCriteriaVersion(rawCriteria),
+      ...(criteriaEvaluation ? { criteriaEvaluation } : {}),
+      ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}),
+    });
   }
   if (!diagnostics.length) return fail(`diagnostics 全部未通过校验：${discardedDiagnostics.map(d => d.reason).join("、")}`);
   const supplied = value.retrievalEvidence === undefined ? [] : value.retrievalEvidence;

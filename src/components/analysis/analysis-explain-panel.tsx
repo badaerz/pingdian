@@ -2,7 +2,7 @@
 
 import { CheckCircle2, FileText, Library, ListTree, ShieldCheck } from "lucide-react";
 import type { LiteraryAnalysisResult } from "@/lib/types";
-import { getInjectedCriteria } from "@/lib/ai/criteria";
+import { getInjectedCriteria, type CriterionFields } from "@/lib/ai/criteria";
 import { AnalysisIntegrity } from "@/components/analysis/analysis-integrity";
 
 /**
@@ -28,9 +28,10 @@ const SECTION_META = [
 ] as const;
 
 function criteriaMap() {
-  const map = new Map<string, { id: string; dimension: string; statement: string }>();
+  const map = new Map<string, { id: string; dimension: string } & Pick<CriterionFields, "statement" | "checkable" | "metric">>();
   for (const hit of getInjectedCriteria()) {
-    map.set(hit.id, { id: hit.id, dimension: hit.dimension, statement: hit.block.statement });
+    const { statement, checkable, metric } = hit.block;
+    map.set(hit.id, { id: hit.id, dimension: hit.dimension, statement, checkable, metric });
   }
   return map;
 }
@@ -52,6 +53,7 @@ export function AnalysisExplainPanel({ sourceText, sourceKind, mode, prompt, res
   const cited = new Set(result.diagnostics.flatMap((diagnostic) => (diagnostic.criteriaIds ?? []).map(bareId)));
   const uncited = allCriteria.filter((criterion) => !cited.has(criterion.id));
   const retrieved = result.retrievalEvidence;
+  const evidenceById = new Map(result.evidence.map((item) => [item.id, item]));
 
   return (
     <section className="explain-panel-four" aria-label="可解释面板">
@@ -74,7 +76,7 @@ export function AnalysisExplainPanel({ sourceText, sourceKind, mode, prompt, res
         <dl className="explain-facts">
           <div><dt>文本类型</dt><dd>{sourceKind === "narrative" ? "叙事文本" : "论述文本"}</dd></div>
           <div><dt>字数</dt><dd>{sourceText.length} 字</dd></div>
-          <div><dt>结果来源</dt><dd>{mode === "live" ? "真实模型调用" : "结构化演示结果（未调用模型）"}</dd></div>
+          <div><dt>结果来源</dt><dd>{mode === "live" ? "真实模型调用" : "结构化演示结果"}</dd></div>
           <div><dt>任务</dt><dd>analysis-v2 · 文学诊断</dd></div>
         </dl>
         {prompt && <p className="explain-prompt">触发参数：{prompt}</p>}
@@ -152,6 +154,32 @@ export function AnalysisExplainPanel({ sourceText, sourceKind, mode, prompt, res
                 <p className="explain-basis">
                   依据：{(diagnostic.criteriaIds ?? []).map((id) => byId.get(bareId(id))?.statement).filter(Boolean).join("；")}
                 </p>
+              )}
+              {diagnostic.criteriaEvaluation?.length ? (
+                <details className="explain-source">
+                  <summary>判定过程</summary>
+                  {diagnostic.criteriaEvaluation.map((evaluation) => {
+                    const criterion = byId.get(evaluation.criteriaId);
+                    return (
+                      <dl key={evaluation.criteriaId}>
+                        <dt>判据</dt>
+                        <dd>{evaluation.criteriaId} {criterion?.statement}</dd>
+                        <dt>判定规则</dt>
+                        <dd><p>{criterion?.checkable}</p><p>{criterion?.metric}</p></dd>
+                        <dt>本例计数</dt>
+                        <dd>
+                          <p>{evaluation.reason}</p>
+                          <p>{evaluation.countedAt.length} 条原文证据</p>
+                          {evaluation.countedAt.map((id) => <blockquote key={id}>{evidenceById.get(id)?.quote}</blockquote>)}
+                        </dd>
+                        <dt>结论</dt>
+                        <dd>{evaluation.result === "pass" ? "通过" : "未通过"}</dd>
+                      </dl>
+                    );
+                  })}
+                </details>
+              ) : (
+                <p className="explain-note">本次未提供判定过程</p>
               )}
             </li>
           ))}

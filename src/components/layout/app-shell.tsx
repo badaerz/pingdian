@@ -9,13 +9,14 @@ import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ScrollMotion } from "@/components/ui/scroll-motion";
+import { SlowAiRequests } from "@/components/ui/slow-ai-requests";
 import { cn } from "@/lib/utils";
 import { useStory } from "@/providers/story-provider";
 
-const links = [
+const projectLinks = (projectId: string) => [
   { href: "/projects", label: "项目桌面", icon: FolderKanban },
-  { href: "/project/demo/studio", label: "创作台", icon: BookOpenText },
-  { href: "/project/demo/analysis", label: "文学诊断", icon: ChartNoAxesCombined },
+  { href: `/project/${encodeURIComponent(projectId)}/studio`, label: "创作台", icon: BookOpenText },
+  { href: `/project/${encodeURIComponent(projectId)}/analysis`, label: "文学诊断", icon: ChartNoAxesCombined },
   { href: "/knowledge", label: "知识图谱", icon: LibraryBig },
   { href: "/training", label: "写作训练", icon: GraduationCap },
   { href: "/settings", label: "设置", icon: Settings },
@@ -26,6 +27,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { state, syncStatus, demoLocked } = useStory();
   const project = state.projects.find((item) => item.id === state.activeProjectId);
+  const links = projectLinks(state.activeProjectId);
   const syncLabel = demoLocked ? "答辩锁定" : "仅存本地";
 
   if (pathname === "/") return <>{children}</>;
@@ -33,6 +35,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className={cn("app-shell", demoLocked && "app-shell-demo-locked")}>
       <ScrollMotion />
+      <SlowAiRequests />
       <a className="skip-link" href="#main-content">跳到主要内容</a>
 
       {/* 顶栏：品牌标识 + 项目上下文 + 操作区 */}

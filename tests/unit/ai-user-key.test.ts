@@ -83,6 +83,23 @@ describe("密钥格式校验", () => {
 });
 
 describe("请求链路", () => {
+  it("取消浏览器请求会中止模型调用并返回取消状态", async () => {
+    const controller = new AbortController();
+    let markStarted!: () => void;
+    const started = new Promise<void>(resolve => { markStarted = resolve; });
+    const fetcher = vi.fn((_url: string, init: RequestInit) => new Promise<Response>((_resolve, reject) => {
+      const signal = init.signal!;
+      signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+      markStarted();
+    }));
+    const response = handler(fetcher)(new Request(request({ [AI_KEY_HEADER]: USER_KEY }), { signal: controller.signal }));
+    await started;
+    controller.abort();
+    const cancelled = await response;
+    expect(cancelled.status).toBe(499);
+    expect(await cancelled.json()).toEqual({ error: "REQUEST_CANCELLED" });
+  });
+
   it("带了用户密钥就直接用它调用，不再用服务端配置的密钥", async () => {
     vi.stubEnv("DEEPSEEK_API_KEY", ENV_KEY);
     const fetcher = vi.fn().mockResolvedValue(modelResponse());

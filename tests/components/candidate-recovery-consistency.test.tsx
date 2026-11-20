@@ -29,7 +29,7 @@ function seedMalformedReport() {
 function successfulCheck(candidateId: string, revision: number) {
   return new Response(JSON.stringify({
     mode: "demo",
-    result: { consistencyReport: { candidateId, contextRevision: revision, findings: [], checkedAt: "刚刚", mode: "demo", userConfirmation: "none" } },
+    result: { consistencyReport: { candidateId, contextRevision: revision, findings: [], checkedAt: "刚刚", mode: "live", userConfirmation: "none" } },
   }));
 }
 
@@ -61,6 +61,7 @@ it("automatically rechecks a restored candidate whose malformed report was disca
 
   await act(async () => { resolveCheck(successfulCheck(candidateId, revision)); });
   expect(await screen.findByText("低风险提示")).toBeVisible();
+  expect(screen.getByText("演示检查")).toBeVisible();
   expect(screen.getByRole("button", { name: "采纳候选" })).toBeEnabled();
   await act(async () => undefined);
   expect(fetcher).toHaveBeenCalledTimes(1);

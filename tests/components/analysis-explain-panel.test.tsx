@@ -78,7 +78,7 @@ describe("四段可解释面板", () => {
 
   it("演示结果不能冒充真实调用", () => {
     renderPanel({}, "demo");
-    expect(screen.getByText(/结构化演示结果（未调用模型）/)).toBeVisible();
+    expect(screen.getByText("结构化演示结果")).toBeVisible();
   });
 
   it("检索段说清判据是确定性注入，不是检索召回", () => {
@@ -120,6 +120,39 @@ describe("四段可解释面板", () => {
     const criterion = getInjectedCriteria().find((hit) => hit.id === "P1");
     expect(criterion).toBeDefined();
     expect(within(task).getByText(new RegExp(criterion!.block.statement.slice(0, 8)))).toBeVisible();
+  });
+
+  it("没有判定记录时显示缺省说明，仍保留置信度和建议", () => {
+    renderPanel();
+    const task = within(document.getElementById("explain-task")!);
+    expect(task.getByText("本次未提供判定过程")).toBeVisible();
+    expect(task.queryByText("判定过程", { exact: true })).not.toBeInTheDocument();
+    expect(task.getByText("置信度 70%")).toBeVisible();
+    expect(task.getByText(/下一步：/)).toBeVisible();
+  });
+
+  it("展开判定过程后可核对原规则、计数、引文和结论", async () => {
+    const user = userEvent.setup();
+    const baseline = result();
+    const reason = "原句出现可指认的地点「门口」。";
+    renderPanel({ diagnostics: [{
+      ...baseline.diagnostics[0],
+      criteriaEvaluation: [{ criteriaId: "P1", countedAt: ["ev_001"], result: "pass", reason }],
+    }] });
+    const task = within(document.getElementById("explain-task")!);
+    const summary = task.getByText("判定过程", { exact: true });
+    const details = summary.closest("details")!;
+    expect(details.open).toBe(false);
+    await user.click(summary);
+    expect(details.open).toBe(true);
+    const criterion = getInjectedCriteria().find((hit) => hit.id === "P1")!;
+    const process = within(details);
+    expect(process.getByText(criterion.block.checkable)).toBeVisible();
+    expect(process.getByText(criterion.block.metric)).toBeVisible();
+    expect(process.getByText(/1 条原文证据/)).toBeVisible();
+    expect(process.getByText("他站在门口。")).toBeVisible();
+    expect(process.getByText("通过")).toBeVisible();
+    expect(process.getByText(reason)).toBeVisible();
   });
 
   it("校验段复用同一份可信度说明，丢弃原因不会被吞掉", () => {

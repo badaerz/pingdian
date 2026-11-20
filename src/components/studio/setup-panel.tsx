@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import { Globe2, RefreshCw, Route, Sparkles, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -40,12 +42,13 @@ export function SetupPanel() {
   const project = useMemo(() => state.projects.find((item) => item.id === state.activeProjectId) ?? state.projects[0], [state.activeProjectId, state.projects]);
 
   const requestTask = async (task: SetupTab) => {
+    if (loading) return;
     setLoading(task);
     setProgressTask(task);
     setProgressStatus("loading");
     setWarning(""); setNotice("");
     try {
-      const response = await fetch("/api/ai", {
+      const response = await fetchAi(taskLabels[task], {
         method: "POST",
         headers: aiRequestHeaders(),
         body: JSON.stringify({ task, project: contextFromState(state), input: { prompt: task === "characters" ? "基于当前作品灵感、世界观和蓝图补全人物卡，保留已有事实。" : task === "world" ? "基于当前作品灵感、人物目标和蓝图补全世界观，保留已有规则与时间限制。" : task === "blueprint" ? "基于当前作品灵感、人物和世界观组织故事蓝图。" : "基于当前作品设定提出具体故事方向。" } }),

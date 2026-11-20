@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import { BookMarked, FileText, LoaderCircle, RotateCcw, Upload } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -111,7 +113,7 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
     setMyStatus("loading"); setMyError(""); setMyNotice("");
     try {
       if (!state) throw new Error("STORY_CONTEXT_REQUIRED");
-      const response = await fetch("/api/ai", { method: "POST", signal: controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "knowledge-extract", project: contextFromState(state), input: { sourceText, sourceKind: mySourceKind, prompt: "仅分析本次会话文本，输出带逐字证据的知识图谱；不要写入项目。" } }) });
+      const response = await fetchAi("知识图谱生成", { method: "POST", signal: controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "knowledge-extract", project: contextFromState(state), input: { sourceText, sourceKind: mySourceKind, prompt: "仅分析本次会话文本，输出带逐字证据的知识图谱；不要写入项目。" } }) });
       const data = await response.json() as { mode?: "live" | "demo"; result?: { knowledgeGraph?: unknown; evidence?: unknown[]; sourceKind?: "narrative" | "argumentative" }; warnings?: string[] };
       if (!response.ok || !data.result?.knowledgeGraph) throw new Error("INVALID_GRAPH");
       if (controller.signal.aborted || requestEpoch !== requestEpochRef.current) return;
@@ -122,9 +124,14 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
       setMyStatus("success");
       // 保留服务端给的原因，再补一句明确标注：演示图谱不代表对这篇文本的真实分析。
       if (data.mode !== "live") {
-        setMyNotice(`图谱已基于本次上传文本生成。但请注意：这是离线演示结果（未调用模型），不是对你这篇文本的真实分析。想要真实结果，请到设置页填入自己的密钥后重试。${data.warnings?.length ? `（${data.warnings.join(" ")}）` : ""}`);
+        setMyNotice(`当前图谱为离线演示。可检查 AI 设置后重新分析。${data.warnings?.length ? `（${data.warnings.join(" ")}）` : ""}`);
       } else if (data.warnings?.length) setMyNotice(`图谱已基于本次上传文本生成。${data.warnings.join(" ")}`);
-    } catch (error) { if (!controller.signal.aborted && requestEpoch === requestEpochRef.current && !(error instanceof DOMException && error.name === "AbortError")) { setMyError("文本分析暂不可用；请检查 AI 服务或继续使用经典知识库。"); setMyStatus("error"); } }
+    } catch (error) {
+      if (!controller.signal.aborted && requestEpoch === requestEpochRef.current) {
+        setMyError(error instanceof DOMException && error.name === "AbortError" ? "已取消。可重新分析当前文本。" : "文本分析暂不可用，请点击「分析文本」重试。");
+        setMyStatus("error");
+      }
+    }
     finally { if (requestRef.current === controller) requestRef.current = null; }
   };
 

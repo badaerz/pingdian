@@ -135,6 +135,32 @@ function analysisPayload() {
 }
 
 describe("validateTaskPayload strict AI task contracts", () => {
+  it("保留有原文证据的判定过程，逐条丢弃未知判据和非原文证据", () => {
+    const payload = analysisPayload();
+    const valid = { criteriaId: "S2", countedAt: ["e-user"], result: "fail", reason: "原文动作在结尾落点前被推迟。" };
+    const invalid = [
+      { ...valid, criteriaId: "Z999" },
+      { ...valid, criteriaId: "C1" },
+      { ...valid, countedAt: ["e-user", "missing"] },
+      { ...valid, countedAt: ["e-user", "e-inference"] },
+      { ...valid, countedAt: ["e-knowledge"] },
+      { ...valid, countedAt: ["e-user", "e-user"] },
+      { ...valid, result: "maybe" },
+    ];
+    const diagnostics = [{ ...payload.diagnostics[0], criteriaEvaluation: [...invalid, valid] }];
+    expect(validateTaskPayload("analysis-v2", { ...payload, diagnostics }, project, "live", evidenceContext)).toMatchObject({
+      diagnostics: [{ id: "diagnostic-1", criteriaEvaluation: [valid] }],
+    });
+  });
+
+  it.each([undefined, null, {}, [{ criteriaId: "Z999" }]])("判定过程缺失或无有效项时保留诊断（%j）", (criteriaEvaluation) => {
+    const payload = analysisPayload();
+    const diagnostics = [{ ...payload.diagnostics[0], criteriaEvaluation }];
+    const result = validateTaskPayload("analysis-v2", { ...payload, diagnostics }, project, "live", evidenceContext);
+    expect(result).toMatchObject({ diagnostics: [{ id: "diagnostic-1" }] });
+    expect(result && "diagnostics" in result ? result.diagnostics[0] : undefined).not.toHaveProperty("criteriaEvaluation");
+  });
+
   it("accepts all six new task payloads", () => {
     const payloads: Array<[AiTask, unknown]> = [
       ["story-direction" as AiTask, {

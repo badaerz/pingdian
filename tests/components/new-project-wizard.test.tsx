@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { NewProjectForm } from "@/components/projects/new-project-form";
 import { StoryProvider } from "@/providers/story-provider";
 import type { StoryStore } from "@/lib/story-store";
@@ -9,6 +9,7 @@ const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
 
 beforeEach(() => { localStorage.clear(); push.mockClear(); });
+afterEach(() => vi.unstubAllGlobals());
 
 it("completes the four-step manual path and creates a first paragraph", async () => {
   const user = userEvent.setup();
@@ -37,6 +38,36 @@ it("completes the four-step manual path and creates a first paragraph", async ()
   expect(created.workflowStage).toBe("complete");
   expect(created.chapters[0].content).toContain("屋顶先从海面下露了出来");
   expect(created.characters[0].name).toBe("阿澜");
+});
+
+it("ignores an idea response after leaving its step", async () => {
+  let finish!: (value: Response) => void;
+  vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>((resolve) => { finish = resolve; })));
+  const user = userEvent.setup();
+  render(<StoryProvider><NewProjectForm /></StoryProvider>);
+  await user.type(screen.getByLabelText("作品名称"), "潮汐");
+  await user.type(screen.getByLabelText("一句话灵感"), "寻找港口。");
+  await user.click(screen.getByRole("button", { name: "AI 生成故事方向" }));
+  await user.click(screen.getByRole("button", { name: "下一步：人物与世界" }));
+  await act(async () => finish(Response.json({ mode: "demo", result: { candidates: [{ id: "old", label: "旧方向", content: "旧候选" }] } })));
+  expect(screen.queryByText("旧候选")).toBeNull();
+});
+
+it("preserves the demo label when the live half of a setting returns later", async () => {
+  let finishWorld!: (value: Response) => void;
+  const fetcher = vi.fn()
+    .mockResolvedValueOnce(Response.json({ mode: "demo", result: { characters: [] } }))
+    .mockImplementationOnce(() => new Promise<Response>((resolve) => { finishWorld = resolve; }));
+  vi.stubGlobal("fetch", fetcher);
+  const user = userEvent.setup();
+  render(<StoryProvider><NewProjectForm /></StoryProvider>);
+  await user.type(screen.getByLabelText("作品名称"), "潮汐");
+  await user.type(screen.getByLabelText("一句话灵感"), "寻找港口。");
+  await user.click(screen.getByRole("button", { name: "下一步：人物与世界" }));
+  await user.click(screen.getByRole("button", { name: "AI 生成人物与世界" }));
+  await act(async () => finishWorld(Response.json({ mode: "live", result: { worldEntries: [] }, warnings: ["世界设定提示。"] })));
+  expect(screen.getByText(/人物设定为离线演示结果。.*世界设定提示。/)).toBeVisible();
+  expect(screen.queryByText(/世界设定为离线演示结果/)).toBeNull();
 });
 
 it("keeps generated setup as a candidate until the user adopts it", async () => {

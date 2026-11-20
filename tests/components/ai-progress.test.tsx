@@ -2,21 +2,19 @@ import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 import { AiProgress } from "@/components/ui/ai-progress";
 
-it("exposes staged progress while an AI request is running", () => {
+it("shows an indeterminate wait while server progress is unavailable", () => {
   render(<AiProgress status="loading" label="正在生成故事方向" />);
 
   const progress = screen.getByRole("progressbar", { name: "正在生成故事方向" });
-  expect(progress).toHaveAttribute("aria-valuemin", "0");
-  expect(progress).toHaveAttribute("aria-valuemax", "100");
-  expect(Number(progress.getAttribute("aria-valuenow"))).toBeLessThanOrEqual(92);
-  expect(progress.getAttribute("aria-valuetext")).toContain("准备上下文");
+  expect(progress).not.toHaveAttribute("aria-valuenow");
+  expect(progress).toHaveAttribute("aria-valuetext", "等待服务器响应");
 });
 
 it("marks the request complete at one hundred percent", () => {
   render(<AiProgress status="success" label="文学诊断" />);
 
   expect(screen.getByRole("progressbar", { name: "文学诊断" })).toHaveAttribute("aria-valuenow", "100");
-  expect(screen.getByText("校验完成")).toBeVisible();
+  expect(screen.getByText("请求完成")).toBeVisible();
 });
 
 it("keeps a visible interruption state when generation fails", () => {

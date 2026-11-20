@@ -413,6 +413,9 @@ button.academic-table-row:hover { background:#eee5d6; }
 .exercise-actions>span { color:var(--muted); font-size:12px; }
 .feedback-loading { min-height:160px; display:flex; align-items:center; justify-content:center; gap:8px; color:var(--gold); }
 .ai-progress { display:grid; gap:8px; width:100%; border:1px solid var(--line); background:var(--panel); padding:12px 14px; }
+.ai-waiting { position:fixed; z-index:65; top:64px; right:12px; width:min(360px,calc(100vw - 24px)); max-height:50vh; overflow:auto; }
+.ai-waiting > div { display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow-float); padding:8px 12px; }
+.ai-waiting button { flex-shrink:0; }
 .ai-progress-head { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--green); font-size:12px; }
 .ai-progress-head span { color:var(--gold); font-variant-numeric:tabular-nums; }
 .ai-progress-track { height:7px; overflow:hidden; border-radius:2px; background:var(--paper-deep); }

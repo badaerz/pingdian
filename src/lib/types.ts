@@ -72,6 +72,13 @@ export interface AiEvidence {
   retrievalId?: string;
 }
 
+export interface CriteriaEvaluation {
+  criteriaId: string;
+  countedAt: string[];
+  result: "pass" | "fail";
+  reason: string;
+}
+
 export interface LiteraryDiagnostic {
   id: string;
   location: string;
@@ -88,6 +95,7 @@ export interface LiteraryDiagnostic {
    * 模型只回填裸 ID（"P3"）——让模型复述版本号只会多一个编造机会。
    */
   criteriaIds?: string[];
+  criteriaEvaluation?: CriteriaEvaluation[];
 }
 
 export interface LiteraryCurvePoint {

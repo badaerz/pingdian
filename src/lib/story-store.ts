@@ -1,4 +1,5 @@
 import { initialStoryState } from "@/data/mock-data";
+import { readCriteriaEvaluation } from "@/lib/ai/criteria-evaluation";
 import type {
   AnalysisDimension,
   AnalysisSnapshot,
@@ -734,6 +735,7 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
 
   if (!Array.isArray(value.diagnostics) || value.diagnostics.length === 0 || value.diagnostics.length > 24) return null;
   const diagnostics = value.diagnostics.map((diagnostic) => {
+    if (!isRecord(diagnostic)) return null;
     const sanitized = sanitizeLiteraryDiagnostic(diagnostic);
     if (!sanitized
       || !isNonEmptyString(sanitized.id)
@@ -748,7 +750,9 @@ function sanitizeStrictAnalysisSnapshot(value: Record<string, unknown>, projectI
       const linked = evidence.find((entry) => entry.id === evidenceId);
       return isNonEmptyString(linked?.quote) && (linked.quote.includes(sanitized.quote) || sanitized.quote.includes(linked.quote));
     });
-    return evidenceIds && hasMatchingObservation ? { ...sanitized, evidenceIds } : null;
+    if (!evidenceIds || !hasMatchingObservation) return null;
+    const criteriaEvaluation = readCriteriaEvaluation(diagnostic.criteriaEvaluation, observationIds);
+    return { ...sanitized, evidenceIds, ...(criteriaEvaluation ? { criteriaEvaluation } : {}) };
   }).filter(d => d !== null).filter((d, i, all) => all.findIndex(other => other.id === d.id) === i);
   if (!diagnostics.length) return null;
 

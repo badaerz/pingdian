@@ -84,6 +84,7 @@ export interface AiEnvelope<T> {
 export type AiTaskResult = AiEnvelope<AiTaskPayload>;
 
 export interface AiTaskDependencies {
+  signal?: AbortSignal;
   onParsedForEval?: (payload: unknown) => void;
   retrieveKnowledge?: typeof retrieveKnowledge;
   trustedRetrievalEvidence?: RetrievalEvidence[];
@@ -291,9 +292,11 @@ async function withKnowledge(input: AiTaskInput, dependencies: AiTaskDependencie
 }
 
 export async function runAiTask(input: AiTaskInput, config: AiTaskConfig, fetcher: typeof fetch = fetch, dependencies: AiTaskDependencies = {}): Promise<AiTaskResult> {
+  dependencies.signal?.throwIfAborted();
   const safeInput = withoutClientRetrieval(input);
   if (!config.apiKey) return demoResult(safeInput, ["未配置 DeepSeek 密钥，已使用离线演示结果。"]);
   const knowledge = await withKnowledge(safeInput, dependencies);
+  dependencies.signal?.throwIfAborted();
   const effectiveInput = knowledge.input;
   const contextPacket = buildAiContextPacketFromStoryContext(effectiveInput.project, {
     instruction: effectiveInput.input?.prompt ?? `${effectiveInput.task}任务`,
@@ -313,7 +316,7 @@ export async function runAiTask(input: AiTaskInput, config: AiTaskConfig, fetche
     const response = await fetcher(`${config.baseUrl.replace(/\/$/, "")}/chat/completions`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${config.apiKey}` },
-      signal: controller.signal,
+      signal: dependencies.signal ? AbortSignal.any([controller.signal, dependencies.signal]) : controller.signal,
       body: JSON.stringify({
         model: config.model,
         temperature: 0.7,
@@ -347,6 +350,7 @@ export async function runAiTask(input: AiTaskInput, config: AiTaskConfig, fetche
     if (!result) return demoResult(effectiveInput, [...warnings, "模型返回结构或证据不符合任务要求，已使用与当前项目上下文绑定的离线演示结果（不是本次远端原始结果）。"], notices);
     return { mode: "live", task: effectiveInput.task, requestId: crypto.randomUUID(), contextRevision: effectiveInput.project.contextRevision, result, warnings, ...(notices.length ? { notices } : {}) };
   } catch {
+    dependencies.signal?.throwIfAborted();
     return demoResult(effectiveInput, [...warnings, "模型连接或超时，已使用离线演示结果。"], notices);
   } finally {
     clearTimeout(timeout);

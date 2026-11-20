@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import { AlertTriangle, CheckCircle2, FileText, Lightbulb, Network, RefreshCw, Upload } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnalysisDiagnostics } from "@/components/analysis/analysis-diagnostics";
@@ -223,7 +225,7 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     const request = beginRequest(sourceToken);
     setStatus("loading"); setAiStatus("loading"); setProgressTask("analysis"); setAnalysisWarnings([]);
     try {
-      const response = await fetch("/api/ai", { method: "POST", signal: request.controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "analysis-v2", project: requestContext(), input: { sourceText: analysisText, sourceKind, prompt: sourceMode === "import" ? "分析用户临时导入文本；文本仅用于本次请求，不保存为项目。" : "对当前作品来源做完整、可定位的文学诊断。" } }) });
+      const response = await fetchAi("文学诊断生成", { method: "POST", signal: request.controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "analysis-v2", project: requestContext(), input: { sourceText: analysisText, sourceKind, prompt: sourceMode === "import" ? "分析用户临时导入文本；文本仅用于本次请求，不保存为项目。" : "对当前作品来源做完整、可定位的文学诊断。" } }) });
       const data = await response.json() as { mode?: "live" | "demo"; result?: AiTaskPayload; warnings?: string[]; notices?: string[]; contextRevision?: number };
       if (!isCurrentRequest(request)) return;
       if (!response.ok || !data.result || !isLiteraryAnalysis(data.result)) throw new Error("INVALID_ANALYSIS");
@@ -248,7 +250,7 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     const request = beginRequest(`${sourceToken}|${analysisSourceHash(activeText)}`);
     setStatus("loading"); setAiStatus("loading"); setProgressTask("mentor"); setMentorWarnings([]);
     try {
-      const response = await fetch("/api/ai", { method: "POST", signal: request.controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "mentor", project: requestContext(), input: { prompt: "为什么这样写？请区分观察、推断和知识参考。", selectedText: activeText, sourceText: activeText } }) });
+      const response = await fetchAi("文本解释生成", { method: "POST", signal: request.controller.signal, headers: aiRequestHeaders(), body: JSON.stringify({ task: "mentor", project: requestContext(), input: { prompt: "为什么这样写？请区分观察、推断和知识参考。", selectedText: activeText, sourceText: activeText } }) });
       const data = await response.json() as { mode?: "live" | "demo"; result?: { mentor?: MentorResponse }; warnings?: string[]; notices?: string[] };
       if (!isCurrentMentorRequest(request)) return;
       if (!response.ok || !data.result?.mentor) throw new Error("MENTOR_FAILED");
@@ -282,6 +284,12 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
   const selectedEvidence = displayAnalysis?.evidence.find((item) => item.id === evidenceId);
   const sourceError = linkProjectMismatch ? "链接中的来源项目与当前路由不一致，未加载其他项目内容。" : !routedProjectExists ? "链接中的项目不存在，未加载其他项目内容。" : invalidChapter ? "链接中的章节不属于当前项目，未回退到其他章节。" : "";
   const runDisabled = status === "loading" || Boolean(sourceError) || !analysisText || (sourceMode === "import" && effectiveImportLength > 20_000);
+  const emptyChart = (name: string) => (
+    <div className="analysis-empty">
+      <p>本次没有可展示的{name}数据。{sourceMode === "snapshot" && !analysisResult ? "案例快照未包含这项数据。" : "分析未返回该项，或相关条目未通过证据校验。"}</p>
+      <Button variant="secondary" onClick={runAnalysis} disabled={runDisabled}>重新分析</Button>
+    </div>
+  );
 
   return <div className="analysis-page">
     <header className="analysis-head analysis-head-live"><div><span className="eyebrow">文学诊断 / Evidence Lab</span><h1>{storyState.projects.find((project) => project.id === storyState.activeProjectId)?.title ?? "未命名作品"}</h1></div><div className="analysis-source" aria-label="分析来源"><button aria-pressed={sourceMode === "snapshot"} disabled={!isCase} onClick={() => changeSource("snapshot")}>案例快照</button><button aria-pressed={sourceMode === "project"} onClick={() => changeSource("project")}>当前项目</button><button aria-pressed={sourceMode === "import"} onClick={() => changeSource("import")}>用户文本</button></div><div className="analysis-state"><StatusBadge kind={sourceMode === "snapshot" && !analysisResult ? "demo" : displayAnalysisMode === "live" ? "success" : "demo"}>{sourceMode === "snapshot" && !analysisResult ? "案例快照" : partial ? "真实分析（部分通过）" : displayAnalysisMode === "live" ? "真实分析" : "演示结果"}</StatusBadge><Button aria-label={sourceMode === "import" ? "分析用户文本" : "真实重跑"} onClick={runAnalysis} disabled={runDisabled}><RefreshCw size={15} />{sourceMode === "import" ? "分析用户文本" : "真实重跑"}</Button></div></header>
@@ -295,7 +303,16 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     {analysisNotices.map((item) => <div className="ai-notice" role="status" key={item}><CheckCircle2 size={16} />{item}</div>)}
     <AiProgress status={progressTask === "analysis" ? aiStatus : "idle"} label="文学诊断生成进度" />
     {status === "error" && progressTask === "analysis" ? <div className="analysis-error" role="alert"><AlertTriangle /><div><strong>分析暂时不可用</strong><p>当前文本和已有证据未受影响。</p></div>{displayAnalysis && <Button onClick={() => setStatus("success")}>查看上次结果</Button>}</div> : displayAnalysis ? <>
-      <div className="analysis-grid"><section className="dimension-panel"><div className="dimension-title"><div><h2>{displayAnalysis.sourceKind === "narrative" ? "文学结构诊断" : "论证结构诊断"}</h2><p>每项结论都可回到本次来源证据。</p></div><StatusBadge>{displayAnalysis.analysis.length ? "已生成" : "等待分析"}</StatusBadge></div><div className="dimension-list">{displayAnalysis.analysis.map((dimension) => <article data-testid="analysis-dimension" key={dimension.id}><div className="dimension-score"><span>{dimension.name}</span><strong>{dimension.score} / 100</strong></div><div className="dimension-copy"><h3>{dimension.summary}</h3><p>{dimension.impact}</p><div className="suggestion"><CheckCircle2 size={15} /><span>{dimension.suggestion}</span></div><div className="evidence-links">{dimension.evidenceIds.map((id) => <Button key={id} variant="ghost" aria-label={`证据 ${id}`} onClick={() => openEvidence(id)}>{id}</Button>)}</div></div></article>)}</div></section><section className="visual-panel"><Tabs defaultValue="graph"><TabsList className="analysis-tabs"><TabsTrigger value="graph"><Network size={15} />关系网络</TabsTrigger><TabsTrigger value="plot">情节节奏</TabsTrigger><TabsTrigger value="emotion">情绪曲线</TabsTrigger><TabsTrigger value="theme">主题热力</TabsTrigger><TabsTrigger value="style">语言风格</TabsTrigger></TabsList><TabsContent value="graph"><CharacterGraph graph={displayAnalysis.relationGraph} selectedId={selectedNodeId} onSelect={selectCharacter} /></TabsContent><TabsContent value="plot"><StoryCurves type="plot" data={displayAnalysis.paceCurve} selectedSegment={selectedSegment} onEvidence={openEvidence} /></TabsContent><TabsContent value="emotion"><StoryCurves type="emotion" data={displayAnalysis.emotionCurve} selectedSegment={selectedSegment} onEvidence={openEvidence} /></TabsContent><TabsContent value="theme">{displayAnalysis.themeHeatmap.length > 0 ? <ThemeHeatmap cells={displayAnalysis.themeHeatmap} selectedSegment={selectedSegment} onEvidence={openEvidence} /> : <p className="muted">本次没有返回可用的主题热力数据（模型未给出，或条目未通过证据校验）。</p>}</TabsContent><TabsContent value="style"><div className="style-profile" aria-label="语言风格指标">{displayAnalysis.styleProfile.metrics.map((metric) => <button key={metric.dimension} onClick={() => openEvidence(metric.evidenceIds[0])}><span><b>{metric.dimension}</b><small>{metric.interpretation}</small></span><strong>{metric.value}{metric.unit ?? ""}</strong></button>)}</div></TabsContent></Tabs></section></div>
+      <div className="analysis-grid"><section className="dimension-panel"><div className="dimension-title"><div><h2>{displayAnalysis.sourceKind === "narrative" ? "文学结构诊断" : "论证结构诊断"}</h2><p>每项结论都可回到本次来源证据。</p></div><StatusBadge>{displayAnalysis.analysis.length ? "已生成" : "等待分析"}</StatusBadge></div><div className="dimension-list">{displayAnalysis.analysis.map((dimension) => <article data-testid="analysis-dimension" key={dimension.id}><div className="dimension-score"><span>{dimension.name}</span><strong>{dimension.score} / 100</strong></div><div className="dimension-copy"><h3>{dimension.summary}</h3><p>{dimension.impact}</p><div className="suggestion"><CheckCircle2 size={15} /><span>{dimension.suggestion}</span></div><div className="evidence-links">{dimension.evidenceIds.map((id) => <Button key={id} variant="ghost" aria-label={`证据 ${id}`} onClick={() => openEvidence(id)}>{id}</Button>)}</div></div></article>)}</div></section><section className="visual-panel">
+        <Tabs defaultValue="graph">
+          <TabsList className="analysis-tabs"><TabsTrigger value="graph"><Network size={15} />关系网络</TabsTrigger><TabsTrigger value="plot">情节节奏</TabsTrigger><TabsTrigger value="emotion">情绪曲线</TabsTrigger><TabsTrigger value="theme">主题热力</TabsTrigger><TabsTrigger value="style">语言风格</TabsTrigger></TabsList>
+          <TabsContent value="graph">{displayAnalysis.relationGraph.nodes.length > 0 ? <CharacterGraph graph={displayAnalysis.relationGraph} selectedId={selectedNodeId} onSelect={selectCharacter} /> : emptyChart("关系网络")}</TabsContent>
+          <TabsContent value="plot">{displayAnalysis.paceCurve.length > 0 ? <StoryCurves type="plot" data={displayAnalysis.paceCurve} selectedSegment={selectedSegment} onEvidence={openEvidence} /> : emptyChart("情节节奏")}</TabsContent>
+          <TabsContent value="emotion">{displayAnalysis.emotionCurve.length > 0 ? <StoryCurves type="emotion" data={displayAnalysis.emotionCurve} selectedSegment={selectedSegment} onEvidence={openEvidence} /> : emptyChart("情绪曲线")}</TabsContent>
+          <TabsContent value="theme">{displayAnalysis.themeHeatmap.length > 0 ? <ThemeHeatmap cells={displayAnalysis.themeHeatmap} selectedSegment={selectedSegment} onEvidence={openEvidence} /> : emptyChart("主题热力")}</TabsContent>
+          <TabsContent value="style">{displayAnalysis.styleProfile.metrics.length > 0 ? <div className="style-profile" aria-label="语言风格指标">{displayAnalysis.styleProfile.metrics.map((metric) => <button key={metric.dimension} onClick={() => openEvidence(metric.evidenceIds[0])}><span><b>{metric.dimension}</b><small>{metric.interpretation}</small></span><strong>{metric.value}{metric.unit ?? ""}</strong></button>)}</div> : emptyChart("语言风格")}</TabsContent>
+        </Tabs>
+      </section></div>
       <DomainAnalysisLedger result={displayAnalysis} onEvidence={openEvidence} />
       <AnalysisDiagnostics diagnostics={displayAnalysis.diagnostics} selectedId={selectedDiagnosticId} onSelect={selectDiagnostic} />
       <AnalysisExplainPanel

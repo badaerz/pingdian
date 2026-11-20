@@ -29,7 +29,7 @@ function walk(dir: string): string[] {
 }
 
 const files = walk(path.join(SRC, "components"));
-const aiCallers = files.filter((file) => /["'`]\/api\/ai["'`]/.test(readFileSync(file, "utf8")));
+const aiCallers = files.filter((file) => /["'`]\/api\/ai["'`]|\bfetchAi\s*\(/.test(readFileSync(file, "utf8")));
 
 describe("真实性守卫：AI 入口必须能区分真实与演示", () => {
   it("至少能找到 AI 调用点（找不到说明扫描逻辑坏了，不是好消息）", () => {

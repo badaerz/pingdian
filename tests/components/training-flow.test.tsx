@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -9,6 +10,20 @@ afterEach(() => vi.unstubAllGlobals());
 beforeEach(() => {
   window.localStorage.removeItem("story-forge:training:v1");
   window.localStorage.removeItem("story-forge:training:clear-pending:v1");
+});
+
+it("keeps a revised answer submittable while an older request is pending in strict mode", async () => {
+  const fetcher = vi.fn(() => new Promise<Response>(() => {}));
+  vi.stubGlobal("fetch", fetcher);
+  const user = userEvent.setup();
+  render(<StrictMode><StoryProvider><TrainingWorkspace /></StoryProvider></StrictMode>);
+  const answer = screen.getByRole("textbox", { name: "练习文本" });
+  await user.type(answer, "他握住门。");
+  await user.click(screen.getByRole("button", { name: "提交练习" }));
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await user.type(answer, "风大了。");
+  await user.click(screen.getByRole("button", { name: "提交练习" }));
+  expect(fetcher).toHaveBeenCalledTimes(2);
 });
 
 function TrainingHistoryCount() {

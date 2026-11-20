@@ -74,8 +74,8 @@ it("treats an offline fallback warning as a successful graph result", async () =
   await user.click(screen.getByRole("button", { name: "分析文本" }));
 
   expect(await screen.findByTestId("academic-graph-canvas")).toBeVisible();
-  expect(screen.getByTestId("knowledge-import-notice")).toHaveTextContent("图谱已基于本次上传文本生成");
-  expect(screen.getByTestId("knowledge-import-notice")).toHaveTextContent("离线演示结果");
+  expect(screen.getByTestId("knowledge-import-notice")).toHaveTextContent("当前图谱为离线演示");
+  expect(screen.getByTestId("knowledge-import-notice")).not.toHaveTextContent("未调用模型");
   expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 });
 
@@ -90,6 +90,23 @@ it("keeps a real extraction failure as an alert", async () => {
   await user.click(screen.getByRole("button", { name: "分析文本" }));
 
   expect(await screen.findByRole("alert")).toHaveTextContent("文本分析暂不可用");
+  expect(screen.getByRole("button", { name: "分析文本" })).toBeEnabled();
+});
+
+it("allows the same text to be retried after the current extraction is cancelled", async () => {
+  const user = userEvent.setup();
+  const fetchMock = vi.fn().mockRejectedValueOnce(new DOMException("cancelled", "AbortError"))
+    .mockResolvedValueOnce(new Response(JSON.stringify({ result: {} }), { status: 500 }));
+  vi.stubGlobal("fetch", fetchMock);
+  render(<StoryProvider><KnowledgeWorkspace /></StoryProvider>);
+  await user.click(screen.getByRole("tab", { name: "我的文本" }));
+  await user.type(screen.getByLabelText("粘贴待分析文本"), "守夜人在码头等待。");
+  const analyze = screen.getByRole("button", { name: "分析文本" });
+  await user.click(analyze);
+  expect(await screen.findByRole("alert")).toHaveTextContent("已取消");
+  expect(analyze).toBeEnabled();
+  await user.click(analyze);
+  expect(fetchMock).toHaveBeenCalledTimes(2);
 });
 
 it("rejects unsupported uploads before calling the extraction API", async () => {

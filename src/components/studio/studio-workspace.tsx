@@ -2,7 +2,7 @@
 
 import { Clock3, Download, FileText, FolderOpen, Images, PanelRightClose, PanelRightOpen, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { CandidatePanel, type AssistantRequest } from "@/components/studio/candidate-panel";
 import { EntityEditor } from "@/components/studio/entity-editor";
 import { ProseEditor, type ProseSelection } from "@/components/studio/prose-editor";
@@ -17,7 +17,7 @@ import { updateStoryItem } from "@/lib/story-state";
 import { isDefenseProjectId } from "@/lib/demo-mode";
 import { useStory } from "@/providers/story-provider";
 
-export function StudioWorkspace({ projectId }: { projectId?: string }) {
+export function StudioWorkspace({ projectId, copyCaseAction }: { projectId?: string; copyCaseAction?: ReactNode }) {
   const { state, setState, selectProject } = useStory();
   const [selection, setSelection] = useState<StudioSelection>({ type: "chapter", id: state.activeChapterId });
   const [proseSelection, setProseSelection] = useState<ProseSelection | null>(null);
@@ -132,6 +132,7 @@ export function StudioWorkspace({ projectId }: { projectId?: string }) {
         <Button variant="secondary" onClick={() => download("markdown")}><Download size={16} />Markdown</Button><Button variant="secondary" onClick={() => download("text")}><FileText size={16} />TXT</Button>
         <Link href={`/project/${state.activeProjectId}/ip-lab`} className="button button-secondary"><Images size={16} />IP 实验场</Link>
         <Button variant="secondary" onClick={() => setVersionsOpen(true)}><Clock3 size={16} />版本 {state.versions.at(-1)?.versionNo ?? 0}</Button>
+        {readOnly && (!projectId || state.activeProjectId === projectId) && copyCaseAction}
         {!focusMode && <Tooltip label={candidateOpen ? "关闭协作区" : "打开协作区"}><Button variant="icon" className="desktop-candidate-toggle" aria-label={candidateOpen ? "关闭协作区" : "打开协作区"} onClick={() => setCandidateOpen((value) => !value)}>{candidateOpen ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}</Button></Tooltip>}
         <Tooltip label={mobileCandidateOpen ? "关闭协作区" : "打开协作区"}><Button variant="icon" className="mobile-candidate-toggle" aria-label={mobileCandidateOpen ? "关闭协作区" : "打开协作区"} onClick={() => setMobileCandidateOpen((value) => !value)}><Sparkles size={18} /></Button></Tooltip>
       </div></header>
@@ -139,7 +140,7 @@ export function StudioWorkspace({ projectId }: { projectId?: string }) {
         <div className="chapter-fields"><label className="field"><span>章节标题</span><input className="input" value={chapter.title} readOnly={readOnly} onChange={(event) => setState((current) => updateStoryItem(current, "chapters", chapter.id, { title: event.target.value }))} /></label><label className="field"><span>章节摘要（用于 AI 上下文）</span><input className="input" value={chapter.summary} readOnly={readOnly} onChange={(event) => setState((current) => updateStoryItem(current, "chapters", chapter.id, { summary: event.target.value }))} /></label></div>
         <ProseEditor content={chapter.content} onChange={handleChange} onSelectionChange={setProseSelection} onAiAction={requestAi} onFocusModeChange={setFocusMode} readOnly={readOnly} />
         <footer className="word-count">{chapter.content.replace(/\s/g, "").length} 字 · 当前上下文 revision {state.contextRevision}</footer>
-      </> : <EntityEditor selection={activeSelection} readOnly={readOnly} />}</div>
+      </> : <EntityEditor key={`${state.activeProjectId}:${activeSelection.type}:${activeSelection.id}`} selection={activeSelection} readOnly={readOnly} />}</div>
     </section>
     {candidateOpen && !focusMode && <div className={`studio-splitter studio-splitter-writing ${activeSplitter === "writing" ? "is-resizing" : ""}`} role="separator" aria-label="调整编辑区与候选面板宽度" aria-orientation="vertical" aria-valuemin={42} aria-valuemax={72} aria-valuenow={writingShare} aria-valuetext={`${writingShare}% 编辑区，${100 - writingShare}% 候选面板`} tabIndex={0} onKeyDown={(event) => onSplitKeyDown("writing", event)} onPointerDown={(event) => beginResize("writing", event)} />}
     {candidateOpen && !focusMode && <CandidatePanel key={state.activeProjectId} className={mobileCandidateOpen ? "mobile-candidate-open" : ""} selectedText={proseSelection?.text ?? ""} selection={proseSelection} request={assistantRequest} onRequestHandled={() => setAssistantRequest(null)} tab={assistantTab} onTabChange={setAssistantTab} onBeforeAccept={prepareCandidateAcceptance} readOnly={readOnly} />}

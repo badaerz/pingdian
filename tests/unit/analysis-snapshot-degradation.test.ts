@@ -24,7 +24,7 @@ import { contextFromState } from "@/lib/ai/story-context";
 import { initialStoryState } from "@/data/mock-data";
 import type { LiteraryAnalysisResult } from "@/lib/types";
 
-function survives(degrade: (result: LiteraryAnalysisResult) => void, id: string): boolean {
+function reloadSnapshot(degrade: (result: LiteraryAnalysisResult) => void, id: string) {
   const store = createStoryStore();
   const context = contextFromState(initialStoryState);
   const sourceText = context.chapters[0].content;
@@ -43,7 +43,11 @@ function survives(degrade: (result: LiteraryAnalysisResult) => void, id: string)
   });
   const document = { ...structuredClone(store.documents.demo), analysisSnapshots: [snapshot] };
   const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as never);
-  return reconciled.documents.demo.analysisSnapshots.length === 1;
+  return reconciled.documents.demo.analysisSnapshots[0];
+}
+
+function survives(degrade: (result: LiteraryAnalysisResult) => void, id: string): boolean {
+  return Boolean(reloadSnapshot(degrade, id));
 }
 
 describe("降级产生的空块不许把整条快照弄死", () => {
@@ -96,6 +100,27 @@ describe("降级产生的空块不许把整条快照弄死", () => {
 });
 
 describe("防幻觉底线在存档层同样不许松", () => {
+  it("刷新保留有效判定过程并丢弃伪造项，兼容没有判定过程的旧诊断", () => {
+    const snapshot = reloadSnapshot((result) => {
+      const diagnostic = result.diagnostics[0];
+      const valid = {
+        criteriaId: "M2", countedAt: [diagnostic.evidenceIds[0]], result: "fail" as const,
+        reason: "仅在末段找到一次可定位的意象。",
+      };
+      diagnostic.criteriaEvaluation = [
+        { ...valid, criteriaId: "Z999" },
+        { ...valid, countedAt: ["missing-evidence"] },
+        valid,
+      ];
+    }, "criteria-evaluation");
+    expect(snapshot?.diagnostics).toHaveLength(2);
+    expect(snapshot?.diagnostics?.[0]?.criteriaEvaluation).toEqual([{
+      criteriaId: "M2", countedAt: snapshot?.diagnostics?.[0]?.evidenceIds, result: "fail",
+      reason: "仅在末段找到一次可定位的意象。",
+    }]);
+    expect(snapshot?.diagnostics?.[1]).not.toHaveProperty("criteriaEvaluation");
+  });
+
   it("诊断的证据指向不存在的证据 id：该条诊断不得幸存，其余照常保留", () => {
     // 夹具里有两条诊断。篡改第一条的证据后，正确行为是「丢这一条、留另一条」，
     // 而不是整条快照作废——但编造的那一条绝对不许活下来。

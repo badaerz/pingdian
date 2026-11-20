@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAi } from "@/lib/ai/client";
+
 import { AlertTriangle, Check, ChevronDown, Pencil, Send, Trash2 } from "lucide-react";
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -89,6 +91,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
   const changeTab = (value: string) => { const next = value as "candidates" | "mentor"; setInternalTab(next); onTabChange?.(next); };
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [mode, setMode] = useState<"live" | "demo">("demo");
+  const [mentorMode, setMentorMode] = useState<"live" | "demo">("demo");
   const [warning, setWarning] = useState("");
   const [notice, setNotice] = useState("");
   const [lastRequest, setLastRequest] = useState<GenerationRequestSnapshot | null>(null);
@@ -126,7 +129,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     applyMode: candidate.applyMode ?? (["rewrite", "expand", "condense", "sensory"].includes(task) ? "replace-selection" as const : "append" as const),
     selection: ("selection" in candidate ? candidate.selection : undefined) ?? selectedRange ?? (selectionText ? { from: 0, to: selectionText.length, text: selectionText } : undefined),
     generatedRevision: candidate.generatedRevision ?? snapshot.contextRevision,
-    mode: candidate.mode ?? resultMode,
+    mode: resultMode,
   })) as Candidate[];
 
   const checkConsistency = async (candidate: Extract<Candidate, { target: { type: "chapter" } }>, snapshot: StoryState) => {
@@ -143,16 +146,16 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     setCheckFailures((current) => { const next = new Set(current); next.delete(candidate.id); return next; });
     try {
       const request = buildConsistencyInput(snapshot, candidate);
-      const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), signal: controller.signal, body: JSON.stringify(request) });
+      const response = await fetchAi("候选一致性检查", { method: "POST", headers: aiRequestHeaders(), signal: controller.signal, body: JSON.stringify(request) });
       const payload = await response.json() as { mode?: "live" | "demo"; result?: { consistencyReport?: ConsistencyReport }; warnings?: string[]; notices?: string[] };
       if (!response.ok || !payload.result?.consistencyReport) throw new Error("Consistency failed");
       if (!mountedRef.current || scopeRef.current !== scope) return;
-      const report = payload.result.consistencyReport;
+      const report = { ...payload.result.consistencyReport, mode: payload.mode === "live" ? "live" as const : "demo" as const };
       if (report.candidateId !== candidate.id || report.contextRevision !== candidate.generatedRevision) throw new Error("Consistency scope mismatch");
       setState((current) => current.activeProjectId === projectId && current.activeChapterId === chapterId && current.contextRevision === revision && current.candidates.some((item) => item.id === candidate.id)
         ? upsertConsistencyReport(current, report)
         : current);
-      recordAiRun({ projectId, task: "consistency-check", mode: payload.mode ?? report.mode, request: request.input, result: payload.result });
+      recordAiRun({ projectId, task: "consistency-check", mode: report.mode, request: request.input, result: payload.result });
       if (payload.warnings?.length) setWarning(payload.warnings.join(" "));
       if (payload.notices?.length) setNotice(payload.notices.join(" "));
     } catch {
@@ -217,7 +220,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     controllersRef.current.add(controller);
     setStatus("loading"); setLastRequest(requestSnapshot); setWarning(""); setNotice("");
     try {
-      const response = await fetch("/api/ai", {
+      const response = await fetchAi("正文候选生成", {
         method: "POST",
         headers: aiRequestHeaders(),
         signal: controller.signal,
@@ -250,11 +253,11 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
     controllersRef.current.add(controller);
     setStatus("loading"); setWarning(""); setNotice("");
     try {
-      const response = await fetch("/api/ai", { method: "POST", headers: aiRequestHeaders(), signal: controller.signal, body: JSON.stringify({ task: "mentor", project: contextFromState(snapshot), input: { prompt, selectedText: selectionText } }) });
+      const response = await fetchAi("文学导师分析", { method: "POST", headers: aiRequestHeaders(), signal: controller.signal, body: JSON.stringify({ task: "mentor", project: contextFromState(snapshot), input: { prompt, selectedText: selectionText } }) });
       const payload = await response.json() as { mode?: "live" | "demo"; result?: { mentor?: MentorResponse }; warnings?: string[]; notices?: string[] };
       if (!response.ok || !payload.result?.mentor) throw new Error("Mentor failed");
       if (!mountedRef.current || scopeRef.current !== scope || generationRequest.current !== requestId) return;
-      setMentor(payload.result.mentor); setMode(payload.mode ?? "demo"); setWarning(payload.warnings?.join(" ") ?? ""); setStatus("success");
+      setMentor(payload.result.mentor); setMentorMode(payload.mode ?? "demo"); setWarning(payload.warnings?.join(" ") ?? ""); setStatus("success");
       setNotice(payload.notices?.join(" ") ?? "");
       recordAiRun({ projectId: snapshot.activeProjectId, task: "mentor", mode: payload.mode ?? "demo", request: { prompt, selectedText: selectionText }, result: payload.result });
     } catch {
@@ -339,7 +342,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
           return <article key={candidate.id} className={`candidate-card ${stale ? "candidate-stale" : ""}`}>
             <div className="candidate-meta"><strong>{candidate.label}</strong><span>{candidate.mode === "live" ? "实时" : "演示"}</span></div>
             {stale && <div className="stale-note"><AlertTriangle size={13} />基于旧设定 <Button variant="ghost" onClick={() => generate("continue")}>按最新上下文重生成</Button></div>}
-            {!stale && <div className={`consistency-status ${highRisk ? "consistency-high" : ""}`}>{checking ? "一致性检查中…" : checkFailed ? "检查失败" : report ? riskLabel : "等待一致性检查"}{!checking && !report && isChapterCandidate(candidate) && <Button variant="ghost" aria-label="重新检查一致性" onClick={() => void checkConsistency(candidate, state)}>重新检查</Button>}</div>}
+            {!stale && <div className={`consistency-status ${highRisk ? "consistency-high" : ""}`}>{checking ? "一致性检查中…" : checkFailed ? "检查失败" : report ? riskLabel : "等待一致性检查"}{report && <StatusBadge kind={report.mode === "live" ? "success" : "demo"}>{report.mode === "live" ? "实时检查" : "演示检查"}</StatusBadge>}{!checking && !report && isChapterCandidate(candidate) && <Button variant="ghost" aria-label="重新检查一致性" onClick={() => void checkConsistency(candidate, state)}>重新检查</Button>}</div>}
             <p>{candidate.content}</p><small>{candidate.rationale}</small>
             {report && report.findings.length > 0 && <details className="consistency-details"><summary>查看 {report.findings.length} 条一致性证据</summary>{report.findings.map((finding) => <div key={finding.id}><strong>{finding.category} · {finding.severity}</strong><q>{finding.candidateQuote}</q><p>既有证据：{finding.priorEvidence}</p><p>{finding.suggestion}</p></div>)}</details>}
             <div className="candidate-buttons">
@@ -351,7 +354,7 @@ function ScopedCandidatePanel({ className, selectedText = "", selection, request
         })}</div>
       </TabsContent>
       <TabsContent value="mentor">
-        <div className="candidate-head"><div><span className="eyebrow">Literary mentor</span><h2>为什么这样写</h2></div><StatusBadge kind={mode === "live" ? "success" : "demo"}>{mode === "live" ? "真实分析" : "演示分析"}</StatusBadge></div>
+        <div className="candidate-head"><div><span className="eyebrow">Literary mentor</span><h2>为什么这样写</h2></div>{mentor && <StatusBadge kind={mentorMode === "live" ? "success" : "demo"}>{mentorMode === "live" ? "真实分析" : "演示分析"}</StatusBadge>}</div>
         {selectedText && <blockquote className="mentor-selection">{selectedText}</blockquote>}
         <label className="field mentor-question"><span>向文学导师提问</span><textarea className="textarea" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="例如：这段为什么显得克制？人物行动是否与设定一致？" /></label>
         <Button onClick={() => askMentor()} disabled={status === "loading" || (!question.trim() && !selectedText)}><Send size={15} />请导师分析</Button>
