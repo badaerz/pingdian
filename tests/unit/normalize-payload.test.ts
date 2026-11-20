@@ -61,3 +61,34 @@ describe("归一化方案验证", () => {
     expect(ROWS.length).toBeGreaterThan(0);
   });
 });
+
+describe("关系图的单数证据字段", () => {
+  it("节点和边写成 evidenceId（单数）时，归一化补成 evidenceIds，不许把图整批判掉", () => {
+    // 2026-11-20 实测：GC_001 的真实返回里，图节点/边用的是 evidenceId 单数
+    // （和曲线一个习惯），readGraph 只认复数 evidenceIds，
+    // 结果节点全被丢、边失去端点、整包回退成 demo。
+    const normalized = normalizeModelPayload({
+      relationGraph: {
+        nodes: [
+          { id: "n1", label: "地理开篇", type: "image", evidenceId: "ev_001" },
+          { id: "n2", label: "老人追还铜钱", type: "event", evidenceId: "ev_005" },
+        ],
+        edges: [{ id: "e1", from: "n1", to: "n2", relation: "环境铺垫人物性格", evidenceId: "ev_001" }],
+      },
+    }) as { relationGraph: { nodes: Array<{ evidenceIds?: string[] }>; edges: Array<{ evidenceIds?: string[]; source?: string; target?: string; label?: string }> } };
+
+    expect(normalized.relationGraph.nodes.map((node) => node.evidenceIds)).toEqual([["ev_001"], ["ev_005"]]);
+    expect(normalized.relationGraph.edges[0].evidenceIds).toEqual(["ev_001"]);
+    // 顺带确认没说错的老映射还在
+    expect(normalized.relationGraph.edges[0].source).toBe("n1");
+    expect(normalized.relationGraph.edges[0].target).toBe("n2");
+    expect(normalized.relationGraph.edges[0].label).toBe("环境铺垫人物性格");
+  });
+
+  it("已经给了复数 evidenceIds 时不被覆盖", () => {
+    const normalized = normalizeModelPayload({
+      relationGraph: { nodes: [{ id: "n1", label: "x", type: "image", evidenceIds: ["ev_001", "ev_002"], evidenceId: "ev_009" }], edges: [] },
+    }) as { relationGraph: { nodes: Array<{ evidenceIds?: string[] }> } };
+    expect(normalized.relationGraph.nodes[0].evidenceIds).toEqual(["ev_001", "ev_002"]);
+  });
+});

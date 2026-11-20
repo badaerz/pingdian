@@ -151,6 +151,15 @@ export function normalizeModelPayload(raw: Record<string, unknown>): Record<stri
   );
   const fallbackEv = [...obsIdSet][0] ?? (allEv[0]?.id as string | undefined) ?? "";
 
+  // 图节点/边的证据：模型常写单数 evidenceId（跟曲线一个习惯），
+  // 但 readGraph 只认复数 evidenceIds / sourceEvidenceIds。
+  // 少这一层，节点会因为「没有有效证据」被整批判掉，边失去端点，最后整包作废。
+  const liftEvidenceIds = (o: Record<string, unknown>) => {
+    if (o.evidenceIds !== undefined || o.sourceEvidenceIds !== undefined) return {};
+    const single = firstOf(o, ["evidenceId", "evidence"], 120);
+    return single ? { evidenceIds: [single] } : {};
+  };
+
   // ---- 2. relationGraph: kind→type, from→source, to→target, relation→label ----
   const rg = raw.relationGraph as Record<string, unknown> | undefined;
   if (rg && typeof rg === "object") {
@@ -161,7 +170,7 @@ export function normalizeModelPayload(raw: Record<string, unknown>): Record<stri
       const o = n as Record<string, unknown>;
       const label = firstOf(o, ["label", "name", "title"]) ?? describe(o).slice(0, 60);
       const type = mapNodeType(firstOf(o, ["type", "kind", "category"], 60));
-      return { ...o, id: o.id ?? `n_${i + 1}`, label, type };
+      return { ...o, id: o.id ?? `n_${i + 1}`, label, type, ...liftEvidenceIds(o) };
     });
     const normalizedEdges = edges.map((e: unknown, i: number) => {
       if (!e || typeof e !== "object") return e;
@@ -175,6 +184,7 @@ export function normalizeModelPayload(raw: Record<string, unknown>): Record<stri
         ...(source ? { source } : {}),
         ...(target ? { target } : {}),
         label,
+        ...liftEvidenceIds(o),
       };
     });
     out.relationGraph = { ...rg, nodes: normalizedNodes, edges: normalizedEdges };
