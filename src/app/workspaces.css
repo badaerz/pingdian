@@ -994,3 +994,37 @@
   .toolbar-select select { max-width: 74px; padding-inline: 4px; }
   .selection-toolbar { position: sticky; z-index: 9; top: 28px; }
 }
+
+/* 可解释面板（PRD 2.0 §3.3 四段）：据实呈现输入、判据命中、判断与校验。 */
+.explain-panel-four { display: grid; gap: 18px; margin-top: 24px; border: 1px solid #d0c7b9; background: #f9f6ef; padding: 26px; }
+.explain-four-head { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; justify-content: space-between; }
+.explain-four-head h2 { margin: 4px 0 6px; }
+.explain-four-head p { margin: 0; color: var(--muted); max-width: 62ch; }
+.explain-four-head nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.explain-four-head nav a { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; font-size: 12px; color: var(--ink); background: var(--panel); text-decoration: none; }
+.explain-four-section { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 16px; }
+.explain-four-section h3 { margin: 0; font-size: 15px; }
+.explain-note { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.explain-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 0; }
+.explain-facts > div { border: 1px solid var(--line); background: var(--panel); padding: 9px 11px; border-radius: 4px; }
+.explain-facts dt { font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+.explain-facts dd { margin: 3px 0 0; font-size: 13px; }
+.explain-prompt { margin: 0; font-size: 12px; color: var(--muted); }
+.explain-source summary { cursor: pointer; font-size: 13px; color: var(--ink); }
+.explain-source pre { margin: 10px 0 0; white-space: pre-wrap; font-size: 12.5px; line-height: 1.8; background: var(--panel); border: 1px solid var(--line); padding: 12px; max-height: 220px; overflow: auto; }
+.explain-criteria-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.explain-criteria ul, .explain-retrieved ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.explain-criteria li, .explain-retrieved li { display: grid; grid-template-columns: 46px 108px 1fr auto; gap: 8px; align-items: start; border: 1px solid var(--line); background: var(--panel); padding: 8px 10px; border-radius: 4px; font-size: 12.5px; }
+.explain-criteria li[data-cited="true"] { border-color: var(--green); box-shadow: inset 3px 0 0 var(--green); }
+.explain-criteria li:not([data-cited="true"]) { opacity: .72; }
+.criteria-id { font-family: var(--mono, ui-monospace, monospace); color: var(--gold); font-weight: 600; }
+.criteria-dim { color: var(--muted); }
+.criteria-statement { line-height: 1.65; }
+.explain-diagnostics { margin: 0; padding-left: 18px; display: grid; gap: 12px; }
+.explain-diagnostics li { font-size: 13px; line-height: 1.75; }
+.explain-diagnostic-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 12.5px; }
+.explain-diagnostic-head span { color: var(--muted); }
+.criteria-chip { border: 1px solid var(--gold); color: var(--gold); border-radius: 3px; padding: 0 5px; font-size: 11px; }
+.explain-diagnostics q { display: block; margin: 6px 0; border-left: 3px solid var(--line); padding-left: 10px; color: var(--ink); }
+.explain-diagnostics p { margin: 4px 0; }
+.explain-basis { color: var(--muted); font-size: 12px; }
