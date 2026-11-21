@@ -21,7 +21,13 @@
     "check:golden": "node scripts/check-golden-schema.mjs",
     "eval:fixtures": "node scripts/run-eval.mjs --live --fixtures",
     "golden:review": "node scripts/golden-review.mjs",
-    "golden:apply": "node scripts/golden-review.mjs --apply"
+    "golden:apply": "node scripts/golden-review.mjs --apply",
+    "golden:review:1": "node scripts/golden-review.mjs --batch 1",
+    "golden:review:2": "node scripts/golden-review.mjs --batch 2",
+    "golden:review:3": "node scripts/golden-review.mjs --batch 3",
+    "golden:review:4": "node scripts/golden-review.mjs --batch 4",
+    "golden:review:5": "node scripts/golden-review.mjs --batch 5",
+    "golden:review:6": "node scripts/golden-review.mjs --batch 6"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",
