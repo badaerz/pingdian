@@ -88,13 +88,31 @@ function isSourceKind(value: unknown): value is LiterarySourceKind {
   return value === "narrative" || value === "argumentative";
 }
 
-function isConsistencyCategory(value: unknown): value is ConsistencyFinding["category"] {
-  return value === "character" || value === "world" || value === "plot" || value === "timeline";
+const CATEGORY_ALIASES = new Map<string, ConsistencyFinding["category"]>([
+  ["character", "character"], ["人物", "character"], ["角色", "character"],
+  ["world", "world"], ["世界", "world"], ["设定", "world"], ["世界观", "world"],
+  ["plot", "plot"], ["情节", "plot"], ["剧情", "plot"],
+  ["timeline", "timeline"], ["时间", "timeline"], ["时间线", "timeline"],
+]);
+
+/** 模型经常回中文类别，这里归一化后再判，不因为语言差异丢掉整条发现。 */
+function normalizeConsistencyCategory(value: unknown): ConsistencyFinding["category"] | null {
+  if (typeof value !== "string") return null;
+  return CATEGORY_ALIASES.get(value.trim().toLowerCase()) ?? CATEGORY_ALIASES.get(value.trim()) ?? null;
 }
 
-function isConsistencySeverity(value: unknown): value is ConsistencyFinding["severity"] {
-  return value === "low" || value === "medium" || value === "high";
+const SEVERITY_ALIASES = new Map<string, ConsistencyFinding["severity"]>([
+  ["low", "low"], ["低", "low"], ["轻微", "low"],
+  ["medium", "medium"], ["中", "medium"], ["中等", "medium"],
+  ["high", "high"], ["高", "high"], ["严重", "high"],
+]);
+
+function normalizeConsistencySeverity(value: unknown): ConsistencyFinding["severity"] | null {
+  if (typeof value !== "string") return null;
+  return SEVERITY_ALIASES.get(value.trim().toLowerCase()) ?? SEVERITY_ALIASES.get(value.trim()) ?? null;
 }
+
+
 
 function isEvidenceSource(value: unknown): value is Evidence["source"] {
   return value === "user" || value === "knowledge" || value === "inference";
@@ -584,18 +602,24 @@ function readStoryDirection(value: unknown) {
 function readConsistency(value: unknown, context: StoryContext, mode: "live" | "demo", evidenceValue: PayloadEvidenceContext) {
   if (!record(value) || !record(value.consistencyReport) || !evidenceValue.candidate) return null;
   const report = value.consistencyReport;
-  if (!Array.isArray(report.findings) || report.findings.length > 20 || !text(report.checkedAt, 100)) return null;
+  // checkedAt 是服务端事实，模型不该被要求复述时间戳——原来把它设成必填，
+  // 导致模型每次正确的检查结果都被整包拒掉。
+  if (!Array.isArray(report.findings) || report.findings.length > 20) return null;
+  const checkedAt = text(report.checkedAt, 100) ? report.checkedAt : new Date().toISOString();
   const priorSources = [...projectTexts(context, evidenceValue), ...lockedFacts(context)];
   const ids = new Set<string>();
   const findings = report.findings.map((item) => {
-    if (!record(item) || !text(item.id, 120) || ids.has(item.id) || !isConsistencyCategory(item.category) || !isConsistencySeverity(item.severity) || !text(item.expectedFact, 2_000) || !text(item.candidateQuote, 2_000) || !evidenceValue.candidate!.text.includes(item.candidateQuote) || !text(item.priorEvidence, 2_000) || !exactQuoteExists(item.priorEvidence, priorSources) || !text(item.suggestion, 2_000)) return null;
-    ids.add(item.id);
-    return { id: item.id, category: item.category, severity: item.severity, expectedFact: item.expectedFact, candidateQuote: item.candidateQuote, priorEvidence: item.priorEvidence, suggestion: item.suggestion };
+    const category = normalizeConsistencyCategory(item?.category);
+    const severity = normalizeConsistencySeverity(item?.severity);
+    if (!record(item) || !category || !severity || !text(item.expectedFact, 2_000) || !text(item.candidateQuote, 2_000) || !evidenceValue.candidate!.text.includes(item.candidateQuote) || !text(item.priorEvidence, 2_000) || !exactQuoteExists(item.priorEvidence, priorSources) || !text(item.suggestion, 2_000)) return null;
+    const id = text(item.id, 120) && !ids.has(item.id) ? item.id : `finding-${ids.size + 1}`;
+    ids.add(id);
+    return { id, category, severity, expectedFact: item.expectedFact, candidateQuote: item.candidateQuote, priorEvidence: item.priorEvidence, suggestion: item.suggestion };
   });
   // 放宽：个别条目不可核验就丢该条，其余照常返回。
   // 「没发现矛盾」是正常结果，返回空数组而不是回退——这条最重要：
   // 为了给点什么而编一条矛盾，比不给更糟。
-  return { consistencyReport: { candidateId: evidenceValue.candidate.id, contextRevision: evidenceValue.candidate.revision, findings: findings.filter((item): item is ConsistencyFinding => item !== null), checkedAt: report.checkedAt, mode, userConfirmation: "none" as const } };
+  return { consistencyReport: { candidateId: evidenceValue.candidate.id, contextRevision: evidenceValue.candidate.revision, findings: findings.filter((item): item is ConsistencyFinding => item !== null), checkedAt, mode, userConfirmation: "none" as const } };
 }
 
 function readKnowledgeExtract(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext) {
@@ -713,8 +737,13 @@ function readLegacyTraining(value: unknown) {
   const feedback = value.feedback;
   const strengths = feedback.strengths === undefined ? undefined : textList(feedback.strengths, 12);
   const questions = feedback.questions === undefined ? undefined : textList(feedback.questions, 12);
-  if (strengths === null || questions === null || (feedback.evidence !== undefined && !text(feedback.evidence, 2_000)) || (feedback.issue !== undefined && !text(feedback.issue, 2_000)) || (feedback.nextStep !== undefined && !text(feedback.nextStep, 2_000))) return null;
-  return { feedback: { ...(strengths === undefined ? {} : { strengths }), ...(feedback.evidence === undefined ? {} : { evidence: feedback.evidence }), ...(feedback.issue === undefined ? {} : { issue: feedback.issue }), ...(feedback.nextStep === undefined ? {} : { nextStep: feedback.nextStep }), ...(questions === undefined ? {} : { questions }) } };
+  // evidence 模型有时给字符串、有时给数组。两种都收——为格式差异整包拒绝不值得。
+  const evidence = feedback.evidence === undefined ? undefined
+    : Array.isArray(feedback.evidence)
+      ? feedback.evidence.filter((x): x is string => typeof x === "string" && x.trim().length > 0).slice(0, 12).join("；")
+      : (text(feedback.evidence, 2_000) ? feedback.evidence : null);
+  if (evidence === null || strengths === null || questions === null || (feedback.issue !== undefined && !text(feedback.issue, 2_000)) || (feedback.nextStep !== undefined && !text(feedback.nextStep, 2_000))) return null;
+  return { feedback: { ...(strengths === undefined ? {} : { strengths }), ...(evidence === undefined ? {} : { evidence }), ...(feedback.issue === undefined ? {} : { issue: feedback.issue }), ...(feedback.nextStep === undefined ? {} : { nextStep: feedback.nextStep }), ...(questions === undefined ? {} : { questions }) } };
 }
 
 function normalizePalette(value: unknown) {
