@@ -104,6 +104,27 @@ it("labels partial live results and shows the rejection without a heatmap tab", 
   expect(screen.queryByRole("tab", { name: "主题演变" })).toBeNull();
 });
 
+it("真实诊断没带 trainingExerciseId 时，按判据维度仍能跳到专项训练", async () => {
+  // 线上真实诊断不会带 trainingExerciseId（那是演示夹具预置的）。
+  // 之前的结果是真跑模型时「去专项训练」整条消失，黄金路径第 6 步走不通。
+  const user = userEvent.setup();
+  const liveResult = {
+    ...completeAnalysisV2,
+    diagnostics: [{ ...completeAnalysisV2.diagnostics[0], trainingExerciseId: undefined, criteriaIds: ["P3@v1.0"] }],
+  };
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({
+    mode: "live", task: "analysis-v2", contextRevision: 3, result: liveResult, warnings: [], requestId: "analysis-train",
+  }), { status: 200 })));
+
+  render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
+  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await screen.findByText("新诊断");
+
+  const link = screen.getByRole("link", { name: "去专项训练" });
+  // P 维兜底到 EX_001（展示而非告知）
+  expect(link).toHaveAttribute("href", expect.stringContaining("exercise=EX_001"));
+});
+
 it("主题热力 tab 渲染模型返回的主题分布，点格子可定位证据", async () => {
   const user = userEvent.setup();
   const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({
