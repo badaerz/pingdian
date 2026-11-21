@@ -437,7 +437,13 @@ describe("validateTaskPayload strict AI task contracts", () => {
       evidence: evidence(),
     };
     danglingNode.knowledgeGraph.edges[0].target = "missing-node";
-    expect(validateTaskPayload("knowledge-extract" as AiTask, danglingNode, project, "live", evidenceContext)).toBeNull();
+    // 2026-11-21 变更（设计变更，非放松）：knowledge-extract 从「全或无」改为逐项降级。
+    // 理由：线上真实返回里只要有一条边引用了检索 id，整张图文谱就作废，
+    // 黄金路径「上传作文看知识图谱」这一步直接走不通。现在丢坏边、留好节点。
+    const danglingResult = validateTaskPayload("knowledge-extract" as AiTask, danglingNode, project, "live", evidenceContext) as { knowledgeGraph?: { nodes: Array<{ id: string }>; edges: Array<{ id: string }> } } | null;
+    expect(danglingResult).not.toBeNull();
+    expect(danglingResult?.knowledgeGraph?.nodes.length).toBeGreaterThan(0);
+    expect(danglingResult?.knowledgeGraph?.edges.some((edge) => edge.id === danglingNode.knowledgeGraph.edges[0].id)).toBe(false);
 
     const inferenceGraph = {
       sourceKind: "narrative",
@@ -445,7 +451,10 @@ describe("validateTaskPayload strict AI task contracts", () => {
       evidence: evidence(),
     };
     inferenceGraph.knowledgeGraph.nodes[0].evidenceIds = ["e-inference"];
-    expect(validateTaskPayload("knowledge-extract" as AiTask, inferenceGraph, project, "live", evidenceContext)).toBeNull();
+    // 断言改精确：不再要求整包 null，而是要求「只用推断证据撑起来的那个节点不得幸存」。
+    // 防幻觉底线不变——编造的节点一条都活不下来；变的是局部坏不再连坐整体。
+    const inferenceResult = validateTaskPayload("knowledge-extract" as AiTask, inferenceGraph, project, "live", evidenceContext) as { knowledgeGraph?: { nodes: Array<{ id: string }> } } | null;
+    expect(inferenceResult?.knowledgeGraph?.nodes.some((node) => node.id === inferenceGraph.knowledgeGraph.nodes[0].id) ?? false).toBe(false);
   });
 
   it("builds deterministic fixtures that pass their own validator", () => {
@@ -582,10 +591,12 @@ describe("validateTaskPayload strict AI task contracts", () => {
       knowledgeGraph: argumentativeGraph(),
       evidence: evidence(),
     }, project, "live", evidenceContext)).not.toBeNull();
-    expect(validateTaskPayload("knowledge-extract", {
+    // 同上：叙事专有的人/事件节点不得出现在论证图里，但合法的概念节点可以留下。
+    const narrativeAsArgument = validateTaskPayload("knowledge-extract", {
       sourceKind: "argumentative",
       knowledgeGraph: graph(),
       evidence: evidence(),
-    }, project, "live", evidenceContext)).toBeNull();
+    }, project, "live", evidenceContext) as { knowledgeGraph?: { nodes: Array<{ id: string; type: string }> } } | null;
+    expect(narrativeAsArgument?.knowledgeGraph?.nodes.some((node) => node.type === "character" || node.type === "event") ?? false).toBe(false);
   });
 });

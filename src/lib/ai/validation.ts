@@ -589,13 +589,23 @@ function readConsistency(value: unknown, context: StoryContext, mode: "live" | "
 }
 
 function readKnowledgeExtract(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext) {
+  if (record(value)) value = normalizeModelPayload(value as Record<string, unknown>);
   if (!record(value) || !isSourceKind(value.sourceKind)) return null;
-  const evidence = readEvidence(value.evidence, context, evidenceValue);
+  // 与 analysis-v2 同一条纪律：局部坏掉只丢局部，不整包作废。
+  // 之前这里是全或无——一条边的证据引用了检索 id，整张图就没了。
+  const dropped: string[] = [];
+  const drop = (reason: string): null => {
+    dropped.push(reason);
+    return null;
+  };
+  const evidence = readEvidence(value.evidence, context, evidenceValue, fail => drop(fail));
   if (!evidence) return null;
   const observationEvidence = new Set(evidence.filter((item) => item.source === "observation" || item.source === "user").map((item) => item.id));
   if (observationEvidence.size === 0) return null;
-  const knowledgeGraph = readGraph(value.knowledgeGraph, observationEvidence, value.sourceKind);
-  return knowledgeGraph ? { knowledgeGraph, evidence, sourceKind: value.sourceKind } : null;
+  // lenient：坏节点/坏边丢掉，剩下的照常返回
+  const knowledgeGraph = readGraph(value.knowledgeGraph, observationEvidence, value.sourceKind, true);
+  if (!knowledgeGraph || !knowledgeGraph.nodes.length) return null;
+  return { knowledgeGraph, evidence, sourceKind: value.sourceKind };
 }
 
 function readImageSettings(value: unknown): ImageGenerationSettings | null {

@@ -160,8 +160,11 @@ export function normalizeModelPayload(raw: Record<string, unknown>): Record<stri
     return single ? { evidenceIds: [single] } : {};
   };
 
-  // ---- 2. relationGraph: kind→type, from→source, to→target, relation→label ----
-  const rg = raw.relationGraph as Record<string, unknown> | undefined;
+  // ---- 2. 图谱：relationGraph 与 knowledgeGraph 结构相同，共用一套归一化 ----
+  // knowledge-extract 返回的是 knowledgeGraph，之前没走这里，
+  // 结果节点类型 motif、边引用检索 id 这类漂移直接把整张图判死。
+  for (const graphKey of ["relationGraph", "knowledgeGraph"] as const) {
+  const rg = raw[graphKey] as Record<string, unknown> | undefined;
   if (rg && typeof rg === "object") {
     const nodes = Array.isArray(rg.nodes) ? rg.nodes : [];
     const edges = Array.isArray(rg.edges) ? rg.edges : [];
@@ -187,7 +190,8 @@ export function normalizeModelPayload(raw: Record<string, unknown>): Record<stri
         ...liftEvidenceIds(o),
       };
     });
-    out.relationGraph = { ...rg, nodes: normalizedNodes, edges: normalizedEdges };
+    out[graphKey] = { ...rg, nodes: normalizedNodes, edges: normalizedEdges };
+  }
   }
 
   // ---- 3. domainAnalysis: 各分支统一成 {label, description, evidenceIds} ----
