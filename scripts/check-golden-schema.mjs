@@ -48,7 +48,15 @@ for (const file of readdirSync(GOLDEN).filter((f) => /^GC_\d+\.json$/.test(f)).s
   if (!Array.isArray(c.expectedFindings) || c.expectedFindings.length < 1) push("expectedFindings 为空");
   if (c.expectedFindings?.length > 5) push(`expectedFindings 超过 5 条（${c.expectedFindings.length}）`);
   if (!Array.isArray(c.forbiddenClaims)) push("缺 forbiddenClaims 字段");
-  if (c.annotation?.reviewedBy !== null) push("reviewedBy 应为 null（起草者不得自审）");
+  // 规则本意是「起草者不得自审」，不是「永远不许有审定人」。
+  // 人审定之后 reviewedBy 必须写名字；写回 AI/自动 一律拒绝。
+  const reviewer = c.annotation?.reviewedBy;
+  if (reviewer !== null && reviewer !== undefined) {
+    if (!String(reviewer).trim()) push("reviewedBy 为空字符串（要么写人名，要么留 null）");
+    else if (/^(ai|ai-draft|auto|model|claude|gpt|deepseek)/i.test(String(reviewer).trim())) {
+      push(`reviewedBy 不能是 AI 自审（${reviewer}）`);
+    }
+  }
 
   const upgraded = (c.expectedFindings ?? []).every((f) => Array.isArray(f.criteriaIds) && f.basis);
 
