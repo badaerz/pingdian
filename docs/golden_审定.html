@@ -1,0 +1,3394 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>评测样本审定 · 故事熔炉</title>
+<style>
+  :root { color-scheme: light; --ink:#1f1d1a; --muted:#6b665e; --line:#ddd6c9; --paper:#fdfcf8; --panel:#fff; --gold:#a77a2b; --green:#315947; --red:#a33; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+         font:15px/1.75 -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 120px; }
+  .top { position: sticky; top:0; z-index:10; background:rgba(253,252,248,.96); backdrop-filter:blur(6px);
+         border-bottom:1px solid var(--line); padding:14px 24px; margin-bottom:8px; }
+  .top-inner { max-width:860px; margin:0 auto; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .top h1 { font-size:16px; margin:0; font-weight:600; }
+  .bar { flex:1; min-width:140px; height:6px; background:#e8e2d5; border-radius:3px; overflow:hidden; }
+  .bar > i { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+  .top .stat { font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .name { border:1px solid var(--line); border-radius:4px; padding:5px 9px; font-size:13px; width:150px; background:var(--panel); }
+  .intro { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold); padding:16px 20px; margin:20px 0 28px; }
+  .intro h2 { margin:0 0 8px; font-size:15px; }
+  .intro ol { margin:0; padding-left:20px; } .intro li { margin:4px 0; }
+  .case { background:var(--panel); border:1px solid var(--line); padding:22px 24px; margin:0 0 24px; border-radius:4px; }
+  .case-head { border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:16px; }
+  .case-no { font-size:12px; color:var(--gold); letter-spacing:.08em; font-variant-numeric:tabular-nums; }
+  .case h2 { font-size:18px; margin:4px 0 8px; font-weight:600; }
+  .meta { display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); }
+  .tag { border:1px solid var(--gold); color:var(--gold); border-radius:3px; padding:0 6px; }
+  .source summary { cursor:pointer; font-size:13.5px; color:var(--green); user-select:none; }
+  .prose { font-family: "Songti SC", "SimSun", Georgia, serif; font-size:15.5px; line-height:2.1;
+           background:#faf8f2; border:1px solid var(--line); padding:16px; margin-top:10px;
+           max-height:340px; overflow:auto; border-radius:3px; }
+  .prose mark { background:#fde68a; padding:0 1px; }
+  h3 { font-size:14px; margin:22px 0 10px; font-weight:600; }
+  h3 small { color:var(--muted); font-weight:400; }
+  .finding { border:1px solid var(--line); border-radius:4px; padding:14px 16px; margin:0 0 12px; transition:border-color .15s,background .15s; }
+  .finding[data-state="ok"] { border-color:var(--green); background:#f4f8f5; }
+  .finding[data-state="no"] { border-color:var(--red); background:#fdf5f5; }
+  .finding-text { font-size:14.5px; line-height:1.8; }
+  .finding-meta { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-top:8px; }
+  .finding-meta b { color:var(--ink); font-weight:600; }
+  .anchor { font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .anchor q { color:var(--ink); background:#fdf6e3; padding:1px 4px; border-radius:2px; font-style:normal; }
+  .vote { display:flex; gap:8px; margin-top:12px; }
+  .vote button { border:1px solid var(--line); background:var(--paper); border-radius:4px;
+                 padding:6px 16px; font-size:13px; cursor:pointer; font-family:inherit; }
+  .vote button:hover { border-color:var(--muted); }
+  .vote .ok[aria-pressed="true"] { background:var(--green); border-color:var(--green); color:#fff; }
+  .vote .no[aria-pressed="true"] { background:var(--red); border-color:var(--red); color:#fff; }
+  .vote .skip[aria-pressed="true"] { background:#e8e2d5; border-color:#cfc7b8; }
+  .note { width:100%; margin-top:10px; border:1px solid var(--line); border-radius:4px; padding:8px 10px;
+          font:13px/1.6 inherit; font-family:inherit; resize:vertical; background:var(--paper); }
+  .forbidden { margin-top:20px; border-top:1px dashed var(--line); padding-top:4px; }
+  .fc { font-size:13px; padding:7px 0; border-bottom:1px dotted #eae4d8; display:flex; gap:12px; justify-content:space-between; }
+  .fc small { color:var(--muted); text-align:right; max-width:50%; }
+  .export { position:fixed; bottom:0; left:0; right:0; background:rgba(253,252,248,.97);
+            border-top:1px solid var(--line); padding:12px 24px; backdrop-filter:blur(6px); }
+  .export-inner { max-width:860px; margin:0 auto; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .export button { background:var(--green); color:#fff; border:0; border-radius:4px; padding:9px 20px;
+                   font:14px inherit; font-family:inherit; cursor:pointer; }
+  .export button.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+  .export .hint { font-size:12.5px; color:var(--muted); }
+  @media print { .top,.export { display:none; } }
+</style>
+</head>
+<body>
+
+<div class="top"><div class="top-inner">
+  <h1>评测样本审定</h1>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="stat"><span id="done">0</span> / 135 条已判</div>
+  <input class="name" id="reviewer" placeholder="你的名字">
+</div></div>
+
+<div class="wrap">
+  <div class="intro">
+    <h2>怎么审</h2>
+    <ol>
+      <li>先在最上面填你的名字（审定要留痕）。</li>
+      <li>每条结论只判断一件事：<b>这条，真的是这段文本里的问题吗？</b>　　不用管措辞好不好。</li>
+      <li>点「成立」或「不成立」。没把握就点「待定」或干脆不点——<b>宁可不判，不要凑数</b>。</li>
+      <li>有想说的话，写在该条下面的输入框里。</li>
+      <li>全部做完后点右下角「导出结果」，把下载的文件发给我。</li>
+    </ol>
+    <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">
+      进度会自动存在这台浏览器里，关掉再打开还在。共 46 条样本。
+    </p>
+  </div>
+
+
+<section class="case" id="GC_001" data-id="GC_001">
+  <header class="case-head">
+    <div class="case-no">1 / 46</div>
+    <h2>伽藍記·永寧寺的营造账目</h2>
+    <div class="meta">
+      <span class="tag">叙事散文 / 史传</span>
+      <span>洛陽伽藍記·卷一</span>
+      <span>永宁寺条（自“永宁寺，熙平元年”至“明帝与太后共登之”）</span>
+      <span>1129 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">永宁寺，熙平元年灵太后胡氏所立也，在宫前阊阖门南一里御道西。〈其寺东有太尉府，西对永康里，南界昭玄曹，北邻御史台。阊阖门前御道东有左卫府。府南有司徒府。司徒府南有国子学，堂内有孔丘像。颜渊问仁、子路问政在侧。国子南有宗正寺，寺南有太庙，庙南有护军府，府南有衣冠里。御道西有右卫府，府南有太尉府，府南有将作曹，曹南有九级府，府南有太社，社南有凌阴里，即四朝时藏冰处也。〉中有九层浮图一所，架木为之，<mark>举高九十丈</mark>。上有金刹，复高十丈；合去地一千尺。去京师百里，已遥见之。初掘基至黄泉下，得金像三十躯，太后以为信法之征，是以营建过度也。刹上有金宝瓶，容二十五斛。宝瓶下有承露金盘一十一重，周匝皆垂金铎。复有铁鏁四道，引刹向浮图四角，鏁上亦有金铎。铎大小如一石瓮子。浮图有九级，<mark>角角皆悬金铎</mark>，合上下有一百三十铎。浮图有四面，面有三户六窗，并皆朱漆。扉上有五行金铃，合有五千四百枚。复有金环铺首，殚土木之功，穷造形之巧，佛事精妙，不可思议。绣柱金铺，骇人心目。至于高风永夜，宝铎和鸣，铿锵之声，<mark>闻及十馀里</mark>。<br><br>浮图北有佛殿一所，形如太极殿。中有丈八金像一躯，中长金像十躯，绣珠像三躯，金织成像五躯，玉像二躯。作工奇巧，冠于当世。僧房楼观，一千馀间，雕梁粉壁，青璅绮疏，难得而言。栝柏椿松，扶疏檐霤，藂竹香草，布护阶墀。〈是以常景碑云︰“须弥宝殿，兜率净宫，莫尚于斯也。”〉<br><br>外国所献经像，皆在此寺。寺院墙皆施短椽，以瓦覆之，若今宫墙也。四面各开一门。南门楼三重，通三阁道，去地二十丈，形制似今端门。图以云气，画彩仙灵，列钱青璅，赫典华丽。拱门有四力士、四狮子，饰以金银，加之珠玉，庄严焕炳，世所未闻。东西两门亦皆如之，所可异者，唯楼两重。北门一道，上不施屋，似乌头门。其四门外，皆树以青槐，亘以绿水，京邑行人，多庇其下。路断飞尘，不由渰云之润；清风送凉，岂藉合欢之发？诏中书舍人常景为寺碑文。〈景字永昌，河内人也。敏学博通，知名海内。太和十九年，为高祖所器，拔为律学博士，刑法疑狱，多访于景。正始初，诏刊律令，永作通式，敕景共治书侍御史高僧裕、羽林监王元龟、尚书郎祖莹、员外散骑侍郎李琰之等撰集其事。又诏太师彭城王勰、青州刺史刘芳入预其议。景讨正科条，商榷古今，甚有伦序，见行于世，今律二十篇是也。又共芳造洛阳宫殿门阁之名，经途里邑之号。出除长安令，时人比之潘岳。其后历位中书舍人、黄门侍郎、秘书监、幽州刺史、仪同三司，学徒以为荣焉。景入参近侍，出为侯牧，居室贫俭，事等农家，唯有经史，盈车满架。所著文集数百馀篇，给事封𬀩伯作序行于世。〉装饰毕功，明帝与太后共登之。视宫内如掌中，临京师若家庭，以其目见宫中，禁人不听升之。〈衒之尝与河南尹胡孝世共登之，下临云雨，信哉不虚！〉</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_001" data-idx="0">
+    <div class="finding-text">建场不靠“宏伟壮丽”这类形容词，靠可核对的坐标与数目：御道西一里、举高九十丈、去地一千尺、宝瓶容二十五斛、承露金盘一十一重、金铎一百三十、金铃五千四百枚。读者能拿这些数去想象，作者不用替读者感叹</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>举高九十丈</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_001" data-idx="1">
+    <div class="finding-text">“金”在同一段里反复落到不同构件上：金刹、金宝瓶、承露金盘、金铎、金铃、金环铺首。同一个材质被数到第六件，奢华就不再是评价而是账目；“营建过度”的批评藏在清点里</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>角角皆悬金铎</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_001" data-idx="2">
+    <div class="finding-text">段末从视觉账目转到听觉：“至于高风永夜，宝铎和鸣，铿锵之声，闻及十馀里”一句把能数的塔收成能听见的声，空间描写到此才收束</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>闻及十馀里</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>罗列数字使描写空洞，应改为概括性形容</span><small>数字彼此可核对且全部服务于“营建过度”这一判断；改成“宏伟壮丽”反而把可验证的信息换成了评价词</small></div><div class="fc"><span>写寺却不写人，缺少人物冲突，属结构缺陷</span><small>《洛阳伽蓝记》是地理书，本段任务是记录一座寺的方位与形制；用小说的冲突标准要求它，等于错置文体</small></div><div class="fc"><span>〈其寺东有太尉府……〉的夹注是赘余，应删去</span><small>夹注是作者自注的周边里坊考据，与正文的方位记录互为经纬；删去后“一里御道西”这类坐标失去参照</small></div>
+  </div>
+</section>
+<section class="case" id="GC_002" data-id="GC_002">
+  <header class="case-head">
+    <div class="case-no">2 / 46</div>
+    <h2>聊齋·葉生魂歸</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>聊齋志異·葉生</span>
+      <span>《叶生》全篇（自“淮阳叶生者”至“言于学使，逾年游泮”）</span>
+      <span>947 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">淮阳叶生者，失其名字。文章词赋，冠绝当时；而所如不偶，因于名场。会关东丁乘鹤来令是邑，见其文，奇之；召与语，大悦。使即官署，受灯火；时赐钱谷恤其家。值科试，公游扬于学使，遂领冠军。公期望綦切。闱后，索文读之，击节称叹。不意时数限人，文章憎命，榜既放，依然铩羽。生嗒丧而归，愧负知己，形销骨立，痴若木偶。公闻，召之来而慰之。生零涕之已。公怜之，相期考满入都，携与俱北。生甚感佩。辞而归，杜门不出。<br><br>无何，寝疾。公遗问不绝；而服药百裹，殊罔所效。公适以忤上官免，将解任去。函致生，其略云：“仆东归有日；所以迟迟者，待足下耳。足下朝至，则仆夕发矣。”传之卧榻。生持书啜泣。寄语来使：“疾革难遽瘥，请先发。”使人返白，公不忍去，徐待之。逾数日，门者忽通叶生至。公喜，逆而问之。生曰：“以犬马病，劳夫子久待，万虑不宁。今幸可从杖履。”公乃束装戒旦。抵里，命子师事生，夙夜与俱。公子名再昌，时年十六，尚不能文。然绝慧，凡文艺三两过，辄无遗忘。居之期岁，便能落笔成文。益之公力，遂入邑庠。生以生平所拟举子业，悉录授读。闱中七题，并无脱漏，中亚魁。公一日谓生曰：“君出余绪，遂使孺子成名。然黄钟长弃，奈何！”生曰：“是殆有命。借福泽为文章吐气，使天下人知半生沦落，非战之罪也，愿亦足矣。且士得一人知己，可无憾，何必抛却白纻，乃谓之利市哉。”公以其久客，恐误岁试，劝令归省。生惨然不乐。公不忍强，嘱公子至都，为之纳粟。公子又捷南宫，授部中主政。携生赴监，与共晨夕。逾岁，生入北闱，竟领乡荐。会公子差南河典务，因谓生曰：“此去离贵乡不远。先生奋迹云霄，锦还为快。”生亦喜，择吉就道。抵淮阳界，命仆马送生归。<br><br>归见门户萧条，意甚悲恻。逡巡至庭中，妻携簸具以出，见生，<mark>掷具骇走</mark>。生凄然曰：“我今贵矣。三四年不觌，何遂顿不相识？”妻遥谓曰：“<mark>君死已久</mark>，何复言贵？所以久淹君柩者，以家贫子幼耳。今阿大亦已成立，将卜窀穸。勿作怪异吓生人。”生闻之，怃然惆怅。逡巡入室，<mark>见灵柩俨然</mark>，仆地而灭。妻惊视之，衣冠履上臼下与如脱委焉。大恸，抱衣悲哭。子自塾中归，见结驷于门，审所自来，骇奔告母。母挥涕告诉。又细询从者，始得颠末。从者返，公子闻之，涕堕垂膺。即命驾哭诸其室；出橐营丧，葬以孝廉礼。又厚遗其子，为延师教读。言于学使，逾年游泮。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_002" data-idx="0">
+    <div class="finding-text">结局直到最后一刻才由别人点破：前文一路写他病、中举、赴任、荣归，全是顺遂，读者以为他活着；直到妻子“掷具骇走”并说“君死已久”，前面的“病”才被追认成“死”。留白不是省略，是把真相押到最后一句</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>君死已久</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_002" data-idx="1">
+    <div class="finding-text">叙述一直贴着叶生走，他知道什么读者才知道什么；妻子“骇走”是全文第一次外部校正，视角在此突然分开——他不知道自己已死，妻子知道他已死。恐怖由这个落差产生，不由鬼怪产生</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>掷具骇走</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_002" data-idx="2">
+    <div class="finding-text">真相落在三件实物上：妻子掷下的簸具、庭中俨然的灵柩、脱落在上的衣冠。没有一件是抽象的“魂魄”，全是能看见的东西，鬼故事因此有了实物证据</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>见灵柩俨然</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>结尾揭示已死来得突然，属情节漏洞或铺垫不足</span><small>前文“寝疾”“服药百裹，殊罔所效”“疾革难遽瘥”都是留下的病与死线；真相押后是志怪体的常规收束，不是没铺</small></div><div class="fc"><span>叶生中举、赴任等情节不真实，应删去</span><small>全篇设定就是魂魄代己完成科名；删去这些顺遂情节，妻子那句“君死已久”就失去反证对象</small></div><div class="fc"><span>篇末“异史氏曰”议论多余，冲淡了留白</span><small>“异史氏曰”是《聊斋》固定体例，与正文分层；它议论的是知己与科场，不解释鬼魂机关，留白仍在正文里</small></div>
+  </div>
+</section>
+<section class="case" id="GC_003" data-id="GC_003">
+  <header class="case-head">
+    <div class="case-no">3 / 46</div>
+    <h2>孔乙己·末次出场的外貌降级</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_001</span>
+      <span>全文</span>
+      <span>644 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">鲁镇的酒店的格局，是和别处不同的：都是当街一个曲尺形的大柜台，柜里面预备着热水，可以随时温酒。做工的人，傍午傍晚散了工，每每花四文铜钱，买一碗酒，——这是二十多年前的事，现在每碗要涨到十文，——靠柜外站着，热热的喝了休息；倘肯多花一文，便可以买一碟盐煮笋，或者茴香豆，做下酒物了，如果出到十几文，那就能买一样肉菜，但这些顾客，多是短衣帮，大抵没有这样阔绰。只有穿长衫的，才踱进店面隔壁的房里，要酒要菜，慢慢地坐喝。<br><br><mark>我从十二岁起，便在镇口的咸亨酒店里当伙计</mark>……<br><br>孔乙己是站着喝酒而穿长衫的唯一的人。他身材很高大；青白脸色，皱纹间时常夹些伤痕；一部乱蓬蓬的花白胡子。穿的虽然是长衫，可是又脏又破，似乎十多年没有补，也没有洗。他对人说话，总是满口之乎者也，教人半懂不懂的。因为他姓孔，别人便从描红纸上的“上大人孔乙己”这半懂不懂的话里，替他取下一个绰号，叫作孔乙己。<br><br>中秋过后，秋风是一天凉比一天，看看将近初冬；我整天的靠着火，也须穿上棉袄了。一天的下半天，没有一个顾客，我正合了眼坐着。忽然间听得一个声音，“温一碗酒。”这声音虽然极低，却很耳熟。看时又全没有人。站起来向外一望，那孔乙己便在柜台下对了门槛坐着。他脸上黑而且瘦，已经不成样子；<mark>穿一件破夹袄</mark>，盘着两腿，下面垫着一个蒲包，用草绳在肩上挂住；见了我，又说道，“温一碗酒。”掌柜也伸出头去，一面说，“孔乙己么？你还欠十九个钱呢！”孔乙己很颓唐的仰面答道，“这……下回还清罢。这一回是现钱，酒要好。”<br><br>我到现在终于没有见——<mark>大约孔乙己的确死了</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_003" data-idx="0">
+    <div class="finding-text">长衫从「又脏又破」降级为「破夹袄」，衣着变化承担人物彻底坠落的全部信息，叙述者不作任何评判</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>穿一件破夹袄</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_003" data-idx="1">
+    <div class="finding-text">以小伙计视角叙述，限制视角使孔乙己的悲剧只呈现外部可见部分，读者与叙述者同样被隔绝在人物内心之外</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>我从十二岁起，便在镇口的咸亨酒店里当伙计</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_003" data-idx="2">
+    <div class="finding-text">结尾「大约……的确」把推测词与肯定词强行并置，用语法矛盾表达无人确知的社会性死亡</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>大约孔乙己的确死了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>孔乙己被打死的过程在文中有明确场面描写</span><small>原文只有「大约……的确死了」这一不确定推断，无死亡场面</small></div><div class="fc"><span>叙述者明确表达了对孔乙己的同情判断</span><small>小伙计视角全程不作道德评判，同情由读者补充</small></div>
+  </div>
+</section>
+<section class="case" id="GC_004" data-id="GC_004">
+  <header class="case-head">
+    <div class="case-no">4 / 46</div>
+    <h2>林冲·山神庙隔门偷听</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_002</span>
+      <span>全文·庙门段</span>
+      <span>400 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">正是严冬天气，彤云密布，朔风渐起，却早翻翻覆覆飞下一天瑞雪来。林冲想道：“这屋如何过得一冬？待雪晴了，去城中唤个泥水匠来修理。”向了一回火，觉得身上寒冷，寻思：“却才老军指个市井，何不去沽些酒来吃？”<br><br>便去包裹里取些碎银子，把花枪挑了酒葫芦，将火炭盖了，也把门拽上，锁了。望那草料场来。看那雪到晚越下得紧了。<br><br>信步投东，雪地里踏着碎琼乱玉，迤逦背着北风而行。走不得半里，见一座古庙。林冲顶礼道：“<mark>神明庇佑，改日来烧纸钱</mark>。”入得庙门，<mark>把大石掇过来靠了门</mark>。<br><br>只听得外面<mark>必必剥剥地爆响</mark>。林冲跳起身来，就壁缝里看时，只见草料场起火，刮刮杂杂烧着。<br><br>林冲正要推门出去救火，只听得外面有人说起话来。三个人直来到庙前。林冲在门缝里瞧时，正是陆虞候、富安、差拨三人。陆虞候道：“便烧得端正，那厮便是吃了飞禽走兽的药，也逃不得这一场大火！”林冲听得，心头那团烈火再也按捺不住。<br><br>把身一耸，把庙门推开，大喝一声：“贼徒！哪里去！”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_004" data-idx="0">
+    <div class="finding-text">「把大石掇过来靠了门」既是自救的物理条件，也是他无法推门出去、只能隔缝听见真相的技术前提；缺此动作偷听不成立</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>把大石掇过来靠了门</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_004" data-idx="1">
+    <div class="finding-text">动作被拆成「跳起身—壁缝看—推门—大喝」四节点，信息逐层递进；爆发前的停顿由「必必剥剥」的拟声词承担</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>必必剥剥地爆响</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_004" data-idx="2">
+    <div class="finding-text">入庙先说「神明庇佑，改日来烧纸钱」，逃命中仍守着礼数与许愿，与其后「大喝一声」形成同一人的两面</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>神明庇佑，改日来烧纸钱</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>林冲在本段内与三人正面搏斗并将其杀死</span><small>片段止于「大喝一声」，搏斗不在本段文本内</small></div><div class="fc"><span>林冲在山神庙中先睡了一夜才遇袭</span><small>本段他只入庙顶礼、搬石靠门，未写就寝</small></div>
+  </div>
+</section>
+<section class="case" id="GC_005" data-id="GC_005">
+  <header class="case-head">
+    <div class="case-no">5 / 46</div>
+    <h2>水滸·魯達出場</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>水滸傳·第003回</span>
+      <span>渭州茶坊遇鲁达（自“史进在路”至“有诗为证”）</span>
+      <span>1261 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">史进在路，免不得饥餐渴饮，夜住晓行。独自一个行了半月之上，来到渭州。这里也有经略府。“莫非师父王教头在这里？”史进便入城来看时，依然有六街三市。只见一个小小茶坊，正在路口。史进便入茶坊里来，拣一付座位坐了。茶博士问道：“客官吃甚茶？”史进道：“吃个泡茶。”茶博士点个泡茶，放在史进面前。史进问道：“这里经略府在何处？”茶博士道：“只在前面便是。”史进道：“借问经略府内有个东京来的教头王进么？”茶博士道：“这府里教头极多，有三四个姓王的，不知那个是王进？”道犹未了，只见一个大汉，大踏步竟入，走进茶坊里来。<mark>史进看他时</mark>，是个军官模样。怎生结束？但见：<br><br>头裹芝麻罗万字顶头巾，脑后两个太原府纽丝金环，上穿一领鹦哥绿纻丝战袍，腰系一条文武双股鸦青绦，足穿一双<mark>鹰爪皮四缝干黄靴</mark>。<br><br>生得面圆耳大，鼻直口方，腮边一部貉𤢖胡须。<br><br>身长八尺，腰阔十围。<br><br>那人入到茶坊里面坐下。茶博士便道：“客官要寻王教头，只问这个提辖便都认得。”史进忙起身施礼，便道：“官人请坐拜茶。”那人见了史进长大魁伟，像条好汉，便来与他施礼。两个坐下。史进道：“小人大胆，敢问官人高姓大名？”那人道：“洒家是经略府提辖，姓鲁讳个达字。敢问阿哥：你姓甚么？”史进道：“小人是华州华阴县人氏，姓史名进。请问官人：小人有个师父，是东京八十万禁军教头，姓王名进，不知在此经略府中有也无？”鲁提辖道：“阿哥，你莫不是史家村甚么九纹龙史大郎？”史进拜道：“小人便是。”鲁提辖连忙还礼，说道：“闻名不如见面，见面胜似闻名。你要寻王教头，莫不是在东京恶了高太尉的王进？”史进道：“正是那人。”鲁达道：“俺也闻他名字。那个阿哥不在这里。洒家听得说他在延安府老种经略相公处勾当。俺这渭州，却是小种经略相公镇守。那人不在这里。你既是史大郎时，多闻你的好名字。你且和我上街去吃杯酒。”鲁提辖挽了史进的手，便出茶坊来。鲁达回头道：“茶钱洒家自还你。”茶博士应道：“提辖但吃不妨，只顾去。”<br><br>两个挽了胳膊，出得茶坊来。上街行得三五十步，只见一簇众人，围住白地上。史进道：“兄长，我们看一看。”分开人众看时，中间里一个人仗著十来条杆棒，地上摊著十数个膏药，一盘子盛著，插把纸标儿在上面，却原来是江湖上使枪棒卖药的。史进看了，却认的他，原来是教史进开手的师父，叫做打虎将李忠。史进就人丛中叫道：“师父，多时不见。”李忠道：“贤弟如何到这里？”鲁提辖道：“既是史大郎的师父，同和俺去吃三杯。”李忠道：“待小子卖了膏药，讨了回钱，一同和提辖去。”鲁达道：“<mark>谁奈烦等你</mark>！去便同去。”李忠道：“小人的衣饭，无计奈何。提辖先行，小人便寻将来。贤弟，你和提辖先行一步。”鲁达焦燥，把那看的人，一推一交，便骂道：“这厮们挟著屁眼撒开！不去的洒家便打。”众人见是鲁提辖，一哄都走了。李忠见鲁达凶猛，敢怒而不敢言。只得陪笑道：“好急性的人！”当下收拾了行头药囊，寄顿了枪棒，三个人转弯抹角，来到州桥之下，一个潘家有名的酒店。门前挑出望竿，挂著酒旆，漾在空中飘荡。怎见得好座酒肆？正是：李白点头便饮，渊明招手回来。有诗为证：</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_005" data-idx="0">
+    <div class="finding-text">人物出场不写“威风凛凛”，只报穿戴：芝麻罗万字顶头巾、纽丝金环、鹦哥绿纻丝战袍、鸦青绦、鹰爪皮四缝干黄靴，再加“面圆耳大，鼻直口方”“身长八尺，腰阔十围”。读者自己从这几件东西里认出一个军官</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>鹰爪皮四缝干黄靴</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_005" data-idx="1">
+    <div class="finding-text">全段锁在史进眼里：“只见一个大汉，大踏步竟入”“史进看他时”“史进看了”。鲁达的官职、籍贯都由他自己报（“洒家是经略府提辖”），叙述不越到鲁达那边补他的心思</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>史进看他时</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_005" data-idx="2">
+    <div class="finding-text">段 21 的发作有完整前因：鲁达邀李忠同去吃酒→李忠要先卖完膏药→鲁达焦燥→推开看客。粗暴不是凭空来的，每一步都能回溯到上一句，动作链闭合</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>谁奈烦等你</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>外貌描写堆砌服饰名词，缺少人物性格</span><small>服饰正是这一回认人的凭据：史进凭“军官模样”上前搭话，读者也凭同一组名物认出鲁达；删掉名物只剩“威风凛凛”，反而认不出</small></div><div class="fc"><span>鲁达推倒看客、骂人，说明人物塑造失败或作者立场有问题</span><small>“急性”是这一人物的设定，后文拳打镇关西、大闹五台山都由此生发；把性格缺点当写作缺陷，是评价错位</small></div><div class="fc"><span>中间插入“怎见得好座酒肆”的诗赞打断了叙事，属结构松散</span><small>诗赞是说书体例的固定停顿，用韵文给场景定格；它不是叙事推进的一部分，不承担衔接功能</small></div>
+  </div>
+</section>
+<section class="case" id="GC_006" data-id="GC_006">
+  <header class="case-head">
+    <div class="case-no">6 / 46</div>
+    <h2>史記·垓下之圍</h2>
+    <div class="meta">
+      <span class="tag">叙事散文 / 史传</span>
+      <span>史記·項羽本紀</span>
+      <span>垓下之围至乌江自刎（段 44–46，自“项王军壁垓下”至“封吕胜为涅阳侯”）</span>
+      <span>981 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">项王军壁垓下，兵少食尽，汉军及诸侯兵围之数重。夜闻汉军四面皆楚歌，项王乃大惊曰：“汉皆已得楚乎？是何楚人之多也！”项王则夜起，饮帐中。有美人名虞，常幸从；骏马名骓，常骑之。于是项王乃悲歌忼慨，自为诗曰：“力拔山兮气盖世，时不利兮骓不逝。骓不逝兮可奈何，虞兮虞兮奈若何！”歌数阕，美人和之。项王泣数行下，左右皆泣，莫能仰视。<br><br>于是项王乃上马骑，麾下壮士骑从者八百馀人，直夜溃围南出，驰走。平明，汉军乃觉之，令骑将灌婴以五千骑追之。项王渡淮，骑能属者百馀人耳。项王至阴陵，迷失道，问一田父，田父绐曰“左”。左，乃陷大泽中。以故汉追及之。项王乃复引兵而东，至东城，<mark>乃有二十八骑</mark>。汉骑追者数千人。项王自度不得脱。谓其骑曰：“吾起兵至今八岁矣，身七十馀战，所当者破，所击者服，未尝败北，遂霸有天下。然今卒困于此，<mark>此天之亡我，非战之罪也</mark>。今日固决死，愿为诸君快战，必三胜之，为诸君溃围，斩将，刈旗，令诸君知天亡我，非战之罪也。”乃分其骑以为四队，四向。汉军围之数重。项王谓其骑曰：“吾为公取彼一将。”令四面骑驰下，期山东为三处。于是项王大呼驰下，汉军皆披靡，遂斩汉一将。是时，赤泉侯为骑将，追项王，项王瞋目而叱之，赤泉侯人马俱惊，辟易数里与其骑会为三处。汉军不知项王所在，乃分军为三，复围之。项王乃驰，<mark>复斩汉一都尉</mark>，杀数十百人，复聚其骑，亡其两骑耳。乃谓其骑曰：“何如？”骑皆伏曰：“如大王言。”<br><br>于是项王乃欲东渡乌江。乌江亭长檥船待，谓项王曰：“江东虽小，地方千里，众数十万人，亦足王也。愿大王急渡。今独臣有船，汉军至，无以渡。”项王笑曰：“天之亡我，我何渡为！且籍与江东子弟八千人渡江而西，今无一人还，纵江东父兄怜而王我，我何面目见之？纵彼不言，籍独不愧于心乎？”乃谓亭长曰：“吾知公长者。吾骑此马五岁，所当无敌，尝一日行千里，不忍杀之，以赐公。”乃令骑皆下马步行，持短兵接战。独籍所杀汉军数百人。项王身亦被十馀创。顾见汉骑司马吕马童，曰：“若非吾故人乎？”马童面之，指王翳曰：“此项王也。”项王乃曰：“吾闻汉购我头千金，邑万户，吾为若德。”乃自刎而死。王翳取其头，馀骑相蹂践争项王，相杀者数十人。最其后，郎中骑杨喜，骑司马吕马童，郎中吕胜、杨武各得其一体。五人共会其体，皆是。故分其地为五：封吕马童为中水侯，封王翳为杜衍侯，封杨喜为赤泉侯，封杨武为吴防侯，封吕胜为涅阳侯。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_006" data-idx="0">
+    <div class="finding-text">同一句独白在段内反复：“此天之亡我，非战之罪也”对二十八骑说过，又说“令诸君知天亡我，非战之罪也”，到乌江再变一次——“天之亡我，我何渡为”。说法一次比一次短，推卸却一次比一次重</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>此天之亡我，非战之罪也</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_006" data-idx="1">
+    <div class="finding-text">溃围一段每一步都交代人数与地形，读者能数出他如何被追上：八百馀骑→渡淮百馀人→东城二十八骑→汉骑数千；阴陵迷道、田父绐左、陷大泽。人数递减就是败势的刻度</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>乃有二十八骑</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_006" data-idx="2">
+    <div class="finding-text">“三胜”不写成“勇猛无敌”，而写成可数的动作：斩汉一将、复斩汉一都尉、杀数十百人、亡其两骑。战功被记成账，才可信；夸饰反而削弱它</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>复斩汉一都尉</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>“此天之亡我，非战之罪也”重复三次，属语言重复冗余</span><small>重复本身是刻画：三次说法逐次缩短，把“不肯认输”写成了性格；删到一次，这段就只剩战报</small></div><div class="fc"><span>数字罗列过多，读来枯燥，应概括为“兵败如山倒”</span><small>人数递减是这一段唯一的叙事引擎；概括成一句成语，读者失去判断败势的依据</small></div><div class="fc"><span>项羽临败赠马、自刎前认故人，是刻意煽情</span><small>赠马与认故人都写在他已知必死之后，是“不肯白死”的具体处置（马不落敌手、头不白给）；煽情是读者的感受，不是文本的手法</small></div>
+  </div>
+</section>
+<section class="case" id="GC_007" data-id="GC_007">
+  <header class="case-head">
+    <div class="case-no">7 / 46</div>
+    <h2>促织·成名丧子与异史氏评</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_005</span>
+      <span>全文·转折与评论</span>
+      <span>574 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">宣德间，宫中尚促织之戏，岁征民间。此物故非西产；有好事者驯养一虫，斗胜，因献入；遂使天下大征。宰官每责成里正、甲裹，市各家粮料，小民破产者甚众。<br><br>华阴县令欲媚上官，以促织进，受抚军嘉奖。令因责成各里正，里胥又转求于里民。成名者，操童子业，久不售。为人迂讷，遂为猾黠胥吏所名，名为里正。成名资产中匮，每责一头，往往泣下。<br><br>成名经巫者指点，历尽艰险，于荒坟巨石之下捉得一头：体型硕大，双尾尾尖，色青而光。大喜，置于盆中，严加饲养，拟进献以解家难。<br><br>成有名子，年九岁，窥父不在，窃发盆。蚤跃掷出，急捕之，杖促，折其股，压而毙之。儿惧，啼告母。母闻之，面如死灰，大骇曰：“业根！尔死期至矣！汝父回，自与汝算账！”儿啼而去。<br><br>成名自外归，闻妻言，如雷轰顶，搜寻其子，<mark>见投井死</mark>。夫妻向隅，茅舍无烟，相对默然，不复聊赖。<br><br>日将暮，<mark>忽闻门外促织鸣</mark>。成名循声寻去，见一小虫跃伏壁间，极短小，梅花翅，黑斑斑。成意甚轻之。适有邻人携健蟋蟀来斗，小虫忽振翅一跃，直咬敌喉，敌立毙。又置于鸡前，小虫竟跳跃啄鸡冠，鸡退缩避走。<br><br>抚军大奇，进于天子。天子大悦，赐抚军良马锦缎，抚军赏令，令免成名赋税，田产骤富，裘马扬扬。<br><br>**<mark>异史氏曰</mark>：** 天子偶用一物，未必不过此已忘；而下官役民，毒流骨髓。独是成氏子以蠹贫，以促织富，裘马扬扬。当其为里正受杖时，岂料有今日哉！天将以福善祸淫，抑神怪所托耶？</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_007" data-idx="0">
+    <div class="finding-text">儿子投井与虫斗获胜在文本中前后紧邻，喜与悲在同一推进段内并置，叙述者不加评论，反讽由结构本身产生</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>见投井死</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_007" data-idx="1">
+    <div class="finding-text">「异史氏曰」是明确的叙述者介入，把志怪故事升格为政论；它与正文的冷静叙述构成两层声音</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>异史氏曰</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_007" data-idx="2">
+    <div class="finding-text">小虫由儿子魂魄所化这层含义未被明写，只靠前后紧邻与「忽闻门外促织鸣」的时机暗示，属留白型因果</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>忽闻门外促织鸣</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>文中明确写出小虫是儿子的魂魄所化</span><small>原文未明写，属暗示；断言为明写即误读叙述层次</small></div><div class="fc"><span>成名之子投井后被救活并与父亲团聚</span><small>原文只写「见投井死」，无获救情节</small></div><div class="fc"><span>成名最终因献虫获罪被抄家</span><small>原文结局是免赋税、田产骤富，与获罪相反</small></div>
+  </div>
+</section>
+<section class="case" id="GC_008" data-id="GC_008">
+  <header class="case-head">
+    <div class="case-no">8 / 46</div>
+    <h2>聊齋·畫皮之尾</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>聊齋志異·畫皮</span>
+      <span>《画皮》结尾（段 183–185，自“妻号，婢入烛之”至“痂结如钱，寻愈”）</span>
+      <span>1136 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">妻号，婢入烛之，生已死，腔血狼藉。陈骇涕不敢声，明日，使弟二郎奔告道士，道士怒曰：“我固怜之，鬼子乃敢尔！”即从生弟来，女子已失所在，既而仰首四望，曰：“幸遁未远。”问：“南院谁家？”二郎曰：“小生所舍也。”道士曰：“现在君所。”二郎愕然，以为未有。道士问曰：“曾否有不识者一人来？”答曰：“仆（早）赴青帝庙，良不知。当归问之。”去，少顷而返，曰：“果有之。晨间一妪来，欲佣为仆家操作，室人止之，尚在也。”道士曰：“即是物矣。”遂与俱往。仗木剑，立庭心，呼曰：“孽魅！偿我拂子来！”妪在室，惶遽无色，出门欲遁，道士逐击之。妪仆，<mark>人皮划然而脱</mark>，化为厉鬼，卧嗥如猪。道士以木剑枭其首；身变作浓烟，〈〔但评〕丽人也，而老妪矣、厉鬼矣，且卧嗥如猪，变作浓烟矣。衾裯中得意时，可谓无美不备矣。〉匝地作堆。道士出一葫芦，拨其塞，置烟中，飗飗然如口吸气，瞬息烟尽。道士塞口入囊，共视人皮，眉目手足，无不备具。道士卷之，<mark>如卷画轴</mark>声，亦囊之，乃别欲去。<br><br>陈氏拜迎于门，哭求回生之法，道士谢不能；陈益悲，伏地不起。道士沉思曰：“我术浅，诚不能起死，我指一人，或能之，往求必合有效。”问：“何人？”曰：“市上有疯者，时卧粪土中。试叩而哀之。倘狂辱夫人，夫人勿怒也。”二郎亦习知之，乃别道士，与嫂俱往；见乞人颠歌道上，鼻涕三尺，秽不可近。陈膝行而前。乞人笑曰：“佳人爱我乎？”陈告之故。又大笑曰：“人尽夫也，活之何为？”〈〔但评〕彼固爱佳人而甘心就死者，活之何为？彼爱人之佳人，人亦将爱彼之佳人，彼之佳人且将转而爱人矣。“人尽夫也，活之何为？”此仙人警人语也，勿作疯颠语看。〉陈固哀之。乃曰：“异哉！人死而乞活于我，我阎摩耶？”怒以杖击陈。陈忍痛受之。市人渐集如堵。乞人咯痰唾盈把，举向陈吻曰：“食之！”陈红涨于面，有难色；既思道士之嘱，遂强啖焉。觉入喉中，硬如团絮，格格而下，停结胸间。乞人大笑曰：“佳人爱我哉！”遂起，行已不顾。尾之，入于庙中。追而求之，不知所在；前后冥搜，殊无端兆，惭恨而归。<br><br>既悼夫亡之惨，又悔食唾之羞，俯仰哀啼，但愿即死；方欲展血敛尸，家人伫望，无敢近者。陈抱尸收肠，且理且哭。哭极声嘶，〈〔冯评〕善写状。〉顿欲呕，觉鬲中结物，突奔而出，不及回首，已落腔中。惊而视之，乃人心也。〈〔但评〕咯痰唾以为人心，仙术则奇；所苦者，强啖之人耳。不知其复活以后，亦尝抚膺而痛心及此否。〉在腔（中）突突犹跃〈〔冯评〕此后之心非向日之心也，向日之心好色，此后之心何好，吾欲问之。〉，热气腾蒸如烟然。大异之。急以两手合腔，极力抱挤，少懈，则气氤氲自缝中出，乃裂缯帛急束之。以手抚尸，渐温。覆以衾裯。中夜启视，有鼻息矣。天明，竟活。为言：“恍惚若梦，但觉（腹）隐痛耳。”视破处，<mark>痂结如钱</mark>，寻愈。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_008" data-idx="0">
+    <div class="finding-text">反转靠一条完整的因果链走完：王生已死→道士循“南院妪”寻妖→妪人皮划然脱→木剑枭首→乞人指示→陈氏食唾→呕出人心落腔→复活。每一环都由上一环逼出，没有一步是“忽然”</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>人皮划然而脱</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_008" data-idx="1">
+    <div class="finding-text">“人皮”在段内出现三次而形态逐次变化：先是“划然而脱”，再是“共视人皮，眉目手足，无不备具”，最后被“卷之，如卷画轴”。同一件东西从美人皮退成一张画，恐怖由物的降格完成，不靠形容词</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>如卷画轴</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_008" data-idx="2">
+    <div class="finding-text">结尾只写身体：“痂结如钱，寻愈”。不复述因果，不追加训诫，故事在伤口收口处停住；道德判断留给篇末的“异史氏曰”，与正文分层</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>痂结如钱</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>陈氏食唾一段粗鄙秽亵，属低级趣味，应删</span><small>食唾是复活唯一的代价形式：救夫要吞下最难吞的东西，与王生贪色相对；删掉它，复活就成了白得的便宜</small></div><div class="fc"><span>疯丐凭空出现，缺少来历，属情节漏洞</span><small>道士明说“我术浅，诚不能起死”并指路，疯丐是替代方案；不给来历正是仙人点化的体例，来历一交代反而落入俗套</small></div><div class="fc"><span>王生死而复生，破坏了故事的悲剧性</span><small>本篇的教训不在“死”，而在“以皮为美”；复活之后“痂结如钱”，伤在腹上，正是把教训留在身体上</small></div>
+  </div>
+</section>
+<section class="case" id="GC_009" data-id="GC_009">
+  <header class="case-head">
+    <div class="case-no">9 / 46</div>
+    <h2>红楼梦·宝黛初会的双重限知视角</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_004</span>
+      <span>第一节·宝黛初会</span>
+      <span>502 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">黛玉方进入房时，只见两个人搀着一位鬓发如银的老母迎上来，黛玉便知是他外祖母。方欲拜见时，早被贾母抱入怀中，呜咽说道：“我这心肝儿肉！”<br><br>一语未了，只听后院中有人笑声，说：“我来迟了，不曾迎接远客！”黛玉纳罕道：“这些人个个皆敛声屏气，恭肃严整如此，<mark>这来者系谁，这样放诞无礼</mark>？”心下想时，只见一群媳妇丫鬟围拥着一个人从后房门进来。这个人打扮与众姑娘不同，彩绣辉煌，恍若神妃仙子……<br><br>厮见毕，贾母笑道：“你不认得他，他是我们这里有名的一个泼皮破落户儿，南省俗谓作‘辣子’，你只叫他‘凤辣子’就是了。”<br><br>忽见丫鬟报：“宝玉来了。”宝玉早已进来，看见新客，忙来作揖。及进来看见黛玉，便吃一大惊，心下想道：“好生奇怪，倒像在那里见过一般，何等眼熟到如此！”<br><br><mark>宝玉便走近黛玉身边坐下，细细打量</mark>：两弯似蹙非蹙罥烟眉，一双似喜非喜含情目。态生两靥之愁，娇袭一身之病。泪光点点，娇喘微微。闲静时如姣花照水，行动处似弱柳扶风。心较比干多一窍，病如西子胜三分。<br><br>宝玉看罢，因笑道：“<mark>这个妹妹我曾见过的</mark>。”贾母笑道：“可又是胡说，你又何曾见过他？”宝玉笑道：“虽然未曾见过，然我看着面善，心里就算是旧相识，今日只作远别重逢，亦未为不可。”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_009" data-idx="0">
+    <div class="finding-text">同一场相见被连写两遍：先由黛玉看宝玉，再由宝玉看黛玉。视角切换制造互相打量的对等感，而非单向凝视</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>宝玉便走近黛玉身边坐下，细细打量</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_009" data-idx="1">
+    <div class="finding-text">王熙凤未到声先到，黛玉心中的「放诞无礼」与贾母的「泼皮破落户」介绍互补，人物由他人反应定义</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>这来者系谁，这样放诞无礼</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_009" data-idx="2">
+    <div class="finding-text">「这个妹妹我曾见过的」在情节内被当作胡话带过，却与太虚幻境的前缘构成预叙，是宿命结构的第一次显影</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>这个妹妹我曾见过的</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>宝黛在本段已互诉衷情或确立关系</span><small>原文为初见，双方仅有眼熟之感，无情感表白</small></div><div class="fc"><span>黛玉在本段直接识破王熙凤的身份并当面指出</span><small>原文中她只在心中纳罕，未说出口</small></div>
+  </div>
+</section>
+<section class="case" id="GC_010" data-id="GC_010">
+  <header class="case-head">
+    <div class="case-no">10 / 46</div>
+    <h2>红楼梦·太虚幻境判词</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_004</span>
+      <span>《红楼梦》第五回「开生面梦演红楼梦」（段 26–39，自“宝玉看了，便知感叹”至“虎兔相逢大梦归”）</span>
+      <span>742 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">宝玉看了，便知感叹。进入门来，只见有十数个大橱，皆用封条封著。看那封条上，皆是各省的地名。宝玉一心只拣自己的家乡封条看，遂无心看别省的了。只见那边橱上封条上大书七字云：“金陵十二钗正册”。宝玉问道：“何为‘金陵十二钗正册’？”警幻道：“即贵省中十二冠首女子之册，故为‘正册’。”宝玉道：“常听人说，金陵极大，怎么只十二个女子？如今单我家里，上上下下，就有几百女孩子呢。”警幻冷笑道：“贵省女子固多，不过择其紧要者录之。下边二橱则又次之。馀者庸常之辈，则无册可录矣。”宝玉听说，再看下首二橱上，果然写著“金陵十二钗副册”，又一个写著“金陵十二钗又副册”。宝玉便伸手先将“又副册”橱开了，拿出一本册来，揭开一看，只见这首页上画著一幅画，又非人物，也无山水，不过是水墨滃染的满纸乌云浊雾而已。后有几行字迹，写的是：<br><br>霁月难逢，彩云易散。心比天高，身为下贱。风流灵巧招人怨，寿夭多因毁谤生，多情公子空牵念。<br><br>宝玉看了，又见后面画著一簇鲜花，一床破席，也有几句言词，写道是：<br><br>枉自温柔和顺，空云似桂如兰。<br><br>堪羡优伶有福，谁知公子无缘。<br><br><mark>宝玉看了不解</mark>。遂掷下这个，又去开了副册橱门，拿起一本册来，揭开看时，只见画著一株桂花，下面有一池沼，其中水涸泥干，莲枯藕败，后面书云：<br><br>根并荷花一茎香，平生遭际实堪伤。<br><br>自从两地生孤木，致使香魂返故乡。<br><br>宝玉看了仍不解。便又掷了，再去取“正册”看，只见头一页上便画著两株枯木，木上悬著一围玉带，又有一堆雪，雪下一股金簪。也有四句言词，道是：<br><br>可叹停机德，谁怜咏絮才。<br><br><mark>玉带林中挂</mark>，金簪雪里埋。<br><br>宝玉看了仍不解。待要问时，<mark>情知他必不肯泄漏</mark>，待要丢下，又不舍。遂又往后看时，只见画著一张弓，弓上挂著香橼。也有一首歌词云：<br><br>二十年来辨是非，榴花开处照宫闱。<br><br>三春争及初春景，虎兔相逢大梦归。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_010" data-idx="0">
+    <div class="finding-text">每一页都按同一顺序合成：先看画（一簇鲜花、一床破席／两株枯木），再读词（「霁月难逢，彩云易散」／「玉带林中挂，金簪雪里埋」），随后是宝玉的反应（不解、掷下、再翻）。画与词各自不足，合起来才成形，这是预叙的最小单位</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>宝玉看了不解</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_010" data-idx="1">
+    <div class="finding-text">判词把姓名嵌进物象，同一个字在不同页里改换形态：晴雯的「霁月难逢，彩云易散」以消散写人；黛玉宝钗的「玉带林中挂，金簪雪里埋」把林、薛二人的姓氏落成玉带与金簪，一个悬着、一个埋着，命运已写在动词里</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>玉带林中挂</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_010" data-idx="2">
+    <div class="finding-text">宝玉始终只看见画面与词句，始终不知道所指：文本不借叙述者之口补一句解释，只反复写他「不解」「仍不解」「待要问时，情知他必不肯泄漏」。预叙的信息被严格锁在可看之物里，读者与宝玉同步悬置</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>情知他必不肯泄漏</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>判词晦涩、画与诗重复，属于表达不清</span><small>判词的功能是预叙而非说明，晦涩是其体例；画给出人物关系的形状，诗给出命运走向，二者不重复</small></div><div class="fc"><span>「宝玉看了不解」重复三次，行文啰嗦</span><small>三次各退一步：不解→仍不解→想问又知他不肯泄漏，宝玉的迟疑在加深，也为后文始终参不透留伏笔</small></div><div class="fc"><span>册页以诗词代替叙述，属以韵文充数</span><small>本书判词是全书结构的纲，后文逐一兑现；删去韵文，预叙机制就不成立</small></div>
+  </div>
+</section>
+<section class="case" id="GC_011" data-id="GC_011">
+  <header class="case-head">
+    <div class="case-no">11 / 46</div>
+    <h2>藥·刑場的饅頭</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>藥</span>
+      <span>刑场取血馒头（段 3–14，自“秋天的后半夜”至“一点一点的往下滴”）</span>
+      <span>978 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">秋天的后半夜，月亮下去了，太阳还没有出，只剩下一片乌蓝的天；除了夜游的东西，什么都睡着。华老栓忽然坐起身。擦着火柴，点上遍身油腻的灯盏，茶馆的两间屋子里，便弥满了青白的光。<br><br>‘小栓的爹，你就去么？’是一个老女人的声音。里边的小屋子里，也发出一阵咳嗽。<br><br>‘唔。’老栓一面听，一面应，一面扣上衣服；伸手过去说，‘你给我罢。’<br><br>华大妈在枕头底下掏了半天，掏出一包洋钱，交给老栓，老栓接了，抖抖的装入衣袋，又在外面按了两下；便点上灯笼，吹熄灯盏，走向里屋子去了。那屋子里面，正在窸窸窣窣的响，接着便是一通咳嗽。老栓候他平静下去，才低低的叫道：‘小栓……你不要起来。……店么？你娘会安排的。’<br><br>老栓听得儿子不再说话，料他安心睡了；便出了门，走到街上。街上黑沈沈的一无所有，只有一条灰白的路，看得分明。灯光照着他的两脚，一前一后的走。有时也遇到几只狗，可是一只也没有叫。天气比屋子里冷得多了；老栓倒觉爽快，仿佛一旦变了少年，<mark>得了神通</mark>，有给人生命的本领似的，跨步格外高远。而且路也愈走愈分明，天也愈走愈亮了。<br><br>老栓正在专心走路，忽然吃了一惊，远远里看见一条丁字街，明明白白横着。他便退了几步，寻到一家关着门的铺子，蹩进檐下，靠门立住了。好一会，身上觉得有些发冷。<br><br>‘哼，老头子。’<br><br>‘倒高兴。……’<br><br>老栓又吃一惊，睁眼看时，几个人从他面前过去了。一个还回头看他，样子不甚分明，但很像久饿的人见了食物一般，眼里闪出一种攫取的光。老栓看看灯笼，已经熄了。按一按衣袋，硬硬的还在。仰起头两面一望，只见许多古怪的人，三三两两，鬼似的在那里徘徊；定睛再看，却也看不出什么别的奇怪。<br><br>没有多久，又见几个兵，在那边走动；衣服前后的一个大白圆圈，远地里也看得清楚，走过面前的，并且看出号衣上暗红色的镶边。——一阵脚步声响，一眨眼，已经拥过了一大簇人。那三三两两的人，也忽然合作一堆，潮一般向前赶；将到丁字街口，便突然立住，簇成一个半圆。<br><br>老栓也向那边看，却只见一堆人的后背；颈项都伸得很长，仿佛许多鸭，被无形的手捏住了的，向上提着。静了一会，似乎有点声音，便又动摇起来，轰的一声，都向后退；一直散到老栓立着的地方，几乎将他挤倒了。<br><br>‘喂！一手交钱，一手交货！’一个浑身黑色的人，站在老栓面前，眼光正像两把刀。<mark>刺得老栓缩小了一半</mark>。那人一只大手，向他摊着；一只手却撮着一个鲜红的馒头，<mark>那红的还是一点一点的往下滴</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_011" data-idx="0">
+    <div class="finding-text">全程锁在老栓的知觉与误解里：他“倒觉爽快，仿佛一旦变了少年，得了神通，有给人生命的本领似的”，叙述一句也不纠正。读者比他多知道的只有那滴血，而这正是落差所在</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>得了神通</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_011" data-idx="1">
+    <div class="finding-text">恐怖全落在可指认的物上：乌蓝的天、油腻的灯盏、青白的光、灰白的路、衣袋里“硬硬的”洋钱、撮着的鲜红馒头。没有一句写“残忍”，残忍由颜色与触感完成</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>那红的还是一点一点的往下滴</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_011" data-idx="2">
+    <div class="finding-text">“被捏住、被缩小”的身体意象两次出现：围观者的颈项“仿佛许多鸭，被无形的手捏住了的，向上提着”；黑衣人“眼光正像两把刀，刺得老栓缩小了一半”。同一种压迫感换了两个身体来承受</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>刺得老栓缩小了一半</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>老栓麻木愚昧，人物塑造单薄失败</span><small>麻木正是这篇小说的对象：他不觉得残忍，读者才觉得；把他的不觉当作者的失败，等于要求作者替人物觉悟</small></div><div class="fc"><span>围观人群的描写与主线无关，属闲笔</span><small>“许多鸭”那段把看客写成被无形的手提着的一群，是全文对“看”的第一次定性；后文茶馆里众人谈夏瑜，正是同一群人的延续</small></div><div class="fc"><span>始终不点明馒头是人血，交代不清</span><small>不点明是这篇的手法：老栓不知道，读者从“鲜红”“一点一点的往下滴”自己看出来；一旦点明，视角就从老栓身上滑走</small></div>
+  </div>
+</section>
+<section class="case" id="GC_012" data-id="GC_012">
+  <header class="case-head">
+    <div class="case-no">12 / 46</div>
+    <h2>回响的草场·钢丝马头琴首次演奏</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>demo</span>
+      <span>正文片段·马头琴至断弦</span>
+      <span>867 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">巴特尔从翻领羊皮袄的深处掏出一个布包。油渍斑斑的粗帆布一层层剥开，露出一柄暗红色的马头琴。<br><br>那不是一把能在琴行橱窗里见到的乐器。琴筒是用铸造车间废弃的红松木模拼的，边角还残留着白漆刷的零件编号“67-B”；原本该用马尾或尼龙做的琴弦，泛着一种刺目的冷灰色银光。<br><br>“这是……钢丝？”杭盖一愣，下意识地把枪型麦克风往前递了半寸。<br><br>“<mark>一号电铲主起重臂上的牵引钢缆</mark>，”巴特尔粗糙的指腹在弦上刮了一下，发出一声极其尖锐、近乎金属撕裂般的低吟，“七九年从苏联进口的货，六十四股高碳冷拔钢丝。那年机器翻下大坡，砸死了你大副舅。老工人用气焊把钢缆割断，我偷抽了三根最细的芯子，拿机油淬了七天七夜。”<br><br>巴特尔在履带边缘坐直了身子，两条枯瘦的腿夹住粗糙的木质琴筒。他没有调音器，只是把那半截断了食指的左手搭在弦上，手腕猛地一沉。<br><br>“嗡——”<br><br>那一瞬间，杭盖耳膜深处的空气被猛烈抽空了。<br><br>那不是柔软、悠远、如同风吹草低的传统草原长调，而是一种<mark>带有极重金属毛刺感与工业钝痛的轰鸣</mark>。马尾弓在钢丝上剧烈摩擦，高碳钢的冰冷硬度将弓毛咬得粉碎，发出类似重型机床在车削铸铁件时的啸叫。音调极高，极险，顺着干硬的西北风直冲云霄，却在低音部死死咬住那口废矿井的次声波。<br><br>巴特尔的喉咙深处滚动起浑浊的呼麦声，声带剧烈震颤，泛音一层压着一层，像是一群早已退役的蒸汽机车在暴风雪中集体拉响汽笛。<br><br>风突然大了起来。卷着黑色煤屑与枯黄草沫的狂风兜头砸下，三脚架上的防风毛衣被吹得向后倒伏。录音机屏幕上的红色过载灯疯狂闪烁。<br><br>杭盖一把扯掉耳机。他没有去调整衰减档位，而是直接跪倒在冻硬的黑土上，<mark>脱下自己身上的羽绒服</mark>，双手死死撑开衣角，像一堵单薄的肉墙，挡在巴特尔的琴弓与咆哮的风口之间。<br><br>冰冷的风沙抽打在杭盖光裸的脖颈上，生疼。但在这堵肉墙构筑的狭小空间里，他听清了每一根钢丝纤维在断裂前夕发出的微弱回弹。巴特尔闭着眼，脸上的每一道皱纹都被扬起的黑灰填满，嘴唇干裂，喉咙里的泛音越来越高，直到最后一记重弓在琴码上戛然而止——<br><br>“咔嚓。”<br><br><mark>上弦崩断了</mark>。钢丝在空中抽出一道凄厉的银光，在巴特尔的手背上留下一道血痕。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_012" data-idx="0">
+    <div class="finding-text">琴弦是废旧进口钢缆改制、琴筒是车间木模拼合，工业材料被强行纳入游牧乐器，器物本身即两种文明的杂交伤口</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>一号电铲主起重臂上的牵引钢缆</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_012" data-idx="1">
+    <div class="finding-text">声音被写成「金属毛刺感」「车削铸铁件的啸叫」，以工业听觉替换草原长调的柔和原型，完成逆向通感</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>带有极重金属毛刺感与工业钝痛的轰鸣</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_012" data-idx="2">
+    <div class="finding-text">杭盖脱下羽绒服撑开挡风，主动放弃调增益这一技术手段，用身体替代设备；这是他态度转变的唯一实证动作</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>脱下自己身上的羽绒服</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_012" data-idx="3">
+    <div class="finding-text">「咔嚓。」与「上弦崩断了。」各自独立成段，用极短句强制停顿，把高潮收在声音消失处而非情绪顶点</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>上弦崩断了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>巴特尔在演奏过程中死亡</span><small>原文他只手背留下血痕并仍说话「入库吧」，仍在行动</small></div><div class="fc"><span>矿区爆破在本段内已经发生</span><small>爆破在蓝图中属后续情节，本段仅提及「再过两天」</small></div><div class="fc"><span>杭盖在本段成功录制到无瑕疵的音频</span><small>原文中录音机过载灯疯狂闪烁，最终是断弦收场</small></div>
+  </div>
+</section>
+<section class="case" id="GC_013" data-id="GC_013">
+  <header class="case-head">
+    <div class="case-no">13 / 46</div>
+    <h2>反例·回响的草场开篇声景</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>demo</span>
+      <span>正文片段·开篇四段</span>
+      <span>336 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose"><mark>暮色像一层掺了煤灰的重油</mark>，沉滞地涂抹在白音淖尔的干草甸子上。<br><br>杭盖把监听耳机的海绵罩死死按在左耳上。耳蜗里充斥着一种空洞的巨大鸣响——那不是自然界的风，而是两公里外废弃露天煤矿三号回风井倒灌进来的气流，在直径四米的水泥管壁里反复折射，形成的 32 赫兹次声波。这种低频震颤像一只看不见的手，隔着鞋底，<mark>一下下叩击着他的脚底板</mark>。<br><br>“别捣鼓你那铁棒子了，”巴特尔把半截旱烟按在履带板的锈坑里，火星噗的一声灭了，“再过两天，炮眼一填，雷管一接，这坑底连只老鼠叫都剩不下，你录这铁疙瘩喘气给谁听？”<br><br>杭盖没摘耳机，右手食指在便携录音机的增益旋钮上轻轻转了半格。屏幕上的电平指示条猛地跃入黄色警告区。“舅，这不是铁喘气，这是地表应力释放的声音。这片地被挖空了四十年，它得慢慢把这口气吐匀实了。”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（2 条）</small></h3>
+  
+  <div class="finding" data-case="GC_013" data-idx="0">
+    <div class="finding-text">32 赫兹次声波被写成「隔着鞋底叩击脚底板」，把不可听频率转译为体感，完成感官换轨</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>一下下叩击着他的脚底板</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_013" data-idx="1">
+    <div class="finding-text">「掺了煤灰的重油」一个比喻同时给出颜色、质地与工业属性，无一字冗余</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>low</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>暮色像一层掺了煤灰的重油</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>开篇缺少人物欲望或目标交代，属人物塑造缺陷</span><small>反例样本：本段任务为建立声景与空间，欲望由人物卡与后续情节承担，此处要求属错置标准</small></div><div class="fc"><span>开篇节奏拖沓，应加快进入冲突</span><small>反例样本：慢节奏是有意的声景铺垫，本段功能即建立听觉空间，判为拖沓属误报</small></div><div class="fc"><span>开篇缺少情节推进属于结构缺陷</span><small>反例样本：开篇以氛围与空间建立为主要任务，情节推进由下一段对话承担</small></div><div class="fc"><span>开篇使用第二人称或直接向读者说话，破坏叙述连贯</span><small>反例样本：本段全程为第三人称限知，无越界叙述</small></div>
+  </div>
+</section>
+<section class="case" id="GC_014" data-id="GC_014">
+  <header class="case-head">
+    <div class="case-no">14 / 46</div>
+    <h2>雾港来信·九封信与灯塔光柱</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>demo-demo_002</span>
+      <span>正文片段·开盒至读信</span>
+      <span>570 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">水银色的海雾从防波堤的石缝里渗出来，一点点吞没锈迹斑斑的绞盘。<br><br>顾沉用一把生锈的黄铜剪刀撬开了那个饼干铁盒。铁盒密封圈上的橡胶已经老化变脆，一碰就簌簌地掉黑渣。里面没有存折，也没有航海日志，只有整整齐齐码放着的九封信。<br><br>信封发黄，边缘泛着受潮后的波浪褶皱。每一封信的右上角，都贴着一张八十年代发行的面值八分的红色帆船邮票，但邮票上干干净净，<mark>没有加盖任何邮戳</mark>。<br><br>“别看了，”阿夏站在配电房门口，两只手插在油渍围裙里，脚上的高筒雨靴还沾着海鲈鱼的细鳞，“那是老陈留给海里人的，<mark>阳间的人看了折寿</mark>。”<br><br>“信封上的收件人写的是‘周伯生’，”顾沉用<mark>戴着白棉布手套的手指</mark>捻起最上面一封，“既然是写给会长的，为什么二十年都没寄出去？”<br><br>阿夏没有回答。窗外，青屿港灯塔的旋转光柱穿透厚重的雾气，像一把钝刀，在混沌的夜空里缓慢地画着圆圈。<mark>光芒每隔十二秒扫过一次房间</mark>，将顾沉手里的信封照得惨白。<br><br>顾沉抽出了信纸。<br><br>没有抬头，也没有落款。信纸是极薄的单打红格信笺，第一行只有钢笔重重划下的一句话：<br><br>*“一九八四年冬月初三，七号冷藏舱的水闸，是你亲手关上的。”*<br><br>字迹是用老式碳素墨水写的，笔画边缘已经渗进了纸浆纤维里，但在“关上”两个字上，力道大得几乎把薄薄的信纸划破。<br><br>顾沉感到后背泛起一股海风般的湿冷。门外的雾气更浓了，远洋货轮的汽笛声穿过海面传来，低沉得像是一声闷雷在水底炸开。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_014" data-idx="0">
+    <div class="finding-text">九封信有邮票无邮戳，是「从未寄出」的单一物证；凭此一点即可推出有人刻意不寄，无需任何外部信息</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>没有加盖任何邮戳</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_014" data-idx="1">
+    <div class="finding-text">阿夏用「折寿」的迷信说辞劝阻，同时以「没有回答」回避收件人是谁的追问，是全镇集体沉默的微型预演</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>阳间的人看了折寿</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_014" data-idx="2">
+    <div class="finding-text">光柱「每隔十二秒扫过一次」把时间量化成可数间隔，既承担节奏标记，又暗示真相的周期性逼近</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>光芒每隔十二秒扫过一次房间</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_014" data-idx="3">
+    <div class="finding-text">顾沉戴白棉布手套取信，把调查记者的职业习惯写成一个动作，无需交代他的过往职业</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>戴着白棉布手套的手指</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>信中明确写出周伯生承认自己关闸</span><small>信纸只有指控语句，无认罪陈述；周伯生的坦白在蓝图高潮段，不在本段</small></div><div class="fc"><span>顾沉在本段已读完九封信</span><small>本段只抽出最上面一封并读到第一行</small></div><div class="fc"><span>阿夏在本段承认自己知道信件的全部内容</span><small>原文她只说「别看了」，未承认知情</small></div>
+  </div>
+</section>
+<section class="case" id="GC_015" data-id="GC_015">
+  <header class="case-head">
+    <div class="case-no">15 / 46</div>
+    <h2>反例·社戏月夜行船</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>社戏</span>
+      <span>鲁迅《社戏》·月夜出航至赵庄戏台（段 21–25）</span>
+      <span>597 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">我的很重的心忽而轻松了，身体也似乎舒展到说不出的大。一出门，便望见月下的平桥内泊着一只白篷的航船，大家跳下船，双喜拔前篙，阿发拔后篙，年幼的都陪我坐在舱中，较大的聚在船尾。母亲送出来吩咐『要小心』的时候，我们已经点开船，在桥石上一磕，退后几尺，即又上前出了桥。于是架起两枝橹，一枝两人，一里一换，有说笑的，有嚷的，夹着潺潺的船头激水的声音，在左右都是碧绿的豆麦田地的河流中，飞一般径向赵庄前进了。<br><br>两岸的豆麦和河底的水草所发散出来的清香，夹杂在水气中扑面的吹来；月色便朦胧一作「蒙胧」在这水气里。淡黑的起伏的连山，<mark>仿佛是踊跃的铁的兽脊似的</mark>，都远远地向船尾跑去了，但我却还以为船慢。他们换了四回手，渐望见依稀的赵庄，而且似乎听到歌吹了，还有几点火，料想便是戏台，但或者也许是渔火。<br><br>那声音大概是横笛，宛转，悠扬，使我的心也沈静，然而又自失起来，觉得要和他弥散在含着豆麦蕴藻之香的夜气里。<br><br>那火接近了，果然是渔火；我才记得先前望见的也不是赵庄。那是正对船头的一丛松柏林，我去年也曾经去游玩过，还看见破的石马倒在地下，一个石羊蹲在草里呢。过了那林，船便弯进了叉港，于是赵庄便真在眼前了。<br><br>最惹眼的是屹立在庄外临河的空地上的一座戏台，模胡在远处的月夜中，和空间几乎分不出界限，我疑心画上见过的仙境，就在这里出现了。这时船走得更快，不多时，在台上显出人物来，红红绿绿的动，近台的河里一望乌黑的是看戏的人家的船篷。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（1 条）</small></h3>
+  
+  <div class="finding" data-case="GC_015" data-idx="0">
+    <div class="finding-text">「仿佛是踊跃的铁的兽脊似的，都远远地向船尾跑去了，但我却还以为船慢」用山的“跑”反衬“以为船慢”的急切：情绪不直说，而由景物的相对速度给出，景物因此承担了心理功能</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>仿佛是踊跃的铁的兽脊似的</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>本段缺少人物冲突与情节推进，属于结构缺陷，应尽快进入看戏</span><small>本段的功能是建立急切的期待与夜行氛围，张力在“以为船慢”的心理落差里；用“必须有冲突”的标准衡量一段抒情性行进，属错置标准</small></div><div class="fc"><span>第一人称“我”限制了叙述视野，建议改为全知视角以交代同伴心理</span><small>限知正是这段的长处：少年只能看见船尾方向的连山与远处的火，连“也许是渔火”都拿不准，可疑感与期待感都由视野受限产生</small></div><div class="fc"><span>感官描写只停留在视觉，建议补充听觉与嗅觉</span><small>段内已有“潺潺的船头激水的声音”（听）、“豆麦和河底的水草所发散出来的清香”（嗅）、“横笛，宛转，悠扬”（听），三通道俱全</small></div><div class="fc"><span>“朦胧的月色”“画上见过的仙境”这类比喻过于陈腐，应替换为更独特的意象</span><small>这两个比喻都由人物认知限定：月色朦胧是因为在水气里，仙境之感来自孩子第一次看见月下戏台；脱离人物判其陈腐，是把修辞从语境里抽出来打分</small></div>
+  </div>
+</section>
+<section class="case" id="GC_016" data-id="GC_016">
+  <header class="case-head">
+    <div class="case-no">16 / 46</div>
+    <h2>反例·阿Q优胜记略</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>阿Q正传</span>
+      <span>鲁迅《阿Q正传》第二章·优胜记略（段 18–30，自“阿Q不独是姓名籍贯有些渺茫”至“先一着对他说”）</span>
+      <span>1208 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">阿Q不独是姓名籍贯有些渺茫，连他先前的『行状』也渺茫。因为未庄的人们之于阿Q，只要他帮忙，只拿他玩笑，从来没有留心他的『行状』的。而阿Q自己也不说，独有和别人口角的时候，间或瞪着眼睛道：<br><br>『我们先前——比你阔的多啦！你算是什么东西！』<br><br>阿Q没有家，住在未庄的土谷祠里；也没有固定的职业，只给人家做短工，割麦便割麦，舂米便舂米，撑船便撑船。工作略长久时，他也或住在临时主人的家里，但一完就走了。所以，人们忙碌的时候，也还记起阿Q来，然而记起的是做工，并不是『行状』；一闲空，连阿Q都早忘却，更不必说『行状』了。只是有一回，有一个老头子颂扬说：『阿Q真能做！』这时阿Q赤着膊，懒洋洋的瘦伶仃的正在他面前，别人也摸不着这话是真心还是讥笑，然而阿Q很喜欢。<br><br>阿Q又很自尊，所有未庄的居民，全不在他眼睛里，甚而至于对于两位『文童』也有以为不值一笑的神情。夫文童者，将来恐怕要变秀才者也；赵太爷、钱太爷大受居民的尊敬，除有钱之外，就因为都是文童的爹爹，而阿Q在情神上独不表格外的崇奉，他想：我的儿子会阔得多啦！加以进了几回城，阿Q自然更自负，然而他又很鄙薄城里人，譬如用三尺长三寸宽的木板做成的凳子，未庄叫『长凳』，他也叫『长凳』，城里人却叫『条凳』，他想：这是错的，可笑！油煎大头鱼，未庄都加上半寸长的葱叶，城里却加上切细的葱丝，他想：这也是错的，可笑！然而未庄人真是不见世面的可笑的乡下人呵，他们没有见过城里的煎鱼！<br><br>阿Q『先前阔』，见识高，而且『真能做』，本来几乎是一个『完人』了，但可惜他体质上还有一些缺点，最恼人的是在他头皮上，颇有几处不知于何时的癞疮疤。这虽然也在他身上，而看阿Q的意思，倒也似乎以为不足贵的，因为他讳说『癞』以及一切近于『赖』的音，后来推而广之，『光』也讳，『亮』也讳，再后来，连『灯』『烛』都讳了。一犯讳，不问有心与无心，阿Q便全疤通红的发起怒来，估量了对手，口讷的他便骂，气力小的他便打；然而不知怎么一回事，总还是阿Q吃亏的时候多，于是他渐渐的变换了方针，大抵改为怒目而视了。<br><br>谁知道阿Q采用怒目主义之后，未庄的闲人们便愈喜欢玩笑他，一见面，他们便假作吃惊的说：<br><br>『哙，亮起来了。』<br><br>阿Q照例的发了怒，他怒目而视了。<br><br>『原来有保险灯在这里！』他们并不怕。<br><br>阿Q没有法，只得另外想出报复的话来：<br><br>『你还不配……』这时候，又仿佛在他头上的是一种高尚的光荣的癞头疮，并非平常的癞头疮了；但上文说过，阿Q是有见识的，他立刻知道和『犯忌』有点抵触，便不再往底下说。<br><br>闲人还不完，只撩他，于是终而至于打。阿Q在形式上打败了，被人揪住黄辫子，<mark>在壁下碰了四五个响头</mark>，闲人这才心满意足的得胜的走了，阿Q站了一刻，心里想，『我总算被儿子打了，现在的世界真不像样……』于是也心满意足的得胜的走了。<br><br>阿Q想在心里的，后来每每说出口来，所以凡有和阿Q玩笑的人们，几乎全知道他有这一种精神上的胜利法，此后每逢揪住他黄辫子的时候，人就先一着对他说：</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（1 条）</small></h3>
+  
+  <div class="finding" data-case="GC_016" data-idx="0">
+    <div class="finding-text">「被人揪住黄辫子，在壁下碰了四五个响头」把屈辱写成可数的动作，紧接着「阿Q站了一刻……于是也心满意足的得胜的走了」——同一段里身体输了、心里却得胜，落差全靠两个动作句完成，不用一个“自欺”之类的评语</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>在壁下碰了四五个响头</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>本段以同情笔调写阿Q的受欺，叙述者站在阿Q一边</span><small>叙述者是冷眼的：“在形式上打败了”“心满意足的得胜的走了”同时写出身体的输和心里的自欺，同情始终被反讽挡着；读成纯同情，会抹掉“形式上的”这三个字的判决</small></div><div class="fc"><span>“精神上的胜利法”是叙述者直接下的定义，属于议论代替描写</span><small>这个说法到段 30 才出现，且是以“凡有和阿Q玩笑的人们，几乎全知道”的旁人口吻带出；此前全部用怒目主义、改口“你不配”、碰响头等动作与对话演示，定义只是收口</small></div><div class="fc"><span>阿Q说“你还不配”说明他真的自视高贵，是稳定的自我膨胀</span><small>原文紧接着写“他立刻知道和『犯忌』有点抵触，便不再往底下说”——这是临场找补的策略，说到一半自己刹车；把它读成稳固的自我评价，忽略了这个刹车</small></div><div class="fc"><span>本段没有情节推进，只是性格速写，应补一个完整事件</span><small>揪辫子、碰响头、改行怒目主义、改口“你不配”本身就是一条事件链：阿Q的对策在压力下逐层退让，性格正是由应对方式的降级显出来的</small></div>
+  </div>
+</section>
+<section class="case" id="GC_017" data-id="GC_017">
+  <header class="case-head">
+    <div class="case-no">17 / 46</div>
+    <h2>反例·祝福年关雪景</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>祝福</span>
+      <span>鲁迅《祝福》·旧历年底回鲁镇与祝福大典（段 2–3）</span>
+      <span>765 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">旧历的年底毕竟最像年底，村镇上不必说，就在天空中也显出将到新年的气象来。灰白色的沉重的晚云中间时时发出闪光，接著一声钝响，是送灶的爆竹；近处燃放的可就更强烈了，震耳的大音还没有息，<mark>空气里已经散满了幽微的火药香</mark>。我是正在这一夜回到我的故乡鲁镇的。虽说故乡，然而已没有家，所以只得暂寓在鲁四老爷的宅子里。他是我的本家，比我长一辈，应该称之曰“四叔”，是一个讲理学的老监生。他比先前并没有甚么大改变，单是老了些，但也还未留胡子，一见面是寒暄，寒暄之后说我“胖了”，说我“胖了”之后即大骂其新党。但我知道，这并非借题在骂我：因为他所骂的还是康有为。但是，谈话是总不投机的了，于是不多久，我便一个人剩在书房里。<br><br>第二天我起得很迟，午饭之后，出去看了几个本家和朋友；第三天也照样。他们也都没有甚么大改变，单是老了些；家中却一律忙，都在准备著“祝福”。这是鲁镇年终的大典，致敬尽礼，迎接福神，拜求来年一年中的好运气的。杀鸡，宰鹅，买猪肉，用心细细的洗，女人的臂膊都在水里浸得通红，有的还带著绞丝银镯子。煮熟之后，横七竖八的插些筷子在这类东西上，可就称为“福礼”了，五更天陈列起来，并且点上香烛，恭请福神们来享用，拜的却只限于男人，拜完自然仍然是放爆竹。年年如此，家家如此，——只要买得起福礼和爆竹之类的——今年自然也如此。天色愈阴暗了，下午竟下起雪来，雪花大的有梅花那么大，满天飞舞，夹著烟霭和忙碌的气色，将鲁镇乱成一团糟。我回到四叔的书房里时，瓦楞上已经雪白，房里也映得较光明，极分明的显出壁上挂著的朱拓的大“寿”字，陈抟老祖写的，一边的对联已经脱落，松松的卷了放在长桌上，一边的还在，道是“事理通达心气和平”。我又无聊赖的到窗下的案头去一翻，只见一堆似乎未必完全的《康熙字典》，一部《近思录集注》和一部《四书衬》。无论如何，我明天决计要走了。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（1 条）</small></h3>
+  
+  <div class="finding" data-case="GC_017" data-idx="0">
+    <div class="finding-text">写爆竹按感官抵达的顺序推进：先「灰白色的沉重的晚云中间时时发出闪光」（光），再「接著一声钝响」（声），最后「空气里已经散满了幽微的火药香」（味）。同一件事被拆成三段先后到来的知觉，时间感由感官次序建立</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>空气里已经散满了幽微的火药香</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>开篇两段几乎没有人物冲突，应尽快进入祥林嫂的故事</span><small>开篇功能是建立“祝福”的仪式空间与“我”的局外人位置；冲突已经发生，只是不外露——“谈话是总不投机的了”“我便一个人剩在书房里”，冷淡本身就是冲突</small></div><div class="fc"><span>福礼细节（杀鸡宰鹅、女人臂膊浸得通红、拜的只限于男人）属信息冗余，可压缩</span><small>这些细节是后文祥林嫂悲剧的制度背景：谁劳作、谁受礼、谁被排除在外，都写在这几句里；删掉则“祝福”只剩风俗志，后文的排斥失去参照</small></div><div class="fc"><span>「将鲁镇乱成一团糟」用词粗率，应改为优美的雪景描写</span><small>“乱成一团糟”是叙述者的冷眼，与“我”的无聊赖、决计要走同一语气；改成优美描写会丢掉这层反讽，把叙述者变成观光客</small></div><div class="fc"><span>书房里的寿字、脱落一半的对联、《康熙字典》《近思录集注》属闲笔，可删</span><small>这些陈设合起来是四叔的肖像：讲理学的老监生、对联只剩“事理通达心气和平”一边、字典“似乎未必完全”；闲笔即人物，删掉人物就只剩交代</small></div>
+  </div>
+</section>
+<section class="case" id="GC_018" data-id="GC_018">
+  <header class="case-head">
+    <div class="case-no">18 / 46</div>
+    <h2>反例·社戏归航偷豆</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>社戏</span>
+      <span>鲁迅《社戏》·归航、偷豆与洗碗灭迹（段 33–38）</span>
+      <span>724 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">月还没有落，仿佛看戏也并不很久似的，而一离赵庄，月光又显得格外的皎洁。回望戏台在灯火光中，却又如初来未到时候一般，又漂渺得像一座仙山楼阁，满被红霞罩着了，吹得耳边来的又是横笛，很悠扬；我疑心老旦已经进去了，但也不好意思说再回去看。<br><br>不多久，松柏林早在船后了，船行也并不慢，但周围的黑暗只是浓，可知已经到了深夜。他们一面议论着戏子，或骂，或笑，一面加紧的摇船。这一次船头的激水声更其响亮了，那航船，就像一条大白鱼背着一群孩子在浪花里蹿，连夜渔的几个老渔父，也停了艇子看着喝采起来。<br><br>离平桥村还有一里模样。船行却慢了，摇船的都说很疲乏，因为太用力。而且许久没有东西吃。这回想出来的是桂生，说是罗汉豆正旺相，柴火又现成，我们可以偸一点来煮吃的。大家都赞成，立刻近岸停了船；岸上的田里，乌油油的便都是结实的罗汉豆。<br><br>『阿阿，阿发，这边是你家的，这边是老六一家的，我们偷那一边的呢？』双喜先跳下去了，在岸上说。<br><br>我们也都跳上岸。阿发一面跳，一面说道，『且慢，让我来看一看罢。』他于是往来的摸了一回，直起身来说道，『偷我们的罢，我们的大得多呢。』一声答应，大家便散开在阿发家的豆田里，各摘了一大捧，抛入船舱中。双喜以为再多偷，倘给阿发的娘知道是要哭骂的，于是各人便到六一公公的田里又各偷了一大捧。<br><br>我们中间几个年长的仍然慢慢的摇着船，几个到后舱去生火，年幼的和我都剥豆。不久豆熟了，便任凭航船浮在水面上，都围起来用手撮着吃。吃完豆，又开船，一面洗器具，豆荚豆壳全抛在河水里，<mark>什么痕迹也没有了</mark>。双喜所虑的是用了八公公船上的盐和柴，这老头子很细心，一定要知道，会骂的。然而大家议论之后，归结是不怕。他如果骂，我们便要他归还去年在岸边拾去的一枝枯柏树，而且当面叫他『八癞子』。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（1 条）</small></h3>
+  
+  <div class="finding" data-case="GC_018" data-idx="0">
+    <div class="finding-text">归航以“议论戏子—摇船—偷豆—洗碗灭迹”四步收束，把一场冒险结束在“什么痕迹也没有了”上；最后用“他要骂，我们便要他归还枯柏树，当面叫他八癞子”的孩子气算账把风险化解成笑料，收束靠行动而不靠总结</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>什么痕迹也没有了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>偷豆一节道德可疑，叙述者应补一句评判或自嘲以表明立场</span><small>叙述者通篇不评判，孩子算计偷谁家的、怎么赖八公公，本身就是童年伦理的写法；补上评判会把这段的体温抽掉，也违背回忆性叙事的克制</small></div><div class="fc"><span>阿发说“偷我们的罢”不合逻辑，应改成提议偷别人家的豆</span><small>原文正是阿发主动献出自家豆田，还补一句“我们的大得多呢”，把慷慨写成孩子的算术；这一处是全段最动人的地方，改掉就没了</small></div><div class="fc"><span>本段缺乏景物描写、节奏过快，应插入环境段落调节</span><small>段 33–34 已有皎洁月光、松柏林、“像一条大白鱼背着一群孩子在浪花里蹿”与老渔父喝采，景物与速度交替出现；再插入描写反而拖慢归航的冲动</small></div><div class="fc"><span>结尾“什么痕迹也没有了”含糊，应交代归家后的结果才算写完</span><small>止于灭迹是留白：冒险的完整性就在于不留证据，归家后的收场与六一公公送豆在下一段；判它未完成，等于要求作者把留白填满</small></div>
+  </div>
+</section>
+<section class="case" id="GC_019" data-id="GC_019">
+  <header class="case-head">
+    <div class="case-no">19 / 46</div>
+    <h2>林冲·报信与草料场之疑</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_002</span>
+      <span>《水浒传》第十回·李小二报信至草料场沽酒（段 9–15、19–20，含段 11–12 诗赞）</span>
+      <span>2769 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">且把闲话休题，只说正话。迅速光阴，却早冬来。林冲的绵衣裙袄，都是李小二浑家整治缝补。忽一日，李小二正在门前安排菜蔬下饭，只见一个人闪将进来，酒店里坐下，随后又一人入来。看时，前面那个人是军官打扮，后面这个走卒模样。跟著也来坐下。李小二入来问道：“要吃酒么？”只见那个人将出一两银子与小二道：“且收放柜上，取三四瓶好酒来。客到时，果品酒馔只顾将来，不必要问。”李小二道：“官人请甚客？”那人道：“烦你与我去营里请管营、差拨两个来说话。问时，你只说有个官人请说话，商议些事务。专等，专等。”李小二应承了，来到牢城里，先请了差拨，同到管营家里，请了管营，都到酒店里。只见那个官人和管营、差拨两个讲了礼。管营道：“素不相识，动问官人高姓大名。”那人道：“有书在此，少刻便知。且取酒来。”李小二连忙开了酒，一面铺下菜蔬果品肴馔。那人叫讨副劝盘来，把了盏，相让坐了。小二独自一个撺梭也似伏侍不暇。那跟来的人，讨了汤桶，自行荡酒。约计吃过十数杯，再讨了按酒，铺放桌上。只见那人说道：“我自有伴当荡酒。不叫，你休来。我等自要说话。”<br><br>李小二应了，自来门首叫老婆道：“大姐，这两个人来的不尴尬。”老婆道：“怎么的不尴尬？”小二道：“这两个人语言声音是东京人。初时又不认得管营。向后我将按酒入去，只听得差拨口里讷出一句‘高太尉’三个字来。这人莫不与林教头身上有些干碍？我自在门前理会。你且去阁子背后，听说甚么。”老婆道：“你去营中寻林教头来认他一认。”李小二道：“你不省得。林教头是个性急的人。摸不著便要杀人放火。倘或叫的他来看了，正是前日说的甚么陆虞候，他肯便罢？做出事来，须连累了我和你。你只去听一听再理会。”老婆道：“说的是。”便入去听了一个时辰，出来说道：“他那三四个交头接耳说话，正不听得说甚么。只见那一个军官模样的人，去伴当怀里，取出一帕子物事，递与管营和差拨。帕子里面的莫不是金银。只听差拨口里说道：‘<mark>都在我身上，好歹要结果了他性命</mark>。’”正说之间，阁子里叫：“将汤来。”李小二急去里面换汤时，看见管营手里拿著一封书。小二换了汤，添些下饭。又吃了半个时辰，算还了酒钱。管营、差拨先去了。次后，那两个低著头也去了。转背没多时，只见林冲走将入店里来，说道：“小二哥，连日好买卖。”李小二慌忙道：“恩人请坐。小人却待正要寻恩人，有些要紧话说。”有诗为证：<br><br>潜为奸计害英雄，一线天教把信通。<br><br>亏杀有情贤李二，暗中回护有奇功。<br><br>当下林冲问道：“甚么要紧的事？”小二哥请林冲到里面坐下，说道：“却才有个东京来的尴尬人，在我这里请管营、差拨吃了半日酒。差拨口里讷出‘高太尉’三个字来。小人心下疑，又著浑家听了一个时辰。他却交头接耳说话，都不听得。临了只见差拨口里应道：‘都在我两个身上，好歹要结果了他。’那两个把一包金银，都与管营、差拨。又吃一回酒，各自散了。不知甚么样人。小人心下疑，只怕恩人身上有些妨碍。”林冲道：“那人生得什么模样？”李小二道：“五短身材，白净面皮，没甚髭须。约有三十馀岁。那跟的也不长大，紫棠色面皮。”林冲听了，大惊道：“这三十岁却正是陆虞候。那泼贱贼也敢来这里害我！休要撞著我，只教他骨肉为泥！”李小二道：“只要堤防他便了。岂不闻古人言：‘吃饭防噎，走路防跌。’”林冲大怒，离了李小二家，先去街上买把解腕尖刀，带在身边。前街后巷，一地里去寻。李小二夫妻两个，捏著两把汗。<br><br>当晚无事。次日，天明起来，早洗漱罢，带了刀又去沧州城里城外，小街夹巷，团团寻了一日。牢城营里都没动静。林冲又来对李小二道：“今日又无事。”小二道：“恩人，只愿如此。只是自放仔细便了。”林冲自回天王堂，过了一夜。<mark>街上寻了三五日，不见消耗</mark>，林冲也自心下慢了。到第六日，只见管营叫唤林冲到点视厅上，说道：“你来这里许多时，柴大官人面皮不曾抬举的你。此间东门外十五里，有座大军草场，每月但是纳草纳料的，有些常例钱取觅。原是一个老军看管。我如今抬举你去替那老军来守天王堂。你在那里䦷几贯盘缠。你可和差拨便去那里交割。”林冲应道：“小人便去。”当时离了营中，迳到李小二家，对他夫妻两个说道：“今日管营拨我去大军草场管事，却如何？”李小二道：“这个差使，又好是天王堂。那里收草料时，有些常例钱钞。往常不使钱时，不能勾这差使。”林冲道：“<mark>却不害我，倒与我好差使，正不知何意</mark>？”李小二道：“恩人休要疑心。只要没事便好了。只是小人家离得远了，过几时那工夫来望恩人。”就时家里安排几杯酒，请林冲吃了。<br><br>话不絮烦，两个相别了。林冲自来天王堂取了包裹，带了尖刀，拿了条花枪，与差拨一同辞了管营。两个取路投草料场来。正是严冬天气，彤云密布，朔风渐起，却早纷纷扬扬卷下一天大雪来。那雪早下得密了。怎见得好雪？有《临江仙》词为证：<br><br>大雪下的正紧，林冲和差拨两个，在路上又没买酒吃处，早来到草料场外。看时，一周遭有些黄土墙，两扇大门，推开看里面时，七八间草房做著仓廒，四下里都是马草堆，中间两座草厅。到那厅里，只见那老军在里面向火。差拨说道：“管营差这个林冲来替你回天王堂看守。你可即便交割。”老军拿了钥匙，引著林冲，分付道：“仓廒内自有官司封记。这几堆草，一堆堆都有数目。”老军都点见了堆数，又引林冲到草厅上。老军收拾行李，临了说道：“火盆、锅子、碗碟，都借与你。”林冲道：“天王堂内，我也有在那里。你要便拿了去。”老军指壁上挂一个大葫芦说道：“你若买酒吃时，只出草场，投东大路去三二里，便有市井。”老军自和差拨回营里来。<br><br>只说林冲就床上放了包裹被卧，就坐下生些焰火起来。屋边有一堆柴炭，拿几块来，生在地炉里。仰面看那草屋时，四下里崩坏了，又被朔风吹撼，摇振得动。林冲道：“这屋如何过得一冬？待雪晴了，去城中唤个泥水匠来修理。”向了一回火，觉得身上寒冷。寻思：“却才老军所说，五里路外有那市井，何不去沽些酒来吃？”便去包里取些碎银子，把花枪挑了酒葫芦，将火炭盖了，取毡笠子戴上，拿了钥匙，出来把草厅门拽上。出到大门首，把两扇草场门反拽上锁了。带了钥匙，信步投东。<mark>雪地里踏著碎琼乱玉，迤逦背著北风而行</mark>。那雪正下得紧。行不上半里多路，看见一所古庙。林冲顶礼道：“神明庇佑，改日来烧钱纸。”又行了一回，望见一簇人家。林冲住脚看时，见篱笆中挑著一个草帚儿在露天里。林冲迳到店里。主人道：“客人那里来？”林冲道：“你认得这个葫芦么？”主人看了道：“这葫芦是草料场老军的。”林冲道：“如何便认的？”店主道：“既是草料场看守大哥，且请少坐。天气寒冷，且酌三杯，权当接风。”店家切一盘熟牛肉，荡一壶热酒，请林冲吃。又自买了些牛肉，又吃了数杯，就又买了一葫芦酒，包了那两块牛肉，留下碎银子，把花枪挑了酒葫芦，怀内揣了牛肉，叫声相扰，便出篱笆门，依旧迎著朔风回来。看那雪到晚越下的紧了。古时有个书生，做了一个词，单题那贫苦的恨雪：</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_019" data-idx="0">
+    <div class="finding-text">「雪地里踏著碎琼乱玉，迤逦背著北风而行」把寒冷写成有方向、有质地的阻力：人物每走一步都在与天气角力，风雪因此承担叙事功能而不只是背景装饰</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>雪地里踏著碎琼乱玉，迤逦背著北风而行</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_019" data-idx="1">
+    <div class="finding-text">管营把看草料场的「好差使」派给林冲，他当场用「却不害我，倒与我好差使，正不知何意」把恩惠翻译成疑点；这句自我怀疑提前给后文的草料场之火安上了因果接口，属于典型的埋伏</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>却不害我，倒与我好差使，正不知何意</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_019" data-idx="2">
+    <div class="finding-text">李小二夫妻隔墙听来的关键信息被刻意做残：只有「高太尉」三个字和「好歹要结果了他性命」一句，其余全被「交头接耳说话，正不听得说甚么」抹掉，读者与林冲同步处在信息不足的位置上</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>都在我身上，好歹要结果了他性命</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_019" data-idx="3">
+    <div class="finding-text">「当晚无事」「次日」「到第六日」把寻仇的落空写成一段有刻度的等待，叙事速度在此放慢；这种空转不是拖沓，而是把读者的期待压到后文骤变的那一刻再释放</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>街上寻了三五日，不见消耗</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>林冲在本段内已识破草料场是陷阱，并当场拒绝前往</span><small>原文他只是自问「正不知何意」，紧接着应道「小人便去」，既未识破也未拒绝；把后文的火烧倒推进此刻的清醒，属越界解读</small></div><div class="fc"><span>李小二的妻子听清了密谋的全部内容，因此林冲得以提前防备</span><small>原文写明「交头接耳说话，正不听得说甚么」，她只听到零星词句；若写成「听清全部」，等于替作者补了不存在的信息</small></div><div class="fc"><span>本段出现林冲与陆虞候的正面冲突</span><small>陆虞候只以李小二的口头描述出现（「五短身材，白净面皮」），本人未登场，两人当面冲突在草料场之后</small></div>
+  </div>
+</section>
+<section class="case" id="GC_020" data-id="GC_020">
+  <header class="case-head">
+    <div class="case-no">20 / 46</div>
+    <h2>史记·鸿门宴的座次与剑</h2>
+    <div class="meta">
+      <span class="tag">叙事散文 / 史传</span>
+      <span>史記·項羽本紀</span>
+      <span>《史记·项羽本纪》鸿门宴（段 21–23，自“楚左尹项伯者”至“立诛杀曹无伤”）</span>
+      <span>1657 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">楚左尹项伯者，项羽季父也，素善留侯张良。张良是时从沛公，项伯乃夜驰之沛公军，私见张良，具告以事，欲呼张良与俱去。曰：“毋从俱死也。”张良曰：“臣为韩王送沛公，沛公今事有急，亡去不义，不可不语。”良乃入，具告沛公。沛公大惊，曰：“为之奈何？”张良曰：“谁为大王为此计者？”曰：“鲰生说我曰‘距关，毋内诸侯，秦地可尽王也’。故听之。”良曰：“料大王士卒足以当项王乎？”沛公默然，曰：“固不如也，且为之奈何？”张良曰：“请往谓项伯，言沛公不敢背项王也。”沛公曰：“君安与项伯有故？”张良曰：“秦时与臣游，项伯杀人，臣活之。今事有急，故幸来告良。”沛公曰“孰与君少长？”良曰：“长于臣。”沛公曰“君为我呼入，吾得兄事之。”张良出，要项伯。项伯即入见沛公。沛公奉巵酒为寿，约为婚姻，曰：“吾入关，秋豪不敢有所近，籍吏民，封府库，而待将军。所以遣将守关者，备他盗之出入与非常也。日夜望将军至，岂敢反乎！愿伯具言臣之不敢倍德也。”项伯许诺。谓沛公曰：“旦日不可不蚤自来谢项王。”沛公曰：“诺。”于是项伯复夜去，至军中，具以沛公言报项王。因言曰：“沛公不先破关中，公岂敢入乎？今人有大功而击之，不义也，不如因善遇之。”项王许诺。<br><br>沛公旦日从百馀骑来见项王，至鸿门，谢曰：“臣与将军戮力而攻秦，将军战河北，臣战河南，然不自意能先入关破秦，得复见将军于此。今者有小人之言，令将军与臣有郤。”项王曰：“此沛公左司马曹无伤言之；不然，籍何以至此。”项王即日因留沛公与饮。项王、项伯东向坐。亚父南向坐。亚父者，范增也。沛公北向坐，张良西向侍。范增数目项王，举所佩玉珪以示之者三，项王默然不应。范增起，出召项庄，谓曰：“君王为人不忍，若入前为寿，寿毕，请以剑舞，因击沛公于坐，杀之。不者，若属皆且为所虏。”庄则入为寿，寿毕，曰：“君王与沛公饮，军中无以为乐，请以剑舞。”项王曰：“诺。”项庄拔剑起舞，项伯亦拔剑起舞，<mark>常以身翼蔽沛公</mark>，庄不得击。于是张良至军门，见樊哙。樊哙曰：“今日之事何如？”良曰：“甚急。今者项庄拔剑舞，其意常在沛公也。”哙曰：“此迫矣，臣请入，与之同命。”哙即带剑拥盾入军门。交戟之卫士欲止不内，樊哙侧其盾以撞，卫士仆地，哙遂入，披帷西向立，瞋目视项王，<mark>头发上指，目眦尽裂</mark>。项王按剑而跽曰：“客何为者？”张良曰：“沛公之参乘樊哙者也。”项王曰：“壮士，赐之巵酒。”则与斗巵酒。哙拜谢，起，立而饮之。项王曰：“赐之彘肩。”则与一生彘肩。樊哙覆其盾于地，加彘肩上，拔剑切而㗖之。项王曰：“壮士，能复饮乎？”樊哙曰：“臣死且不避，巵酒安足辞！夫秦王有虎狼之心，杀人如不能举，刑人如恐不胜，天下皆叛之。怀王与诸将约曰‘先破秦入咸阳者王之’。今沛公先破秦入咸阳，豪毛不敢有所近，封闭宫室，还军霸上，以待大王来。故遣将守关者，备他盗出入与非常也。劳苦而功高如此，未有封侯之赏，而听细说，欲诛有功之人。此亡秦之续耳，窃为大王不取也。”项王未有以应，曰：“坐。”樊哙从良坐。坐须臾，沛公起如厕，因招樊哙出。<br><br>沛公已出，项王使都尉陈平召沛公。沛公曰：“今者出，未辞也，为之奈何？”樊哙曰：“大行不顾细谨，大礼不辞小让。如今人方为刀俎，我为鱼肉，何辞为。”于是遂去。乃令张良留谢。良问曰：“大王来何操？”曰：“我持白璧一双，欲献项王，玉斗一双，欲与亚父，会其怒，不敢献。公为我献之”张良曰：“谨诺。”当是时，项王军在鸿门下，沛公军在霸上，相去四十里。沛公则置车骑，脱身独骑，与樊哙、夏侯婴、靳彊、纪信等四人持剑盾步走，从郦山下，道芷阳闲行。沛公谓张良曰：“从此道至吾军，不过二十里耳。度我至军中，公乃入。”沛公已去，闲至军中，张良入谢，曰：“沛公不胜杯杓，不能辞。谨使臣良奉白璧一双，再拜献大王足下；玉斗一双，再拜奉大将军足下。”项王曰：“沛公安在？”良曰：“闻大王有意督过之，脱身独去，已至军矣。”项王则受璧，置之坐上。<mark>亚父受玉斗，置之地，拔剑撞而破之</mark>，曰：“唉！竖子不足与谋。夺项王天下者，必沛公也，吾属今为之虏矣。”沛公至军，立诛杀曹无伤。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_020" data-idx="0">
+    <div class="finding-text">刺杀一段的每一环都有交代：范增「数目项王，举所佩玉珪以示之者三」而项王不应，才出召项庄；项庄以剑舞为名，才有项伯「常以身翼蔽沛公」；翼蔽使项庄不得击，才有张良出召樊哙。没有一步是凭空发生的</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>常以身翼蔽沛公</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_020" data-idx="1">
+    <div class="finding-text">樊哙入帐不写“勇猛”，写一串动作与身体：「侧其盾以撞，卫士仆地」「披帷西向立，瞋目视项王，头发上指，目眦尽裂」。撞、仆、立、瞋、裂五个动词把气势走完，读者不必被告知他很凶</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>头发上指，目眦尽裂</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_020" data-idx="2">
+    <div class="finding-text">三段功能不重叠：段 21 全由对话推进（张良问计、沛公惊、结亲项伯），段 22 是宴席上的空间与动作（座次、举珪、舞剑、闯帐），段 23 是脱身与善后（留谢、献璧、撞玉斗）。叙事在三段之间换的是场面，不是话题</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>亚父受玉斗，置之地，拔剑撞而破之</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>项伯夜驰告张良属于节外生枝，与鸿门宴主线无关</span><small>没有项伯夜告，沛公无从得知项羽将击；后来项伯在席上翼蔽沛公，也是这条线的延续。删掉它，宴会与脱身都失去前提</small></div><div class="fc"><span>「头发上指，目眦尽裂」夸张失实，属叙述不可靠</span><small>史传写怒气惯用夸饰，此处功能是让项羽看见樊哙的决死之态而「按剑而跽」；判为不可靠，是拿纪实标准衡量史传的修辞</small></div><div class="fc"><span>结尾「立诛杀曹无伤」一句过于仓促，应展开</span><small>曹无伤告密在段 22 由项羽亲口点出，末句正好把这个伏线收掉；一句收束是史传的常态，不是疏漏</small></div>
+  </div>
+</section>
+<section class="case" id="GC_021" data-id="GC_021">
+  <header class="case-head">
+    <div class="case-no">21 / 46</div>
+    <h2>三国演义·舌战群儒七问</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>三國演義·第043回</span>
+      <span>《三国演义》第四十三回「舌战群儒」（段 6–15，自“孔明自思张昭乃孙权手下第一个谋士”至“不容不答耳”）</span>
+      <span>2280 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">孔明自思张昭乃孙权手下第一个谋士，若不先难倒他，如何说得孙权，遂答曰：“吾观取汉上之地，易如反掌。我主刘豫州躬行仁义，不忍夺同宗之基业，故力辞之。刘琮孺子，听信佞言，暗自投降，致使曹操得以猖獗。今我主屯兵江夏，别有良图，非等闲可知也。”<br><br>昭曰：“若此，是先生言行相违也。先生自比管、乐。管仲相桓公，霸诸侯，一匡天下；乐毅扶持微弱之燕，下齐七十馀城；此二人者，真济世之才也。先生在草庐之中，但笑傲风月，抱膝危坐；今既从事刘豫州，当为生灵兴利除害，剿灭乱贼。且刘豫州未得先生之时，尚且纵横寰宇，割据城池；今得先生，人皆仰望；虽三尺童蒙，亦谓彪虎生翼，将见汉室复兴，曹氏即灭矣；朝廷旧臣，山林隐士，无不拭目而待：以为拂高天之云翳，仰日月之光辉，拯斯民于水火之中，措天下于衽席之上，在此时也。何先生自归豫州，曹兵一出，弃甲抛戈，望风而窜；上不能报刘表以安庶民，下不能辅孤子而据疆土；乃弃新野，走樊城，败当阳，奔夏口，无容身之地？是豫州既得先生之后，反不如其初也。管仲、乐毅，果如是乎？愚直之言，幸勿见怪！”<br><br>孔明听罢，哑然而笑曰：“鹏飞万里，其志岂群鸟能识哉？譬如人染沈痾，<mark>当先用糜粥以饮之</mark>，和药以服之；待其腑脏调和，形体渐安，然后用肉食以补之，猛药以治之；则病根尽去，人得全生也。若不待气脉和缓，便投以猛药厚味，欲求安保，诚为难矣。吾主刘豫州，向日军败于汝南，寄迹刘表，兵不满千，将止关、张、赵云而已；此正如病势尪羸已极之时也。新野山僻小县，人民稀少，粮食鲜薄，豫州不过暂借以容身，岂真将坐守于此耶？夫以甲兵不完，城郭不固，军不经练，粮不继日，然而博望烧屯，白河用水，使夏侯惇、曹仁辈心惊胆裂。窃谓管仲、乐毅之用兵，未必过此。至于刘琮降操，豫州实出不知；且又不忍乘乱夺同宗之基业，此真大仁大义也。当阳之败，豫州见有数十万赴义之民，扶老携幼相随，不忍弃之，日行十里，不思进取江陵，甘与同败，此亦大仁大义也。寡不敌众，胜负乃其常事。昔高皇数败于项羽，而垓下一战成功，此非韩信之良谋乎？夫信久事高皇，未尝累胜。盖国家大计，社稷安危，是有主谋，非比夸辩之徒，虚誉欺人，坐议立谈，无人可及；临机应变，百无一能。诚为天下笑耳！”这一篇言语，说得张昭并无一言回答。<br><br><mark>座上忽一人抗声问曰</mark>：“今曹公兵屯百万，将列千员，龙骧虎视，平吞江夏，公以为何如？”孔明视之，乃虞翻也。孔明曰：“曹操收袁绍蚁聚之兵，劫刘表乌合之众，虽数百万不足惧也。”虞翻冷笑曰：“军败于当阳，计穷于夏口，区区求救于人，而犹言不惧，此真大言欺人也！”孔明曰：“刘豫州以数千仁义之师，安能敌百万残暴之众，退守夏口，所以待时也。今江东兵精粮足，且有长江之险，犹欲使其主屈膝降贼，不顾天下耻笑。由此论之，刘豫州真不惧操贼者矣！”虞翻不能对。<br><br>座间又一人问曰：“孔明欲效仪、秦之舌，游说东吴耶？”孔明视之，乃步骘也。孔明曰：“步子山以苏秦、张仪为辩士，不知苏秦、张仪亦豪杰也。苏秦佩六国相印，张仪两次相秦，皆有匡扶人国之谋，非比畏强凌弱，惧刀避剑之人也。君等闻曹操虚发诈伪之词，便畏惧请降，敢笑苏秦、张仪乎？”步骘默默然无语。<br><br>忽一人问曰：“孔明以操何如人也。”孔明视其人，乃薛综也。孔明答曰：“曹操乃汉贼也，又何必问？”综曰：“公言差矣。汉历传至今，天数将终。今曹公已有天下三分之二，人皆归心。刘豫州不识天时，强欲与争，正如以卵击石，安得不败乎？”孔明厉声曰：“薛敬文安得出此无父无君之言乎？夫人生天地间，以忠孝为立身之本。公既为汉臣，则见有不臣之人，当誓共戮之，臣之道也。今曹操祖宗叨食汉禄，不思报效，反怀篡逆之心，天下之所共愤。公乃以天数归之，真无父无君之人也！不足与语！请勿复言！”薛综满面羞惭，不能对答。<br><br>座上又一人应声问曰：“曹操虽挟天子以令诸侯，犹是相国曹参之后。刘豫州虽云中山靖王苗裔，却无可稽考，眼见只是织席贩屦之夫耳，何足与曹操抗衡哉！”孔明视之，乃陆绩也。孔明笑曰：“公非袁术座间怀橘之陆郎乎？请安坐听吾一言。曹操既为曹相国之后，则世为汉臣矣。今乃专权肆横，欺凌君父，是不惟无君，亦且蔑祖；不惟汉室之乱臣，亦曹氏之贼子也！刘豫州堂堂帝胄，当今皇帝，按谱赐爵，何云无可稽考？且高祖起身亭长，而终有天下；织席贩屦，又何足为辱乎？公小儿之见，不足与高士共语！”陆绩语塞。<br><br>座上一人忽曰：“孔明所言，皆强词夺理，均非正论，不必再言。且请问孔明治何经典？”孔明视之，乃严畯也。孔明曰：“<mark>寻章摘句，世之腐儒也</mark>，何能兴邦立事？且古耕莘伊尹，钓渭子牙，张良、陈平之流，邓禹、耿弇之辈，皆有匡扶宇宙之才，未审其生平治何经典。岂亦效书生区区于笔砚之间，数黑论黄，舞文弄墨而已乎？”严畯低头丧气而不能对。<br><br>忽又一人大声曰：“公好为大言，未必真有实学，恐适为儒者所笑耳。”孔明视其人，乃汝南程德枢也。孔明答曰：“儒有君子小人之别。君子之儒，忠君爱国，守正恶邪，务使泽及当时，名留后世。若夫小人之儒，惟务雕虫，专工翰墨，青春作赋，皓首穷经，笔下虽有千言，胸中实无一策。且如扬雄以文章名世，而屈身事莽，不免投阁而死，此所谓小人之儒也。虽日赋万言，亦何取哉！”程德枢不能对。<br><br>众人见孔明对答如流，尽皆失色。时座上张温、骆统二人，又欲问难。忽一人自外而入，厉声言曰：“孔明乃当世奇才，君等以唇舌相难，非敬客之礼也。曹操大军临境，不思退敌之策，乃徒斗口耶！”众视其人，乃零陵人，姓黄，名盖，字公覆，现为东吴粮官。当时黄盖谓孔明曰：“愚闻多言获利，不如默而无言。何不将金石之论为我主言之，乃与众人辩论也？”孔明曰：“诸君不知世务，互相问难，不容不答耳。”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_021" data-idx="0">
+    <div class="finding-text">七段问难各由一人发起、各给一种反对理由，答法也随之更换：对张昭用医病之喻（先糜粥后猛药），对虞翻用反诘（江东兵精粮足却要屈膝），对薛综直接定性「无父无君」，对陆绩拿高祖起身亭长反证，对严畯以「寻章摘句，世之腐儒」贬其问法，对程德枢分君子之儒与小人之儒。同一场辩论不靠换话题，靠换对手与换打法</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>寻章摘句，世之腐儒也</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_021" data-idx="1">
+    <div class="finding-text">七次换人各有引出动作，且引出的方式逐次升级：「座上忽一人抗声问曰」（虞翻）→「座间又一人问曰」（步骘）→「忽一人问曰」（薛综）→「座上又一人应声问曰」（陆绩）→「座上一人忽曰」（严畯）→「忽又一人大声曰」（程德枢）。位置词与声气词轮流变化，车轮战因此有推进感，不是同一条句式复制七遍</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>座上忽一人抗声问曰</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_021" data-idx="2">
+    <div class="finding-text">回答张昭时不谈战略形势，先讲一个治病的过程：「当先用糜粥以饮之，和药以服之；待其腑脏调和，形体渐安，然后用肉食以补之，猛药以治之」。糜粥、肉食、猛药是三个可指认的东西，先后次序就是刘备兵力的三个阶段；抽象的实力之辩被压成一张药方</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>当先用糜粥以饮之</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>七人轮番发难结构重复，应当合并为两三回合</span><small>每人代表一种反对理由（资历、实力、出身、经典、实学），合并会丢掉孙权阵营内部的层次；重复感来自题材本身，不是叙述的疏漏</small></div><div class="fc"><span>孔明斥薛综「无父无君」语气过激，人物失了分寸</span><small>薛综以「天数将终」劝降，动摇的是立国根本；此处厉声是策略性反击，后文对陆绩、严畯又转回笑语，语气是配合对手换的</small></div><div class="fc"><span>黄盖突然闯入打断辩论，收得生硬</span><small>前七段全是问难，场面必须由外力转向「退敌之策」，否则辩论无出口；黄盖以粮官身份发话，也正好把话题从口舌拉回军情</small></div>
+  </div>
+</section>
+<section class="case" id="GC_022" data-id="GC_022">
+  <header class="case-head">
+    <div class="case-no">22 / 46</div>
+    <h2>故乡·归途与老屋</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>故鄉</span>
+      <span>鲁迅《故乡》（段 1–8，自“我冒了严寒”至“只是收不起钱来”）</span>
+      <span>591 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">我冒了严寒，回到相隔二千馀里，别了二十馀年的故乡去。<br><br>时候既然是深冬；渐近故乡时，天气又阴晦了，冷风吹进船舱中，呜呜的响，从篷隙向外一望，苍黄的天底下，远近横着几个萧索的荒村，没有一些活气。我的心禁不住悲凉起来了。<br><br>阿！这不是我二十年来时时记得的故乡？<br><br>我所记得的故乡全不如此。我的故乡好得多了。但要我记起他的美丽，说出他的佳处来，却又没有影像，没有言辞了。仿佛也就如此。于是我自己解释说：故乡本也如此，——虽然没有进步，也未必有如我所感的悲凉，<mark>这只是我自己心情的改变罢了</mark>，因为我这次回乡，<mark>本没有什么好心绪</mark>。<br><br>我这次是专为了别他而来的。我们多年聚族而居的老屋，已经公同卖给别姓了，交屋的期限，只在本年，所以必须赶在正月初一以前，永别了熟识的老屋，而且远离了熟识的故乡，搬家到我在谋食的异地去。<br><br>第二日清早晨我到了我家的门口了。<mark>瓦楞上许多枯草的断茎当风抖着</mark>，正在说明这老屋难免易主的原因。几房的本家大约已经搬走了，所以很寂静。我到了自家的房外，我的母亲早已迎着出来了，接着便飞出了八岁的侄儿宏儿。<br><br>我的母亲很高兴，但也藏着许多凄凉的神情，教我坐下，歇息，喝茶，且不谈搬家的事。宏儿没有见过我，远远的对面站着只是看。<br><br>但我们终于谈到搬家的事。我说外间的寓所已经租定了，又买了几件家具，此外须将家里所有的木器卖去，再去增添。母亲也说好，而且行李也略已齐集，木器不便搬运的，也小半卖去了，只是收不起钱来。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_022" data-idx="0">
+    <div class="finding-text">全篇锁在“我”的知觉与心绪里，且不越界去写别人：景物是从篷隙望出去的（「从篷隙向外一望」），母亲的凄凉是「藏着」的，宏儿只是「远远的对面站着只是看」。叙述者对自己情绪的来由还作了限定，承认「这只是我自己心情的改变」</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>这只是我自己心情的改变罢了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_022" data-idx="1">
+    <div class="finding-text">荒凉不靠“萧条”“破败”这类词，靠可指认的物与声：「苍黄的天底下，远近横着几个萧索的荒村」是视觉的横陈，「冷风吹进船舱中，呜呜的响」是听觉，老屋「瓦楞上许多枯草的断茎当风抖着」把败落缩到一根草茎的抖动上</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>瓦楞上许多枯草的断茎当风抖着</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_022" data-idx="2">
+    <div class="finding-text">段 3–5 是一次完整的自我校正：先反问「这不是我二十年来时时记得的故乡？」，再承认记忆「没有影像，没有言辞」，最后归因于「我这次回乡，本没有什么好心绪」，把情绪收束住，才转入搬家正事。若非这一收，后文对闰土的失望就没有对照的底</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>本没有什么好心绪</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>开头两段景物与心绪铺陈过长，应尽快进入搬家叙事</span><small>景即心绪，且这段“故乡全不如此”的判断正是后文见到闰土、杨二嫂时失望的基准；删掉它，后面的落差没有依托</small></div><div class="fc"><span>段 4 反复自我辩解（故乡本也如此／只是心情改变），属于同义重复</span><small>三句各退一步：先否定记忆、再否认影像、最后归因于心情，是一层层把责任收回自己身上，不是重复</small></div><div class="fc"><span>母亲与宏儿的出场过简，人物形象单薄</span><small>这一段的功能是交代搬家与老屋易主，人物只需立住位置；本回的主角冲突在闰土与杨二嫂，此处展开会抢戏</small></div>
+  </div>
+</section>
+<section class="case" id="GC_023" data-id="GC_023">
+  <header class="case-head">
+    <div class="case-no">23 / 46</div>
+    <h2>促织·征虫之累</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>KB_005</span>
+      <span>《聊斋志异·促织》开篇至成名得虫（段 61–63，自“宣德间”至“以塞官责”）</span>
+      <span>715 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">宣德间，宫中尚促织之戏，岁征民间。此物故非西产。有华阴令，欲媚上官，以一头进，试使斗而才，因责常供。令以责之里正。<br><br>市中游侠儿，得佳者笼养之，昂其直，居为奇货。里胥猾黠，假此科敛丁口，<mark>每责一头，辄倾数家之产</mark>。<br><br>邑有成名者，操童子业，久不售。为人迂讷，遂为猾胥报充里正役，百计营谋不能脱。不终岁，薄产累尽。会征促织，成不敢敛户口，而又无所赔偿，忧闷欲死。妻曰：“死何益？不如自行搜觅，冀有万一之得。”成然之。早出暮归，提竹筒铜丝笼，于败堵丛草处探石发穴，靡计不施，迄无济。即捕三两头，又劣弱，不中于款。宰严限追比，旬余，杖至百，<mark>两股间脓血流离</mark>，并虫不能行捉矣。<mark>转侧床头，惟思自尽</mark>。时村中来一驼背巫，能以神卜。成妻具资诣问，见红女白婆，填塞门户。入其室，则密室垂帘，帘外设香几。问者爇香于鼎，再拜。巫从旁望空代祝，唇吻翕辟，不知何词，各各竦立以听。少间，帘内掷一纸出，即道人意中事，无毫发爽。成妻纳钱案上，焚香以拜。食顷，帘动，片纸抛落。拾视之，非字而画，中绘殿阁类兰若，后小山下怪石乱卧，针针丛棘，青麻头伏焉；旁一蟆，若将跳舞。展玩不可晓。<mark>然睹促织，隐中胸怀</mark>，折藏之，归以示成。成反复自念：“得无教我猎虫所耶？”细瞩景状，与村东大佛阁真逼似。乃强起扶杖，执图诣寺后，有古陵蔚起。循陵而走，见蹲石鳞鳞，俨然类画。遂于蒿莱中侧听徐行，似寻针芥，而心、目、耳力俱穷，绝无踪响。冥搜未已，一癞头蟆猝然跃去。成益愕，急逐之。蟆入草间，蹑迹披求，见有虫伏棘根，遽扑之，入石穴中。掭以尖草不出，以筒水灌之始出。状极俊健，逐而得之。审视：巨身修尾，青项金翅。大喜，笼归，举家庆贺，虽连城拱璧不啻也。土于盆而养之，蟹白栗黄，备极护爱。留待限期，以塞官责。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_023" data-idx="0">
+    <div class="finding-text">开篇用三级传导压缩灾难：宫廷一句（“宫中尚促织之戏”）、吏胥一句（“每责一头，辄倾数家之产”）、成名一人（占去全段大半）。制度性压力沿上、中、下三级落到具体的人身上，因果链在一段之内闭合</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>每责一头，辄倾数家之产</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_023" data-idx="1">
+    <div class="finding-text">“提竹筒铜丝笼，于败堵丛草处探石发穴”用器物与动作写捕虫的徒劳，没有一个“苦”字；“两股间脓血流离，并虫不能行捉矣”把催逼落到血肉上，痛感由后果而不是形容给出</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>两股间脓血流离</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_023" data-idx="2">
+    <div class="finding-text">“不终岁，薄产累尽”“旬余，杖至百”“转侧床头，惟思自尽”三句各带一个时间量词，把时间越压越窄，最后一句把人物逼进死角；节奏由宽到窄，几乎没有缓冲</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>转侧床头，惟思自尽</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_023" data-idx="3">
+    <div class="finding-text">“促织”在段内三次出现且含义逐次转移：岁征之物（贡赋）、会征之役（生计）、画中伏于棘根者（神异线索）。同一物象兼作制度、灾祸与转机，复现时所指不同而名字不变</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>然睹促织，隐中胸怀</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>成名主动钻营，设法谋得里正之职以图科敛</span><small>原文是“遂为猾胥报充里正役，百计营谋不能脱”——他是被强行报充、百计想摆脱而不得，方向完全相反</small></div><div class="fc"><span>驼背巫的图直接标明了促织藏身之处，成名照图即得</span><small>原文写“非字而画”“展玩不可晓”，是成名“反复自念”才猜出“得无教我猎虫所耶”，还要靠逐蟆、灌穴才捉到；写成看图即得，抹掉了猜解与劳作的环节</small></div><div class="fc"><span>本段已写到成名之子误毙促织、举家惶恐</span><small>弄死促织在下一段（“成有子九岁，窥父不在，窃发盆”），本段止于“留待限期，以塞官责”，危机尚未爆发</small></div>
+  </div>
+</section>
+<section class="case" id="GC_024" data-id="GC_024">
+  <header class="case-head">
+    <div class="case-no">24 / 46</div>
+    <h2>药·坟场红白花环</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>药</span>
+      <span>鲁迅《药》第四节·西关外坟场（段 60–69）</span>
+      <span>1059 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">西关外靠着城根的地面，本是一块官地；中间歪歪斜斜一条细路，是贪走便道的人，用鞋底造成的，但却成了自然的界限。路的左边，都埋着死刑和瘦毙的人，右边是穷人的丛冢。两面都已埋到层层叠叠，宛然阔人家里祝寿时候的馒头。<br><br>这一年的清明，分外寒冷；杨柳才吐出半粒米大的新芽。天明未久，华大妈已在右边的一坐新坟前面，排出四碟菜，一碗饭，哭了一场。化过纸，呆呆的坐在地上；仿佛等候什么似的，但自己也说不出等候什么。微风起来，吹动他短发，确乎比去年白得多了。<br><br>小路上又来了一个女人，也是半白头发，褴褛的衣裙；提一个破旧的朱漆圆篮，外挂一串纸锭，三步一歇的走。忽然见华大妈坐在地上看他，便有些踌躇，惨白的脸上，现出些羞愧的颜色；但终于硬着头皮，走到左边的一坐坟前，放下了篮子。<br><br>那坟与小栓的坟，一字儿排着，中间只隔一条小路。华大妈看他排好四碟菜，一碗饭，立着哭了一通，化过纸锭；心里暗暗地想，‘这坟里的也是儿子了。’那老女人徘徊观望了一回，忽然手脚有些发抖，跄跄踉踉退下几步，瞪着眼只是发怔。<br><br>华大妈见这样子，生怕他伤心到快要发狂了；便忍不住立起身，<mark>跨过小路</mark>，低声对他说，‘你这位老奶奶不要伤心了，——我们还是回去罢。’<br><br>那人点一点头，眼睛仍然向上瞪着；也低声吃吃的说道，‘你看。——看这是什么呢？’<br><br>华大妈跟了他指头看去，眼光便到了前面的坟，这坟上草根还没有全合，露出一块一块的黄土，煞是难看。再往上仔细看时，却不觉也吃一惊；——<mark>分明有一圈红白的花</mark>，围着那尖圆的坟顶。<br><br>他们的眼睛都已老花多年了，但望这红白的花，却还能明白看见。花也不很多，圆圆的排成一个圈，不很精神，倒也整齐。华大妈忙看他儿子和别人的坟，却只有不怕冷的几点青白小花，零星开着；便觉得心里忽然感到一种不足和空虚，不愿意根究。那老女人又走近几步，细看了一遍，自言自语的说，‘这没有根，不像自己开的！这地方有谁来呢？孩子不会来玩；——亲戚本家早不来了。——这是怎么一回事呢？’他想了又想，忽又流下泪来，大声说道：——<br><br>‘瑜儿，他们都冤枉了你，你还是忘不了，伤心不过，今天特意显点灵，要我知道么？’他四面一看，只见一只乌鸦，站在一株没有叶的树上，便接着说，‘我知道了。——瑜儿，可怜他们坑了你，他们将来总有报应，天都知道；你闭了眼睛就是了。——你如果真在这里，听到我的话，——便教这乌鸦飞上你的坟顶，给我看罢。’<br><br>微风早经停息了；枯草支支直立，有如铜丝。一丝发抖的声音，在空气中愈颤愈细，<mark>细到没有</mark>，周围便都是死一般静。两人站在枯草丛里，仰面看那乌鸦；那乌鸦也在笔直的树枝间，缩着头，<mark>铁铸一般站着</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_024" data-idx="0">
+    <div class="finding-text">“红白的花”在本段两次出现：第一次是华大妈“分明有一圈红白的花”的发现，第二次是老女人“这红白的花，却还能明白看见”的确认。同一物象被两个人看出两种意思——一边是不愿根究的空虚，一边是“特意显点灵”的认定，物象固定而解释分裂</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>分明有一圈红白的花</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_024" data-idx="1">
+    <div class="finding-text">「一丝发抖的声音，在空气中愈颤愈细，细到没有」用声音消失的过程写寂静：先有“一丝”，再“愈颤愈细”，最后“细到没有”，静不是形容词而是听觉的递减</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>细到没有</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_024" data-idx="2">
+    <div class="finding-text">两个母亲的关系靠一条小路量出来：开头“中间只隔一条小路”，中间华大妈“跨过小路”去劝，结尾两人并排“仰面看那乌鸦”。物理距离的消除对应处境的一致，但谁也没得到答案，收束停在动作上而不给结论</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>跨过小路</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_024" data-idx="3">
+    <div class="finding-text">叙述严格停在两个老妇看得见、听得见的范围内：乌鸦“缩着头，铁铸一般站着”只写外形，不写它是否应验；老女人追问“这是怎么一回事呢”始终无人回答。视角的克制使“显灵”停留在猜测层面</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>铁铸一般站着</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>红白花环是夏瑜显灵，文本确认了鬼神的存在</span><small>原文只写两个母亲的猜测（“今天特意显点灵，要我知道么”），叙述者从未确认；乌鸦也没有飞上坟顶，验证被文本故意悬置</small></div><div class="fc"><span>华大妈与夏四奶奶互相认出了身份并长谈</span><small>全段两人只有“你这位老奶奶不要伤心了”一句称呼，没有通姓名、没有交代彼此知道对方是谁；写成相认，是把后文或读者的推断塞进文本</small></div><div class="fc"><span>结尾乌鸦飞上坟顶，应验了老女人的请求</span><small>原文是“那乌鸦也在笔直的树枝间，缩着头，铁铸一般站着”，它没有飞；把“显灵”写成已应验，直接违背文本最后一个画面</small></div>
+  </div>
+</section>
+<section class="case" id="GC_025" data-id="GC_025">
+  <header class="case-head">
+    <div class="case-no">25 / 46</div>
+    <h2>祝福·祥林嫂问魂灵</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>祝福</span>
+      <span>鲁迅《祝福》·河边遇祥林嫂与三问魂灵（段 4–17）</span>
+      <span>1107 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">况且，一想到昨天遇见祥林嫂的事，也就使我不能安住。那是下午，我到镇的东头访过一个朋友，走出来，就在河边遇见她；而且见她瞪著的眼睛的视线，就知道明明是向我走来的。我这回在鲁镇所见的人们中，改变之大，可以说无过于她的了：五年前的花白的头发，即今已经全白，全不像四十上下的人；脸上瘦削不堪，黄中带黑，而且消尽了先前悲哀的神色，仿佛是木刻似的；<mark>只有那眼珠间或一轮</mark>，还可以表示她是一个活物。她一手提著竹篮。内中一个破碗，空的；一手拄著一支比她更长的竹竿，下端开了裂：她分明已经纯乎是一个乞丐了。我就站住，<mark>预备她来讨钱</mark>。<br><br>“你回来了？”她先这样问。<br><br>“是的。”<br><br>“这正好。你是识字的，又是出门人，见识得多。我正要问你一件事——”她那没有精采的眼睛忽然发光了。<br><br>我万料不到她却说出这样的话来，诧异的站著。<br><br>“就是——”她走近两步，放低了声音，极秘密似的切切的说，“<mark>一个人死了之后，究竟有没有魂灵的</mark>？”<br><br>我很悚然，一见她的眼钉著我的，背上也就遭了芒刺一般，比在学校里遇到不及预防的临时考，教师又偏是站在身旁的时候，惶急得多了。对于魂灵的有无，我自己是向来毫不介意的；但在此刻，怎样回答她好呢？我在极短期的踌躇中，想，这里的人照例相信鬼，然而她，却疑惑了，——或者不如说希望：希望其有，又希望其无……，人何必增添末路的人的苦恼，一为她起见，不如说有罢。<br><br>“也许有罢，——我想。”我于是吞吞吐吐的说。<br><br>“那么，也就有地狱了？”<br><br>“啊！地狱？”我很吃惊，只得支吾著，“地狱？——论理，就该也有。——然而也未必，……谁来管这等事……。”<br><br>“那么，死掉的一家的人，都能见面的？”<br><br>“唉唉，见面不见面呢？……”这时我已知道自己也还是完全一个愚人，甚么踌躇，甚么计划，都挡不住三句问，我即刻胆怯起来了，便想全翻过先前的话来，“那是，……实在，我说不清……。其实，究竟有没有魂灵，我也说不清。”<br><br>我乘她不再紧接的问，迈开步便走，匆匆的逃回四叔的家中，心里很觉得不安逸。自己想，我这答话怕于她有些危险。她大约因为在别人的祝福时候，感到自身的寂寞了，然而会不会含有别的甚么意思的呢？——或者是有了甚么预感了？倘有别的意思，又因此发生别的事，则我的答话委实该负若干的责任……。<mark>但随后也就自笑</mark>，觉得偶尔的事，本没有甚么深意义，而我偏要细细推敲，正无怪教育家要说是生著神经病；而况明明说过“说不清”，已经推翻了答话的全局，即使发生甚么事，于我也毫无关系了。<br><br>“说不清”是一句极有用的话。不更事的勇敢的少年，往往敢于给人解决疑问，选定医生，万一结果不佳，大抵反成了怨府，然而一用这说不清来作结束，便事事逍遥自在了。我在这时，更感到这一句话的必要，即使和讨饭的女人说话，也是万不可省的。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_025" data-idx="0">
+    <div class="finding-text">写祥林嫂的枯槁不靠“麻木”“憔悴”这类词，而靠“只有那眼珠间或一轮，还可以表示她是一个活物”——活人感被压缩成一个可以数得出来的动作，乞丐身份则由“内中一个破碗，空的”“竹竿，下端开了裂”两件实物作证</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>只有那眼珠间或一轮</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_025" data-idx="1">
+    <div class="finding-text">三句问话一句比一句逼近：「有没有魂灵」→「也就有地狱了」→「都能见面的」，而“我”的回答从“也许有罢”退到“我也说不清”。问答的递进不靠叙述说明，恐惧感由每一轮退让的幅度累积出来</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>一个人死了之后，究竟有没有魂灵的</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_025" data-idx="2">
+    <div class="finding-text">开头“我就站住，预备她来讨钱”与结尾“说不清是一句极有用的话”构成反讽闭环：以为要施舍，结果被追问；以为答完就了，结果留下“怕于她有些危险”的阴影。首尾的预期与实际互为颠倒</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>预备她来讨钱</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_025" data-idx="3">
+    <div class="finding-text">段内几次心理转折都靠连接词显影：「况且」起句把前文的不安接到眼前，「但随后也就自笑」把责任推卸掉，「然而一用这说不清来作结束」再把它升格为处世格言。衔接词在这里承担的是自我辩解的分段</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>但随后也就自笑</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>祥林嫂问魂灵是因为她已经确信有鬼神，只想求证细节</span><small>原文写明“她，却疑惑了，——或者不如说希望：希望其有，又希望其无”，是带着恐惧的两难，不是确信后的求证</small></div><div class="fc"><span>“我”的回答直接导致了祥林嫂的死，因果清楚</span><small>文本只写到“我这答话怕于她有些危险”，是叙述者的猜测；“即使发生甚么事，于我也毫无关系了”更是自我开脱。把猜测写成因果链，等于替作者定案</small></div><div class="fc"><span>祥林嫂此时已精神错乱、语无伦次</span><small>她的三问逻辑清楚、层层紧逼，且“放低了声音，极秘密似的切切的说”；错乱的是处境，不是语言。判她语无伦次会读丢这段最锋利的地方</small></div>
+  </div>
+</section>
+<section class="case" id="GC_026" data-id="GC_026">
+  <header class="case-head">
+    <div class="case-no">26 / 46</div>
+    <h2>一件小事·车夫的背影</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>一件小事</span>
+      <span>鲁迅《一件小事》（段 2–13，自“我从乡下跑到京城里”至“皮袍下面藏著的『小』来”）</span>
+      <span>727 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">我从乡下跑到京城里，一转眼已经六年了。其间耳闻目睹的所谓国家大事，算起来也很不少；但在我心里，都不留什么痕迹，倘要我寻出这些事的影响来说，便只是增长了我的坏脾气，——老实说，便是教我一天比一天的看不起人。<br><br>但有一件小事，却于我有意义，将我从坏脾气里拖开，使我至今忘记不得。<br><br>这是民国六年的冬天，大北风刮得正猛，我因为生计关系，不得不一早在路上走。一路几乎遇不见人，好容易才雇定了一辆人力车，教他拉到S门去。不一会，北风小了，路上浮尘早已刮净，剩下一条洁白的大道来，车夫也跑得更快。刚近S门，忽而车把上带著一个人，慢慢地倒了。<br><br>跌倒的是一个女人，花白头发，衣服都很破烂。伊从马路边上突然向车前横截过来；车夫已经让开道，但伊的破棉背心没有上扣，微风吹著，向外展开，所以终于兜著车把。幸而车夫早有点停步，否则伊定要栽一个大斤斗，跌到头破血出了。<br><br>伊伏在地上；车夫便也立住脚。<mark>我料定这老女人并没有伤</mark>，又没有别人看见，便很怪他多事，要自己惹出是非，也误了我的路。<br><br>我便对他说，『没有什么的。走你的罢！』<br><br>车夫毫不理会，——或者并没有听到，——<mark>却放下车子，扶那老女人慢慢起来</mark>，搀着臂膊立定，向伊说：<br><br>『你怎么啦？』<br><br>『我摔坏了。』<br><br>我想，我眼见你慢慢倒地，怎么会摔坏呢，装腔作势罢了，这真可憎恶。车夫多事，也正是自讨苦吃，现在你自己想法去。<br><br>车夫听了这老女人的话，却毫不踌躇，仍然搀著伊的臂膊，便一步一步的向前走。我有些诧异，忙看前面，是一所巡警分驻所，大风之后，外面也不见人。这车夫扶著那老女人，便正是向那大门走去。<br><br>我这时突然感到一种异样的感觉，觉得他满身灰尘的后影，<mark>刹时高大了</mark>，而且愈走愈大，须仰视才见。而且他对于我，渐渐的又几乎变成一种威压，甚而至于要榨出皮袍下面藏著的『小』来。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_026" data-idx="0">
+    <div class="finding-text">“我”的判断始终标明是判断：“我料定这老女人并没有伤”“我想，我眼见你慢慢倒地，怎么会摔坏呢”。老女人是否真伤，读者无从知道，因为叙述者也不去核实；视角不越界去替她作证，正因如此，后文车夫的行为才构成对“我”的反驳</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>我料定这老女人并没有伤</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_026" data-idx="1">
+    <div class="finding-text">事件链每一环都有交代：老女人横截马路、破棉背心没上扣所以兜住车把、车夫早有点停步所以没跌重、车夫放下车子扶人、问「你怎么啦」、搀着向巡警分驻所走。事故的成因与处置全部落在可查的动作上，不含含糊糊地写“出了事”</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>却放下车子，扶那老女人慢慢起来</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_026" data-idx="2">
+    <div class="finding-text">道德上的震动被写成形体大小的变化：那「满身灰尘的后影，刹时高大了，而且愈走愈大，须仰视才见」，接着又「几乎变成一种威压」。崇高不是被称呼出来的，是被看见的——由仰视这个动作完成</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>刹时高大了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>结尾「榨出皮袍下面藏著的『小』来」议论直白，属主题先行</span><small>议论之前已用「愈走愈大，须仰视才见」把对比做成可见的空间关系；末句只是点破，不是唯一的承载</small></div><div class="fc"><span>花白头发、破棉背心、没有上扣这些描写是多余的肖像堆砌</span><small>背心没上扣正是被车把兜住的直接原因，头发与衣着则交代她为何容易被撞倒；这些细节在事件链上有位置</small></div><div class="fc"><span>车夫通篇几乎不说话，人物形象单薄</span><small>他只有两句台词（「你怎么啦？」与不理会），其余全是行动；本文的对比要的正是“我说得多、他做得多”，让他沉默是有意的</small></div>
+  </div>
+</section>
+<section class="case" id="GC_027" data-id="GC_027">
+  <header class="case-head">
+    <div class="case-no">27 / 46</div>
+    <h2>狂人·字缝里的吃人</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>狂人日记</span>
+      <span>鲁迅《狂人日记》第三、四节（段 15–26，自“晚上总是睡不着”至“他们想要吃我了”）</span>
+      <span>755 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">晚上总是睡不着。凡事须得研究，才会明白。<br><br>他们——也有给知县打枷过的，也有给绅士掌过嘴的，也有衙役占了他妻子的，也有老子娘被债主逼死的；他们那时候的脸色，全没有昨天这么怕，也没有这么凶。<br><br>最奇怪的是昨天街上的那个女人，打他儿子，嘴里说道，『老子呀！我要咬你几口才出气！』他眼睛却看着我。我出了一惊，遮掩不住；那青面獠牙的一伙人，便都哄笑起来。陈老五赶上前，硬把我拖回家中了。<br><br>拖我回家。家里的人都装作不认识我；他们的眼色，也全同别人一样。进了书房，便反扣上门，宛然是关了一只鸡鸭。这一件事，越教我猜不出底细。<br><br>前几天，狼子村的佃户来告荒，对我大哥说，他们村里的一个大恶人，给大家打死了；几个人便挖出他的心肝来，用油煎炒了吃，可以壮壮胆子。我插了一句嘴，佃户和大哥便都看我几眼。今天才晓得他们的眼光，全同外面的那伙人一模一样。<br><br>想起来，我从顶上直冷到脚跟。<br><br>他们会吃人，就未必不会吃我。<br><br>你看那女人『咬你几口』的话，和一伙青面獠牙人的笑，和前天佃户的话，明明是暗号。<mark>我看出他话中全是毒</mark>，笑中全是刀，他们的牙齿，全是<mark>白厉厉的排着</mark>，这就是吃人的家伙。<br><br>照我自己想，虽然不是恶人，自从踹了古家的簿子，可就难说了。他们似乎别有心思，我全猜不出。况且他们一翻脸，便说人是恶人。我还记得大哥教我做论，无论怎样好人，翻他几句，他便打上几个圈；原谅坏人几句，他便说『翻天妙手，与众不同』。我那里猜得到他们的心思，究竟怎样；况且是要吃的时候。<br><br>凡事总须研究，才会明白，古来时常吃人，我也还记得，可是不甚清楚。我翻开历史一查，这历史没有年代，歪歪斜斜的每叶上都写着『仁义道德』几个字。我横竖睡不着，仔细看了半夜，才从字缝里看出字来，<mark>满本都写着两个字是『吃人』</mark>！<br><br>书上写着这许多字，佃户说了这许多话，却都笑吟吟的睁着怪眼睛看我。<br><br><mark>我也是人，他们想要吃我了</mark>！</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（4 条）</small></h3>
+  
+  <div class="finding" data-case="GC_027" data-idx="0">
+    <div class="finding-text">“吃人”在段内三次出现且所指逐层抽象：先是被村里打死的大恶人“挖出他的心肝来，用油煎炒了吃”（实指），再是“他们会吃人，就未必不会吃我”（推断），最后是史书“满本都写着两个字是『吃人』”（隐喻）。同一个词从事件滑向制度，复现时重量逐次加重</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>满本都写着两个字是『吃人』</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_027" data-idx="1">
+    <div class="finding-text">恐惧落到牙齿上：「他们的牙齿，全是白厉厉的排着，这就是吃人的家伙」；再配“我从顶上直冷到脚跟”，身体反应替代了“害怕”这类形容词，荒诞因此有了触感</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>白厉厉的排着</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_027" data-idx="2">
+    <div class="finding-text">全段是一条从“睡不着”到“翻开历史一查”再到“我也是人，他们想要吃我了”的推理链：先有零散迹象（眼色、咬几口的话、佃户讲的吃心肝），再有总判断（他们会吃人），最后落到自己身上。结论压在末句，前文全是证据的堆积</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>我也是人，他们想要吃我了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_027" data-idx="3">
+    <div class="finding-text">叙述严格锁在“我”的知觉里：所有判断都限定在他看见、听见、推想的内容之内（“我看出他话中全是毒，笑中全是刀”），没有出现“知道无人告知的信息”式的越界；文本也不出面纠正，视角的不可靠被完整保留</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>我看出他话中全是毒</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>狂人确实被家人关押、即将被吃，小说是一份写实的受害记录</span><small>段内只有他的推想与比喻（“宛然是关了一只鸡鸭”），没有任何外部证据；把臆想当事实，等于取消了这篇小说的不可靠叙述</small></div><div class="fc"><span>叙述者在段内明确告诉读者狂人是疯子、他的判断都是错的</span><small>文言小序在全书开头，本段内叙述者完全站在狂人视角，没有纠正；段中“凡事须得研究，才会明白”反而是把他当清醒者写</small></div><div class="fc"><span>“吃人”在本段始终是字面意义的食人</span><small>第三次出现时已转为对史书“仁义道德”的隐喻（“从字缝里看出字来”）；把三次都读成字面食人，会漏掉全段最关键的转义</small></div>
+  </div>
+</section>
+<section class="case" id="GC_028" data-id="GC_028">
+  <header class="case-head">
+    <div class="case-no">28 / 46</div>
+    <h2>世说新语·德行四则</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>世說新語·德行</span>
+      <span>《世说新语·德行》四则（段 10–13：管宁华歆锄菜、王朗学华歆、华歆王朗乘船、王祥事后母）</span>
+      <span>1040 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">管寧、华歆共园中锄菜，〈《傅子》曰：“寧字幼安，北海朱虚人，齐相管仲之後也。”〉见地有片金，<mark>管挥锄与瓦石不异</mark>，华捉而掷去之。又尝同席读书，有乘轩冕过门者，寧读如故，歆废书出看。寧<mark>割席分坐</mark>曰：“子非吾友也。”〈《魏略》曰：“寧少恬静，常笑邴原、华子鱼有仕宦意。及歆为司徒，上书让寧。寧闻之笑曰：‘子鱼本欲作老吏，故荣之耳。’”〉<br><br>王朗毎以识度推华歆。〈《魏书》曰：“朗字景兴，东海郯人，魏司徒。”〉歆蜡日，〈《礼记》曰：“天子大蜡八，伊耆氏始为蜡。蜡，索也。岁十二月，合聚万物而索飨之。”《五经要义》曰：“三代名臘：夏曰嘉平，殷曰清祀，周曰大蜡，总谓之臘。”晋博士张亮议曰：“蜡者，合聚百物索飨之，岁终休老息民也。臘者，祭宗庙五祀。《传》曰：‘臘，接也。’祭则新故交接也。秦汉以来，臘之明日为祝岁，古之遗语也。”〉尝集子姪燕饮，王亦学之。有人向张华说此事，张曰：“王之学华，皆是形骸之外，去之所以更远。”〈王隐《晋书》曰：“张华字茂先，范阳人也。累迁司空，而为赵王伦所害。”〉<br><br>华歆、王朗倶乘船避难，有一人欲依附，歆辄难之。朗曰：“幸尚宽，何为不可？”後贼追至，王欲捨所携人。歆曰：“本所以疑，正为此耳。既已纳其自託，寧可以急相弃邪？”遂携拯如初。<mark>世以此定华王之优劣</mark>。〈华峤《谱叙》曰：“歆为下邽令，汉室方乱，乃与同志士郑太等六七人避世。自武关出，道遇一丈夫独行，願得与倶。皆哀许之。歆独曰：‘不可。今在危险中，祸福患害，义犹一也。今无故受之，不知其义，若有进退，可中弃乎？’众不忍，卒与倶行。此丈夫中道堕井，皆欲弃之。歆乃曰：‘已与倶矣，弃之不义。’卒共还，出之而後别。”〉<br><br>王祥事後母朱夫人甚谨，〈《晋诸公赞》曰：“祥字休徴，琅邪临沂人。”《祥世家》曰：“祥父融，娶高平薛氏，生祥。继室以庐江朱氏，生览。”《晋阳秋》曰：“後母数谮祥，屡以非理使祥，弟览辄与祥倶。又虐使祥妇，览妻亦趋而共之。母患，方盛寒冰冻，母欲生鱼，祥解衣将剖冰求之，会有处冰小解，鱼出。”萧广济《孝子传》曰：“祥後母忽欲黄雀炙，祥念难卒致。须臾，有数十黄雀飞入其幕。母之所須，必自奔走，无不得焉。其诚至如此。”〉家有一李树，结子殊好，母恒使守之。时风雨忽至，祥抱树而泣。祥尝在别床眠，母自往暗斫之。值祥私起，空斫得被。既还，知母憾之不已，因跪前请死。母於是感悟，爱之如己子。〈虞预《晋书》曰：“祥以後母故，陵迟不仕。年向六十，刺史吕虔檄为别驾，时人歌之曰：‘海沂之康，寔赖王祥；邦国不空，别驾之功！’累迁太保。”〉</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_028" data-idx="0">
+    <div class="finding-text">四则之间没有任何过渡句，靠同一主题并列成篇；每一则内部则全靠动作相接：见片金→「管挥锄与瓦石不异」→「华捉而掷去之」，同席读书→「宁读如故」→「歆废书出看」→割席。人物性格不作评语，由两组动作的差别自己显出来</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>管挥锄与瓦石不异</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_028" data-idx="1">
+    <div class="finding-text">判断落成可看的动作：割席分坐是社交关系的物理切断；王祥「抱树而泣」是以身体护住亡母所遗的李树；被斫后「跪前请死」把孝推到身体交付的程度。三处都不用“孝”“义”二字作结</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>割席分坐</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_028" data-idx="2">
+    <div class="finding-text">每则都以一句断语收束，且断语的分量不同：「子非吾友也」是当事人自己下的判决；「世以此定华王之优劣」是舆论的裁定；「母于是感悟，爱之如己子」是结局自行交代。收束方式随材料性质变化，不套同一句公式</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>世以此定华王之优劣</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>四则并列而无主线，属结构松散</span><small>《世说新语》按门类编排，德行门以同类事相从；要求它有一条贯穿情节，是拿长篇小说的结构标准衡量笔记体</small></div><div class="fc"><span>文中夹注大量引用《傅子》《魏略》《晋阳秋》，割裂叙事</span><small>这些是刘孝标的注，属该书文本的一部分，功能是补史料与异说；判为割裂，等于要求一部注本按现代小说的排版来写</small></div><div class="fc"><span>王祥抱树而泣、黄雀入幕等情节怪诞，属叙述失实</span><small>王祥条取自《孝子传》一类感应故事，怪诞是该文类的成规；把它当纪实来验伪，是文类错置</small></div>
+  </div>
+</section>
+<section class="case" id="GC_029" data-id="GC_029">
+  <header class="case-head">
+    <div class="case-no">29 / 46</div>
+    <h2>西游记·蟠桃会前夜</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>西遊記·第005回</span>
+      <span>《西游记》第五回「乱蟠桃大圣偷丹」（段 5–8，自“一日，见那老树枝头”至“看可请老孙不请”）</span>
+      <span>1126 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">一日，见那老树枝头，桃熟大半。他心里要吃个尝新，奈何本园土地、力士并齐天府仙吏紧随不便。忽设一计道：“汝等且出门外伺候，让我在这亭上少憩片时。”那众仙果退。只见那猴王脱了冠服，爬上大树，拣那熟透的大桃，摘了许多，就在树枝上自在受用。吃了一饱，却才跳下树来，簪冠著服，唤众等仪从回府。<mark>迟三二日，又去设法偷桃</mark>，尽他享用。<br><br>一朝，王母娘娘设宴，大开宝阁，瑶池中做蟠桃胜会。即著那红衣仙女、青衣仙女、素衣仙女、皂衣仙女、紫衣仙女、黄衣仙女、绿衣仙女各顶花篮，去蟠桃园摘桃建会。七衣仙女直至园门首，只见蟠桃园土地、力士同齐天府二司仙吏，都在那里把门。仙女近前道：“我等奉王母懿旨，到此摘桃设宴。”土地道：“仙娥且住。今岁不比往年了，玉帝点差齐天大圣在此督理，须是报大圣得知，方敢开园。”仙女道：“大圣何在？”土地道：“大圣在园内，因困倦，自家在亭子上睡哩。”仙女道：“既如此，寻他去来，不可迟误。”土地即与同进。寻至花亭不见，只有衣冠在亭，不知何往，四下里都没寻处。原来大圣耍了一会，吃了几个桃子，变做二寸长的个人儿，在那大树梢头浓叶之下睡著了。七衣仙女道：“我等奉旨前来，寻不见大圣，怎敢空回？”傍有仙使道：“仙娥既奉旨来，不必迟疑。我大圣闲游惯了，想是出园会友去了。汝等且去摘桃，我们替你回话便是。”<br><br>那仙女依言，入树林之下摘桃：<mark>先在前树摘了二篮，又在中树摘了三篮</mark>，到后树上摘取，只见那树上花果稀疏，止有几个毛蒂青皮的。<mark>原来熟的都是猴王吃了</mark>。七仙女张望东西，只见向南枝上止有一个半红半白的桃子。青衣女用手扯下枝来，红衣女摘了，却将枝子望上一放。<br><br>原来那大圣变化了，正睡在此枝，被他惊醒。大圣即现本相，耳朵内掣出金箍棒，幌一幌，碗来粗细，咄的一声道：“你是那方怪物，敢大胆偷摘我桃。”慌得那七仙女一齐跪下道：“大圣息怒。我等不是妖怪，乃王母娘娘差来的七衣仙女，摘取仙桃，大开宝阁，做蟠桃胜会。适至此间，先见了本园土地等神，寻大圣不见。我等恐迟了王母懿旨，是以等不得大圣，故先在此摘桃。万望恕罪。”大圣闻言，回嗔作喜道：“仙娥请起。王母开阁设宴，请的是谁？”仙女道：“上会自有旧规，请的是西天佛老、菩萨、圣僧、罗汉，南方南极观音，东方崇恩圣帝、十洲三岛仙翁，北方北极玄灵，中央黄极黄角大仙，这个是五方五老。还有五斗星君，上八洞三清、四帝、太乙天仙等众，中八洞玉皇、九垒、海岳神仙，下八洞幽冥教主、注世地仙，各宫各殿大小尊神，俱一齐赴蟠桃嘉会。”大圣笑道：“可请我么？”仙女道：“不曾听得说。”大圣道：“我乃齐天大圣，就请我老孙做个席尊，有何不可？”仙女道：“此是上会旧规，今会不知如何。”大圣道：“此言也是，难怪汝等。你且立下，待老孙先去打听个消息，看可请老孙不请。”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_029" data-idx="0">
+    <div class="finding-text">四段是一根完整的因果链：因大圣偷吃熟桃，才有七衣仙女摘到的「花果稀疏，止有几个毛蒂青皮的」；因青衣女扯下南枝，才惊醒变作二寸小人的大圣；因土地说「须是报大圣得知」，才有仙女自行摘桃的许可。闹天宫的导火索由这四处条件依次点着</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>原来熟的都是猴王吃了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_029" data-idx="1">
+    <div class="finding-text">仙境的排场靠可数可辨的东西撑起来：七位仙女各按衣色点名（红衣、青衣、素衣、皂衣、紫衣、黄衣、绿衣），摘桃按树计篮（前树二篮、中树三篮、后树只剩毛蒂青皮），连被摘的那颗也是「半红半白」。数目与颜色替代了“仙家气象”这类空话</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>先在前树摘了二篮，又在中树摘了三篮</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_029" data-idx="2">
+    <div class="finding-text">四段功能不重叠：段 5 写偷桃成习（一日、迟三二日，两次），段 6 写设宴与寻人不见，段 7 写摘桃见荒，段 8 写惊醒、问罪转为打听名单。偷桃与设宴之间用「一朝」跳时间，不写过渡情节</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>迟三二日，又去设法偷桃</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>偷桃写两次（一日、迟三二日又去）属于重复，应合并</span><small>第二次才是“成习”的证据；只写一次，后文满园花果稀疏就没有铺垫，读者会以为仙女恰好赶上桃荒</small></div><div class="fc"><span>七仙女复述宾客名单（五方五老、五斗星君、三清四帝）冗长拖沓</span><small>名单正是大圣发现自己不在邀请之列的依据，也是他「就请我老孙做个席尊」这句发作的由头；删掉名单，后面的怒气无来处</small></div><div class="fc"><span>大圣变作二寸长的小人睡在树梢，不合物理，属于叙述漏洞</span><small>变化是本文类的基本设定，前文已有七十二变铺垫；用现实物理校验神话，是拿错标尺</small></div>
+  </div>
+</section>
+<section class="case" id="GC_030" data-id="GC_030">
+  <header class="case-head">
+    <div class="case-no">30 / 46</div>
+    <h2>阿Q·虫豸与自我施暴</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>阿Q正传</span>
+      <span>鲁迅《阿Q正传》第二章·优胜记略后半（段 31–45，自“人打畜生”至打自己嘴巴）</span>
+      <span>954 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">『阿Q，这不是儿子打老子，是人打畜生。自己说，人打畜生！』<br><br>阿Q两只手都捏住了自己的辫根，歪着头，说道：<br><br>『打虫豸，好不好？我是虫豸——还不放么？』<br><br>但虽然是虫豸，闲人也并不放，仍旧在就近什么地方给他碰了五六个响头，这才心满意足的得胜的走了，他以为阿Q这回可遭了瘟。然而不到十秒钟，阿Q也心满意足的得胜的走了，他觉得他是第一个能够自轻自贱的人，除了『自轻自贱』不算外，馀下的就是『第一个』。状元不也是『第一个』么？『你算是什么东西』呢！？<br><br>阿Q以如是等等妙法克服怨敌之后，便愉快的跑到酒店里喝几碗酒，又和别人调笑一通，口角一通，又得了胜，愉快的回到土谷祠，放倒头睡着了。假使有钱，他便去押牌宝，一堆人蹲在地面上，阿Q即汗流满面的夹在这中间，声音他最响：<br><br>『青龙四百！』<br><br>『咳～～开～～啦！』桩家揭开盒子盖，也是汗流满面的唱。『天门啦～～角回啦！人和穿堂空在那里啦～～！阿Q的铜钱拿过来～～！』<br><br>『穿堂一百——一百五十！』<br><br>阿Q的钱便在这样的歌吟之下，<mark>渐渐的输入别个汗流满面的人物的腰间</mark>。他终于只好挤出堆外，站在后面看，替别人着急，一直到散场，然后恋恋的回到土谷祠，第二天，肿着眼睛去工作。<br><br>但真所谓『塞翁失马安知非福』罢，阿Q不幸而赢了一回，他倒几乎失败了。<br><br>这是未庄赛神的晚上。这晚上照例有一台戏，戏台左近，也照例有许多的赌摊。做戏的锣鼓，在阿Q耳朵里仿佛在十里之外；他只听得桩家的歌唱了。他赢而又赢。铜钱变成角洋，角洋变成大洋，大洋又成了叠。他兴高采烈得非常：<br><br>『天门两块！』<br><br>他不知道谁和谁为什么打起架来了。骂声、打声、脚步声，昏头昏脑的一大阵，他才爬起来，赌摊不见了，人们也不见了，身上有几处很似乎有些痛，似乎也挨了几拳几脚似的，几个人诧异的对他看。他如有所失的走进土谷祠，定一定神，知道他的一堆洋钱不见了。赶赛会的赌摊多不是本村人，还到那里去寻根柢呢？<br><br>很白很亮的一堆洋钱！而且是他的——现在不见了！说是算被儿子拿去了罢，总还是忽忽不乐；说自己是虫豸罢，也还是忽忽不乐：<mark>他这回才有些感到失败的苦痛了</mark>。<br><br>但他立刻转败为胜了。他擎起右手，<mark>用力的在自己脸上连打了两个嘴巴</mark>，热刺刺的有些痛；打完之后，便心平气和起来，似乎打的是自己，被打的是别一个自己，不久也就仿佛是自己打了别个一般，——虽然还有些热刺刺，——心满意足的得胜的躺下了。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_030" data-idx="0">
+    <div class="finding-text">「他擎起右手，用力的在自己脸上连打了两个嘴巴，热刺刺的有些痛」把“转败为胜”落到一个可听见、可摸到的动作上；再加上“似乎打的是自己，被打的是别一个自己”，荒谬感不是说明出来的，而是被这个分身逻辑执行出来的</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>用力的在自己脸上连打了两个嘴巴</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_030" data-idx="1">
+    <div class="finding-text">全段是一条自欺的升级链：当虫豸、赌钱输了、赢了又被抢，每一层失败都用更狠的一层自欺兜住，最后升级到身体——打自己的脸。失败越大，兜底动作越具体，结构因此是递进而非并列</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>他这回才有些感到失败的苦痛了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_030" data-idx="2">
+    <div class="finding-text">赌摊一段用唱腔台词代替叙述（“青龙四百！”“天门啦～～角回啦！”），声音最响的阿Q与“渐渐的输入别个汗流满面的人物的腰间”一句形成对照；节奏从吆喝的热闹猛地跌到“肿着眼睛去工作”，落差由句子长短直接给出</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>渐渐的输入别个汗流满面的人物的腰间</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>阿Q这次真正觉悟，感到了失败的实质，人物开始转变</span><small>原文写“他这回才有些感到失败的苦痛了”，紧接着就是“但他立刻转败为胜了”；苦痛只维持一句，随即被两个嘴巴化解，读成觉悟是把一个逗号当成了转折点</small></div><div class="fc"><span>赌摊一场意在训诫赌博害人，属劝善笔墨</span><small>叙述者不作训诫，用的是“塞翁失马安知非福”这类反讽引语，落点是阿Q把钱“输入”别人腰间的滑稽对照；把它读成劝善，等于把讽刺降级为格言</small></div><div class="fc"><span>阿Q打自己是自残的写实描写，表现精神崩溃</span><small>打完他“心平气和起来”“心满意足的得胜的躺下了”，是精神胜利法最极端的一次成功，不是崩溃；说成崩溃会颠倒这一段的逻辑</small></div>
+  </div>
+</section>
+<section class="case" id="GC_031" data-id="GC_031">
+  <header class="case-head">
+    <div class="case-no">31 / 46</div>
+    <h2>师说·师道与耻师之辨</h2>
+    <div class="meta">
+      <span class="tag">议论</span>
+      <span>师说</span>
+      <span>韩愈《师说》全篇（段 2–8，自“古之学者必有师”至“作《师说》以贻之”）</span>
+      <span>560 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">古之学者必有师。师者，所以传道受业解惑也。人非生而知之者，孰能无惑？惑而不从师，其为惑也终不解矣。<br><br>生乎吾前，其闻道也固先乎吾，吾从而师之；生乎吾后，其闻道也亦先乎吾，吾从而师之。吾师道也，夫庸知其年之先后生于吾乎？是故无贵、无贱、无长、无少，道之所存，师之所存也。<br><br>嗟乎！<mark>师道之不传也久矣</mark>！欲人之无惑也难矣！古之圣人，其出人也远矣，犹且从师而问焉；今之众人，其下圣人也亦远矣，而耻学于师。是故圣益圣，愚益愚，圣人之所以为圣，愚人之所以为愚，其皆出于此乎！<br><br>爱其子，择师而教之，于其身也则耻师焉，惑矣！彼童子之师，授之书而习其句读者也，非吾所谓传其道、解其惑者也。句读之不知，惑之不解，或师焉，或不焉，小学而大遗，吾未见其明也。<br><br>巫、医、乐师、百工之人，不耻相师；士大夫之族，曰师、曰弟子云者，则群聚而笑之。问之，则曰：“彼与彼年相若也，道相似也。<mark>位卑则足羞，官盛则近谀</mark>。”呜呼！师道之不复可知矣。巫、医、乐师、百工之人，君子不齿，今其智乃反不能及，其可怪也欤！<br><br>圣人无常师：孔子师郯子、苌弘、师襄、老聃。郯子之徒，其贤不及孔子。孔子曰：“三人行，则必有我师。”是故弟子不必不如师，师不必贤于弟子，闻道有先后，术业有专攻，如是而已。<br><br>李氏子蟠，年十七，好古文，六艺经传，皆通习之，不拘于时，学于余。余嘉其能行古道，<mark>作《师说》以贻之</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_031" data-idx="0">
+    <div class="finding-text">全篇是“立论—转斥时弊—举例—交代缘起”的闭环：段 4「嗟乎！师道之不传也久矣」把前面的定义翻转成对现实的指控，段 8 用李蟠求学的具体缘由收束。转折与收束各只出现一次，没有反复绕回</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>师道之不传也久矣</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_031" data-idx="1">
+    <div class="finding-text">每段都能归入单一功能：段 2 立论（何谓师）、段 3 界定择师标准、段 4 转折斥时弊、段 5–6 两组例证（爱子与巫医百工）、段 7 举孔子、段 8 收束交代缘起。归不进去的段落为 0</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>作《师说》以贻之</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_031" data-idx="2">
+    <div class="finding-text">三组对照始终咬住同一个实体“师”：爱其子则择师、于其身则耻师；巫医百工不耻相师、士大夫群聚而笑。段 6 用“问之，则曰”把对方的原话引进来，相邻句不换话题，读者不需要补桥</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>位卑则足羞，官盛则近谀</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>全文只在讲道理，没有任何具体事例，属于空泛议论</span><small>段 7 举孔子师郯子、苌弘、师襄、老聃，并引“三人行，则必有我师”；段 8 又落到李蟠这个具体人。举例是文章的支撑之一，判为空泛属误报</small></div><div class="fc"><span>段 3“生乎吾前……生乎吾后……”两句语义重复，属于信息冗余，应当删去</span><small>这组对称句正是把“择师标准”从年龄转向“道之所存”的逻辑支点，删掉后“无贵无贱无长无少”的结论就失去推导过程，不是冗余</small></div><div class="fc"><span>结尾忽然写李蟠，与“师道”主题无关，是结构松散</span><small>结尾交代写作缘起是古代赠序的固定收束功能，且李蟠“不拘于时，学于余”正好是前文主张的现实例证，不是跑题</small></div>
+  </div>
+</section>
+<section class="case" id="GC_032" data-id="GC_032">
+  <header class="case-head">
+    <div class="case-no">32 / 46</div>
+    <h2>少年中国说·老年少年之辨</h2>
+    <div class="meta">
+      <span class="tag">议论</span>
+      <span>少年中国说</span>
+      <span>梁启超《少年中国说》第一至四段（段 1–4，自“欲言国之老少”至“而我中国在今日为少年国”）</span>
+      <span>1406 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">欲言国之老少，请先言人之老少。老年人常思既往，少年人常思将来；惟思既往也故生留恋心，惟思将来也故生希望心；惟留恋也故保守，惟希望也故进取；惟保守也故永旧，惟进取也故日新。惟思既往也，事事皆其所已经者，故惟知照例；惟思将来也，事事皆其所未经者，故常敢破格。老年人常多忧虑，少年人常好行乐；惟多忧也故灰心，惟行乐也故盛气；惟灰心也故怯懦，惟盛气也故豪壮；惟怯懦也故苟且，惟豪壮也故冒险；惟苟且也故能灭世界，惟冒险也故能造世界。老年人常厌事，少年人常喜事；惟厌事也故常觉一切事无可为者，惟好事也故常觉一切事无不可为者。老年人如夕照，少年人如朝阳；老年人如瘠牛，少年人如乳虎；老年人如僧，少年人如侠；老年人如字典，少年人如戏文；老年人如鸦片烟，少年人如泼兰地酒；老年人如别行星之陨石，少年人如大洋海之珊瑚岛；老年人如埃及沙漠之金字塔，少年人如西伯利亚之铁路；老年人如秋后之柳，少年人如春前之草；老年人如死海之潴为泽，少年人如长江之初发源：<mark>此老年与少年性格不同之大略也</mark>。任公曰：人固有之，国亦宜然。<br><br>梁启超曰：伤哉，老大也！浔阳江头琵琶妇，当明月绕船，枫叶瑟瑟，衾寒于铁，似梦非梦之时，追想洛阳尘中春花秋月之佳趣；西宫南内，白发宫娥，一灯如穗，三五对坐，谈开元、天宝间遗事，谱《霓裳羽衣曲》；青门种瓜人，左对孺人，顾弄孺子，忆侯门似海珠履杂遝之盛事；拿破仑之流于厄蔑，阿剌飞之幽于锡兰，与三两监守吏或过访之好事者，道当年短刀匹马驰骋中原，席卷欧洲，血战海楼，一声叱吒、万国震恐之丰功伟烈，初而拍案，继而抚髀，终而揽镜。呜呼，面皴齿尽，白发盈把，颓然老矣！若是者，舍幽郁之外无心事，舍悲惨之外无天地，舍颓唐之外无日月，舍叹息之外无音声，舍待死之外无事业。美人豪杰且然，而况于寻常碌碌者耶？生平亲友，皆在墟墓；起居饮食，待命于人。今日且过，遑知他日；今年且过，遑恤明年：普天下灰心短气之事，未有甚于老大者。于此人也，而欲望以拿云之手段，回天之事功，挟山超海之意气，能乎不能？<br><br>呜呼！我中国其果老大矣乎？立乎今日以指畴昔：唐虞三代，若何之郅治；秦皇汉武，若何之雄杰；汉唐来之文学，若何之隆盛；康乾间之武功，若何之烜赫。历史家所铺叙，词章家所讴歌，何一非我国民少年时代良辰美景、赏心乐事之陈迹哉！而今颓然老矣！<mark>昨日割五城，明日割十城</mark>；处处雀鼠尽，夜夜鸡犬惊。十八省之土地财产，已为人怀中之肉；四百兆之父兄子弟，已为人注籍之奴，岂所谓“老大嫁作商人妇”者耶？呜呼！凭君莫话当年事，蕉萃韶光不忍看！楚囚相对，岌岌顾影，人命危浅，朝不虑夕。国为待死之国，一国之民为待死之民。万事付之奈何，一切凭人作弄，亦何足怪！<br><br>任公曰：我中国其果老大矣乎？是今日全地球之一大问题也。如其老大也，则是中国为过去之国，即地球上昔本有此国，而今渐澌灭，他日之命运殆将尽也。如其非老大也，则是中国为未来之国，即地球上昔未现此国，而今渐发达，他日之前程且方长也。欲断今日之中国为老大耶？为少年耶？则不可不先明“国”字之意义。夫国也者，何物也？有土地，有人民，以居于其土地之人民，而治其所居之土地之事，自制法律而自守之；有主权，有服从，人人皆主权者，人人皆服从者。夫如是，斯谓之完全成立之国，地球上之有完全成立之国也，自百年以来也。完全成立者，壮年之事也；未能完全成立而渐进于完全成立者，少年之事也。故吾得一言以断之曰：<mark>欧洲列邦在今日为壮年国，而我中国在今日为少年国</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_032" data-idx="0">
+    <div class="finding-text">首段从“老年人常思既往”一路排到“此老年与少年性格不同之大略也”，中间是同一组对举关系的换词重复（惟思既往也故…／惟思将来也故…，以及“老年人如…少年人如…”的连缀），通篇没有新事实、新论据或新区分，只有修辞变体在推进。读者读完这一段，得到的判断在第一句就已经给完了</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>此老年与少年性格不同之大略也</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_032" data-idx="1">
+    <div class="finding-text">第三段的转折交代得完整：先用“唐虞三代”“秦皇汉武”“汉唐文学”“康乾武功”铺历史荣光，再用“昨日割五城，明日割十城”直接落到当下，由“畴昔”到“而今”的落差有具体事项承接，不是一句空叹</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>昨日割五城，明日割十城</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_032" data-idx="2">
+    <div class="finding-text">第四段用“如其老大也……如其非老大也……”两组假设对举推进，每一组都紧跟自己的推论（过去之国／未来之国），然后用“国也者，何物也”给出定义，把判断交回定义而不是交回情绪，句与句之间的推理关系是连着的</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>欧洲列邦在今日为壮年国，而我中国在今日为少年国</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>全文只有情绪宣泄，没有任何论证，属于典型的空洞口号</span><small>第四段提出“完全成立之国”的四项条件（土地、人民、法律、主权与服从），并据此把欧洲列邦判为壮年国、中国判为少年国；这是有定义、有推断的论证，判为无论证属误报</small></div><div class="fc"><span>首段把老年人一概写成衰朽，属于年龄歧视，是文本的价值观缺陷</span><small>判据只判文本在结构、密度、衔接、具体性、意象、视角上的实现情况，不判作者立场是否可取；把价值判断写成文本缺陷属于维度错位</small></div><div class="fc"><span>“老年人如瘠牛，少年人如乳虎”等比喻彼此冲突，属比喻失当</span><small>这组比喻的功能就是制造对举（瘠牛对乳虎、字典对戏文），差异是对举成立的前提，不是冲突；判为比喻失当属误报</small></div>
+  </div>
+</section>
+<section class="case" id="GC_033" data-id="GC_033">
+  <header class="case-head">
+    <div class="case-no">33 / 46</div>
+    <h2>敬告青年·新陈代谢之论</h2>
+    <div class="meta">
+      <span class="tag">议论</span>
+      <span>敬告青年</span>
+      <span>陈独秀《敬告青年》开篇与第一义（段 3–6，自“窃以少年老成”至“立德立功，首当辨此”）</span>
+      <span>1331 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">窃以少年老成，中国称人之语也；年长而勿衰（Keep young while growing old.），英美人相勗之辞也。此亦东西民族涉想不同现象趋异之一端欤？青年如初春，如朝日，如百卉之萌动，如利刃之新发于硎，人生最可宝贵之时期也。青年之于社会，犹新鲜活泼细胞之在人身，新陈代谢，陈腐朽败者无时不在天然淘汰之途，与新鲜活泼者以空间之位置及时间之生命。人身遵新陈代谢之道则健康，<mark>陈腐朽败之细胞充塞人身则人身死</mark>；社会遵新陈代谢之道则隆盛，陈腐朽败之分子充塞社会则社会亡。<br><br>准斯以谈，吾国之社会，其隆盛耶？抑将亡耶？非予之所忍言者。彼陈腐朽败之分子，一听其天然之淘汰，雅不愿以如流之岁月，与之说短道长，希冀其脱胎换骨也。予所欲涕泣陈词者，惟属望于新鲜活泼之青年，有以自觉而奋斗耳！自觉者何？自觉其新鲜活泼之价值与责任，而自视不可卑也。奋斗者何？奋其智能，力排陈腐朽败者以去，视之若仇敌，若洪水猛兽，而不可与为邻，而不为其菌毒所传染也。呜呼！吾国之青年，其果能语于此乎？吾见夫<mark>青年其年龄，而老年其身体者十之五焉</mark>，青年其年龄或身体，而老年其脑神经者十之九焉。华其发，泽其容，直其腰，广其膈，非不俨然青年也，及叩其头脑中所涉想所怀抱，无一不与彼陈腐朽败者为一丘之貉。其始也未常不新鲜活泼，寖假而为陈腐朽败分子所同化者有之，寖假而畏陈腐朽败分子势力之庞大，瞻顾依回，不敢明目张胆作顽狠之抗斗者有之。充塞社会之空气，无往而非陈腐朽败焉，求些少之新鲜活泼者，以慰吾人窒息之绝望，亦杳不可得。循斯现象，于人身则必死，于社会则必亡。欲救此病，非太息咨嗟之所能济，是在一二敏于自觉勇于奋斗之青年，发挥人间固有之智能，决择人间种种之思想。孰为新鲜活泼，而适于今世之争存？孰为陈腐朽败，而不容留置于脑里？利刃断铁，快刀理麻，决不作牵就依违之想，自度度人，社会庶几其有清宁之日也。青年乎！其有以此自任者乎？若夫明其是非，以供决择，谨陈六义，幸平心察之。<br><br>一、自主的而非奴隶的<br><br>等一人也，各有自主之权，绝无奴隶他人之权利，亦绝无以奴自处之义务。奴隶云者，古之昏弱对于强暴之横夺，而失其自由权利者之称也。自人权平等之说兴，奴隶之名，非血气所忍受。世称近世欧洲历史为‘解放历史’，破坏君权，求政治之解放也；否认教权，求宗教之解放也；均产说兴，求经济之解放也；<mark>女子参政运动，求男权之解放也</mark>。解放云者，脱离夫奴隶之羁绊，以完其自主自由之人格之谓也。我有手足，自谋温饱；我有口舌，自陈好恶；我有心思，自崇所信，绝不认他人之越俎，亦不应主我而奴他人。盖自认为独立自主之人格以上，一切操行，一切权利，一切信仰，唯有听命各自固有之智能，断无盲从隶属他人之理。非然者，忠孝节义，奴隶之道德也 （德国大哲尼采（Nietzsche.）别道德为二类：有独立心而勇敢者曰贵族道德（Morality of Noble.）；谦逊而服从者曰奴隶道德（Morality of Slave.））；轻刑薄赋，奴隶之幸福也；称颂功德，奴隶之文章也；拜爵赐第，奴隶之光荣也；丰碑高墓，奴隶之纪念物也，以其是非荣辱，听命他人，不以自身为本位，则个人独立平等之人格，消灭无存，其一切善恶行为，势不能诉之自身意志而课以功过，谓之奴隶，谁曰不宜？立德立功，首当辨此。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_033" data-idx="0">
+    <div class="finding-text">第四段是一个五百字上下的整段：从“吾国之社会，其隆盛耶”的自问到“青年其年龄，而老年其身体者十之五焉”的观察，再到“欲救此病，非太息咨嗟之所能济”的呼吁，全部是判断与感叹，没有一个人物做出可观察的动作、没有一处场景、没有一件有了结果的事。段落靠“自觉者何？奋斗者何？”的自问自答维持推进，读者在原地被反复动员</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>青年其年龄，而老年其身体者十之五焉</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_033" data-idx="1">
+    <div class="finding-text">第三段的类比推理交代完整：先把青年比作初春、朝日、百卉萌动、新发于硎的利刃，再把青年在社会中的位置比作细胞在人身，然后落到“新陈代谢”这一共同机制上，结论“细胞充塞则人身死／分子充塞则社会亡”是类比推出来的，不是喊出来的</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>陈腐朽败之细胞充塞人身则人身死</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_033" data-idx="2">
+    <div class="finding-text">第六段用四组同构句铺开“解放”的所指：破坏君权求政治解放、否认教权求宗教解放、均产说兴求经济解放、女子参政求男权解放。四句共享同一个主语关系（什么被解除），每组都回扣前文“奴隶云者”的定义，句与句之间不靠连接词也接得住</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>女子参政运动，求男权之解放也</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>全文是空洞的口号，没有任何论证</span><small>第三段有完整的细胞新陈代谢类比并据此推出社会存亡的结论，第六段用欧洲解放史四例界定“解放”，第四段还提出“自觉”“奋斗”两个可操作的要求；判为无论证属误报</small></div><div class="fc"><span>文中夹用英文与尼采的学说，属于掉书袋，破坏文体统一</span><small>括号内的英文与尼采道德二分是为“奴隶道德”提供出处，属于论证材料而非装饰；判为掉书袋是把知识引用误当文体问题</small></div><div class="fc"><span>把青年与老年对立起来，是年龄偏见，应判为价值观缺陷</span><small>判据只判文本在结构、密度、衔接、具体性、意象、视角上的实现情况；作者立场是否可取不属于六维判定范围</small></div>
+  </div>
+</section>
+<section class="case" id="GC_034" data-id="GC_034">
+  <header class="case-head">
+    <div class="case-no">34 / 46</div>
+    <h2>天工开物·自序的著书之由</h2>
+    <div class="meta">
+      <span class="tag">说明文</span>
+      <span>天工开物</span>
+      <span>宋应星《天工开物》自序（段 1–6，自“天覆地载”至“于此书于功名进取毫不相关也”）</span>
+      <span>512 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">天覆地载，物数号万，而事亦因之曲成而不遗。岂人力也哉？<br><br>事物而既万矣，必待口授目成而后识之，其与几何？万事万物之中，其无益生人与有益者，各载其半。<br><br>世有聪明博物者，稠人推焉。乃枣梨之花未赏，而臆度“楚萍”；釜鬵之范鲜经，而侈谈“莒鼎”；<mark>画工好图鬼魅而恶犬马</mark>，即郑侨、晋华，岂足为烈哉？<br><br>幸生圣明极盛之世，滇南车马，纵贯辽阳；岭徼宦商，衡游蓟北。为方万里中，何事何物不可见见闻闻？若为士而生东晋之初、南宋之季，共视燕、秦、晋、豫方物，已成夷产，从互市而得裘帽，何殊肃慎之矢也？且夫王孙帝子生长深宫，御厨玉粒正香，而欲观耒耜，尚宫锦衣方剪，而想像机丝。当斯时也，披图一观，如获重宝矣！<br><br>年来著书一种，名曰《天工开物卷》。<mark>伤哉贫也</mark>，欲购奇考证，而乏洛下之资；欲招致同人，商略赝真，而缺陈思之馆。随其孤陋见闻，藏诸方寸而写之，岂有当哉？吾友凃佰聚先生，诚意动天，心灵格物。凡古今一言之嘉，寸长可取，必勤勤恳恳而契合焉。昨岁《画音归正》，由先生而授梓．兹有后命，复取此卷而继起为之，其亦夙缘之所召哉！卷分前后，乃“贵五谷而贱金玉”之义。《观象》、《乐律》二卷，其道太精，自揣非吾事，故临梓删去。<br><br>丐大业文人，弃掷案头，<mark>此书于功名进取毫不相关也</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_034" data-idx="0">
+    <div class="finding-text">序文的功能序列清楚：起于“物数号万”的可识之辩，转于讥讽“枣梨之花未赏而臆度楚萍”的空谈博物，承于自述著书条件之窘（“伤哉贫也”），收于一句独立成段的定位——此书与功名进取无关。四段各司一职，没有一段兼做两件事而无法归类</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>伤哉贫也</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_034" data-idx="1">
+    <div class="finding-text">收束句「丐大业文人，弃掷案头，此书于功名进取毫不相关也」不总结全文，而是主动撇清读者群：把一部技术书从科举语境里摘出来。这一句承担了序文最要紧的定位功能，不是客套的自谦</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>此书于功名进取毫不相关也</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_034" data-idx="2">
+    <div class="finding-text">段 3 两组对句内部咬得很紧：「枣梨之花未赏，而臆度楚萍」「釜鬵之范鲜经，而侈谈莒鼎」，每句都是“没做过 A，却大谈 A 的远端”，句与句共享同一套对照逻辑，再用“画工好图鬼魅而恶犬马”把话挑明</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>画工好图鬼魅而恶犬马</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>自序通篇议论，没有一处具体器物，因此属于空泛表态</span><small>段 4 举滇南车马、岭徼宦商、肃慎之矢、王孙帝子观耒耜等具体物事，段 3 举枣梨之花、釜鬵之范、莒鼎，全是可指认的器物与场景；判为空泛属误报</small></div><div class="fc"><span>序文末尾自贬“岂有当哉”，说明作者对本书没有把握，属于论述不自信的缺陷</span><small>“伤哉贫也”“岂有当哉”是自序文体里的谦辞，紧接着就交代卷次取舍（删去《观象》《乐律》二卷）与“贵五谷而贱金玉”的编例，是信息而非态度</small></div><div class="fc"><span>文中插入友人涂佰聚刊刻一段，与著书主题无关，应视为闲笔</span><small>这一段交代刊刻缘起（《画音归正》既已授梓，此卷继起），属于自序必须说明的出版事实；删去会使“卷分前后”的编例无处落脚</small></div>
+  </div>
+</section>
+<section class="case" id="GC_035" data-id="GC_035">
+  <header class="case-head">
+    <div class="case-no">35 / 46</div>
+    <h2>天工开物·稻种与秧田</h2>
+    <div class="meta">
+      <span class="tag">说明文</span>
+      <span>天工开物</span>
+      <span>宋应星《天工开物·乃粒·稻》（段 0–5，自“凡稻种最多”至“又一异也”）</span>
+      <span>611 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">凡稻种最多。不粘者，禾曰秔，米曰粳。粘者，禾曰稌，米曰糯。（南方无粘黍，酒皆糯米所为。）质本粳而晚收带粘（俗名婺源光之类）不可为酒，只可为粥者，又一种性也。凡稻谷形有长芒、短芒、（江南名长芒者曰浏阳早，短芒者曰吉安早。）长粒、尖粒、圆顶、扁面不一，其中米色有雪白、牙黄、大赤、半紫、杂黑不一。<br><br>温种之期，最早者春分以前，名为社种，（遇天寒有冻死不生者。）最迟者后于清明。凡播种，先以稻麦稿包浸数日，俟其生芽，撒于田中，生出寸许，其名曰秧。秧生三十日即拨起分栽。若田亩逢旱干、水溢，不可插秧。秧过期，老而长节，即栽于亩中，生谷数粒，结果而已。凡秧田一亩所生秧，<mark>供移栽二十五亩</mark>。<br><br>凡秧既分栽后，早者七十日即收获，（粳有救公饥、喉下急，糯有金包银之类，方语百千，不可殚述。）最迟者历夏及冬二百日方收获。其冬季播种、仲夏即收者，则广南之稻，地无霜雪之故。<br><br>凡稻旬日失水，即愁旱干。夏种冬收之谷，必山间源水不绝之亩，其种谷亦耐久，其土脉亦寒，不催苗也。湖滨之田，待夏潦已过，六月方栽者，其秧立夏播种，撒藏高亩之上，以待时也。<br><br>南方平原，田多一岁两栽两获者。其再栽秧，俗名晚糯，非粳类也。六月刈初禾，耕治老稿田，插再生秧。其秧清明时已偕早秧撒布。早秧一日无水即死，<mark>此秧历四，五两月</mark>，任从烈日旱干无忧，此一异也。凡再植稻，遇秋多晴，则汲灌与稻相终始。农家勤苦，为春酒之需也。<br><br><mark>凡稻旬日失水则死期至</mark>，幻出旱稻一种，粳而不粘者，即高山而插，又一异也。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_035" data-idx="0">
+    <div class="finding-text">六段各管一件事，互不兼工：段 0 辨稻种（秔与稌、粳与糯，兼及米色），段 1 讲浸种与秧期，段 2 讲分栽后的收获期，段 3 讲缺水与山田湖田的差别，段 4 讲双季连作，段 5 讲旱稻。每段都能归入单一说明功能，没有一段既讲种又讲收</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>凡稻旬日失水则死期至</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_035" data-idx="1">
+    <div class="finding-text">段 4 的指代链是闭合的：先说“其再栽秧，俗名晚糯”，紧接着“其秧清明时已偕早秧撒布”，再“此秧历四，五两月”，最后“此一异也”。每个“其／此”都能在上文找到唯一先行词，读者不需要猜指的是哪一茬稻</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>此秧历四，五两月</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_035" data-idx="2">
+    <div class="finding-text">说明不靠形容词，靠可指认的名物与剂量：米色分雪白、牙黄、大赤、半紫、杂黑；长芒者江南叫浏阳早、短芒者叫吉安早；一亩秧供移栽二十五亩；早者七十日收、迟者二百日收。判据要的是“能指认的实体与可核对的数”，这里给足了</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>供移栽二十五亩</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>通篇是农事术语的堆砌，缺少可感知的细节，属具体性不足</span><small>米色五等、芒形两类、秧龄三十日、一亩供二十五亩、七十日至二百日，都是可指认、可核对的具体项；术语是这类说明文的实体，不是抽象词</small></div><div class="fc"><span>段与段之间没有过渡句，属于衔接断裂</span><small>各段以“凡……”起首，是古代农书的条目体例，段间靠类目并列而非连接词承接；判为断裂是把议论文的衔接标准套到条目体上</small></div><div class="fc"><span>文中夹注（如“江南名长芒者曰浏阳早”）打断正文，属冗余</span><small>夹注给的是异名与地域，正是跨地域读者需要的对照信息；删去会让“长芒”“短芒”失去可核对的所指</small></div>
+  </div>
+</section>
+<section class="case" id="GC_036" data-id="GC_036">
+  <header class="case-head">
+    <div class="case-no">36 / 46</div>
+    <h2>匆匆·日子的形状</h2>
+    <div class="meta">
+      <span class="tag">抒情散文</span>
+      <span>匆匆</span>
+      <span>朱自清《匆匆》全文（段 1–5，自“燕子去了”至“我们的日子为甚么一去不复返呢”）</span>
+      <span>616 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">燕子去了，有再来的时候；杨柳枯了，有再青的时候；桃花谢了，有再开的时候。但是，聪明的，你告诉我，我们的日子为什么一去不复返呢？——是有人偷了他们罢：那是谁？又藏在何处呢？是他们自己逃走了罢：现在又到了那里呢？<br><br>我不知道他们给了我多少日子；但我的手确乎是渐渐空虚了。在默默里算着，八千多日子已经从我手中溜去；像针尖上一滴水滴在大海里，我的日子滴在时间的流里，没有声音，也没有影子。我不禁头涔涔而泪澘澘了。<br><br>去的尽管去了，来的尽管来着；去来的中间，又怎样地匆匆呢？早上我起来的时候，<mark>小屋里射进两三方斜斜的太阳</mark>。太阳他有脚啊，轻轻悄悄地挪移了；我也茫茫然跟着旋转。于是——洗手的时候，日子从水盆里过去；吃饭的时候，日子从饭碗里过去；默默时，便从凝然的双眼前过去。我觉察他去的匆匆了，伸出手遮挽时，他又从遮挽着的手边过去，天黑时，我躺在床上，<mark>他便伶伶俐俐地从我身上跨过</mark>，从我脚边飞去了。等我睁开眼和太阳再见，这算又溜走了一日。我掩着面叹息。但是新来的日子的影儿又开始在叹息里闪过了。<br><br>在逃去如飞的日子里，在千门万户的世界里的我能做些什么呢？只有徘徊罢了，只有匆匆罢了；在八千多日的匆匆里，除徘徊外，又賸些什么呢？过去的日子如轻烟，被微风吹散了，如薄雾，被初阳蒸融了；我留着些什么痕迹呢？我何曾留着像游丝样的痕迹呢？我赤裸裸来到这世界，转眼间也将赤裸裸的回去罢？但不能平的，为什么偏要白白走这一遭啊？<br><br>你聪明的，告诉我，<mark>我们的日子为甚么一去不复返呢</mark>？</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_036" data-idx="0">
+    <div class="finding-text">“日子”被反复做成一个可以被携走的具体物：从水盆里过去、从饭碗里过去、从凝然的双眼前过去、从身上跨过、从脚边飞去。同一意象在四段里换了五次形态（水、饭、目光、跨过的人、飞走的东西），每次都不是简单复读，而是把“抓不住”换一种身体经验再说一遍</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>他便伶伶俐俐地从我身上跨过</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_036" data-idx="1">
+    <div class="finding-text">抽象的时间被落在可指认的物件与动作上：“小屋里射进两三方斜斜的太阳”“洗手的时候”“吃饭的时候”“我掩着面叹息”。没有一处用“光阴似箭”“岁月如流”这类现成成语来代替观察</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>小屋里射进两三方斜斜的太阳</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_036" data-idx="2">
+    <div class="finding-text">结尾是回环收束：段 5「你聪明的，告诉我，我们的日子为甚么一去不复返呢？」与段 1 的首问同构，但主语从“我们的日子”退回到同一个问题本身，问句收尾而不给答案，全篇因此闭合</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>我们的日子为甚么一去不复返呢</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>开头连用燕子、杨柳、桃花三个比喻，属于陈词滥调</span><small>三句都用“去了／枯了／谢了”与“再来／再青／再开”作反衬，第四句才把“日子”推进“一去不复返”，比喻是结构上的对照装置，不是装饰</small></div><div class="fc"><span>通篇只有抒情，没有具体内容</span><small>段 2 有“八千多日子”这一可计的量，段 3 有洗脸、吃饭、躺下、睁眼等可指认的动作序列，具体性是落在动作上的</small></div><div class="fc"><span>结尾重复开头的问题，是结构上的原地踏步</span><small>首尾同构是回环收束：同一问句在经历了中间三段的具体化之后，重量已经不同；判为重复是把回环当成复读</small></div>
+  </div>
+</section>
+<section class="case" id="GC_037" data-id="GC_037">
+  <header class="case-head">
+    <div class="case-no">37 / 46</div>
+    <h2>湖心亭看雪·一痕与一粒</h2>
+    <div class="meta">
+      <span class="tag">抒情散文</span>
+      <span>湖心亭看雪</span>
+      <span>张岱《湖心亭看雪》全文（段 1–4，自“崇祯五年十二月”至“更有痴似相公者”）</span>
+      <span>196 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">崇祯五年十二月，余住西湖。大雪三日，湖中人鸟声俱绝。<br><br>是日更定矣，余拿一小舟，拥毳衣炉火，独往湖心亭看雪。雾凇沆砀，天与云、与山、与水，上下一白。湖上影子，惟长堤一痕，湖心亭一点，<mark>与余舟一芥</mark>，舟中人两三粒而已。<br><br>到亭上，有两人铺毡对坐，一童子烧酒，炉正沸。见余大喜曰：“湖中焉得更有此人！”拉余同饮，余强饮三大白而别。<mark>问其姓氏，是金陵人，客此</mark>。<br><br>及下船，舟子喃喃曰：“莫说相公痴，<mark>更有痴似相公者</mark>。”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_037" data-idx="0">
+    <div class="finding-text">雪景不靠形容词，靠量词把空间压成尺寸：「长堤一痕，湖心亭一点，与余舟一芥，舟中人两三粒」——痕、点、芥、粒四个量词各自对应一种实物的轮廓，读者据此能排出远近大小，这是具象细节的样板写法</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>与余舟一芥</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_037" data-idx="1">
+    <div class="finding-text">全篇锁在“余”的知觉里：住处、舟、衣、火、所见、所饮都由第一人称承担；亭上二人的姓氏不是叙述者凭空知道，而是「问其姓氏」问出来的。视角没有越出“我”能听到看到的范围</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>问其姓氏，是金陵人，客此</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_037" data-idx="2">
+    <div class="finding-text">结尾用舟子一句话收束：「莫说相公痴，更有痴似相公者」。前面写“独往”的孤，收在“更有痴似”的不孤，一句话把整篇的自况翻了个面，收束句同时承担了转意</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>更有痴似相公者</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>篇幅不足三百字，缺少完整情节，属于结构缺陷</span><small>这是小品，功能是场景加一句收束，不承担情节推进；用长篇小说的完整性标准判它是错置标准</small></div><div class="fc"><span>结尾由舟子发议论，属于叙述者越界干预</span><small>舟子的话发生在场景内（下船时“喃喃曰”），是第一人称听到的原话，不是叙述者跳出来评论；判为越界属误报</small></div><div class="fc"><span>连续使用“一痕、一点、一芥、两三粒”是量词堆砌，属于修辞过度</span><small>四个量词各自对应不同实物的轮廓尺度，删掉任何一个都会让远近关系失真；这是以少胜多的压缩，不是堆砌</small></div>
+  </div>
+</section>
+<section class="case" id="GC_038" data-id="GC_038">
+  <header class="case-head">
+    <div class="case-no">38 / 46</div>
+    <h2>登高·落木与长江</h2>
+    <div class="meta">
+      <span class="tag">诗词</span>
+      <span>登高</span>
+      <span>杜甫《登高》全文（段 2–9，八句七律）</span>
+      <span>64 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">风急天高猿啸哀，<br><br>渚清沙白鸟飞回。<br><br><mark>无边落木萧萧下</mark>，<br><br><mark>不尽长江滚滚来</mark>。<br><br>万里悲秋常作客，<br><br><mark>百年多病独登台</mark>。<br><br>艰难苦恨繁霜鬓，<br><br>潦倒新停浊酒杯。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_038" data-idx="0">
+    <div class="finding-text">四句之内视听交替：风急、天高、猿啸（听），渚清、沙白、鸟飞回（视），落木萧萧（视兼听），长江滚滚（视兼听）。每一句都给出可感的单一通道，不是笼统的“秋景萧瑟”</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>无边落木萧萧下</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_038" data-idx="1">
+    <div class="finding-text">「落木」与「长江」是一组对举意象：一个是无边而落尽的秋叶，一个是不尽而滚滚的江水，短的与被时间带走的对撞长的与不息的；这一对意象随后被“万里悲秋”“百年多病”接着用，空间的远与时间的久各承一半</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>不尽长江滚滚来</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_038" data-idx="2">
+    <div class="finding-text">全篇不出现“我”，但动作与处境都由一个在场者承担：登台、望落木、看长江、停浊酒杯。人称隐去而视角不散，读者始终站在那个登高的人身后</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>百年多病独登台</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>相邻句之间没有任何连接词，属于衔接断裂</span><small>诗歌体不适用连贯衔接判据（C1/C2/C3）：律诗靠对仗与意象并置衔接，不靠关系连接词。用散文的衔接标准判诗，是判据误用</small></div><div class="fc"><span>全诗不出现“我”，视角含混，读者不知道是谁在登台</span><small>“独登台”“新停浊酒杯”都是第一人称隐含动作，视角稳定在登高者身上；不出现代词是有意隐去，不是含混</small></div><div class="fc"><span>四联全用对仗，形式僵化，属于堆砌辞藻</span><small>对仗在此承担时空对照（无边／不尽、万里／百年），形式与语义同构；判为僵化是把格律当装饰</small></div>
+  </div>
+</section>
+<section class="case" id="GC_039" data-id="GC_039">
+  <header class="case-head">
+    <div class="case-no">39 / 46</div>
+    <h2>雨巷·丁香的三种感官</h2>
+    <div class="meta">
+      <span class="tag">诗词</span>
+      <span>雨巷</span>
+      <span>戴望舒《雨巷》全文（段 0–41，自“撑着油纸伞”至末节“结着愁怨的姑娘”）</span>
+      <span>294 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">撑着油纸伞，独自<br><br>彷徨在悠长，悠长<br><br>又寂寥的雨巷，<br><br>我希望逢着<br><br>一个丁香一样地<br><br>结着愁怨的姑娘。<br><br>她是有<br><br>丁香一样的颜色，<br><br>丁香一样的芬芳，<br><br>丁香一样的忧愁，<br><br>在雨中哀怨，<br><br>哀怨又彷徨；<br><br>她彷徨在这寂寥的雨巷，<br><br>撑着油纸伞<br><br>像我一样，<br><br>像我一样地<br><br>默默彳亍着，<br><br>冷漠，凄清，又惆怅。<br><br>她静默地走近<br><br>走近，又投出<br><br>太息一般的眼光，<br><br>她飘过<br><br>像梦一般地，<br><br>像梦一般地凄惋迷茫。<br><br>像梦中飘过<br><br>一枝丁香地，<br><br>我身旁飘过这女郎；<br><br>她静默地远了，远了，<br><br>到了颓圯的篱墙，<br><br>走尽这雨巷。<br><br><mark>在雨的哀曲里</mark>，<br><br>消了她的颜色，<br><br>散了她的芬芳，<br><br>消散了，甚至她的<br><br>太息般的眼光，<br><br><mark>她丁香般的惆怅</mark>。<br><br>撑着油纸伞，独自<br><br>彷徨在悠长，悠长<br><br>又寂寥的雨巷，<br><br><mark>我希望飘过</mark><br><br>一个丁香一样地<br><br>结着愁怨的姑娘。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_039" data-idx="0">
+    <div class="finding-text">“丁香”是全诗的枢纽意象，且每次复现都换一种官能：先只是“丁香一样地结着愁怨”的整体比附，再分成“丁香一样的颜色”“丁香一样的芬芳”“丁香一样的忧愁”三路，到结尾只剩“她丁香般的惆怅”。同一意象从可看的颜色、可闻的芬芳，退到不可捉摸的情绪，形态变化正好对应姑娘从走近到消散的过程</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>M2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>她丁香般的惆怅</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_039" data-idx="1">
+    <div class="finding-text">三个感官通道各有落点：视觉是油纸伞、颓圯的篱墙、雨的巷；嗅觉是“丁香一样的芬芳”；听觉是“在雨的哀曲里”。抒情不悬空，每一种情绪都挂在一个能听见或看见的东西上</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>在雨的哀曲里</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_039" data-idx="2">
+    <div class="finding-text">首尾两节几乎逐字同构，只把“我希望逢着”换成“我希望飘过”：一字之差把“遇见”的期待改成“经过”的回望，回环因此不是复读，而是把同一场景在经历之后重说一遍</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>我希望飘过</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>全诗反复出现“丁香”和“雨巷”，意象单一，属于词汇贫乏</span><small>复现正是意象建构的手段：丁香在同一首诗里承担颜色、芬芳、忧愁三种所指，末节又收束为惆怅，单一意象被写出了层次，不是贫乏</small></div><div class="fc"><span>句与句之间没有连接词，属于衔接断裂</span><small>诗歌体不适用连贯衔接判据（C1/C2/C3）：分行与跨行停顿本身就是诗的衔接方式，用散文的连接词标准判诗是判据误用</small></div><div class="fc"><span>一句诗被拆成好几行，形式零碎，属于排版缺陷</span><small>跨行（enjambment）把“悠长，悠长／又寂寥的雨巷”的拖长感做进停顿里，是诗行节奏的一部分，不是排版问题</small></div>
+  </div>
+</section>
+<section class="case" id="GC_040" data-id="GC_040">
+  <header class="case-head">
+    <div class="case-no">40 / 46</div>
+    <h2>窦娥冤·逼婚一折的科白</h2>
+    <div class="meta">
+      <span class="tag">戏剧</span>
+      <span>窦娥冤</span>
+      <span>关汉卿《感天动地窦娥冤》第一折（段 15–25，自蔡婆回家至张驴儿父子下）</span>
+      <span>1508 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">〔云〕婆婆索钱去了，怎生这早晚不见回来？〔卜儿同孛老张驴儿上〕〔卜儿云〕你爷儿两个且在门首，等我先进去。〔张驴儿云〕奶奶，你先进去，就说女婿在门首哩。〔卜儿见正旦科〕〔正旦云〕奶奶回来了，你吃饭么？〔卜儿做哭科，云〕孩儿，你教我怎生说波！〔正旦唱〕<br><br>【一半儿】为甚么泪漫漫不住点儿流？莫不是为索债与人家惹争斗？我这里连忙迎接慌问候，他那里要说缘由。〔卜儿云〕羞人答答的，教我怎生说波！〔正旦唱〕<br><mark>则见他一半儿徘徊一半儿丑</mark>。<br><br>〔云〕婆婆，你为甚么烦恼啼哭那？〔卜儿云〕我问赛卢医讨银子去，他赚我到无人去处，行起凶来，要勒死我。亏了一个张老并他儿子张驴儿，救得我性命。那张老就要我招他做丈夫，因这等烦恼。〔正旦云〕婆婆，这个怕不中么？你再寻思咱：俺家里又不是没有饭吃，没有衣穿，又不是少欠钱债，被人催逼不过；况你年纪高大，六十以外的人，怎生又招丈夫那？〔卜儿云〕孩儿也，你说的岂不是？但是我的性命全亏他这爷儿两个救的，我也曾说道：待我到家，多将些钱物酬谢你救命之恩。不知他怎生知道我家里有个媳妇儿，道我婆媳妇又没老公，他爷儿两个又没老婆，正是天缘天对。若不随顺他，依旧要勒死我。那时节我就慌张了，莫说自己许了他，连你也许了他。儿也，这也是出于无奈。〔正旦云〕婆婆，你听我说波。〔唱〕<br><br>【后庭花】遇时辰我替你忧，拜家堂我替你愁；梳著个霜雪般白鬏髻，怎将这云霞般锦帕兜？怪不的女大不中留。你如今六旬左右，可不道到中年万事休！旧恩爱一笔勾，新夫妻两意投，枉教人笑破口。<br><br>〔卜儿云〕我的性命都是他爷儿两个救的，事到如今，也顾不得别人笑话了。〔正旦唱〕<br><br>【青哥儿】你虽然是得他得他营救，须不是笋条笋条年幼，刬的便巧画蛾眉成配偶。想当初你夫主遗留，替你图谋，置下田畴，早晚羹粥，寒暑衣裘，满望你鳏寡孤独，无捱无靠，母子每到白头。公公也，则落得干生受。<br><br>〔卜儿云〕孩儿也，他如今只待过门，喜事匆匆的，教我怎生回得他去？〔正旦唱〕<br><br>【寄生草】你道他匆匆喜，我替你倒细细愁：愁则愁兴阑删咽不下交欢酒，愁则愁眼昏腾扭不上同心扣，愁则愁意朦胧睡不稳芙蓉褥。你待要笙歌引至画堂前，我道这姻缘敢落在他人后。<br><br>〔卜儿云〕孩儿也，再不要说我了，他爷儿两个都在门首等候，事以至此，不若连你也招了女婿罢。〔正旦云〕婆婆，你要招你自招，我并然不要女婿。〔卜儿云〕那个是要女婿的？争奈他爷儿两个自家捱过门来，教我如何是好？〔张驴儿云〕我们今日招过门去也。帽儿光光，今日做个新郎；袖儿窄窄，今日做个娇客。好女婿，好女婿，不枉了，不枉了。〔同孛老入拜科〕〔正旦做不理科，云〕兀那厮，靠后！〔唱〕<br><br>【赚煞】我想这妇人每休信那男儿口，婆婆也，怕没的贞心儿自守，到今日招著个村老子，领著个半死囚。<br>〔张驴儿做嘴脸科，云〕你看我爷儿两个这等身段，尽也选得女婿过。你不要错过了好时辰，我和你早些儿拜堂罢。〔正旦不理科，唱〕<br>则被你坑杀人燕侣莺俦。婆婆也，你岂不知羞！俺公公撞府冲州，挣䦷的铜斗儿家缘百事有。想著俺公公置就，怎忍教张驴儿情受？<br>〔张驴儿做扯正旦拜科，<mark>正旦推跌科</mark>，唱〕<br><mark>兀的不是俺没丈夫的妇女下场头</mark>。〔下〕<br><br>〔卜儿云〕你老人家不要恼懆，难道你有活命之恩，我岂不思量报你？只是我那媳妇儿气性最不好惹的，既是他不肯招你儿子，教我怎好招你老人家？我如今拼的好酒好饭养你爷儿两个在家，待我慢慢的劝化俺媳妇儿；待他有个回心转意，再做区处。〔张驴儿云〕这歪剌骨便是黄花女儿，刚刚扯的一把，也不消这等使性，平空的推了我一交，我肯干罢！就当面赌个誓与你：我今生今世不要他做老婆，我也不算好男子。〔词云〕美妇人我见过万千向外，不似这小妮子生得十分惫赖；我救了你老性命死里重生，怎割舍得不肯把肉身陪待？〔同下〕</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_040" data-idx="0">
+    <div class="finding-text">十一支曲白相间的段落各有单一功能：段 15 建场（婆归、张驴儿父子候在门首），段 17 由宾白交代前情，段 18–22 用四支曲轮番劝阻（抒情评述），段 23 张驴儿强行入拜构成转折，段 24 以唱词加推跌科收束。冲突、劝阻、爆发三件事不挤在同一段里</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>兀的不是俺没丈夫的妇女下场头</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_040" data-idx="1">
+    <div class="finding-text">关键冲突不用形容词，用一个动作完成：张驴儿「做扯正旦拜科」，窦娥「推跌科」，紧接一句「兀的不是俺没丈夫的妇女下场头」便下场。谁扯、谁推、推成什么样，全部由科介落在身体上，情绪不靠“愤怒”“悲愤”这类词交代</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>正旦推跌科</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_040" data-idx="2">
+    <div class="finding-text">宾白提出的问题由唱词接住：卜儿说「教我怎生说波」，正旦随即唱【一半儿】「为甚么泪漫漫不住点儿流」，把对方的窘迫改成自己的追问。白口推进事件、唱词给出内心，两者交替而不重复</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>则见他一半儿徘徊一半儿丑</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>唱词里连用「同心扣」「芙蓉褥」「燕侣莺俦」等婚俗比喻，属于词藻堆砌</span><small>这些比喻都出现在窦娥的抗拒里（「愁则愁眼昏腾扭不上同心扣」），用婚礼之物反写不愿嫁，比喻是态度而非装饰</small></div><div class="fc"><span>宾白与唱词反复叙述同一件事，属于冗余</span><small>宾白交代事件（赛卢医勒死蔡婆、张老相救、逼婚），唱词只给态度与劝阻，两者分工不同；把分工当重复是误判</small></div><div class="fc"><span>张驴儿的语言粗俗下流，属于语言控制缺陷</span><small>人物语言与其身份一致，且粗俗正是这场逼婚的压力来源；判据判的是叙述语言与人物语言的贴合度，不是雅俗</small></div>
+  </div>
+</section>
+<section class="case" id="GC_041" data-id="GC_041">
+  <header class="case-head">
+    <div class="case-no">41 / 46</div>
+    <h2>刺客列传·易水与秦廷</h2>
+    <div class="meta">
+      <span class="tag">叙事散文 / 史传</span>
+      <span>史記·刺客列傳</span>
+      <span>《史记·刺客列传》荆轲部分（段 42–44，自“于是太子豫求天下之利匕首”至“秦王不怡者良久”）</span>
+      <span>957 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">於是太子豫求天下之利匕首，得赵人徐夫人匕首，取之百金，使工以药焠之，以试人，血濡缕，人无不立死者。乃装为遣荆卿。燕国有勇士秦舞阳，年十三，杀人，人不敢忤视。乃令秦舞阳为副。<mark>荆轲有所待，欲与倶</mark>；其人居远未来，而为治行。顷之，未發，太子迟之，疑其改悔，乃復请曰：“日已尽矣，荆卿岂有意哉？丹请得先遣秦舞阳。”荆轲怒，叱太子曰：“何太子之遣？往而不返者，竖子也！且提一匕首入不测之彊秦，仆所以留者，待吾客与倶。今太子迟之，请辞决矣！”遂發。<br><br>太子及宾客知其事者，皆白衣冠以送之。至易水之上，既祖，取道，高渐离撃筑，荆轲和而歌，为变徴之声，士皆垂涙涕泣。又前而为歌曰：“风萧萧兮易水寒，壮士一去兮不復还！”復为羽声慨，士皆瞋目，<mark>發尽上指冠</mark>。於是荆轲就车而去，终已不顾。<br><br>遂至秦，持千金之资币物，厚遗秦王宠臣中庶子蒙嘉。嘉为先言於秦王曰：“燕王诚振怖大王之威，不敢举兵以逆军吏，願举国为内臣，比诸侯之列，给贡职如郡县，而得奉守先王之宗庙。恐惧不敢自陈，谨斩樊於期之头，及献燕督亢之地图，函封，燕王拜送于庭，使使以闻大王，唯大王命之。”秦王闻之，大喜，乃朝服，设九宾，见燕使者咸阳宫。荆轲奉樊於期头函，而秦舞阳奉地图柙，以次进。至陛，秦舞阳色变振恐，群臣怪之。荆轲顾笑舞阳，前谢曰：“北蕃蛮夷之鄙人，未尝见天子，故振慑。願大王少假借之，使得毕使於前。”秦王谓轲曰：“取舞阳所持地图。”轲既取图奏之，秦王發图，图穷而匕首见。因左手把秦王之袖，而右手持匕首揕之。未至身，秦王惊，自引而起，袖绝。拔剑，剑长，操其室。时惶急，剑坚，故不可立拔。荆轲逐秦王，秦王环柱而走。群臣皆愕，卒起不意，尽失其度。而秦法，<mark>群臣侍殿上者不得持尺寸之兵</mark>；诸郎中执兵皆陈殿下，非有诏召不得上。方急时，不及召下兵，以故荆轲乃逐秦王。而卒惶急，无以撃轲，而以手共搏之。是时侍医夏无且以其所奉药囊提荆轲也。秦王方环柱走，卒惶急，不知所为，左右乃曰：“王负剑！”负剑，遂拔以撃荆轲，断其左股。荆轲废，乃引其匕首以擿秦王，不中，中桐柱。秦王復撃轲，轲被八创。轲自知事不就，倚柱而笑，箕踞以骂曰：“事所以不成者，以欲生劫之，必得约契以报太子也。”於是左右既前杀轲，秦王不怡者良久。已而论功，赏群臣及当坐者各有差，而赐夏无且黄金二百溢，曰：“无且爱我，乃以药囊提荆轲也。”</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_041" data-idx="0">
+    <div class="finding-text">易水送别不写“悲壮”二字，全部落在可指认的物与身体反应上：白衣冠、击筑、变徵之声，「士皆垂泪涕泣」，再转羽声则「士皆瞋目，发尽上指冠」。情绪的两次转折各由一个声音调式加一个身体反应完成</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>發尽上指冠</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_041" data-idx="1">
+    <div class="finding-text">段 44 的每一环都交代了前因：蒙嘉受贿先行进言，所以秦王「朝服，设九宾」；秦法规定殿上不得持尺寸之兵，所以「以手共搏之」；夏无且以药囊提荆轲，才有拔剑的间隙。行刺的失败不是意外，是三条制度与人事条件叠出来的结果</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>群臣侍殿上者不得持尺寸之兵</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_041" data-idx="2">
+    <div class="finding-text">三段各管一件互不重复的事：段 42 备匕首、定副使、催行，段 43 送别，段 44 入秦行刺。准备段的争执（荆轲待客、太子疑其改悔）为后文的「欲生劫之」埋下动机，不越界去写送别与行刺的情节</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>荆轲有所待，欲与倶</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>易水送别一段过于简省，应展开抒情才够分量</span><small>史传的职责是记事，情绪由击筑、垂泪、瞋目、发上指冠四个动作交代完毕；要求它抒情，是拿抒情文的标准要求叙事文</small></div><div class="fc"><span>插入夏无且以药囊提荆轲、事后赏黄金二百溢，属于无关枝节</span><small>药囊是秦王得以拔剑的直接原因，赏赐则坐实此事；删掉这两处，秦王脱身就没有交代</small></div><div class="fc"><span>荆轲失败写得仓促，属于结构失衡</span><small>从图穷匕见到被八创共十余个动作，每一环都有因果（袖绝、剑长、环柱、无兵、药囊）；仓促感来自事件本身的急，不是叙述的漏</small></div>
+  </div>
+</section>
+<section class="case" id="GC_042" data-id="GC_042">
+  <header class="case-head">
+    <div class="case-no">42 / 46</div>
+    <h2>从百草园到三味书屋·乐园</h2>
+    <div class="meta">
+      <span class="tag">叙事散文 / 史传</span>
+      <span>朝花夕拾·從百草園到三味書屋</span>
+      <span>鲁迅《朝花夕拾·从百草园到三味书屋》（段 1–8，自“我家的后面有一个很大的园”至“来不及等它走到中间去”）</span>
+      <span>1239 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">我家的后面有一个很大的园，相传叫作百草园。现在是早已并屋子一起卖给朱文公的子孙了，连那最末次的相见也已经隔了七八年，其中似乎确凿只有一些野草；但那时却是我的乐园。<br><br>不必说碧绿的菜畦，光滑的石井栏，高大的皂荚树，紫红的桑椹；也不必说鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上，轻捷的叫天子（云雀）忽然从草间直窜向云霄里去了。单是周围的短短的泥墙根一带，就有无限趣味。油蛉在这里低唱，蟋蟀们在这里弹琴。翻开断砖来，有时会遇见蜈蚣；还有斑蝥，倘若用手指按住它的脊梁，便会拍的一声，从后窍喷出一阵烟雾。何首乌藤和木莲藤缠络著，木莲有莲房一般的果实，何首乌有拥肿的根。有人说，何首乌根是有像人形的，吃了便可以成仙，我于是常常拔它起来，牵连不断地拔起来，也曾因此弄坏了泥墙，却从来没有见过有一块根像人样。如果不怕刺，还可以摘到覆盆子，像小珊瑚珠攒成的小球，<mark>又酸又甜，色味都比桑椹要好得远</mark>。<br><br>长的草里是不去的，因为相传这园里有一条很大的赤练蛇。<br><br><mark>长妈妈曾经讲给我一个故事听</mark>：先前，有一个读书人住在古庙里用功，晚间，在院子里纳凉的时候，突然听到有人在叫他。答应著，四面看时，却见一个美女的脸露在墙头上，向他一笑，隐去了。他很高兴；但竟给那走来夜谈的老和尚识破了机关。说他脸上有些妖气，一定遇见“美女蛇”了；这是人首蛇身的怪物，能唤人名，倘一答应，夜间便要来吃这人的肉的。他自然吓得要死，而那老和尚却道无妨，给他一个小盒子，说只要放在枕边，便可高枕而卧。他虽然照样办，却总是睡不著，——当然睡不著的。到半夜，果然来了，沙沙沙！门外像是风雨声。他正抖作一团时，却听得豁的一声，一道金光从枕边飞出，外面便什么声音也没有了，那金光也就飞回来，敛在盒子里。后来呢？后来，老和尚说，这是飞蜈蚣，它能吸蛇的脑髓，美女蛇就被它治死了。<br><br>结末的教训是：所以倘有陌生的声音叫你的名字，你万不可答应他。<br><br>这故事很使我觉得做人之险，夏夜乘凉，往往有些担心，不敢去看墙上，而且极想得到一盒老和尚那样的飞蜈蚣。走到百草园的草丛旁边时，也常常这样想。但直到现在，总还没有得到，但也没有遇见过赤练蛇和美女蛇。叫我名字的陌生声音自然是常有的，然而都不是美女蛇。<br><br><mark>冬天的百草园比较的无味</mark>；雪一下，可就两样了。拍雪人（将自己的全形印在雪上）和塑雪罗汉需要人们鉴赏，这是荒园，人迹罕至，所以不相宜，只好来捕鸟。薄薄的雪，是不行的；总须积雪盖了地面一两天，鸟雀们久已无处觅食的时候才好。扫开一块雪，露出地面，用一支短棒支起一面大的竹筛来，下面撒些秕谷，棒上繋一条长绳，人远远地牵著，看鸟雀下来啄食，走到竹筛底下的时候，将绳子一拉，便罩住了。但所得的是麻雀居多，也有白颊的“张飞鸟”，性子很躁，养不过夜的。<br><br>这是闰土的父亲所传授的方法，我却不大能用。明明见它们进去了，拉了绳，跑去一看，却什么都没有，费了半天力，捉住的不过三四只。闰土的父亲是小半天便能捕获几十只，装在叉袋里叫著撞著的。我曾经问他得失的缘由，他只静静地笑道：你太性急，来不及等它走到中间去。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_042" data-idx="0">
+    <div class="finding-text">段 2 一段之内视听触味四路并用：碧绿菜畦、紫红桑椹、肥胖黄蜂（视）；鸣蝉长吟、油蛉低唱、蟋蟀弹琴（听）；按住斑蝥脊梁「拍的一声」喷出烟雾（触而带响）；覆盆子「又酸又甜」（味）。乐园不是被评价出来的，是被逐样感知出来的</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>又酸又甜，色味都比桑椹要好得远</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_042" data-idx="1">
+    <div class="finding-text">各段功能分明：段 1 建场并点出“乐园”，段 2 铺陈园中物事，段 3 一句转折（长草里不去），段 4–6 由美女蛇故事解释这层怕，段 7 「冬天的百草园比较的无味」再转折到捕鸟，段 8 以闰土父亲的方法收束。两次转折都把场景换掉，不靠总结句过渡</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S2</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>冬天的百草园比较的无味</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_042" data-idx="2">
+    <div class="finding-text">全篇锁在童年“我”的可知范围内，凡超出的事都标出来源：「相传叫作百草园」「有人说，何首乌根是有像人形的」「长妈妈曾经讲给我一个故事」「这是闰土的父亲所传授的方法」。叙述者不假装知道别人的心思，成年的“我”只在段 1 插入一句“连那最末次的相见也已经隔了七八年”</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>长妈妈曾经讲给我一个故事听</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>段 2 罗列菜畦、石井栏、皂荚树等名物，属景物堆砌，信息密度低</span><small>这一串名词由「不必说……也不必说……单是」三级递进收束到泥墙根一带，是有层次的取舍，删掉任何一级，递进就塌</small></div><div class="fc"><span>插入美女蛇故事与百草园之乐无关，属于离题</span><small>故事解释段 3「长的草里是不去的」，是乐园的另一面（怕也是乐的一部分）；删掉它，段 3 的转折无着落</small></div><div class="fc"><span>文中「有人说何首乌根像人形」是未经证实的传闻，属叙述不可靠</span><small>这一句明标来源（有人说），正是童年视角的质地；叙述者并未把它当作事实断言，判为不可靠是拿全知标准要求限知叙述</small></div>
+  </div>
+</section>
+<section class="case" id="GC_043" data-id="GC_043">
+  <header class="case-head">
+    <div class="case-no">43 / 46</div>
+    <h2>套路文·无法形容的孤独</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>AI 生成样本·都市夜归</span>
+      <span>全文三段（自“夜色是温柔的”至“时间一分一秒地过去”）</span>
+      <span>681 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">夜色是温柔的，也是残酷的。城市的呼吸带着一种难以言说的质感，仿佛时间在这里放慢了脚步。她站在时光的缝隙里，忽然感到一种<mark>无法形容的孤独</mark>，那种孤独是美丽的，是深刻的，也是让人无法抗拒的。<br><br><mark>她推门走进了那家咖啡馆</mark>。那一刻，空气里弥漫着一种说不清道不明的情绪，那是一种混合了回忆与期待的复杂感受，是任何语言都无法准确描述的东西。她觉得自己仿佛被一种无形的力量牵引着，那种力量温柔而又坚定，让人无法拒绝。她想起很多年前的那些日子，那些日子是明亮的，是温暖的，是充满了希望与幻想的，也是让人不敢回首的。人生就是这样，总是在不经意间给你一些惊喜，又在你最幸福的时候给你一些失落。那些失落是必要的，是深刻的，是让人成长的，是让人变得更完整的。她感到心里有什么东西在轻轻颤动，那是一种说不出的感动，也是一种难以名状的悲伤，更是一种无法解释的释然。所有的情绪交织在一起，形成了一种极其复杂的心理状态，这种状态是无法用语言来表达的，只能用心去体会，用灵魂去感受。她抬起头，看着窗外的夜色，夜色依旧是温柔的，依旧是残酷的，依旧是那样让人沉醉，让人迷恋，让人无法自拔。她想，也许这就是成长，也许这就是人生，也许这一切都是最好的安排。她的心在这一刻变得柔软而开阔，仿佛所有的过往都被照亮了，所有的遗憾都被抚平了，所有的答案都在这一刻浮现出来。那是一种久违的平静，是一种与自己和解的平静，是一种终于可以放下的平静。<br><br>咖啡的香气在空气里散开。地铁最后一班车已经开走。她想起小时候养过的那只猫。<mark>天气预报说明天有雨</mark>。隔壁桌的男人在看手机。她的手机屏幕亮了一下。这座城市从不缺少故事。时间一分一秒地过去。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_043" data-idx="0">
+    <div class="finding-text">写孤独全靠评价词：温柔、残酷、美丽、深刻、无法形容、难以言说、无法抗拒。通篇没有一件能指认的东西——没有一样可看见的物件、一个可复述的动作，“孤独”因此无法被读者核对</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P1</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>high</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>无法形容的孤独</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_043" data-idx="1">
+    <div class="finding-text">第二段四百五十余字（汉字 453）里只有一个事件——推门走进咖啡馆。其余全是情绪铺陈与自我安慰，读者的信息量在这一段停滞</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>high</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>她推门走进了那家咖啡馆</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_043" data-idx="2">
+    <div class="finding-text">第三段八句各说一件事：咖啡香气、末班地铁、小时候的猫、明天的天气、隔壁桌的男人、亮起的手机、这座城、时间。相邻两句之间没有共享的话题或实体，读起来是一列互不相干的句子</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>天气预报说明天有雨</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>这段文字情感真挚，语言优美，属于合格以上的抒情片段</span><small>全段只有评价词而没有可核对的物与动作；“真挚”是读者的感受，文本本身不提供任何可验证的细节</small></div><div class="fc"><span>第二段的情绪铺陈是必要的心理描写，不构成密度问题</span><small>心理描写可以成立，但四百五十余字只承载一个事件、且每句都在重复同一种感受，密度问题成立</small></div><div class="fc"><span>第三段是意识流写法，句间跳跃属于风格选择</span><small>意识流的跳跃靠语气与意象的暗线相连；这里八句之间没有共同实体也没有语气线索，是并列罗列而非意识流</small></div>
+  </div>
+</section>
+<section class="case" id="GC_044" data-id="GC_044">
+  <header class="case-head">
+    <div class="case-no">44 / 46</div>
+    <h2>套路文·改变时代鸡汤</h2>
+    <div class="meta">
+      <span class="tag">议论</span>
+      <span>AI 生成样本·职场鸡汤</span>
+      <span>全文三段（自“这个时代变了”至“空调出风口嗡嗡地吹着”）</span>
+      <span>379 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">这个时代变了，变得比我们想象的要快得多。我们必须改变自己，必须主动地改变，必须在改变中寻找新的可能。<br><br><mark>变化是唯一不变的真理</mark>。时代在变，环境在变，人心也在变，所以我们也要变。只有改变，才能适应；只有适应，才能生存；只有生存，才能发展；只有发展，才能赢得未来。改变不是一句口号，改变是一种态度，是一种能力，是一种勇气，更是一种智慧。我们要在改变中学习，在学习中改变，让改变成为一种习惯，让习惯成为一种力量。时代不会等我们，机会不会等我们，所以我们不能等，不能靠，不能要，只能自己变，自己闯，自己拼。每一个人都要有改变的决心，每一个团队都要有改变的机制，每一个组织都要有改变的文化。唯有如此，我们才能在这个飞速变化的时代里站稳脚跟，才能不被淘汰，才能走得更远。<br><br>窗外的高架桥上，车流一直没停过。<mark>前台的打印机在响</mark>。实习生抱着一摞文件从走廊尽头过来。空调出风口嗡嗡地吹着。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（2 条）</small></h3>
+  
+  <div class="finding" data-case="GC_044" data-idx="0">
+    <div class="finding-text">第二段二百三十九字（汉字 239）从“变化是唯一不变的真理”一路排到“才能走得更远”，全是同一判断的换词重复：没有新事实、没有新例证、没有新的区分。“改变”换成“变”，再加一层“只有…才能…”的排比，信息量不增</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D1</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>high</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>变化是唯一不变的真理</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_044" data-idx="1">
+    <div class="finding-text">第三段四句分说高架桥车流、前台打印机、实习生抱文件、空调出风口，四句之间没有共享的实体或话题，也没有承接词；它们只是同时存在于同一间办公室，不构成一段</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>前台的打印机在响</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>这段文字逻辑严密、层层递进，属于有效的议论段</span><small>递进需要新增论据或新增区分；这段的每一句都在改写上一句，没有引入任何可检验的新内容</small></div><div class="fc"><span>排比句增强了气势，属于修辞成功</span><small>排比在同一判断上反复换词，气势替代了论证；议论文的排比要各自承担一个新论点才成立</small></div><div class="fc"><span>第三段用办公室细节收尾，是以景结情的好写法</span><small>细节收尾要回扣论点；这四句与该段“改变”的判断无关，且彼此不连，属于罗列</small></div>
+  </div>
+</section>
+<section class="case" id="GC_045" data-id="GC_045">
+  <header class="case-head">
+    <div class="case-no">45 / 46</div>
+    <h2>套路文·视角越界的对质</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>AI 生成样本·旧屋对质</span>
+      <span>全文四段（自“林夏把行李箱放在门口”至“三月的风还是凉的”）</span>
+      <span>330 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">林夏把行李箱放在门口，屋子里比记忆里小了一圈。窗台上积着灰，灰上有几道被抹开的痕迹，像有人反复擦过又放弃。她把外套挂在门后的钩子上，钩子松了，外套歪着垂下来。<br><br>他站在窗边，心里盘算着怎样才能把话说得既体面又不伤人。<mark>他想她大概已经猜到了</mark>，只是不肯先开口。他觉得这些年自己一直在忍，忍到最后连发火的力气都没有了。他把烟按灭在窗台上，转过身来看着她，眼神里有犹豫，也有一点点委屈。<br><br><mark>他早在三年前就知道</mark>那笔钱的去向，只是从来没有对她提起过。那笔钱是林夏的父亲留下的，数目不大，却足够让两家人翻脸。他知道她母亲当年托人打点过什么，也知道那件事后来怎么被压下去。<br><br>桌上的水杯还留着昨天的一圈水痕。<mark>冰箱在响</mark>。楼下有人在倒车。她的手机屏幕亮了一下又暗下去。这座城市三月的风还是凉的。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_045" data-idx="0">
+    <div class="finding-text">全文第三人称限知，跟着林夏走，只该写她看得见、猜得到的东西；第二段却直接进入“他”的内心：“他想她大概已经猜到了，只是不肯先开口”“他觉得这些年自己一直在忍”。既没有“似乎”“像是”这类推测标记，也没有任何把视角交给他的交代</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V2</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>high</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>他想她大概已经猜到了</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_045" data-idx="1">
+    <div class="finding-text">第三段让读者知道“他早在三年前就知道那笔钱的去向”“他知道她母亲当年托人打点过什么”。这两件事林夏此刻无从得知，文本也没有交代任何人告诉过她——视角人物知道了自己不可能知道的信息</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>V3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>high</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>他早在三年前就知道</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_045" data-idx="2">
+    <div class="finding-text">第四段五句分说桌上的水痕、冰箱的响声、楼下倒车、手机屏幕、三月的风，句间没有共享的实体或话题，也没有承接；它们并列摆着，谁接谁都不成立</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>C3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>冰箱在响</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>第二段的心理描写深化了人物关系，是好写法</span><small>深化关系可以通过动作与对话完成；这里直接写出“他”的内心，代价是限知视角被击穿，读者不再清楚谁在看</small></div><div class="fc"><span>第三段补出往事，是必要的背景交代</span><small>背景交代要经由可追溯的渠道（对话、物件、回忆触发）；这里让林夏无缘无故知道两家的旧事，是信息凭空进入</small></div><div class="fc"><span>第四段写环境，营造了压抑的氛围</span><small>氛围靠意象之间互相勾连才能形成；这五句彼此不连，只余一堆互不相干的物件</small></div>
+  </div>
+</section>
+<section class="case" id="GC_046" data-id="GC_046">
+  <header class="case-head">
+    <div class="case-no">46 / 46</div>
+    <h2>中等样本·修车摊的两段</h2>
+    <div class="meta">
+      <span class="tag">小说</span>
+      <span>AI 生成样本·修车摊</span>
+      <span>全文三段（自“老陈把车翻过来”至“起身时膝盖响了一下”）</span>
+      <span>663 字</span>
+    </div>
+  </header>
+
+  <details class="source">
+    <summary>展开原文（黄色是这条结论要指的位置）</summary>
+    <div class="prose">老陈把车翻过来，车把搁在两块砖头上，后轮还在空转。他从油布里抽出一截内胎，胎面上沾着细沙，<mark>指腹一摸能听见沙粒的声音</mark>。补胎的胶水结了皮，他用指甲刮掉一层，露出一小块发亮的胶。<br><br><mark>巷口的塑料袋被风一下一下地拍在墙上</mark>，声音闷而均匀。墙根堆着几块旧木板，板面上钉着一张褪色的广告纸，纸角卷起来，露出底下另一层更旧的纸。电线从屋檐下拉过去，中间兜了一个很低的弧，弧的最低点挂着几片枯叶，风小的时候就停在那儿不动。对门的窗台上摆着三个花盆，最大的那个缺了角，里面的土干得发了白，一小截枯枝插在中间，像谁随手插下的一根筷子。再往里是一张竹椅，椅面上铺着一层草席，席子的边已经散开，几根草茎翘着，颜色比旁边浅。空气里有股晒过的胶皮味，混着一点机油和灰尘的味道，闻久了就分辨不出来。远处的广播断断续续地响，说的是明天的天气，说明天有风，说明天要降温，说出门要添衣服。声音在巷子里绕了一圈，又被墙挡回来一半，听着像是从更远的地方传过来的。太阳偏西了，光从屋顶上斜下来，先照到晾衣绳上，再照到墙根，最后落在老陈背后的那块砖地上，砖地的颜色一点点变深，缝里的草被照得发亮。整条巷子安静得能听见谁家的钟在走，走得慢，一声一声，中间隔着很长的空档。竹椅旁边靠着一把扫帚，竹柄被手磨得发亮，扫帚头散成一小把，几根枝条折断，断口是新的。墙角的水缸里飘着一片叶子，水面很平，叶子的影子贴在水底，颜色发暗。空气里那种胶皮味慢慢淡下去，只剩下一点干燥的土腥气。<br><br>补好的胎装上，气打进去，轮子转了两圈，稳稳停住。老陈把工具一件件收进油布，布角压住砖头，<mark>起身时膝盖响了一下</mark>。</div>
+  </details>
+
+  <h3>这段文本应该被诊断出的问题 <small>（3 条）</small></h3>
+  
+  <div class="finding" data-case="GC_046" data-idx="0">
+    <div class="finding-text">开篇不写“他修车很熟练”，只给三个可指认的动作：砖头垫车把、抽出一截内胎、用指甲刮掉结皮的胶水。手艺由手写出来，不靠评价</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>P3</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>指腹一摸能听见沙粒的声音</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_046" data-idx="1">
+    <div class="finding-text">结尾不总结、不抒情，只把工具收进油布、布角压住砖头、起身时膝盖响一下。动作做完，段落就停，收束落在身体上</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>S1</b></span>
+      <span>性质 <b>做到了</b></span>
+      <span>重要度 <b>medium</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>起身时膝盖响了一下</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+  <div class="finding" data-case="GC_046" data-idx="2">
+    <div class="finding-text">第二段四百七十字（汉字 470）是纯静态铺陈：塑料袋、木板、广告纸、电线、枯叶、花盆、竹椅、草席、气味、广播、光、钟声，一样接一样地摆过去，没有任何施事做出可观察的动作并产生结果。全段事件数为 0，读到最后仍停在原地</div>
+    <div class="finding-meta">
+      <span>依据判据 <b>D3</b></span>
+      <span>性质 <b>有问题</b></span>
+      <span>重要度 <b>high</b></span>
+    </div>
+    <div class="anchor">指着原文：<q>巷口的塑料袋被风一下一下地拍在墙上</q></div>
+    <div class="vote">
+      <button type="button" class="ok" data-vote="ok">成立</button>
+      <button type="button" class="no" data-vote="no">不成立</button>
+      <button type="button" class="skip" data-vote="">待定</button>
+    </div>
+    <textarea class="note" rows="1" placeholder="有意见就写在这里（可不填）"></textarea>
+  </div>
+
+  
+  <div class="forbidden">
+    <h3>模型若这样说，就是编造 <small>（用于检验误报）</small></h3>
+    <div class="fc"><span>第二段的环境描写细腻生动，是全篇最出色的部分</span><small>单看每一样物件确实具体，但四百七十字里没有一个事件、没有一个人做出动作，段落不推进；细腻不等于有效</small></div><div class="fc"><span>开篇的修车细节过于琐碎，应当概括</span><small>那是全篇唯一的“手艺”证据：砖头、内胎、结皮的胶水三样东西支撑起老陈这个人；概括成“熟练地补胎”反而失去人物</small></div><div class="fc"><span>结尾“膝盖响了一下”过于琐碎，破坏了意境</span><small>这一声是收束的落点：工具收好、人起身，身体的声音替作者说了“活干完了”；删掉它，段落就只剩上一段的静物</small></div>
+  </div>
+</section>
+</div>
+
+<div class="export"><div class="export-inner">
+  <button id="download">导出结果</button>
+  <button id="reset" class="ghost">清空重来</button>
+  <span class="hint">导出后把文件发给我，我按你的判断回写评测集。</span>
+</div></div>
+
+<script>
+(function () {
+  var KEY = "storyforge-golden-review-v1";
+  var state = { reviewer: "", votes: {}, notes: {} };
+  try { var raw = localStorage.getItem(KEY); if (raw) state = JSON.parse(raw); } catch (e) {}
+  if (!state.votes) state.votes = {};
+  if (!state.notes) state.notes = {};
+
+  var reviewerEl = document.getElementById("reviewer");
+  reviewerEl.value = state.reviewer || "";
+
+  function save() {
+    state.reviewer = reviewerEl.value;
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    refresh();
+  }
+
+  function refresh() {
+    var total = 0, done = 0;
+    document.querySelectorAll(".finding").forEach(function (el) {
+      var key = el.dataset.case + "#" + el.dataset.idx;
+      var vote = state.votes[key] || "";
+      el.dataset.state = vote === "ok" ? "ok" : vote === "no" ? "no" : "";
+      el.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.dataset.vote === vote));
+      });
+      var note = el.querySelector(".note");
+      if (note.value !== (state.notes[key] || "")) note.value = state.notes[key] || "";
+      total += 1;
+      if (vote) done += 1;
+    });
+    document.getElementById("done").textContent = done;
+    document.getElementById("bar").style.width = total ? (done / total * 100) + "%" : "0";
+  }
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest(".vote button");
+    if (!btn) return;
+    var box = btn.closest(".finding");
+    var key = box.dataset.case + "#" + box.dataset.idx;
+    var current = state.votes[key] || "";
+    state.votes[key] = current === btn.dataset.vote ? "" : btn.dataset.vote;
+    save();
+  });
+
+  document.addEventListener("input", function (e) {
+    if (e.target.classList.contains("note")) {
+      var box = e.target.closest(".finding");
+      state.notes[box.dataset.case + "#" + box.dataset.idx] = e.target.value;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (err) {}
+    }
+    if (e.target.id === "reviewer") { state.reviewer = e.target.value; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (err) {} }
+  });
+
+  document.getElementById("download").addEventListener("click", function () {
+    var payload = { reviewer: reviewerEl.value, reviewedAt: new Date().toISOString().slice(0, 10), votes: state.votes, notes: state.notes };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "golden-审阅结果-" + (reviewerEl.value || "未署名") + ".json";
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  });
+
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!confirm("确定清空所有已判结果？这个操作不可撤销。")) return;
+    state = { reviewer: reviewerEl.value, votes: {}, notes: {} };
+    save();
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>

@@ -27,7 +27,9 @@
     "golden:review:3": "node scripts/golden-review.mjs --batch 3",
     "golden:review:4": "node scripts/golden-review.mjs --batch 4",
     "golden:review:5": "node scripts/golden-review.mjs --batch 5",
-    "golden:review:6": "node scripts/golden-review.mjs --batch 6"
+    "golden:review:6": "node scripts/golden-review.mjs --batch 6",
+    "golden:html": "node scripts/golden-review-html.mjs",
+    "golden:apply:json": "node scripts/golden-apply-json.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",
