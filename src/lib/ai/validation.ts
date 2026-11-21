@@ -68,20 +68,102 @@ function exactQuoteExists(quote: string, sources: string[]) {
   return sources.some((source) => source.includes(quote));
 }
 
+/**
+ * 回写上限：省略号两段相隔太远时，展开会把一大段无关正文塞进引文，
+ * 宁可判「找不到」也不要给用户一段对不上的原文。
+ */
+const MAX_LOCATED_QUOTE = 240;
+
+/** 不参与比对的字符：空白与中英文标点。字形、字序仍然逐字要求一致。 */
+const UNMATCHABLE = /[\s　!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~，。、；：？！“”‘’（）《》〈〉【】「」『』—－·／＼…]/;
+
+/** 逐字符折叠并保留「折叠后位置 → 原文位置」的映射，用于把命中点还原成原文原字。 */
+function foldText(input: string) {
+  let out = "";
+  const map: number[] = [];
+  for (let i = 0; i < input.length; i += 1) {
+    const char = input[i];
+    if (UNMATCHABLE.test(char)) continue;
+    out += char;
+    map.push(i);
+  }
+  return { out, map };
+}
+
+/**
+ * 把模型给的引文还原成原文里的原字切片。
+ *
+ * 模型常见的三种无害偏差：改标点、把换行写成「／」、用「……」省略中间。
+ * 三种都不该被判成编造——但也不能就这么放进结果里，因为用户核对时看到的是
+ * 改过的字。所以做法是：确认这段话确实出自原文之后，**用原文那一段替换回引文**。
+ * 省略号因此被展开成原文的连续文字，用户看到的永远是原文原字。
+ *
+ * 真正的编造（原文里找不到）仍然返回 null，由调用方丢弃。
+ */
+function locateVerbatim(quote: string, sources: string[]): string | null {
+  const trimmed = quote.trim();
+  if (!trimmed) return null;
+  // 快路径：本来就是原文切片。短引文（四字以内）只能走这条路。
+  for (const source of sources) {
+    if (source.includes(trimmed)) return trimmed;
+  }
+  // 慢路径：按省略号切段，逐段顺序定位，取首段起点到末段终点的原文原字。
+  const parts = trimmed.split(/…+|\.{3,}/).map((part) => foldText(part).out).filter(Boolean);
+  if (parts.length === 0) return null;
+  // 折叠后仍要求每段至少六字：否则「他」这种常见字必然命中，等于没有证据。
+  if (parts.some((part) => part.length < 6)) return null;
+  for (const source of sources) {
+    const { out, map } = foldText(source);
+    let cursor = 0;
+    let firstStart = -1;
+    let lastEnd = -1;
+    let matched = true;
+    for (const part of parts) {
+      const at = out.indexOf(part, cursor);
+      if (at < 0) { matched = false; break; }
+      if (firstStart < 0) firstStart = at;
+      cursor = at + part.length;
+      lastEnd = cursor;
+    }
+    if (!matched || firstStart < 0) continue;
+    const slice = source.slice(map[firstStart], map[lastEnd - 1] + 1);
+    if (slice.length > MAX_LOCATED_QUOTE) return null;
+    return slice.trim();
+  }
+  return null;
+}
+
 function literaryQuoteExists(quote: string, sources: string[]) {
-  if (exactQuoteExists(quote, sources)) return true;
-  const clean = (s: string) => s.replace(/^\s{0,3}(?:>+|#{1,6}|-)\s+/gm, "").replace(/[\s*_`]/g, "");
-  const parts = quote.split(/…+|\.{3,}/).map(clean);
-  if (parts.some(p => p.length < (parts.length > 1 ? 6 : 1))) return false;
-  return sources.some(source => {
-    const body = clean(source);
-    let start = 0;
-    return parts.every(p => {
-      const at = body.indexOf(p, start);
-      start = at + p.length;
-      return at >= 0;
-    });
+  return locateVerbatim(quote, sources) !== null;
+}
+
+/** 引文在原文里的所有出现区间。回写之后引文就是原文切片，精确扫描即可。 */
+function quoteRanges(text: string, sources: string[]) {
+  const ranges: Array<{ si: number; start: number; end: number }> = [];
+  const needle = text.trim();
+  if (!needle) return ranges;
+  sources.forEach((source, si) => {
+    let at = source.indexOf(needle);
+    while (at >= 0) {
+      ranges.push({ si, start: at, end: at + needle.length });
+      at = source.indexOf(needle, at + 1);
+    }
   });
+  return ranges;
+}
+
+/**
+ * 诊断引文与它引用的证据引文，是否指向原文的同一处。
+ *
+ * 不用「互为子串」：省略号回写之后，证据引文会被展开成原文的一整段，
+ * 而诊断只截取其中一句，两者谁都套不住谁，却明明指着同一处文字。
+ * 按区间相交判断既不会误杀，也比子串更挑——必须落在同一段原文上。
+ */
+function overlapsInSource(a: string, b: string, sources: string[]) {
+  const left = quoteRanges(a, sources);
+  if (!left.length) return false;
+  const right = quoteRanges(b, sources);
+  return left.some((x) => right.some((y) => x.si === y.si && x.start < y.end && y.start < x.end));
 }
 
 function isSourceKind(value: unknown): value is LiterarySourceKind {
@@ -241,8 +323,11 @@ function readEvidence(value: unknown, context: StoryContext, evidenceValue: Payl
     if (!text(note, 2_000)) { if (analysisFailure) { discardedEvidence.push({ index: i, id: String(item.id), reason: "note_invalid" }); continue; } return fail(`${field}.note 缺失或无效`); }
     if (item.source === "observation" || item.source === "user") {
       if (!text(item.quote, 2_000)) { if (drop) { drop(`${field}.quote 缺失或无效（source=${item.source}）`); continue; } return fail(`${field}.quote 缺失或无效（source=${item.source}）`); }
-      if (!(analysisFailure ? literaryQuoteExists : exactQuoteExists)(item.quote, sources)) { if (analysisFailure) { discardedEvidence.push({ index: i, id: String(item.id), reason: "quote_not_in_source" }); continue; } return fail(`${field}.quote 不在原文（「${item.quote.slice(0, 20)}」）`); }
-      result.push({ id: item.id, source: item.source, quote: item.quote, note });
+      // 定位成功后立刻回写成原文原字：模型改过的标点、写成的「／」、
+      // 用「……」省略的部分，都会在这里被原文覆盖。
+      const locatedQuote = locateVerbatim(item.quote, sources);
+      if (!locatedQuote) { if (analysisFailure) { discardedEvidence.push({ index: i, id: String(item.id), reason: "quote_not_in_source" }); continue; } return fail(`${field}.quote 不在原文（「${item.quote.slice(0, 20)}」）`); }
+      result.push({ id: item.id, source: item.source, quote: locatedQuote, note });
     } else if (item.source === "knowledge") {
       if (!text(item.quote, 2_000)) { if (drop) { drop(`${field}.quote 缺失或无效（source=knowledge）`); continue; } return fail(`${field}.quote 缺失或无效（source=knowledge）`); }
       if (!text(item.retrievalId, 200)) { if (drop) { drop(`${field}.retrievalId 缺失或无效`); continue; } return fail(`${field}.retrievalId 缺失或无效`); }
@@ -513,11 +598,12 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
     const discard = (reason: typeof discardedDiagnostics[number]["reason"]) => discardedDiagnostics.push({ attempted, reason });
     if (!record(item) || !text(item.id, 120) || !text(item.location, 300) || !text(item.quote, 2_000) || !text(item.effect, 2_000) || !text(item.action, 2_000) || !finiteInRange(item.confidence, 0, 1)) { discard("field_invalid"); continue; }
     if (diagnostics.some(d => d.id === item.id)) { discard("duplicate_id"); continue; }
-    if (!literaryQuoteExists(item.quote, sources)) { discard("quote_not_in_source"); continue; }
+    const locatedDiagnosticQuote = locateVerbatim(item.quote, sources);
+    if (!locatedDiagnosticQuote) { discard("quote_not_in_source"); continue; }
     const evidenceIds = readEvidenceIds(item.evidenceIds, knownEvidence);
     const hasObservationEvidence = evidenceIds?.some((id) => {
       const linked = evidence.find((entry) => entry.id === id);
-      return observationEvidence.has(id) && Boolean(linked?.quote && (linked.quote.includes(item.quote as string) || (item.quote as string).includes(linked.quote)));
+      return observationEvidence.has(id) && Boolean(linked?.quote && overlapsInSource(linked.quote, locatedDiagnosticQuote, sources));
     });
     if (!evidenceIds || !hasObservationEvidence) { discard("no_observation_evidence"); continue; }
     if (isProofreadingClaim(item.effect, item.action)) { discard("proofreading_not_allowed"); continue; }
@@ -531,7 +617,7 @@ function readLiteraryAnalysis(value: unknown, context: StoryContext, evidenceVal
     if (unknown.length) { discard("unknown_criteria"); continue; }
     const criteriaEvaluation = readCriteriaEvaluation(item.criteriaEvaluation, countableEvidence);
     diagnostics.push({
-      id: item.id, location: item.location, quote: item.quote, effect: item.effect, action: item.action,
+      id: item.id, location: item.location, quote: locatedDiagnosticQuote, effect: item.effect, action: item.action,
       confidence: item.confidence, evidenceIds, criteriaIds: stampCriteriaVersion(rawCriteria),
       ...(criteriaEvaluation ? { criteriaEvaluation } : {}),
       ...(text(item.trainingExerciseId, 120) ? { trainingExerciseId: item.trainingExerciseId } : {}),
@@ -562,6 +648,7 @@ function readMentor(value: unknown, context: StoryContext, evidenceValue: Payloa
   if (!text(mentor.thesis, 2_000) || !Array.isArray(mentor.evidence) || mentor.evidence.length > 20) return null;
   const sources = userTexts(context, evidenceValue);
   const retrievalById = new Map((evidenceValue.retrievalEvidence ?? []).map((item) => [item.retrievalId, item]));
+  // 对不上原文的引文只丢那一条，不连坐其余分析。
   const evidence = mentor.evidence.map((item) => {
     if (!record(item) || !text(item.quote, 2_000) || (item.source !== "observation" && item.source !== "inference" && item.source !== "knowledge")) return null;
     if (item.source === "observation" && !exactQuoteExists(item.quote, sources)) return null;
@@ -571,31 +658,34 @@ function readMentor(value: unknown, context: StoryContext, evidenceValue: Payloa
       if (!retrieval || (!retrieval.content.includes(item.quote) && !retrieval.quote.includes(item.quote))) return null;
     }
     return { quote: item.quote, source: item.source, ...(text(item.note, 2_000) ? { note: item.note } : {}), ...(text(item.retrievalId, 200) ? { retrievalId: item.retrievalId } : {}) };
-  });
-  if (!evidence.every(Boolean) || !evidence.some((item) => item?.source === "observation")) return null;
-  const craft = textList(mentor.craft, 12, false);
-  const effect = textList(mentor.effect, 12, false);
-  const consistency = textList(mentor.consistency, 12, false);
-  const experiments = textList(mentor.experiments, 12, false);
-  const questions = textList(mentor.questions, 12, false);
-  if (!craft || !effect || !consistency || !experiments || !questions || !Array.isArray(mentor.references) || mentor.references.length > 12) return null;
-  const references = mentor.references.map((item) => {
+  }).filter((item): item is NonNullable<typeof item> => Boolean(item));
+  if (!evidence.length) return null;
+  // 「为什么这样写」的五个板块，缺一块不该让整段解释作废——缺的给空数组。
+  const craft = textList(mentor.craft, 12, false) ?? [];
+  const effect = textList(mentor.effect, 12, false) ?? [];
+  const consistency = textList(mentor.consistency, 12, false) ?? [];
+  const experiments = textList(mentor.experiments, 12, false) ?? [];
+  const questions = textList(mentor.questions, 12, false) ?? [];
+  if (!craft.length && !effect.length) return null;
+  // references 连的是知识库检索，没有检索结果时它本来就是空的，不能当必填。
+  const rawReferences = Array.isArray(mentor.references) ? mentor.references : [];
+  const references = rawReferences.map((item) => {
     if (!record(item) || !text(item.title, 300) || !text(item.sourceTitle, 300) || !text(item.note, 2_000) || !text(item.retrievalId, 200)) return null;
     const retrieval = retrievalById.get(item.retrievalId);
     if (!retrieval || item.sourceStatus !== retrieval.sourceStatus) return null;
     return { title: item.title, sourceTitle: item.sourceTitle, note: item.note, retrievalId: item.retrievalId, sourceStatus: retrieval.sourceStatus };
-  });
-  const cleanReferences = references.filter((item): item is NonNullable<typeof item> => Boolean(item));
-  void cleanReferences;
+  }).filter((item): item is NonNullable<typeof item> => Boolean(item));
   return { thesis: mentor.thesis, evidence: evidence as MentorResponse["evidence"], craft, effect, consistency, experiments, questions, references: references as MentorResponse["references"] };
 }
 
 function readStoryDirection(value: unknown) {
   if (!record(value) || !record(value.direction)) return null;
   const direction = value.direction;
-  const risks = uniqueTexts(direction.risks, 8);
-  const suggestedTags = uniqueTexts(direction.suggestedTags, 6, false);
-  if (!text(direction.understanding, 2_000) || !text(direction.recommendation, 2_000) || !risks || !text(direction.question, 1_000) || !suggestedTags || !suggestedTags.every((tag) => STORY_DIRECTION_TAGS.has(tag))) return null;
+  // 套壳任务：标签只是给用户的快捷入口，模型多给几个不在白名单的词没有危害，
+  // 过滤掉就行——为这个整包回退，用户拿到的是演示数据，代价远大于收益。
+  const risks = uniqueTexts(direction.risks, 8) ?? [];
+  const suggestedTags = (uniqueTexts(direction.suggestedTags, 6, false) ?? []).filter((tag) => STORY_DIRECTION_TAGS.has(tag));
+  if (!text(direction.understanding, 2_000) || !text(direction.recommendation, 2_000) || !text(direction.question, 1_000)) return null;
   return { direction: { understanding: direction.understanding, recommendation: direction.recommendation, risks, question: direction.question, suggestedTags } };
 }
 
@@ -659,54 +749,64 @@ function readImageRecommendation(value: unknown) {
 function readTrainingFeedback(value: unknown, evidenceValue: PayloadEvidenceContext) {
   if (!record(value) || !record(value.trainingFeedback)) return null;
   const feedback = value.trainingFeedback;
+  // 这条红线不能松：训练反馈不许返回可直接提交的替代成稿。
   if (["replacement", "replacementProse", "prose"].some((key) => key in feedback)) return null;
   const strengths = textList(feedback.strengths, 12, false);
-  const evidenceQuotes = uniqueTexts(feedback.evidenceQuotes, 12, false);
   const issues = textList(feedback.issues, 12, false);
-  const questions = textList(feedback.questions, 12);
+  const questions = textList(feedback.questions, 12) ?? [];
   const quoteSources = [evidenceValue.answer, evidenceValue.sourceText].filter((item): item is string => typeof item === "string");
-  if (!strengths || !evidenceQuotes || !issues || !text(feedback.nextExperiment, 2_000) || !questions || !evidenceQuotes.every((quote) => exactQuoteExists(quote, quoteSources))) return null;
+  // 引文对不上原文的，只丢那一条；一条都对不上就给空数组，由前端提示「未给出证据」。
+  const evidenceQuotes = (uniqueTexts(feedback.evidenceQuotes, 12, false) ?? []).filter((quote) => exactQuoteExists(quote, quoteSources));
+  if (!strengths || !issues || !text(feedback.nextExperiment, 2_000)) return null;
   if (!Array.isArray(feedback.scores) || feedback.scores.length === 0 || feedback.scores.length > 16) return null;
-  const scores = feedback.scores.map((item) => record(item) && text(item.dimension, 200) && TRAINING_FEEDBACK_DIMENSION_SET.has(item.dimension) && finiteInRange(item.score, 0, 100) && text(item.reason, 2_000) ? { dimension: item.dimension, score: item.score, reason: item.reason } : null);
+  // reason 是可选的：prompt 示例里从来没要求过它，这里硬要等于「模型答对了却被判错」。
+  const scores = feedback.scores.map((item) => record(item) && text(item.dimension, 200) && TRAINING_FEEDBACK_DIMENSION_SET.has(item.dimension) && finiteInRange(item.score, 0, 100)
+    ? { dimension: item.dimension, score: item.score, reason: text(item.reason, 2_000) ? item.reason : "" }
+    : null);
   const cleanScores = scores.filter((item): item is NonNullable<typeof item> => Boolean(item));
   if (!cleanScores.length) return null;
-  const result: TrainingFeedbackResult = { strengths, evidenceQuotes, issues, nextExperiment: feedback.nextExperiment, questions, scores: scores as TrainingFeedbackResult["scores"] };
+  const result: TrainingFeedbackResult = { strengths, evidenceQuotes, issues, nextExperiment: feedback.nextExperiment, questions, scores: cleanScores };
   return { trainingFeedback: result };
 }
 
 function readLegacyAnalysis(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext): Extract<AiTaskPayload, { characterGraph: StoryState["characterGraph"] }> | null {
-  if (!record(value) || !Array.isArray(value.analysis) || value.analysis.length > 12 || !Array.isArray(value.evidence) || value.evidence.length > 50 || !record(value.characterGraph) || !Array.isArray(value.characterGraph.nodes) || !Array.isArray(value.characterGraph.edges) || !Array.isArray(value.plotCurve) || value.plotCurve.length > 48 || !Array.isArray(value.emotionCurve) || value.emotionCurve.length > 48) return null;
+  // 这个任务前端已经不用了（新界面走 analysis-v2），留着只为兼容旧接口。
+  // 既然没人消费，就不该为单个字段缺失去回退——形状大致对就接受。
+  if (!record(value) || !Array.isArray(value.analysis) || !Array.isArray(value.evidence)) return null;
 
   const sources = userTexts(context, evidenceValue);
   const evidence = value.evidence.map((item): Evidence | null => {
-    if (!record(item) || !text(item.id, 120) || !isEvidenceSource(item.source) || !text(item.quote, 2_000) || !text(item.note, 2_000) || !text(item.chapter, 300)) return null;
-    if (item.source === "user" && !exactQuoteExists(item.quote, sources)) return null;
-    if (item.source === "knowledge") return null;
-    return { id: item.id, source: item.source, quote: item.quote, note: item.note, chapter: item.chapter };
+    // 旧接口的证据枚举是 user / knowledge / inference，但模型按新口径给的是
+    // observation。同一件事两种叫法，按 user 处理（同样要逐字校验），不因此判死。
+    const rawSource = record(item) ? (item.source === "observation" ? "user" : item.source) : item;
+    if (!record(item) || !text(item.id, 120) || !isEvidenceSource(rawSource) || !text(item.quote, 2_000) || !text(item.note, 2_000)) return null;
+    if (rawSource === "user" && !exactQuoteExists(item.quote, sources)) return null;
+    if (rawSource === "knowledge") return null;
+    return { id: item.id, source: rawSource, quote: item.quote, note: item.note, chapter: text(item.chapter, 300) ? item.chapter : "" };
   });
-  if (!evidence.every(Boolean)) return null;
   const cleanEvidence = evidence.filter((item): item is Evidence => item !== null);
+  if (!cleanEvidence.length) return null;
   const evidenceIdSet = new Set(cleanEvidence.map((item) => item.id));
-  if (evidenceIdSet.size !== cleanEvidence.length) return null;
 
   const analysis = value.analysis.map((item): AnalysisDimension | null => {
     if (!record(item) || !text(item.id, 120) || !text(item.name, 200) || !text(item.summary, 2_000) || !text(item.impact, 2_000) || !text(item.suggestion, 2_000) || !finiteInRange(item.score, 0, 100)) return null;
     const evidenceIds = readEvidenceIds(item.evidenceIds, evidenceIdSet);
     return evidenceIds ? { id: item.id, name: item.name, summary: item.summary, impact: item.impact, suggestion: item.suggestion, score: item.score, evidenceIds } : null;
   });
-  if (!analysis.every(Boolean)) return null;
   const cleanAnalysis = analysis.filter((item): item is AnalysisDimension => item !== null);
+  if (!cleanAnalysis.length) return null;
 
-  const nodes = value.characterGraph.nodes.map((item): GraphNode | null => {
+  const rawGraph = record(value.characterGraph) ? value.characterGraph : {};
+  const rawNodes = Array.isArray(rawGraph.nodes) ? rawGraph.nodes : [];
+  const nodes = rawNodes.map((item): GraphNode | null => {
     if (!record(item) || !text(item.id, 120) || !text(item.label, 300) || !isGraphNodeType(item.type)) return null;
     return { id: item.id, label: item.label, type: item.type, ...(text(item.description, 2_000) ? { description: item.description } : {}) };
   });
-  if (!nodes.every(Boolean)) return null;
   const cleanNodes = nodes.filter((item): item is GraphNode => item !== null);
   const nodeIdSet = new Set(cleanNodes.map((item) => item.id));
-  if (nodeIdSet.size !== cleanNodes.length) return null;
 
-  const edges = value.characterGraph.edges.map((item): GraphEdge | null => {
+  const rawEdges = Array.isArray(rawGraph.edges) ? rawGraph.edges : [];
+  const edges = rawEdges.map((item): GraphEdge | null => {
     if (!record(item) || !text(item.id, 120) || !text(item.source, 120) || !text(item.target, 120) || !nodeIdSet.has(item.source) || !nodeIdSet.has(item.target) || !text(item.label, 300)) return null;
     const sourceEvidenceIds = item.sourceEvidenceIds === undefined ? undefined : uniqueTexts(item.sourceEvidenceIds, 20);
     if (sourceEvidenceIds === null || sourceEvidenceIds?.some((id) => !evidenceIdSet.has(id))) return null;
@@ -714,14 +814,11 @@ function readLegacyAnalysis(value: unknown, context: StoryContext, evidenceValue
     if (item.evidenceSource !== undefined && !isEvidenceSource(item.evidenceSource)) return null;
     return { id: item.id, source: item.source, target: item.target, label: item.label, ...(sourceEvidenceIds === undefined ? {} : { sourceEvidenceIds }), ...(item.confidence === undefined ? {} : { confidence: item.confidence }), ...(item.evidenceSource === undefined ? {} : { evidenceSource: item.evidenceSource }) };
   });
-  if (!edges.every(Boolean)) return null;
   const cleanEdges = edges.filter((item): item is GraphEdge => item !== null);
-  if (new Set(cleanEdges.map((item) => item.id)).size !== cleanEdges.length) return null;
 
   const readCurve = (curve: unknown[]) => curve.map((item) => record(item) && text(item.beat, 200) && finiteInRange(item.value, -100, 100) && text(item.evidenceId, 120) && evidenceIdSet.has(item.evidenceId) ? { beat: item.beat, value: item.value, evidenceId: item.evidenceId } : null);
-  const plotCurve = readCurve(value.plotCurve);
-  const emotionCurve = readCurve(value.emotionCurve);
-  if (!plotCurve.every(Boolean) || !emotionCurve.every(Boolean)) return null;
+  const plotCurve = readCurve(Array.isArray(value.plotCurve) ? value.plotCurve : []);
+  const emotionCurve = readCurve(Array.isArray(value.emotionCurve) ? value.emotionCurve : []);
 
   return {
     analysis: cleanAnalysis,

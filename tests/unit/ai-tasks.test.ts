@@ -492,8 +492,10 @@ describe("runAiTask", () => {
   it("fails explicitly instead of returning an invalid demo fixture", async () => {
     const emptyProject = { ...input.project, activeChapterId: "missing", chapters: [] };
 
+    // 用 analysis-v2 守这条线：核心诊断任务没有真实原文时没有任何可演示的东西，
+    // 必须显式报错，而不是端出一份看起来正常的假数据。套壳任务允许更宽松的 fixture。
     await expect(runAiTask(
-      { task: "mentor", project: emptyProject },
+      { task: "analysis-v2", project: emptyProject },
       { ...config, apiKey: "" },
       vi.fn(),
     )).rejects.toThrow("AI_DEMO_FIXTURE_INVALID");

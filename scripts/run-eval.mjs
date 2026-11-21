@@ -38,6 +38,13 @@ const outName = (() => {
   const index = args.indexOf("--out");
   return index >= 0 ? args[index + 1] : null;
 })();
+// 并发只改墙钟，不改任何一条的打分：每条仍是独立请求、独立计分，
+// 结果按原始样本顺序回填，summary 与串行跑逐位一致。默认 1，即旧行为。
+const concurrencyArg = (() => {
+  const index = args.indexOf("--concurrency");
+  return index >= 0 ? Number(args[index + 1]) : 1;
+})();
+const CONCURRENCY = Number.isFinite(concurrencyArg) && concurrencyArg > 0 ? Math.floor(concurrencyArg) : 1;
 
 const jiti = createJiti(import.meta.url, {
   alias: { "@": path.join(ROOT, "src") },
@@ -291,10 +298,10 @@ const config = {
 };
 
 const startedAt = new Date().toISOString();
-const results = [];
+const slots = new Array(cases.length);
 const entryById = new Map(cases.map((entry) => [entry.id, entry]));
 
-for (const entry of cases) {
+async function runOne(entry, index) {
   const sourceKind = entry.sourceKind ?? detectLiterarySourceKind(entry.text);
   const input = {
     task: "analysis-v2",
@@ -321,10 +328,15 @@ for (const entry of cases) {
   try {
     envelope = await runAiTask(input, config, fetch, LIVE ? { onParsedForEval: parsed => { parsedForEval = parsed; } } : {});
   } catch (error) {
-    results.push({ ...scoreCase(entry, []), error: String(error) });
+    slots[index] = { ...scoreCase(entry, []), error: String(error) };
     process.stdout.write(`  ${entry.id}  ERROR ${error}\n`);
-    continue;
+    return;
   }
+
+  const diagnostics = envelope.result?.diagnostics ?? [];
+  const scored = scoreCase(entry, diagnostics);
+  scored.mode = envelope.mode;
+  scored.warnings = envelope.warnings ?? [];
 
   if (EMIT_FIXTURES && parsedForEval !== undefined) {
     // 夹具文件名自带正文指纹，正文一改旧夹具自动作废
@@ -335,10 +347,6 @@ for (const entry of cases) {
     scored.fixtureFile = `evals/fixtures/raw/${name}`;
   }
 
-  const diagnostics = envelope.result?.diagnostics ?? [];
-  const scored = scoreCase(entry, diagnostics);
-  scored.mode = envelope.mode;
-  scored.warnings = envelope.warnings ?? [];
   // 落盘所有样本的原始返回，而不只是回退的：
   // 离线回放要做「回归门禁」，就必须能复算**通过的**样本，否则只能回放失败样本，
   // 无法证明修好的地方没被改坏。
@@ -352,12 +360,23 @@ for (const entry of cases) {
     await writeFile(path.join(RUNS_DIR, rawFile), (apiKey ? raw.replaceAll(apiKey, "[REDACTED]") : raw) + "\n", { flag: "wx" });
     scored.rawFile = rawFile;
   }
-  results.push(scored);
+  slots[index] = scored;
   const flag = scored.empty ? " EMPTY" : "";
   process.stdout.write(
     `  ${entry.id}  mode=${envelope.mode}  diag=${scored.diagnostics}  matched=${scored.matched}/${scored.expected}${flag}\n`,
   );
 }
+
+// 限量并发的 worker 池：函数本身仍是「一条一个请求」，只是同时开几路。
+const queue = cases.map((entry, index) => ({ entry, index }));
+await Promise.all(
+  Array.from({ length: Math.min(CONCURRENCY, queue.length) }, async () => {
+    let job;
+    while ((job = queue.shift()) !== undefined) await runOne(job.entry, job.index);
+  }),
+);
+// 回填顺序 = 样本声明顺序，与串行跑完全一致。
+const results = slots.filter((value) => value !== undefined);
 
 const summary = aggregate(results, entryById);
 

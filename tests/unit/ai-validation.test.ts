@@ -235,10 +235,13 @@ describe("validateTaskPayload strict AI task contracts", () => {
     expect(consistency).toMatchObject({ consistencyReport: { candidateId: "candidate-1", contextRevision: 7 } });
   });
 
-  it("rejects missing fields, invalid tags, ranges and replacement prose", () => {
-    expect(validateTaskPayload("story-direction" as AiTask, {
+  it("rejects genuinely invalid payloads, but only filters out unknown direction tags", () => {
+    // 套壳任务按「够用即可」定标准：白名单外的标签过滤掉就行，
+    // 不该为了一个标签把整段方向建议作废、让用户看到演示数据。
+    const directionResult = validateTaskPayload("story-direction" as AiTask, {
       direction: { understanding: "理解", recommendation: "建议", risks: [], question: "问题", suggestedTags: ["不存在的标签"] },
-    }, project, "live", evidenceContext)).toBeNull();
+    }, project, "live", evidenceContext) as { direction: { suggestedTags: string[] } } | null;
+    expect(directionResult?.direction.suggestedTags).toEqual([]);
 
     const invalidAnalysis = analysisPayload();
     invalidAnalysis.diagnostics[0].confidence = 1.01;
