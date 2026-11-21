@@ -12,12 +12,39 @@ import path from "node:path";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const GOLDEN = path.join(ROOT, "evals", "golden");
-const SHEET = path.join(ROOT, "docs", "golden_审定清单.md");
 
-const files = readdirSync(GOLDEN).filter((f) => /^GC_\d+\.json$/.test(f)).sort();
-const cases = files.map((f) => ({ file: f, data: JSON.parse(readFileSync(path.join(GOLDEN, f), "utf8")) }));
+/** --batch A|B|C|D：只生成该批的清单，避免一次面对 2340 行。
+ *  按编号均分，每批 6–8 条，约 300–500 行——一次能审完、能记住自己判到哪的量 */
+const batchArg = (() => {
+  const i = process.argv.indexOf("--batch");
+  return i >= 0 ? process.argv[i + 1] : null;
+})();
+
+const BATCHES = {
+  // 按编号均分，每批 6–10 条，约 300–500 行——一次能审完的量
+  1: ["GC_001","GC_002","GC_003","GC_004","GC_005","GC_006","GC_007","GC_008"],
+  2: ["GC_009","GC_010","GC_011","GC_012","GC_013","GC_014","GC_015","GC_016"],
+  3: ["GC_017","GC_018","GC_019","GC_020","GC_021","GC_022","GC_023","GC_024"],
+  4: ["GC_025","GC_026","GC_027","GC_028","GC_029","GC_030","GC_031","GC_032"],
+  5: ["GC_033","GC_034","GC_035","GC_036","GC_037","GC_038","GC_039","GC_040"],
+  6: ["GC_041","GC_042","GC_043","GC_044","GC_045","GC_046"],
+};
 
 const apply = process.argv.includes("--apply");
+const SHEET = batchArg
+  ? path.join(ROOT, "docs", `golden_审定清单_${batchArg}.md`)
+  : path.join(ROOT, "docs", "golden_审定清单.md");
+
+const only = batchArg ? new Set(BATCHES[batchArg] ?? []) : null;
+if (batchArg && !only.size) {
+  console.error(`未知批次 ${batchArg}，可选 1 / 2 / 3 / 4 / 5 / 6`);
+  process.exit(1);
+}
+const files = readdirSync(GOLDEN)
+  .filter((f) => /^GC_\d+\.json$/.test(f))
+  .filter((f) => !only || only.has(f.replace(/\.json$/, "")))
+  .sort();
+const cases = files.map((f) => ({ file: f, data: JSON.parse(readFileSync(path.join(GOLDEN, f), "utf8")) }));
 
 if (!apply) {
   const lines = [];
