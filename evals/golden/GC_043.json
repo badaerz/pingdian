@@ -92,9 +92,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "第三批任务 2 的第 1 条缺陷样本，来源为自造 AI 套路文本（不涉版权，对应“AI 写作泛滥”的真实场景）。三条 expectedFindings 全部为 basis: defect，用于测漏报。"
   }
 }

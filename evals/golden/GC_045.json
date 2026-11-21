@@ -92,9 +92,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "第三批任务 2 的第 3 条缺陷样本，自造 AI 文本，专门用来测 V2/V3 两条视角判据的越界识别。三段缺陷互不重叠：越界内心、越界信息、句间断层。"
   }
 }

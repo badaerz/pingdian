@@ -144,7 +144,9 @@ export function AnalysisExplainPanel({ sourceText, sourceKind, mode, prompt, res
                 <strong>{diagnostic.location}</strong>
                 <span>置信度 {Math.round(diagnostic.confidence * 100)}%</span>
                 {(diagnostic.criteriaIds ?? []).map((id) => (
-                  <span className="criteria-chip" key={id}>{bareId(id)}</span>
+                  <span className="criteria-chip" key={id} title={byId.get(bareId(id))?.statement}>
+                    {byId.get(bareId(id))?.dimension ?? bareId(id)}
+                  </span>
                 ))}
               </div>
               <q>{diagnostic.quote}</q>
@@ -163,7 +165,10 @@ export function AnalysisExplainPanel({ sourceText, sourceKind, mode, prompt, res
                     return (
                       <dl key={evaluation.criteriaId}>
                         <dt>判据</dt>
-                        <dd>{evaluation.criteriaId} {criterion?.statement}</dd>
+                        <dd>
+                          <b>{criterion?.dimension ?? evaluation.criteriaId}</b>　{criterion?.statement}
+                          <span className="criteria-code" title="判据编号，用于追溯到知识库条目">{evaluation.criteriaId}</span>
+                        </dd>
                         <dt>判定规则</dt>
                         <dd><p>{criterion?.checkable}</p><p>{criterion?.metric}</p></dd>
                         <dt>本例计数</dt>

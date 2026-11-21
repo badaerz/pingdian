@@ -1041,3 +1041,7 @@
 .ip-vision-path ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
 .ip-vision-path li { display: grid; gap: 3px; border-left: 2px solid var(--gold); background: var(--panel); padding: 9px 12px; font-size: 12.5px; }
 .ip-vision-path li span { color: var(--muted); }
+
+/* 判据编号退为辅助：人读维度名与判据原文，编号只用于追溯 */
+.criteria-code { margin-left: 8px; font-family: ui-monospace, monospace; font-size: 11px;
+  color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; }

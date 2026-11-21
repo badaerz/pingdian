@@ -110,6 +110,14 @@ describe("四段可解释面板", () => {
     expect(screen.getByText("KB_003:technique_explanation")).toBeVisible();
   });
 
+  it("判据用维度名与原文呈现，编号退为辅助（人读的是描述，不是编号）", () => {
+    renderPanel();
+    const task = document.getElementById("explain-task")!;
+    // P1 的维度名是「具体性与感官」，不应该只显示 "P1"
+    expect(within(task).getByText("具体性与感官")).toBeVisible();
+    expect(within(task).queryByText("P1")).toBeNull();
+  });
+
   it("任务段按「看什么→判断→下一步」呈现，并回指判据原文", () => {
     renderPanel();
     const task = document.getElementById("explain-task")!;

@@ -36,6 +36,18 @@ const GENRE_LABEL = {
   expository: "说明文",
 };
 
+/** 判据编号 → 维度名与原文，让审定人看得懂「依据判据 S2」到底指什么 */
+const CRITERIA = JSON.parse(readFileSync(path.join(ROOT, "src", "lib", "ai", "criteria-data.json"), "utf8"));
+const CRITERIA_ROWS = Array.isArray(CRITERIA) ? CRITERIA : CRITERIA.criteria;
+const CRITERIA_BY_ID = new Map(CRITERIA_ROWS.map((row) => [row.id, row]));
+
+function criteriaLabel(ids) {
+  return (ids ?? []).map((id) => {
+    const row = CRITERIA_BY_ID.get(id);
+    return row ? `${row.dimension}：${row.statement}` : id;
+  }).join("；");
+}
+
 const files = readdirSync(GOLDEN).filter((f) => /^GC_\d+\.json$/.test(f)).sort();
 const cases = files.map((f) => JSON.parse(readFileSync(path.join(GOLDEN, f), "utf8")));
 
@@ -65,7 +77,7 @@ const sections = cases.map((c, index) => {
   <div class="finding" data-case="${c.id}" data-idx="${i}">
     <div class="finding-text">${esc(f.claim)}</div>
     <div class="finding-meta">
-      <span>依据判据 <b>${esc((f.criteriaIds ?? []).join(" "))}</b></span>
+      <span>依据 <b>${esc(criteriaLabel(f.criteriaIds))}</b></span>
       <span>性质 <b>${f.basis === "positive" ? "做到了" : f.basis === "defect" ? "有问题" : "未标"}</b></span>
       <span>重要度 <b>${esc(f.severity)}</b></span>
     </div>

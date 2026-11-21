@@ -62,9 +62,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "反例样本之一（配额原为 demo-demo_002 纯环境段，因内置案例正文用尽，改用公版《祝福》开篇的环境与仪式段）。用于测误报：模型若把开篇判成“缺冲突”“节奏拖沓”“闲笔冗余”，即为误报。"
   }
 }

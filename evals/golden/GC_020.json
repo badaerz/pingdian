@@ -92,9 +92,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "改写自原 GC_020（红楼梦·刘姥姥初进荣府）。改写原因：KB_004 名下已有 GC_009/010/020/021 四条，超出 R5「同作品 ≤2」；改用《史记·项羽本纪》，同时补 narrative-nonfic 覆盖。作者司马迁，公版。"
   }
 }

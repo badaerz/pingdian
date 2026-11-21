@@ -79,9 +79,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "反例一：最易被判「节奏慢/缺动机」的段落类型，测模型是否把「不是缺点的写法」当缺点。"
   }
 }

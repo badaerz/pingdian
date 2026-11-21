@@ -62,9 +62,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "反例样本之一（配额原为 KB_010 阿Q正传，段落取第二章优胜记略）。本段是公认的讽刺名段，用于测误报：模型若报“同情过度”“议论代替描写”“无情节”即为误报。"
   }
 }

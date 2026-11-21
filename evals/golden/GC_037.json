@@ -92,9 +92,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "短样本之一（171 汉字），用于验证 D1/S1 在短文本上的不适用条件被正确触发。源文本仅删除维基文库的校勘夹注（“现存各本均误作‘沅’，据文意改砀”），正文未改一字。作者张岱（1597–1684），公版。"
   }
 }

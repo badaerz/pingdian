@@ -92,9 +92,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "poetry 配额样本之二（355 汉字）。作者戴望舒（1905–1950），《雨巷》1928 年发表，公版。用于验证诗歌体上 C 维不适用条件被正确触发。"
   }
 }

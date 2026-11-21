@@ -92,9 +92,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "第三批任务 3 的中等样本：两条 positive（P3 开篇、S1 收尾）+ 一条 defect（D3 中段密度），用于测模型能否在同一篇里同时认出好的地方与真正的问题，而不是一律夸或一律挑。"
   }
 }

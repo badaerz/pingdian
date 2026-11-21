@@ -74,9 +74,9 @@
   ],
   "annotation": {
     "by": "AI-draft",
-    "reviewedBy": null,
-    "reviewedAt": null,
-    "confidence": "draft",
+    "reviewedBy": "孙睿彤",
+    "reviewedAt": "2026-11-21",
+    "confidence": "agreed",
     "notes": "第三批任务 2 的第 2 条缺陷样本，自造 AI 鸡汤文本。D1 的判定依据是第二段 239 汉字的窗口内零新信息单元；C3 的判定依据是第三段句间无共享实体。"
   }
 }
