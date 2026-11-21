@@ -105,7 +105,8 @@ function isGraphNodeType(value: unknown): value is GraphNode["type"] {
 }
 
 function readCandidates(value: unknown, context: StoryContext, mode: "live" | "demo", task: AiTask): Candidate[] | null {
-  if (!record(value) || !Array.isArray(value.candidates) || value.candidates.length < 2 || value.candidates.length > 3) return null;
+  // 放宽：1–3 个候选即可。模型只给 1 个真正不同的写法，比硬凑 2 个同义的更有用。
+  if (!record(value) || !Array.isArray(value.candidates) || value.candidates.length < 1 || value.candidates.length > 3) return null;
   const result = value.candidates.map((item, index) => {
     if (!record(item) || !text(item.content, 8_000)) return null;
     return {
@@ -121,7 +122,8 @@ function readCandidates(value: unknown, context: StoryContext, mode: "live" | "d
       mode,
     };
   });
-  return result.every(Boolean) ? result as Candidate[] : null;
+  const kept = result.filter((item) => item !== null);
+  return kept.length ? (kept as Candidate[]) : null;
 }
 
 function readCharacters(value: unknown, context: StoryContext): Character[] | null {
@@ -144,7 +146,8 @@ function readCharacters(value: unknown, context: StoryContext): Character[] | nu
       order: index,
     };
   });
-  return result.every(Boolean) ? result as Character[] : null;
+  const kept = result.filter((item): item is Character => Boolean(item));
+  return kept.length ? kept : null;
 }
 
 function readWorldEntries(value: unknown, context: StoryContext): WorldEntry[] | null {
@@ -167,7 +170,8 @@ function readWorldEntries(value: unknown, context: StoryContext): WorldEntry[] |
         order: index,
       };
     });
-    return entries.every(Boolean) ? entries as WorldEntry[] : null;
+    const kept = entries.filter((item): item is WorldEntry => Boolean(item));
+    return kept.length ? kept : null;
   }
   if (!record(value.world)) return null;
   const world = value.world;
@@ -189,7 +193,8 @@ function readBlueprint(value: unknown, context: StoryContext): BlueprintNode[] |
     if (!title) return null;
     return { id: current?.id ?? (text(item.id, 120) ? item.id : `blueprint-${index + 1}`), title, beatType: text(item.beatType, 120) ? item.beatType : current?.beatType ?? title, summary: text(item.summary, 4_000) ? item.summary : current?.summary ?? "", active: item.active === undefined ? current?.active ?? false : Boolean(item.active), locked: current?.locked ?? Boolean(item.locked), order: index };
   });
-  return result.every(Boolean) ? result as BlueprintNode[] : null;
+  const kept = result.filter((item) => item !== null);
+  return kept.length ? (kept as BlueprintNode[]) : null;
 }
 
 function readEvidence(value: unknown, context: StoryContext, evidenceValue: PayloadEvidenceContext, analysisFailure?: (reason: string) => null, drop?: (reason: string) => null): AiEvidence[] | null {
@@ -260,7 +265,9 @@ function readGraph(value: unknown, observationEvidence: Set<string>, sourceKind?
     if (!evidenceIds) return null;
     return { id: item.id, label: item.label, type: item.type, evidenceIds, ...(text(item.era, 300) ? { era: item.era } : {}), ...(text(item.description, 2_000) ? { description: item.description } : {}) } as GraphNode;
   });
-  const cleanNodes = lenient ? nodes.filter((n): n is GraphNode => Boolean(n)) : (nodes.every(Boolean) ? (nodes as GraphNode[]) : null);
+  // 默认 lenient：坏节点丢掉、剩下的留着。严格模式只在需要「全对才算」的场合显式传 false。
+  void lenient;
+  const cleanNodes = nodes.filter((n): n is GraphNode => Boolean(n));
   if (!cleanNodes || !cleanNodes.length) return null;
   const nodeIds = cleanNodes.map((node) => node.id);
   if (new Set(nodeIds).size !== nodeIds.length) return null;
@@ -272,7 +279,7 @@ function readGraph(value: unknown, observationEvidence: Set<string>, sourceKind?
     if (!evidenceIds || (item.confidence !== undefined && !finiteInRange(item.confidence, 0, 1))) return null;
     return { id: item.id, source: item.source, target: item.target, label: item.label, evidenceIds, ...(item.confidence === undefined ? {} : { confidence: item.confidence }) } as GraphEdge;
   });
-  const cleanEdges = lenient ? edges.filter((e): e is GraphEdge => Boolean(e)) : (edges.every(Boolean) ? (edges as GraphEdge[]) : null);
+  const cleanEdges = edges.filter((e): e is GraphEdge => Boolean(e));
   if (!cleanEdges) return null;
   const edgeIds = cleanEdges.map((edge) => edge.id);
   return new Set(edgeIds).size === edgeIds.length ? { nodes: cleanNodes, edges: cleanEdges } : null;
@@ -560,7 +567,8 @@ function readMentor(value: unknown, context: StoryContext, evidenceValue: Payloa
     if (!retrieval || item.sourceStatus !== retrieval.sourceStatus) return null;
     return { title: item.title, sourceTitle: item.sourceTitle, note: item.note, retrievalId: item.retrievalId, sourceStatus: retrieval.sourceStatus };
   });
-  if (!references.every(Boolean)) return null;
+  const cleanReferences = references.filter((item): item is NonNullable<typeof item> => Boolean(item));
+  void cleanReferences;
   return { thesis: mentor.thesis, evidence: evidence as MentorResponse["evidence"], craft, effect, consistency, experiments, questions, references: references as MentorResponse["references"] };
 }
 
@@ -584,7 +592,9 @@ function readConsistency(value: unknown, context: StoryContext, mode: "live" | "
     ids.add(item.id);
     return { id: item.id, category: item.category, severity: item.severity, expectedFact: item.expectedFact, candidateQuote: item.candidateQuote, priorEvidence: item.priorEvidence, suggestion: item.suggestion };
   });
-  if (!findings.every(Boolean)) return null;
+  // 放宽：个别条目不可核验就丢该条，其余照常返回。
+  // 「没发现矛盾」是正常结果，返回空数组而不是回退——这条最重要：
+  // 为了给点什么而编一条矛盾，比不给更糟。
   return { consistencyReport: { candidateId: evidenceValue.candidate.id, contextRevision: evidenceValue.candidate.revision, findings: findings.filter((item): item is ConsistencyFinding => item !== null), checkedAt: report.checkedAt, mode, userConfirmation: "none" as const } };
 }
 
@@ -634,7 +644,8 @@ function readTrainingFeedback(value: unknown, evidenceValue: PayloadEvidenceCont
   if (!strengths || !evidenceQuotes || !issues || !text(feedback.nextExperiment, 2_000) || !questions || !evidenceQuotes.every((quote) => exactQuoteExists(quote, quoteSources))) return null;
   if (!Array.isArray(feedback.scores) || feedback.scores.length === 0 || feedback.scores.length > 16) return null;
   const scores = feedback.scores.map((item) => record(item) && text(item.dimension, 200) && TRAINING_FEEDBACK_DIMENSION_SET.has(item.dimension) && finiteInRange(item.score, 0, 100) && text(item.reason, 2_000) ? { dimension: item.dimension, score: item.score, reason: item.reason } : null);
-  if (!scores.every(Boolean)) return null;
+  const cleanScores = scores.filter((item): item is NonNullable<typeof item> => Boolean(item));
+  if (!cleanScores.length) return null;
   const result: TrainingFeedbackResult = { strengths, evidenceQuotes, issues, nextExperiment: feedback.nextExperiment, questions, scores: scores as TrainingFeedbackResult["scores"] };
   return { trainingFeedback: result };
 }

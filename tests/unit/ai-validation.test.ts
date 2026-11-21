@@ -367,7 +367,11 @@ describe("validateTaskPayload strict AI task contracts", () => {
     expect(validateTaskPayload("consistency-check", payload, contextWithSummary, "live", evidenceContext)).not.toBeNull();
 
     payload.consistencyReport.findings[0].priorEvidence = "只有未锁定卡片知道的秘密";
-    expect(validateTaskPayload("consistency-check", payload, contextWithSummary, "live", evidenceContext)).toBeNull();
+    // 2026-11-21 变更（设计变更，非放松）：连一致性检查也从「整包拒绝」改为逐条降级。
+    // 断言改精确——不可核验的那条发现不得幸存；返回空报告表示「没发现可核验的矛盾」，
+    // 比整包 null 更准确：用户看到的是「没矛盾」，不是「AI 失败」。
+    const untrusted = validateTaskPayload("consistency-check", payload, contextWithSummary, "live", evidenceContext) as { consistencyReport?: { findings: Array<{ id: string }> } } | null;
+    expect(untrusted?.consistencyReport?.findings.some((f) => f.id === "finding-summary") ?? false).toBe(false);
   });
 
   it("does not treat a non-active chapter as the current observation source", () => {
