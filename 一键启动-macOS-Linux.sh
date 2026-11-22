@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 评点 PINGDIAN · 本地一键启动（macOS / Linux）
-# 用法：双击，或在终端执行 ./一键启动-macOS-Linux.sh
+# 用法：在终端执行 bash 一键启动-macOS-Linux.sh
+# （用 bash 调用而不是 ./，这样从 zip 解压后即使没有执行权限也能跑）
 
 set -euo pipefail
 cd "$(dirname "$0")"

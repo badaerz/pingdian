@@ -1,0 +1,9 @@
+# 一键包在 Windows 上解压即用：.bat 必须 CRLF，否则 cmd 解析 goto/label 会出问题。
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# .sh 必须 LF，CRLF 会让 bash 报 "$'\r': command not found"。
+*.sh text eol=lf
+
+# 启动脚本需要可执行位，否则下载后 ./一键启动-macOS-Linux.sh 跑不起来。
+一键启动-macOS-Linux.sh text eol=lf
