@@ -40,11 +40,19 @@ function looseTextList(value: unknown): string[] {
   return [];
 }
 
+/**
+ * reason 是可选的。prompt 里的示例只有 {dimension, score}，模型经常给空字符串，
+ * 而这里原先强制要求非空——只要有一条为空就整包抛错，界面显示「生成中断」。
+ *
+ * 这是「校验器比 prompt 严」的老毛病。服务端 validator 早就放宽了，
+ * 前端这份没跟上，于是演示态正常、有密钥必挂。两处契约必须一致。
+ */
 function normalizeScores(value: unknown, allowedDimensions: ReadonlySet<string>): TrainingFeedbackResult["scores"] {
   if (!Array.isArray(value) || value.length === 0 || value.length > 16) throw new Error("INVALID_TRAINING_SCORES");
   const scores = value.map((item) => {
-    if (!isRecord(item) || typeof item.dimension !== "string" || !item.dimension.trim() || !allowedDimensions.has(item.dimension) || typeof item.score !== "number" || !Number.isFinite(item.score) || item.score < 0 || item.score > 100 || typeof item.reason !== "string" || !item.reason.trim()) throw new Error("INVALID_TRAINING_SCORES");
-    return { dimension: item.dimension, score: item.score, reason: item.reason.trim() };
+    const reason = isRecord(item) && typeof item.reason === "string" ? item.reason.trim() : "";
+    if (!isRecord(item) || typeof item.dimension !== "string" || !item.dimension.trim() || !allowedDimensions.has(item.dimension) || typeof item.score !== "number" || !Number.isFinite(item.score) || item.score < 0 || item.score > 100) throw new Error("INVALID_TRAINING_SCORES");
+    return { dimension: item.dimension, score: item.score, reason };
   });
   if (new Set(scores.map((item) => item.dimension)).size !== scores.length) throw new Error("INVALID_TRAINING_SCORES");
   return scores;
@@ -56,10 +64,16 @@ export function normalizeTrainingFeedback(value: unknown, answer: string, attemp
   if (rawV2 !== undefined) {
     if (!isRecord(rawV2) || ["replacement", "replacementProse", "prose"].some((key) => key in rawV2)) throw new Error("INVALID_TRAINING_FEEDBACK");
     const strengths = strictTextList(rawV2.strengths, false);
-    const evidenceQuotes = strictTextList(rawV2.evidenceQuotes);
+    const rawQuotes = strictTextList(rawV2.evidenceQuotes);
     const issues = strictTextList(rawV2.issues);
     const questions = strictTextList(rawV2.questions);
-    if (!strengths || !evidenceQuotes || !issues || !questions || !textValue(rawV2.nextExperiment, "") || !evidenceQuotes.every((quote) => answer.includes(quote))) throw new Error("INVALID_TRAINING_FEEDBACK");
+    // 引文必须逐字出现在答案里——但**只丢那一条，不连坐整包**。
+    // 原先是 every() 一票否决：模型把标点改一个、把弯引号换成直引号、
+    // 或者多引一个空格，整个反馈就被判无效，界面显示「生成中断」。
+    // 有密钥时稳定复现，演示态不触发，所以自测很容易漏掉。
+    // 这和产品其他地方的规则一致：单条不合格只丢单条，剩下的照常展示。
+    const evidenceQuotes = (rawQuotes ?? []).filter((quote) => answer.includes(quote));
+    if (!strengths || !issues || !questions || !textValue(rawV2.nextExperiment, "")) throw new Error("INVALID_TRAINING_FEEDBACK");
     const evidenceBindings = trainingBindings(rawV2.evidenceBindings, { strengths, issues, evidenceQuotes });
     const teacherNote = textValue(rawV2.teacherNote, "").slice(0, 600);
     return { strengths, evidenceQuotes, issues, nextExperiment: textValue(rawV2.nextExperiment, ""), questions, scores: normalizeScores(rawV2.scores, allowedDimensions), attemptNo, ...(evidenceBindings.length ? { evidenceBindings } : {}), ...(teacherNote ? { teacherNote } : {}), ...(previousAnswer ? { previousAnswer } : {}) };

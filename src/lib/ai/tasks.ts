@@ -227,7 +227,12 @@ function validationContext(input: AiTaskInput): PayloadEvidenceContext {
 
 function demoResult(input: AiTaskInput, warnings: string[], notices: string[] = []): AiTaskResult {
   const fixture = fixtureForTask(input.task, input.project, input.input);
-  if (!validateTaskPayload(input.task, fixture, input.project, "demo", validationContext(input))) {
+  // 返回**校验后**的载荷，不是原始夹具。
+  // 原始夹具不带 discardedDiagnostics / degraded 这些字段，界面拿不到就显示「未记录」，
+  // 于是 README 里写的「本轮丢弃 N 条、展开能看到原因」在演示态直接消失。
+  // 走一遍校验器，演示结果才能和真实结果长一个形状。
+  const checked = validateTaskPayload(input.task, fixture, input.project, "demo", validationContext(input));
+  if (!checked) {
     throw new Error(`AI_DEMO_FIXTURE_INVALID:${input.task}`);
   }
   return {
@@ -235,7 +240,7 @@ function demoResult(input: AiTaskInput, warnings: string[], notices: string[] = 
     task: input.task,
     requestId: crypto.randomUUID(),
     contextRevision: input.project.contextRevision,
-    result: fixture,
+    result: checked,
     warnings,
     ...(notices.length ? { notices } : {}),
   };
