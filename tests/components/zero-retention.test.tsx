@@ -22,7 +22,7 @@ beforeEach(() => {
   }) });
 });
 
-it("clears user projects and training history while keeping built-in demo cases", async () => {
+it("clears user projects and training history and returns to an empty project list", async () => {
   const user = userEvent.setup();
   localStorage.setItem("sb-legacy-auth-token", "legacy-session");
   render(<StoryProvider><Probe /></StoryProvider>);
@@ -34,7 +34,7 @@ it("clears user projects and training history while keeping built-in demo cases"
 
   await waitFor(() => {
     const value = JSON.parse(screen.getByRole("status").textContent ?? "{}");
-    expect(value.projects).toEqual(["回响的草场", "雾港来信"]);
+    expect(value.projects).toEqual([]);
     expect(value.training).toEqual([]);
   });
   expect(JSON.parse(localStorage.getItem("story-forge:training:v1") ?? "[]")).toEqual([]);

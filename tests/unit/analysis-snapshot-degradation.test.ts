@@ -1,3 +1,4 @@
+import { createFixtureStore } from "../fixtures/story-store";
 /**
  * 存档层的降级验收（Claude 写，独立于实现）。
  *
@@ -17,22 +18,22 @@
  *   单条诊断证据造假                                            → 存活，但该条不得幸存
  */
 import { describe, it, expect } from "vitest";
-import { createStoryStore, reconcileStoryStore } from "@/lib/story-store";
+import { reconcileStoryStore } from "@/lib/story-store";
 import { createAnalysisSnapshot } from "@/lib/analysis/snapshot";
 import { fixtureForTask } from "@/lib/ai/fixtures";
 import { contextFromState } from "@/lib/ai/story-context";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import type { LiteraryAnalysisResult } from "@/lib/types";
 
 function reloadSnapshot(degrade: (result: LiteraryAnalysisResult) => void, id: string) {
-  const store = createStoryStore();
+  const store = createFixtureStore();
   const context = contextFromState(initialStoryState);
   const sourceText = context.chapters[0].content;
   const result = fixtureForTask("analysis-v2", context, { sourceText, sourceKind: "narrative" }) as LiteraryAnalysisResult;
   degrade(result);
   const snapshot = createAnalysisSnapshot({
-    projectId: "demo",
-    chapterId: "demo-chapter-1",
+    projectId: "fixture",
+    chapterId: "fixture-chapter-1",
     sourceText,
     contextRevision: 3,
     mode: "live",
@@ -41,9 +42,9 @@ function reloadSnapshot(degrade: (result: LiteraryAnalysisResult) => void, id: s
     id,
     now: "2026-08-21T00:00:00.000Z",
   });
-  const document = { ...structuredClone(store.documents.demo), analysisSnapshots: [snapshot] };
-  const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as never);
-  return reconciled.documents.demo.analysisSnapshots[0];
+  const document = { ...structuredClone(store.documents.fixture), analysisSnapshots: [snapshot] };
+  const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: document } } as never);
+  return reconciled.documents.fixture.analysisSnapshots[0];
 }
 
 function survives(degrade: (result: LiteraryAnalysisResult) => void, id: string): boolean {
@@ -75,19 +76,19 @@ describe("降级产生的空块不许把整条快照弄死", () => {
   });
 
   it("曲线只剩一个有效点：快照存活，且那一个点要留下来", () => {
-    const store = createStoryStore();
+    const store = createFixtureStore();
     const context = contextFromState(initialStoryState);
     const sourceText = context.chapters[0].content;
     const result = fixtureForTask("analysis-v2", context, { sourceText, sourceKind: "narrative" }) as LiteraryAnalysisResult;
     result.paceCurve = [{ segment: "开端", value: 40, evidenceId: result.paceCurve[0].evidenceId }];
     result.emotionCurve = [{ segment: "开端", value: 30, evidenceId: result.emotionCurve[0].evidenceId }];
     const snapshot = createAnalysisSnapshot({
-      projectId: "demo", chapterId: "demo-chapter-1", sourceText, contextRevision: 3,
+      projectId: "fixture", chapterId: "fixture-chapter-1", sourceText, contextRevision: 3,
       mode: "live", warnings: [], result, id: "single-point-curve", now: "2026-08-21T00:00:00.000Z",
     });
-    const document = { ...structuredClone(store.documents.demo), analysisSnapshots: [snapshot] };
-    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as never);
-    const kept = reconciled.documents.demo.analysisSnapshots;
+    const document = { ...structuredClone(store.documents.fixture), analysisSnapshots: [snapshot] };
+    const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: document } } as never);
+    const kept = reconciled.documents.fixture.analysisSnapshots;
     expect(kept.length).toBe(1);
     expect(kept[0]!.plotCurve).toHaveLength(1);
     expect(kept[0]!.emotionCurve).toHaveLength(1);
@@ -124,7 +125,7 @@ describe("防幻觉底线在存档层同样不许松", () => {
   it("诊断的证据指向不存在的证据 id：该条诊断不得幸存，其余照常保留", () => {
     // 夹具里有两条诊断。篡改第一条的证据后，正确行为是「丢这一条、留另一条」，
     // 而不是整条快照作废——但编造的那一条绝对不许活下来。
-    const store = createStoryStore();
+    const store = createFixtureStore();
     const context = contextFromState(initialStoryState);
     const sourceText = context.chapters[0].content;
     const result = fixtureForTask("analysis-v2", context, { sourceText, sourceKind: "narrative" }) as LiteraryAnalysisResult;
@@ -132,12 +133,12 @@ describe("防幻觉底线在存档层同样不许松", () => {
     const survivorId = result.diagnostics[1].id;
     result.diagnostics[0].evidenceIds = ["missing-evidence"];
     const snapshot = createAnalysisSnapshot({
-      projectId: "demo", chapterId: "demo-chapter-1", sourceText, contextRevision: 3,
+      projectId: "fixture", chapterId: "fixture-chapter-1", sourceText, contextRevision: 3,
       mode: "live", warnings: [], result, id: "fake-diagnostic-evidence", now: "2026-08-21T00:00:00.000Z",
     });
-    const document = { ...structuredClone(store.documents.demo), analysisSnapshots: [snapshot] };
-    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as never);
-    const kept = reconciled.documents.demo.analysisSnapshots;
+    const document = { ...structuredClone(store.documents.fixture), analysisSnapshots: [snapshot] };
+    const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: document } } as never);
+    const kept = reconciled.documents.fixture.analysisSnapshots;
     expect(kept.length).toBe(1);
     const ids = (kept[0]!.diagnostics ?? []).map((diagnostic) => diagnostic.id);
     expect(ids).not.toContain(tamperedId);

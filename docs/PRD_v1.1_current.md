@@ -13,7 +13,7 @@ Story Forge 是面向中文大学生创作者、文学教师与数字人文学�
 - P0 主链路已经可以在本地离线运行：项目桌面 → 创作台 → 文学诊断/为什么这样写 → 知识图谱 → 写作训练。
 - AI 服务通过服务端 `/api/ai` 统一调用；没有密钥或外部服务失败时提供结构化 Demo 回退。
 - RAG 已接入公开/授权知识源、来源状态、向量/关键词检索和任务预算；用户私有文本只在当前分析请求中使用，不进入产品数据库。
-- DeepSeek 实时烟测已完成一次；ModelScope 已成功创建远端任务但在当前超时边界内未返回图像，随后按契约回退 Demo；Supabase 公开 RAG 仍需部署后网络验证。
+- DeepSeek 实时烟测已完成一次；ModelScope 已成功创建远端任务但在当前超时边界内未返回图像，随后按契约回退 Demo。
 
 ## 2. 产品定位与原则
 
@@ -110,7 +110,7 @@ Story Forge 是面向中文大学生创作者、文学教师与数字人文学�
 | F22 | 成长记录 | 同题版本链、差异、六维趋势 | 已实现 | previousAttemptId、scores、evidenceQuotes 写入浏览器训练历史；历史趋势按同题聚合 |
 | F23–F26 | IP/视觉/视频扩展 | 视觉简报、生图、分镜、视频与资产包 | 部分/Demo | IP 实验场和生图基础链路已存在；完整视频/统一资产导出仍为 P2/P3 |
 | F27 | 全站视觉 | 新 logo、深墨/森林绿/铜金、滚动叙事 | 已实现/Demo | 完整 logo 资产、GSAP+ScrollTrigger、reduced-motion、首页分段 reveal；真实浏览器截图受本机安全策略限制 |
-| F28 | 零数据保留 | 用户数据只存当前浏览器并可一键清除 | 已实现 | 无浏览器 Supabase client/匿名会话；localStorage + IndexedDB；设置页确认清除；用户内容 API `no-store`；迁移004删除旧用户表 |
+| F28 | 零数据保留 | 用户数据只存当前浏览器并可一键清除 | 已实现 | localStorage + IndexedDB；设置页确认清除；用户内容 API `no-store` |
 
 ## 6. AI、RAG 与数据边界
 
@@ -135,11 +135,11 @@ RAG 由来源目录、来源状态、关键词/向量检索、任务预算和证
 
 ### 6.3 零数据保留
 
-- 浏览器不持有 DeepSeek、ModelScope 密钥，也不创建 Supabase client 或匿名账户；密钥来自服务端环境变量。
+- 部署方的 DeepSeek 和 ModelScope 密钥来自服务端环境变量。
 - 项目、人物/世界观、蓝图、正文、分析快照、训练历史和 AI 候选元数据保存在 `localStorage`；确认保存的生成图片保存在 `IndexedDB/story-forge-assets`。
-- 设置页“一键清除本地创作数据”会移除所有 `story-forge:*` 存储、旧版 Supabase auth token 和生成资产数据库，然后恢复编译进应用的内置答辩案例。
+- 设置页“一键清除本地创作数据”会移除本地作品和训练记录，以及生成资产数据库，然后恢复内置答辩案例。
 - 清除浏览器的“该站点数据/网站存储”也会删除作品；只清除 HTTP 图片与脚本缓存通常不会删除 localStorage/IndexedDB，界面不得笼统写成“清缓存”。
-- Supabase 只保留公开/授权文学知识库。迁移 `004_zero_user_data_retention.sql` 删除旧版 `projects`、`ai_runs`、`training_attempts`；浏览器端不存在这些表的读写接口。
+- 公开文学知识通过随应用发布的本地目录检索。
 - 用户内容 API 返回 `Cache-Control: no-store`，服务端不把正文或响应写入产品数据库。第三方模型供应商的单次请求处理遵守其自身条款；产品不替供应商作零留存承诺。
 - 内置答辩项目 `demo`、`demo-demo_002` 的档案结构始终不可删除；加载存储时会恢复 canonical 的项目、章节、人物、世界观、蓝图、版本和上下文基线。`NEXT_PUBLIC_DEMO_LOCKED=true` 时额外关闭 DeepSeek、ModelScope 和公开向量检索，并让正文与实体编辑器只读；分析、候选和证据展示仍可运行。
 
@@ -166,7 +166,7 @@ RAG 由来源目录、来源状态、关键词/向量检索、任务预算和证
 - `git diff --check`：退出码 0；仅有 Windows 换行转换提示。
 - 静态首页检查：`http://localhost:3000/` 返回 200，包含完整 logo 和动效标记。
 - 测试 stderr 中仍有 jsdom Canvas 未实现提示；AcademicGraph 已捕获 Canvas 异常并保留表格视图，真实浏览器使用原生 Canvas。
-- DeepSeek 实时烟测已返回 3 个候选；ModelScope 实时任务已创建但在超时边界内未返回最终图像，自动回退路径正常；Supabase 公开知识检索仍需部署网络 smoke test。
+- DeepSeek 实时烟测已返回 3 个候选；ModelScope 实时任务已创建但在超时边界内未返回最终图像，自动回退路径正常。
 - 答辩模式验收：锁定开关下主案例结构不能改变，外部 AI/生图/向量检索不发起请求；所有模式均不发起用户作品云同步。
 
 ## 9. 取舍与后续路线
@@ -181,7 +181,7 @@ RAG 由来源目录、来源状态、关键词/向量检索、任务预算和证
 
 ### P1：下一轮增强
 
-- Supabase 公开 RAG、ModelScope 最终图像返回的部署 smoke test 与外部服务监控。
+- ModelScope 最终图像返回的部署 smoke test 与外部服务监控。
 - verified/authorized 经典片段逐条版权核验和来源页。
 - 教师教研看板、匿名课堂样例、批量训练对比。
 - 浏览器视觉回归截图与滚动性能指标。

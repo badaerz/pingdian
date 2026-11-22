@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { StoryDirectionChat } from "@/components/studio/story-direction-chat";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import { contextFromState } from "@/lib/ai/story-context";
 import type { StoryDirectionMessage } from "@/lib/types";
 

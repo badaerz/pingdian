@@ -1,4 +1,5 @@
 import { TRAINING_FEEDBACK_DIMENSIONS, type TrainingFeedbackResult } from "@/lib/types";
+import { trainingBindings } from "@/lib/training/bindings";
 
 export const TREND_DIMENSIONS = TRAINING_FEEDBACK_DIMENSIONS;
 
@@ -55,11 +56,13 @@ export function normalizeTrainingFeedback(value: unknown, answer: string, attemp
   if (rawV2 !== undefined) {
     if (!isRecord(rawV2) || ["replacement", "replacementProse", "prose"].some((key) => key in rawV2)) throw new Error("INVALID_TRAINING_FEEDBACK");
     const strengths = strictTextList(rawV2.strengths, false);
-    const evidenceQuotes = strictTextList(rawV2.evidenceQuotes, false);
+    const evidenceQuotes = strictTextList(rawV2.evidenceQuotes);
     const issues = strictTextList(rawV2.issues);
     const questions = strictTextList(rawV2.questions);
     if (!strengths || !evidenceQuotes || !issues || !questions || !textValue(rawV2.nextExperiment, "") || !evidenceQuotes.every((quote) => answer.includes(quote))) throw new Error("INVALID_TRAINING_FEEDBACK");
-    return { strengths, evidenceQuotes, issues, nextExperiment: textValue(rawV2.nextExperiment, ""), questions, scores: normalizeScores(rawV2.scores, allowedDimensions), attemptNo, ...(previousAnswer ? { previousAnswer } : {}) };
+    const evidenceBindings = trainingBindings(rawV2.evidenceBindings, { strengths, issues, evidenceQuotes });
+    const teacherNote = textValue(rawV2.teacherNote, "").slice(0, 600);
+    return { strengths, evidenceQuotes, issues, nextExperiment: textValue(rawV2.nextExperiment, ""), questions, scores: normalizeScores(rawV2.scores, allowedDimensions), attemptNo, ...(evidenceBindings.length ? { evidenceBindings } : {}), ...(teacherNote ? { teacherNote } : {}), ...(previousAnswer ? { previousAnswer } : {}) };
   }
 
   const legacy = value.feedback;

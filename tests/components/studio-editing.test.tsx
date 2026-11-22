@@ -1,10 +1,9 @@
+import "../fixtures/seeded-store";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { StoryProvider, useStory } from "@/providers/story-provider";
 import { StudioWorkspace } from "@/components/studio/studio-workspace";
-import { CopyCaseButton } from "@/components/studio/copy-case-button";
-import type { StoryStore } from "@/lib/story-store";
 
 const { push } = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -55,33 +54,6 @@ it("remembers display font size without adding formatting to prose", async () =>
 
   expect(localStorage.getItem("story-forge:editor-display:v1")).toContain('"fontSize":20');
   expect(screen.getByTestId("prose-editor").querySelector("span[style]")).toBeNull();
-});
-
-it("keeps the defense case formal editing area read-only", () => {
-  render(<StoryProvider><StudioWorkspace /></StoryProvider>);
-
-  expect(screen.getByLabelText("章节标题")).toHaveAttribute("readonly");
-  expect(screen.getByLabelText("章节摘要（用于 AI 上下文）")).toHaveAttribute("readonly");
-  expect(screen.getByTestId("prose-editor").querySelector("[contenteditable]")).toHaveAttribute("contenteditable", "false");
-  expect(screen.getByRole("button", { name: "新增章节" })).toBeDisabled();
-  expect(screen.getAllByRole("button", { name: /^删除/ }).every((button) => (button as HTMLButtonElement).disabled)).toBe(true);
-});
-
-it("copies a read-only case locally and explains consistency after changing a copied setting", async () => {
-  const user = userEvent.setup();
-  render(<StoryProvider><StudioWorkspace copyCaseAction={<CopyCaseButton />} /></StoryProvider>);
-  await user.click(screen.getByRole("button", { name: "核心规则，规则" }));
-  expect(screen.getByLabelText("设定内容")).toHaveAttribute("readonly");
-  const original = (screen.getByLabelText("设定内容") as HTMLTextAreaElement).value;
-  await user.click(screen.getByRole("button", { name: "复制案例并编辑" }));
-  expect(push).toHaveBeenCalledWith(expect.stringMatching(/^\/project\/project-.+\/studio$/));
-  expect(screen.getByLabelText("设定内容")).toHaveValue(original);
-  fireEvent.change(screen.getByLabelText("设定内容"), { target: { value: "设定更新后的规则" } });
-  expect(screen.getByText(/设定已更新.*一致性检查/)).toBeVisible();
-  const { documents } = JSON.parse(localStorage.getItem("story-forge:projects:v3") ?? "{}") as StoryStore;
-  expect(documents.demo.worldEntries).toEqual(expect.arrayContaining([expect.objectContaining({ label: "核心规则", content: original })]));
-  const copy = Object.values(documents).find((item) => item.project.title.endsWith("（副本）"));
-  expect(copy?.worldEntries).toEqual(expect.arrayContaining([expect.objectContaining({ label: "核心规则", content: "设定更新后的规则" })]));
 });
 
 it("does not render the duplicate scoped diagnosis link", () => {
@@ -153,7 +125,7 @@ it("runs consistency checks only after an explicit continuation request", async 
   expect(fetcher.mock.calls.map((call) => JSON.parse(String(call[1]?.body)).task)).toEqual(["continue", "consistency-check", "consistency-check"]);
 });
 
-it("allows candidate revision but keeps defense case adoption blocked", async () => {
+it("allows candidate revision before adopting the corrected version", async () => {
   const user = userEvent.setup();
   vi.stubGlobal("fetch", vi.fn(async (_url: string, init?: RequestInit) => {
     const body = JSON.parse(String(init?.body));
@@ -205,7 +177,7 @@ it("allows candidate revision but keeps defense case adoption blocked", async ()
   await waitFor(() => expect(screen.getByText("低风险提示")).toBeVisible());
   const adopt = screen.getAllByRole("button", { name: "采纳候选" });
   expect(adopt.length).toBeGreaterThan(0);
-  expect(adopt.every((button) => (button as HTMLButtonElement).disabled)).toBe(true);
+  expect(adopt.some((button) => !(button as HTMLButtonElement).disabled)).toBe(true);
   expect(screen.queryByRole("heading", { name: "确认采纳" })).not.toBeInTheDocument();
   expect(screen.getByTestId("prose-editor").textContent).toBe(original);
 });

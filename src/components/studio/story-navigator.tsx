@@ -68,7 +68,7 @@ export function StoryNavigator({ selection, onSelect, readOnly = false }: Naviga
               onSelect({ type, id: item.id });
             }}><strong>{title || "未命名"}</strong><small>{detail || "待补充"}</small></button>
             {locked ? <LockKeyhole size={13} aria-label="已锁定" /> : <ChevronRight size={13} aria-hidden />}
-            <Tooltip label={readOnly ? "答辩案例只读" : locked ? "已锁定事实" : type === "chapter" && items.length === 1 ? "至少保留一章" : `删除${label}`}><Button variant="icon" aria-label={`删除${title || label}`} disabled={readOnly || locked || (type === "chapter" && items.length === 1)} onClick={() => remove(type, item.id)}><Trash2 size={13} /></Button></Tooltip>
+            <Tooltip label={readOnly ? "只读" : locked ? "已锁定事实" : type === "chapter" && items.length === 1 ? "至少保留一章" : `删除${label}`}><Button variant="icon" aria-label={`删除${title || label}`} disabled={readOnly || locked || (type === "chapter" && items.length === 1)} onClick={() => remove(type, item.id)}><Trash2 size={13} /></Button></Tooltip>
           </div>;
         })}
       </div>

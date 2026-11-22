@@ -1,7 +1,7 @@
 "use client";
 
 import { KeyRound, ShieldCheck, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import {
@@ -11,6 +11,32 @@ import {
   storeUserAiKey,
   USER_AI_KEY_STORAGE,
 } from "@/lib/ai/user-key";
+
+/*
+ * localStorage 是 React 之外的状态源，所以走 useSyncExternalStore 而不是
+ * useEffect + setState。两条路都能避开 hydration mismatch（服务端快照固定，
+ * 客户端挂载后自动重渲染），但后者会被 react-hooks/set-state-in-effect 判错：
+ * 在 effect 体里同步 setState 会触发级联渲染。
+ *
+ * 密钥只由本组件改写，所以订阅表是自己维护的最小实现，不引入额外依赖。
+ */
+const listeners = new Set<() => void>();
+function subscribe(onChange: () => void) {
+  listeners.add(onChange);
+  return () => { listeners.delete(onChange); };
+}
+function notifyKeyChanged() {
+  for (const onChange of listeners) onChange();
+}
+
+function readStoredKey(): string | null {
+  try {
+    const raw = window.localStorage.getItem(USER_AI_KEY_STORAGE);
+    return raw && isValidUserAiKey(raw) ? raw : null;
+  } catch {
+    return null; // 隐私模式下 localStorage 不可用，按未配置处理
+  }
+}
 
 /**
  * 自带 AI 密钥（BYOK）。
@@ -23,23 +49,14 @@ import {
  */
 export function AiKeyPanel() {
   const [draft, setDraft] = useState("");
-  // 惰性初始化直接读本地存储：这个组件只在浏览器里渲染，
-  // 用 useEffect 再回填会多一帧「未填写」的闪烁，也会触发 set-state-in-effect 规则。
-  const [saved, setSaved] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const raw = window.localStorage.getItem(USER_AI_KEY_STORAGE);
-      return raw && isValidUserAiKey(raw) ? raw : null;
-    } catch {
-      return null;
-    }
-  });
+  // 第三个参数是服务端快照：服务端没有 localStorage，固定返回「未配置」，
+  // 保证首屏两端结构一致；挂载后 React 自动用客户端快照重渲染。
+  const saved = useSyncExternalStore(subscribe, readStoredKey, () => null);
   const [feedback, setFeedback] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
 
   const save = () => {
     if (storeUserAiKey(draft)) {
-      const raw = window.localStorage.getItem(USER_AI_KEY_STORAGE);
-      setSaved(raw);
+      notifyKeyChanged();
       setDraft("");
       setFeedback({ kind: "ok", text: "已保存到本浏览器，之后的分析会用你的密钥调用" });
     } else {
@@ -49,7 +66,7 @@ export function AiKeyPanel() {
 
   const clear = () => {
     clearStoredUserAiKey();
-    setSaved(null);
+    notifyKeyChanged();
     setDraft("");
     setFeedback({ kind: "ok", text: "已清除。之后不再使用你的密钥，需要时会退回演示结果" });
   };
@@ -73,7 +90,7 @@ export function AiKeyPanel() {
         {saved && <StatusBadge kind="success">已启用</StatusBadge>}
       </div>
 
-      <label className="field">
+      <label className="settings-field">
         <span>DeepSeek API Key</span>
         <input
           type="password"

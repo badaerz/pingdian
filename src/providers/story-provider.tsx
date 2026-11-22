@@ -5,7 +5,8 @@ import { acceptCandidate, appendDirectionMessage, confirmConsistencyReport, disc
 import { createProjectDocument, createStoryStore, loadStoryStore, saveStoryStore, type ProjectDocument, type StoryStore } from "@/lib/story-store";
 import type { ConsistencyReport, ImageGenerationSettings, Project, StoryDirectionMessage, StoryState } from "@/lib/types";
 import { clearAssetBlobs } from "@/lib/assets/indexed-db";
-import { canMutateDemoState, isDefenseProjectId, isDemoLocked } from "@/lib/demo-mode";
+import { initialStoryState } from "@/data/mock-data";
+import { canMutateDemoState, isDemoLocked } from "@/lib/demo-mode";
 
 const TRAINING_HISTORY_KEY = "story-forge:training:v1";
 const APP_STORAGE_PREFIX = "story-forge:";
@@ -38,6 +39,7 @@ export interface TrainingHistoryItem {
 
 interface StoryContextValue {
   state: StoryState;
+  documents: StoryStore["documents"];
   setState: React.Dispatch<React.SetStateAction<StoryState>>;
   accept: (id: string, content?: string) => void;
   discard: (id: string) => void;
@@ -63,8 +65,8 @@ interface StoryContextValue {
 const StoryContext = createContext<StoryContextValue | null>(null);
 
 function toStoryState(store: StoryStore, requestedProjectId: string): StoryState {
-  const document = store.documents[requestedProjectId] ?? store.documents.demo ?? Object.values(store.documents)[0];
-  if (!document) throw new Error("Story store has no project documents");
+  const document = store.documents[requestedProjectId] ?? Object.values(store.documents)[0];
+  if (!document) return initialStoryState;
   const { project, ...content } = document;
   return {
     ...content,
@@ -83,7 +85,7 @@ function updateActiveDocument(store: StoryStore, state: StoryState): StoryStore 
 
 export function StoryProvider({ children }: { children: React.ReactNode }) {
   const [store, setStore] = useState<StoryStore>(() => createStoryStore());
-  const [activeProjectId, setActiveProjectId] = useState("demo");
+  const [activeProjectId, setActiveProjectId] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const [trainingHistory, setTrainingHistory] = useState<TrainingHistoryItem[]>([]);
   const demoLocked = isDemoLocked();
@@ -131,6 +133,7 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<StoryContextValue>(() => ({
     state,
+    documents: store.documents,
     setState,
     accept: (id, content) => setState((current) => acceptCandidate(current, id, content)),
     discard: (id) => setState((current) => discardCandidate(current, id)),
@@ -156,15 +159,15 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
     },
     removeProject: (id) => {
       setStore((current) => {
-        if (!current.documents[id] || Object.keys(current.documents).length <= 1 || isDefenseProjectId(id)) return current;
+        if (!current.documents[id]) return current;
         const documents = { ...current.documents };
         delete documents[id];
-        if (activeProjectId === id) setActiveProjectId(Object.keys(documents)[0] ?? "demo");
+        if (activeProjectId === id) setActiveProjectId(Object.keys(documents)[0] ?? "");
         return { ...current, documents };
       });
     },
     selectProject: (id) => { if (store.documents[id]) setActiveProjectId(id); },
-    reset: () => { setStore(createStoryStore()); setActiveProjectId("demo"); },
+    reset: () => { setStore(createStoryStore()); setActiveProjectId(""); },
     syncStatus: "disabled",
     trainingHistory,
     recordTrainingAttempt: (input) => {
@@ -196,7 +199,7 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
       trainingHistoryRef.current = [];
       setTrainingHistory([]);
       setStore(cleanStore);
-      setActiveProjectId("demo");
+      setActiveProjectId("");
       await clearAssetBlobs();
     },
     recordAiRun: () => undefined,

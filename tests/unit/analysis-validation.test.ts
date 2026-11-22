@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { fixtureForTask } from "@/lib/ai/fixtures";
 import { contextFromState } from "@/lib/ai/story-context";
 import { validateTaskPayload, isProofreadingClaim } from "@/lib/ai/validation";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import type { LiteraryAnalysisResult } from "@/lib/types";
 
 describe("analysis-v2 competition diagnosis", () => {

@@ -1,8 +1,9 @@
+import { createFixtureStore } from '../fixtures/story-store';
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { IpLabWorkspace } from "@/components/ip-lab/ip-lab-workspace";
-import { createStoryStore, STORY_STORE_KEY } from "@/lib/story-store";
+import { STORY_STORE_KEY } from "@/lib/story-store";
 import { StoryProvider } from "@/providers/story-provider";
 
 const { loadAssetBlob, saveAssetBlob } = vi.hoisted(() => ({ loadAssetBlob: vi.fn().mockResolvedValue(undefined), saveAssetBlob: vi.fn().mockResolvedValue(undefined) }));
@@ -21,6 +22,7 @@ const capabilities = {
 
 beforeEach(() => {
   localStorage.clear();
+  localStorage.setItem(STORY_STORE_KEY, JSON.stringify(createFixtureStore()));
   loadAssetBlob.mockReset();
   loadAssetBlob.mockResolvedValue(undefined);
   saveAssetBlob.mockClear();
@@ -39,11 +41,14 @@ it("keeps the visual brief and image as candidates until the user confirms them"
   ];
   vi.stubGlobal("fetch", vi.fn().mockImplementation((input: RequestInfo | URL) => {
     if (String(input) === "/api/assets/capabilities") return Promise.resolve(new Response(JSON.stringify(capabilities), { status: 200 }));
-    if (String(input).startsWith("/visuals/")) return Promise.resolve(new Response(new Blob(["demo-image"], { type: "image/png" }), { status: 200 }));
+    // 响应体给字符串而不是 Blob：jsdom 的 Blob 没有 stream()，undici 的 Response
+    // 拿它构造会直接抛 "object.stream is not a function"，测试会在准备阶段就挂掉，
+    // 测不到被测的保存逻辑。字符串体在 jsdom 里能正常 .blob()。
+    if (String(input).startsWith("/visuals/")) return Promise.resolve(new Response("demo-image", { status: 200 }));
     return Promise.resolve(new Response(JSON.stringify(responses.shift()), { status: 200 }));
   }));
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
 
   await user.click(screen.getByRole("button", { name: "生成视觉简报" }));
   expect(await screen.findByText(/主体：杭盖/)).toBeVisible();
@@ -56,7 +61,13 @@ it("keeps the visual brief and image as candidates until the user confirms them"
 
   const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => undefined);
   await user.click(screen.getByRole("button", { name: "确认保存图像" }));
-  expect(saveAssetBlob).toHaveBeenCalledWith("asset-1", expect.any(Blob));
+  // 不写 expect.any(Blob)：Response.blob() 在 Node 里返回的是 undici 的 Blob，
+  // 而测试环境的全局 Blob 是 jsdom 的，两者不是同一个类，instanceof 必假。
+  // 直接看保存下去的内容——长度对得上，才是真的把图存进去了。
+  expect(saveAssetBlob).toHaveBeenCalledTimes(1);
+  const [savedId, savedBlob] = saveAssetBlob.mock.calls[0] as [string, Blob];
+  expect(savedId).toBe("asset-1");
+  expect(savedBlob.size).toBe("demo-image".length);
   expect(anchorClick).toHaveBeenCalled();
   expect(screen.getByRole("button", { name: "下载图像" })).toBeVisible();
   expect(screen.getByRole("button", { name: "查看大图" })).toBeVisible();
@@ -69,7 +80,7 @@ it("keeps the visual brief and image as candidates until the user confirms them"
   await user.click(screen.getByRole("button", { name: "重置大图" }));
   expect(within(imageDialog).getByRole("img", { name: "杭盖主视觉" })).toHaveStyle({ transform: "scale(1)" });
   await user.click(screen.getByRole("button", { name: "关闭大图" }));
-  await waitFor(() => expect(JSON.parse(localStorage.getItem(STORY_STORE_KEY) ?? "{}").documents.demo.ipAssets[0].previewUrl).toBe("indexeddb://asset-1"));
+  await waitFor(() => expect(JSON.parse(localStorage.getItem(STORY_STORE_KEY) ?? "{}").documents.fixture.ipAssets[0].previewUrl).toBe("indexeddb://asset-1"));
   await user.click(screen.getByRole("button", { name: "生成六镜头分镜" }));
   expect(await screen.findByText(/06 中景/)).toBeVisible();
   expect(screen.getByText("演示分镜")).toBeVisible();
@@ -90,7 +101,7 @@ it("keeps image generation progress beside the image controls and preview instea
     throw new Error(`Unexpected request: ${url}`);
   }));
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
   await user.click(screen.getByRole("button", { name: "生成视觉简报" }));
   await user.click(await screen.findByRole("button", { name: "确认视觉简报" }));
   await user.click(screen.getByRole("button", { name: "生成主视觉" }));
@@ -130,7 +141,7 @@ it("shows the submitted image task state without waiting for provider completion
   });
   vi.stubGlobal("fetch", fetchMock);
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
   await user.click(screen.getByRole("button", { name: "生成视觉简报" }));
   await user.click(await screen.findByRole("button", { name: "确认视觉简报" }));
   await user.click(screen.getByRole("button", { name: "生成主视觉" }));
@@ -152,7 +163,7 @@ it("surfaces the API warning when a visual brief response has no usable candidat
     throw new Error(`Unexpected request: ${url}`);
   }));
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
   await user.click(screen.getByRole("button", { name: "生成视觉简报" }));
 
   expect(await screen.findByText("模型返回结构或证据不符合任务要求，已使用离线演示结果。" )).toBeVisible();
@@ -191,7 +202,7 @@ it("keeps AI-recommended settings as an editable draft until the user explicitly
   });
   vi.stubGlobal("fetch", fetchMock);
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
 
   const upload = new File(["海风把旧信吹到潮湿的桌面。"], "source.md", { type: "text/markdown" });
   await user.upload(screen.getByLabelText("上传临时文本"), upload);
@@ -248,7 +259,7 @@ it("submits exactly the user-edited whitelisted settings only after explicit ima
   });
   vi.stubGlobal("fetch", fetchMock);
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
 
   await user.click(screen.getByRole("button", { name: "文学海报" }));
   await user.clear(screen.getByLabelText("正向提示词"));
@@ -281,8 +292,8 @@ it("submits exactly the user-edited whitelisted settings only after explicit ima
 });
 
 it("loads image settings from the project selected by the route instead of retaining the initial project settings", async () => {
-  const store = createStoryStore();
-  store.documents["demo-demo_002"].imageGenerationSettings = {
+  const store = createFixtureStore();
+  store.documents["fixture-other"].imageGenerationSettings = {
     prompt: "第二个项目专属提示词",
     negativePrompt: "第二个项目负向词",
     model: "Qwen/Qwen-Image",
@@ -292,7 +303,7 @@ it("loads image settings from the project selected by the route instead of retai
   localStorage.setItem(STORY_STORE_KEY, JSON.stringify(store));
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(capabilities), { status: 200 })));
 
-  render(<StoryProvider><IpLabWorkspace projectId="demo-demo_002" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture-other" /></StoryProvider>);
 
   expect(await screen.findByDisplayValue("第二个项目专属提示词")).toBeVisible();
   expect(screen.getByLabelText("画面尺寸")).toHaveValue("1472x1140");
@@ -302,7 +313,7 @@ it("loads image settings from the project selected by the route instead of retai
 it("validates upload bytes and MIME before reading, and reports read failures", async () => {
   const user = userEvent.setup();
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(capabilities), { status: 200 })));
-  render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
   const input = screen.getByLabelText("上传临时文本");
 
   const oversized = new File([new Uint8Array(128 * 1024 + 1)], "oversized.txt", { type: "text/plain" });
@@ -333,13 +344,13 @@ it("clears project-scoped work and ignores a recommendation that resolves after 
     if (String(input) === "/api/ai") return new Promise<Response>((resolve) => { resolveRecommendation = resolve; });
     throw new Error(`Unexpected request: ${String(input)}`);
   }));
-  const view = render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  const view = render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
   await user.upload(screen.getByLabelText("上传临时文本"), new File(["旧项目临时正文"], "old.md", { type: "text/markdown" }));
   await user.click(screen.getByRole("button", { name: "分析临时文本" }));
   await user.click(screen.getByRole("button", { name: "AI 推荐参数" }));
   await waitFor(() => expect(resolveRecommendation).toBeTypeOf("function"));
 
-  view.rerender(<StoryProvider><IpLabWorkspace projectId="demo-demo_002" /></StoryProvider>);
+  view.rerender(<StoryProvider><IpLabWorkspace projectId="fixture-other" /></StoryProvider>);
   expect(await screen.findByText("上传 TXT / MD")).toBeVisible();
   expect(screen.getByRole("button", { name: "AI 推荐参数" })).toBeEnabled();
   resolveRecommendation?.(new Response(JSON.stringify({
@@ -366,13 +377,13 @@ it("clears confirmation state and ignores an image candidate that resolves after
     if (url === "/api/assets/generate") return new Promise<Response>((resolve) => { resolveImage = resolve; });
     throw new Error(`Unexpected request: ${url}`);
   }));
-  const view = render(<StoryProvider><IpLabWorkspace projectId="demo" /></StoryProvider>);
+  const view = render(<StoryProvider><IpLabWorkspace projectId="fixture" /></StoryProvider>);
   await user.click(screen.getByRole("button", { name: "生成视觉简报" }));
   await user.click(await screen.findByRole("button", { name: "确认视觉简报" }));
   await user.click(screen.getByRole("button", { name: "生成主视觉" }));
   await waitFor(() => expect(resolveImage).toBeTypeOf("function"));
 
-  view.rerender(<StoryProvider><IpLabWorkspace projectId="demo-demo_002" /></StoryProvider>);
+  view.rerender(<StoryProvider><IpLabWorkspace projectId="fixture-other" /></StoryProvider>);
   expect(screen.getByRole("button", { name: "生成主视觉" })).toBeDisabled();
   expect(screen.getByRole("button", { name: "生成视觉简报" })).toBeEnabled();
   resolveImage?.(new Response(JSON.stringify({

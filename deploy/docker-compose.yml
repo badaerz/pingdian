@@ -7,7 +7,8 @@ services:
         NEXT_PUBLIC_DEMO_LOCKED: ${NEXT_PUBLIC_DEMO_LOCKED:-false}
     image: story-forge:${APP_VERSION:-candidate}
     env_file:
-      - ${STORY_FORGE_ENV_FILE:-../.env.production}
+      - path: ${STORY_FORGE_ENV_FILE:-../.env.production}
+        required: false
     environment:
       NODE_ENV: production
       HOSTNAME: 0.0.0.0

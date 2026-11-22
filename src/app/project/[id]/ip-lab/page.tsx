@@ -1,6 +1,6 @@
-import { IpLabWorkspace } from "@/components/ip-lab/ip-lab-workspace";
+import { IpConcept } from "@/components/ip-lab/ip-concept";
 
 export default async function IpLabPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return <IpLabWorkspace projectId={id} />;
+  return <IpConcept projectId={id} />;
 }

@@ -1,12 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
 import { isDemoLocked } from "@/lib/demo-mode";
-import { createEmbedding } from "@/lib/ai/embeddings";
-import { embeddingBudgetLimits, embeddingRequestBudget } from "@/lib/ai/embedding-budget";
 import { retrieveKnowledge, SAFE_KNOWLEDGE_CHUNK_TYPES } from "@/lib/ai/retrieval";
 import { resolveAiSourceText } from "@/lib/ai/story-context";
 import { AI_TASKS, runAiTask, type AiTask, type AiTaskConfig, type AiTaskDependencies, type AiTaskInput } from "@/lib/ai/tasks";
 import { knowledgeRecords } from "@/lib/knowledge/catalog";
-import { matchLiteratureKnowledge, type SupabaseVectorRpcClient } from "@/lib/supabase/sync";
 import { noStoreJson } from "@/lib/http/no-store";
 import { AI_KEY_HEADER, isValidUserAiKey, normalizeUserAiKey } from "@/lib/ai/user-key";
 import { aiRequestBudget, type RequestBudget } from "@/lib/http/request-budget";
@@ -118,7 +114,7 @@ export function aiConfigFromEnvironment(): AiTaskConfig {
  *
  * 安全约束（改动前请先读）：
  * - 只在内存里传递一次，不落库、不写日志、不回显
- * - 答辩锁定模式下完全忽略，不允许外部调用
+ * - 演示模式下完全忽略，不允许外部调用
  * - 格式不合法直接拒绝，不带着坏密钥去调供应商
  *
  * 返回 undefined = 没带密钥（走服务端配置）；返回 "" = 带了但不合法（拒绝请求）。
@@ -131,49 +127,12 @@ export function userKeyFromRequest(request: Request, demoLocked = isDemoLocked()
   return isValidUserAiKey(key) ? key : "";
 }
 
-function publicVectorClientFromEnvironment(): SupabaseVectorRpcClient | null {
-  if (isDemoLocked()) return null;
-  const dimensionValue = process.env.EMBEDDING_DIMENSIONS;
-  const dimensions = dimensionValue === undefined || dimensionValue.trim() === "" ? 384 : Number(dimensionValue);
-  if (process.env.EMBEDDING_PUBLIC_SEARCH_ENABLED !== "true" || dimensions !== 384) return null;
-  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  const anonKey = process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-  const providerConfigured = Boolean(process.env.EMBEDDING_API_KEY && process.env.EMBEDDING_BASE_URL && process.env.EMBEDDING_MODEL);
-  if (!providerConfigured || !url || !anonKey) return null;
-  try {
-    return createClient(url, anonKey, { accessToken: async () => anonKey }) as unknown as SupabaseVectorRpcClient;
-  } catch {
-    return null;
-  }
-}
-
 function productionRetrievalDependencies(): AiTaskDependencies {
-  const vectorClient = publicVectorClientFromEnvironment();
   return {
-    retrieveKnowledge: async (query) => {
-      const safeQuery = { ...query, allowImitation: false, chunkTypes: [...SAFE_KNOWLEDGE_CHUNK_TYPES] };
-      const limits = embeddingBudgetLimits();
-      const releaseEmbedding = vectorClient ? embeddingRequestBudget.acquire(limits.maxPerMinute, limits.maxConcurrent) : null;
-      if (vectorClient && !releaseEmbedding) {
-        const fallback = await retrieveKnowledge(safeQuery, { records: knowledgeRecords });
-        return { ...fallback, warnings: [`知识检索预算已达上限，已降级为 ${fallback.mode} 模式。`] };
-      }
-      try {
-        return await retrieveKnowledge(safeQuery, {
-          records: knowledgeRecords,
-          createEmbedding: vectorClient ? (text) => createEmbedding(text, {
-            apiKey: process.env.EMBEDDING_API_KEY ?? "",
-            baseUrl: process.env.EMBEDDING_BASE_URL ?? "",
-            model: process.env.EMBEDDING_MODEL ?? "",
-            dimensions: 384,
-            timeoutMs: boundedEnvironmentInteger(process.env.EMBEDDING_TIMEOUT_MS, 10_000, 1_000, 30_000),
-          }) : undefined,
-          vectorSearch: vectorClient ? (input) => matchLiteratureKnowledge(vectorClient, input) : undefined,
-        });
-      } finally {
-        releaseEmbedding?.();
-      }
-    },
+    retrieveKnowledge: (query) => retrieveKnowledge(
+      { ...query, allowImitation: false, chunkTypes: [...SAFE_KNOWLEDGE_CHUNK_TYPES] },
+      { records: knowledgeRecords },
+    ),
   };
 }
 

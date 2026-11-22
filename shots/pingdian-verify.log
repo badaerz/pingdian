@@ -1,0 +1,86 @@
+
+> story-forge-mvp@0.1.0 verify
+> npm run lint && npm run typecheck && npm run check:layering && npm run check:filesize && npm test -- --run && npm run build
+
+
+> story-forge-mvp@0.1.0 lint
+> eslint .
+
+
+> story-forge-mvp@0.1.0 typecheck
+> tsc --noEmit
+
+
+> story-forge-mvp@0.1.0 check:layering
+> node scripts/check-layering.mjs
+
+layering OK — src/lib and src/data do not reach into components/app/providers.
+
+> story-forge-mvp@0.1.0 check:filesize
+> node scripts/check-filesize.mjs
+
+filesize OK — no non-exempt file under src/ exceeds 500 lines.
+
+> story-forge-mvp@0.1.0 test
+> vitest --run
+
+
+ RUN  v4.1.10 C:/Users/babaerz/Downloads/story forge/story-forge-mvp
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+ Test Files  67 passed (67)
+      Tests  464 passed (464)
+   Start at  19:46:27
+   Duration  13.12s (transform 11.70s, setup 22.38s, import 23.13s, tests 70.00s, environment 97.33s)
+
+
+> story-forge-mvp@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 19ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.0s
+  Running TypeScript ...
+  Finished TypeScript in 4.5s ...
+  Collecting page data using 21 workers ...
+  Generating static pages using 21 workers (0/17) ...
+  Generating static pages using 21 workers (4/17) 
+  Generating static pages using 21 workers (8/17) 
+  Generating static pages using 21 workers (12/17) 
+✓ Generating static pages using 21 workers (17/17) in 573ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/ai
+├ ƒ /api/assets/capabilities
+├ ƒ /api/assets/download
+├ ƒ /api/assets/generate
+├ ƒ /api/assets/status
+├ ƒ /api/generate
+├ ƒ /api/health
+├ ○ /icon.png
+├ ○ /knowledge
+├ ƒ /project/[id]/analysis
+├ ƒ /project/[id]/ip-lab
+├ ƒ /project/[id]/studio
+├ ○ /projects
+├ ○ /projects/new
+├ ○ /settings
+└ ƒ /training
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

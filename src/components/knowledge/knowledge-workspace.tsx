@@ -3,17 +3,15 @@
 import { fetchAi } from "@/lib/ai/client";
 
 import { BookMarked, FileText, LoaderCircle, RotateCcw, Upload } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CharacterGraph } from "@/components/analysis/character-graph";
 import { AcademicGraph } from "@/components/knowledge/academic-graph";
 import { AiProgress, type AiProgressStatus } from "@/components/ui/ai-progress";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { createKnowledgeGraph, knowledgeRecords, type KnowledgeRecord } from "@/lib/knowledge/catalog";
+import { createKnowledgeGraph, filterKnowledgeRecords, knowledgeRecords } from "@/lib/knowledge/catalog";
 import { extractTextGraph, MAX_TEXT_SOURCE_CHARS, validateTextUpload, type AcademicKnowledgeGraph } from "@/lib/knowledge/text-extraction";
 import { contextFromState } from "@/lib/ai/story-context";
-import { searchKnowledge } from "@/lib/supabase/sync";
 import { useStoryOptional } from "@/providers/story-provider";
 import { aiRequestHeaders } from "@/lib/ai/user-key";
 
@@ -36,7 +34,6 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
   const [theme, setTheme] = useState("");
   const [technique, setTechnique] = useState("");
   const [selected, setSelected] = useState("work-KB_001");
-  const [records, setRecords] = useState<KnowledgeRecord[]>(knowledgeRecords);
   const [myText, setMyText] = useState("");
   const [myTextName, setMyTextName] = useState("");
   const [myGraph, setMyGraph] = useState<AcademicKnowledgeGraph | null>(null);
@@ -49,13 +46,7 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
   const requestEpochRef = useRef(0);
   const filters = useMemo(() => ({ era, theme, technique }), [era, theme, technique]);
 
-  useEffect(() => {
-    let active = true;
-    searchKnowledge(null, filters).then((next) => {
-      if (active) setRecords(next);
-    });
-    return () => { active = false; };
-  }, [filters]);
+  const records = useMemo(() => filterKnowledgeRecords(knowledgeRecords, filters), [filters]);
 
   useEffect(() => () => { requestEpochRef.current += 1; requestRef.current?.abort(); }, []);
 
@@ -66,7 +57,8 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
     edge,
     node: graph.nodes.find((item) => item.id === (edge.source === node?.id ? edge.target : edge.source)),
   })).filter((item) => item.node), [connections, graph, node]);
-  const work = node?.type === "work" ? records.find((item) => `work-${item.id}` === node.id) : undefined;
+  const work = records.find((item) => `work-${item.id}` === node?.id);
+  const sources = work ? [work] : records.filter((item) => relatedNodes.some((related) => related.node?.id === `work-${item.id}`));
   const reset = () => { setEra(""); setTheme(""); setTechnique(""); };
   const eras = [...new Set(knowledgeRecords.map((item) => item.era))];
   const themes = [...new Set(knowledgeRecords.flatMap((item) => item.themes))];
@@ -139,13 +131,7 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
     <div className="page knowledge-page">
       <header className="page-head knowledge-page-head">
         <div>
-          <span className="eyebrow">Digital Humanities / Knowledge Base</span>
           <h1 className="page-title">文学知识图谱</h1>
-          <p className="page-subtitle">从作品、作者、主题和技法之间的明确关系进入阅读。</p>
-        </div>
-        <div className="knowledge-head-visual">
-          <Image src="/visuals/knowledge-atlas.png" alt="文学知识关系图谱" fill sizes="(max-width: 700px) 100vw, 320px" />
-          <StatusBadge kind="knowledge">{knowledgeRecords.length} 部精选文本</StatusBadge>
         </div>
       </header>
 
@@ -200,7 +186,6 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
 
           <aside className="knowledge-detail">
             <span className="eyebrow">Selected Node / 节点详情</span>
-            <div className="knowledge-symbol"><BookMarked /></div>
             <h2>{node?.label || "选择节点"}</h2>
             <p>{node?.description || "点击图谱或列表中的节点查看来源与解构。"}</p>
             <dl>
@@ -210,12 +195,18 @@ function KnowledgeWorkspaceContent({ story, mode, setMode }: { story: ReturnType
               <div><dt>来源状态</dt><dd>{work?.sourceStatus === "verified" ? "已核验" : work?.sourceStatus === "summary_only" ? "摘要来源" : work?.sourceStatus === "pending" ? "待核验" : "结构化来源"}</dd></div>
             </dl>
             {work?.sourceUrl && <a href={work.sourceUrl} target="_blank" rel="noreferrer" className="source-link">查看公共来源</a>}
+            {sources.length > 0 && <section className="pd-graph-evidence" aria-label="来源证据">
+              <h3>来源证据</h3>
+              {sources.map((source) => <div key={source.id}>
+                <button type="button" onClick={() => setSelected(`work-${source.id}`)}>《{source.title}》 · {source.author}</button>
+                {source.deconstruction.selectedText && <blockquote>{source.deconstruction.selectedText}</blockquote>}
+              </div>)}
+            </section>}
             {work && (
               <section className="knowledge-deconstruction">
                 <span className="eyebrow">作品阅读</span>
                 <h3>经典文本解构</h3>
                 <div><strong>情节结构</strong>{work.deconstruction.plot.map((part) => <p key={part.stage}><b>{part.stage}</b>{part.description}</p>)}</div>
-                <div><strong>片段证据</strong><blockquote>{work.deconstruction.selectedText || "暂无短片段，先从结构字段进入阅读。"}</blockquote></div>
                 <div><strong>为什么这样写</strong><p>{work.deconstruction.explanation}</p></div>
                 <div><strong>训练提示</strong><p>{work.deconstruction.trainingPrompt}</p></div>
               </section>

@@ -14,6 +14,7 @@ describe("设置页的自带密钥面板", () => {
   it("没填密钥时明确说明会退回演示结果", () => {
     render(<AiKeyPanel />);
     expect(screen.getByText("尚未填写密钥")).toBeVisible();
+    expect(screen.getByText(/密钥只保存在当前浏览器/)).toBeVisible();
     expect(screen.getByText(/不填则使用演示结果/)).toBeVisible();
   });
 

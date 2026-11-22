@@ -1,3 +1,4 @@
+import "../fixtures/seeded-store";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, it, vi } from "vitest";
@@ -7,7 +8,7 @@ import { StoryProvider, useStory } from "@/providers/story-provider";
 
 function seedMalformedReport() {
   const store = createStoryStore();
-  const document = store.documents.demo;
+  const document = store.documents.fixture;
   const candidate = document.candidates[0];
   candidate.generatedRevision = document.contextRevision;
   candidate.target = { type: "chapter", id: document.activeChapterId };
@@ -35,7 +36,7 @@ function successfulCheck(candidateId: string, revision: number) {
 
 function ProjectSwitch() {
   const { selectProject } = useStory();
-  return <button onClick={() => selectProject("demo-demo_002")}>切换恢复测试项目</button>;
+  return <button onClick={() => selectProject("fixture-other")}>切换恢复测试项目</button>;
 }
 
 beforeEach(() => {

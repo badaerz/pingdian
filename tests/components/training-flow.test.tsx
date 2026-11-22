@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { TrainingWorkspace } from "@/components/training/training-workspace";
@@ -129,6 +129,11 @@ it("shows attempt details, six-dimension trend, and a diff after the same exerci
   expect(screen.getByTestId("training-trend")).toBeVisible();
   expect(screen.getAllByTestId("training-trend-dimension")).toHaveLength(6);
   expect(screen.getByText("与上次尝试的文本差异")).toBeVisible();
+  expect(screen.getByLabelText("上一版")).toHaveTextContent("他握住了门把。");
+  expect(screen.getByLabelText("这一版")).toHaveTextContent("他握住了冰冷的门把。");
+  const wipe = screen.getByRole("slider", { name: "擦除对比" });
+  fireEvent.change(wipe, { target: { value: "100" } });
+  expect(wipe).toHaveAttribute("aria-valuetext", "显示这一版 100%");
 });
 
 it("drops a late training response after switching exercises and aborts on unmount", async () => {

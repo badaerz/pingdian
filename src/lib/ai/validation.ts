@@ -3,6 +3,7 @@ import { resolveAiSourceText } from "@/lib/ai/story-context";
 import { normalizeModelPayload } from "@/lib/ai/normalize-payload";
 import { injectedCriteriaIds, stampCriteriaVersion } from "@/lib/ai/criteria";
 import { readCriteriaEvaluation } from "@/lib/ai/criteria-evaluation";
+import { trainingBindings } from "@/lib/training/bindings";
 import { TRAINING_FEEDBACK_DIMENSIONS, type AiEvidence, type AnalysisDimension, type BlueprintNode, type Candidate, type Character, type ConsistencyFinding, type Evidence, type GraphEdge, type GraphNode, type ImageGenerationSettings, type KnowledgeGraph, type LiteraryAnalysisResult, type LiteraryDomainAnalysis, type LiteraryDomainFinding, type LiterarySourceKind, type LiteraryThemeStage, type MentorResponse, type RetrievalEvidence, type StoryState, type TrainingFeedbackResult, type WorldEntry } from "@/lib/types";
 
 export interface PayloadEvidenceContext {
@@ -766,6 +767,9 @@ function readTrainingFeedback(value: unknown, evidenceValue: PayloadEvidenceCont
   const cleanScores = scores.filter((item): item is NonNullable<typeof item> => Boolean(item));
   if (!cleanScores.length) return null;
   const result: TrainingFeedbackResult = { strengths, evidenceQuotes, issues, nextExperiment: feedback.nextExperiment, questions, scores: cleanScores };
+  const bindings = trainingBindings(feedback.evidenceBindings, result);
+  if (bindings.length) result.evidenceBindings = bindings;
+  if (text(feedback.teacherNote, 600)) result.teacherNote = feedback.teacherNote;
   return { trainingFeedback: result };
 }
 

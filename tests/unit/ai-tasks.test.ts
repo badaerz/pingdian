@@ -3,9 +3,7 @@ import { fixtureForTask } from "@/lib/ai/fixtures";
 import { runAiTask, type AiTaskInput } from "@/lib/ai/tasks";
 import { aiConfigFromEnvironment, createAiPostHandler } from "@/app/api/ai/route";
 import { POST as legacyGeneratePOST } from "@/app/api/generate/route";
-import { POST as knowledgeSearchPOST } from "@/app/api/knowledge/search/route";
 import { validateTaskPayload } from "@/lib/ai/validation";
-import { knowledgeRecords } from "@/lib/knowledge/catalog";
 import { createRequestBudget } from "@/lib/http/request-budget";
 
 const POST = createAiPostHandler({
@@ -47,16 +45,6 @@ function modelResponse(task: "mentor", selectedText: string) {
   return new Response(JSON.stringify({
     choices: [{ message: { content: JSON.stringify(fixtureForTask(task, input.project, { selectedText })) } }],
   }), { status: 200, headers: { "Content-Type": "application/json" } });
-}
-
-function configureVectorEnvironment() {
-  vi.stubEnv("EMBEDDING_PUBLIC_SEARCH_ENABLED", "true");
-  vi.stubEnv("EMBEDDING_API_KEY", "embedding-secret");
-  vi.stubEnv("EMBEDDING_BASE_URL", "https://embedding.example/v1");
-  vi.stubEnv("EMBEDDING_MODEL", "embedding-model");
-  vi.stubEnv("EMBEDDING_DIMENSIONS", "384");
-  vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://safe.supabase.co");
-  vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon-safe-key");
 }
 
 describe("runAiTask", () => {
@@ -503,7 +491,6 @@ describe("runAiTask", () => {
 
   it("uses evidenceText as the complete source for every analysis task with or without an active chapter", async () => {
     vi.stubEnv("DEEPSEEK_API_KEY", "");
-    vi.stubEnv("EMBEDDING_PUBLIC_SEARCH_ENABLED", "false");
     const evidenceOnly = "ZXQV_EVIDENCE_9173";
     const noActiveProject = { ...input.project, activeChapterId: "missing", chapters: [] };
 
@@ -652,45 +639,8 @@ describe("POST /api/ai input validation", () => {
     }
   });
 
-  it("uses only the 384-dimensional public vector RPC for production AI retrieval", async () => {
-    vi.stubEnv("DEEPSEEK_API_KEY", "deepseek-key");
-    configureVectorEnvironment();
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-secret-must-not-be-used");
-    const fetcher = vi.fn(async (resource: string | URL | Request, init?: RequestInit) => {
-      const url = resource instanceof Request ? resource.url : String(resource);
-      if (url.endsWith("/embeddings")) {
-        const body = JSON.parse(String(init?.body)) as { dimensions?: number };
-        expect(body.dimensions).toBe(384);
-        return new Response(JSON.stringify({ data: [{ embedding: Array.from({ length: 384 }, () => 0.01) }] }), { status: 200 });
-      }
-      if (url.includes("/rpc/match_literature_knowledge")) return new Response(JSON.stringify({ message: "rpc unavailable" }), { status: 500, headers: { "Content-Type": "application/json" } });
-      if (url.endsWith("/chat/completions")) return modelResponse("mentor", knowledgeRecords[0]?.title ?? "叙事技法");
-      throw new Error(`unexpected request: ${url}`);
-    });
-    vi.stubGlobal("fetch", fetcher);
-
-    const response = await POST(new Request("http://localhost/api/ai", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...input, task: "mentor", input: { selectedText: knowledgeRecords[0]?.title ?? "叙事技法" } }),
-    }));
-    const result = await response.json() as { warnings: string[]; notices?: string[] };
-
-    expect(response.status).toBe(200);
-    const urls = fetcher.mock.calls.map(([resource]) => resource instanceof Request ? resource.url : String(resource));
-    expect(urls.some((url) => url.includes("/embeddings"))).toBe(true);
-    expect(urls.some((url) => url.includes("/rpc/match_literature_knowledge"))).toBe(true);
-    expect(urls.some((url) => url.includes("match_literature_knowledge_private"))).toBe(false);
-    expect(fetcher.mock.calls.some(([resource, init]) => {
-      const headers = resource instanceof Request ? resource.headers : new Headers(init?.headers);
-      return [...headers.values()].some((value) => value.includes("service-secret-must-not-be-used"));
-    })).toBe(false);
-    expect(result.notices?.join(" ")).toContain("知识检索：keyword");
-  });
-
-  it("returns a validated no-key demo before any production embedding or RPC", async () => {
+  it("returns a validated no-key demo without a network request", async () => {
     vi.stubEnv("DEEPSEEK_API_KEY", "");
-    configureVectorEnvironment();
     const fetcher = vi.fn();
     vi.stubGlobal("fetch", fetcher);
 
@@ -705,86 +655,6 @@ describe("POST /api/ai input validation", () => {
     expect(body.mode).toBe("demo");
     expect(validateTaskPayload("mentor", body.result, input.project, "demo", { evidenceText: input.project.chapters[0].content })).not.toBeNull();
     expect(fetcher).not.toHaveBeenCalled();
-  });
-
-  it("shares the minute budget across knowledge and AI routes and degrades AI to keyword", async () => {
-    vi.spyOn(Date, "now").mockReturnValue(800_000);
-    vi.stubEnv("DEEPSEEK_API_KEY", "deepseek-key");
-    configureVectorEnvironment();
-    vi.stubEnv("EMBEDDING_PUBLIC_SEARCH_MAX_PER_MINUTE", "1");
-    vi.stubEnv("EMBEDDING_PUBLIC_SEARCH_MAX_CONCURRENT", "2");
-    const selectedText = knowledgeRecords[0]?.title ?? "叙事技法";
-    let embeddingCalls = 0;
-    vi.stubGlobal("fetch", vi.fn(async (resource: string | URL | Request) => {
-      const url = resource instanceof Request ? resource.url : String(resource);
-      if (url.endsWith("/embeddings")) {
-        embeddingCalls += 1;
-        return Response.json({ data: [{ embedding: Array.from({ length: 384 }, () => 0.01) }] });
-      }
-      if (url.includes("/rpc/match_literature_knowledge")) return Response.json([]);
-      if (url.endsWith("/chat/completions")) return modelResponse("mentor", selectedText);
-      throw new Error(`unexpected request: ${url}`);
-    }));
-
-    expect((await knowledgeSearchPOST(new Request("http://localhost/api/knowledge/search", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: selectedText }),
-    }))).status).toBe(200);
-    const response = await POST(new Request("http://localhost/api/ai", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...input, task: "mentor", input: { selectedText } }),
-    }));
-    const body = await response.json() as { warnings: string[] };
-
-    expect(response.status).toBe(200);
-    expect(embeddingCalls).toBe(1);
-    expect(body.warnings.join(" ")).toContain("预算");
-    expect(body.warnings.join(" ")).toContain("keyword");
-  });
-
-  it("shares the concurrent slot across knowledge and AI routes and releases it in finally", async () => {
-    vi.spyOn(Date, "now").mockReturnValue(900_000);
-    vi.stubEnv("DEEPSEEK_API_KEY", "deepseek-key");
-    configureVectorEnvironment();
-    vi.stubEnv("EMBEDDING_PUBLIC_SEARCH_MAX_PER_MINUTE", "10");
-    vi.stubEnv("EMBEDDING_PUBLIC_SEARCH_MAX_CONCURRENT", "1");
-    const selectedText = knowledgeRecords[0]?.title ?? "叙事技法";
-    let settleRpc: ((response: Response) => void) | undefined;
-    const pendingRpc = new Promise<Response>((resolve) => { settleRpc = resolve; });
-    let embeddingCalls = 0;
-    let rpcCalls = 0;
-    vi.stubGlobal("fetch", vi.fn(async (resource: string | URL | Request) => {
-      const url = resource instanceof Request ? resource.url : String(resource);
-      if (url.endsWith("/embeddings")) {
-        embeddingCalls += 1;
-        return Response.json({ data: [{ embedding: Array.from({ length: 384 }, () => 0.01) }] });
-      }
-      if (url.includes("/rpc/match_literature_knowledge")) {
-        rpcCalls += 1;
-        return rpcCalls === 1 ? pendingRpc : Response.json([]);
-      }
-      if (url.endsWith("/chat/completions")) return modelResponse("mentor", selectedText);
-      throw new Error(`unexpected request: ${url}`);
-    }));
-
-    const knowledgeRequest = knowledgeSearchPOST(new Request("http://localhost/api/knowledge/search", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: selectedText }),
-    }));
-    await vi.waitFor(() => expect(rpcCalls).toBe(1));
-    const aiResponse = await POST(new Request("http://localhost/api/ai", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...input, task: "mentor", input: { selectedText } }),
-    }));
-    const aiBody = await aiResponse.json() as { warnings: string[] };
-
-    expect(aiResponse.status).toBe(200);
-    expect(embeddingCalls).toBe(1);
-    expect(aiBody.warnings.join(" ")).toContain("预算");
-    settleRpc?.(Response.json([]));
-    expect((await knowledgeRequest).status).toBe(200);
-
-    const afterRelease = await POST(new Request("http://localhost/api/ai", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...input, task: "mentor", input: { selectedText } }),
-    }));
-    expect(afterRelease.status).toBe(200);
-    expect(embeddingCalls).toBe(2);
   });
 
   it("falls back to safe defaults for invalid AI numeric environment values", () => {

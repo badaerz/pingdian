@@ -3,7 +3,7 @@
 故事熔炉 Story Forge：面向中文创作者与数字人文学习者的**防幻觉文学诊断工具**。
 核心主张：每条 AI 诊断结论都必须绑定可核验的原文与知识库证据；拿不出证据的结论会被丢弃。
 
-技术栈：Next.js 16 · React 19 · TypeScript · Tailwind 4 · Vitest · Playwright · Supabase（仅公开知识库）
+技术栈：Next.js 16 · React 19 · TypeScript · Tailwind 4 · Vitest · Playwright · 本地文学知识库
 AI：DeepSeek 经 `/api/ai` 单一路由，22 个任务 · 生图：ModelScope（v2.0 起降级为愿景）
 
 ## 这个文件是目录，不是百科

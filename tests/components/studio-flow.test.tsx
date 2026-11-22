@@ -1,3 +1,4 @@
+import "../fixtures/seeded-store";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -50,40 +51,6 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 beforeEach(() => localStorage.clear());
-
-it("makes every built-in story editing surface read-only in defense mode", async () => {
-  vi.stubEnv("NEXT_PUBLIC_DEMO_LOCKED", "true");
-  render(<StoryProvider><StudioWorkspace /></StoryProvider>);
-
-  expect(screen.getByLabelText("章节标题")).toHaveAttribute("readonly");
-  expect(screen.getByLabelText("章节摘要（用于 AI 上下文）")).toHaveAttribute("readonly");
-  expect(screen.getByTestId("prose-editor").querySelector('[contenteditable="false"]')).not.toBeNull();
-  expect(screen.getByRole("button", { name: "新增章节" })).toBeDisabled();
-  expect(screen.getByRole("button", { name: "新增人物" })).toBeDisabled();
-  expect(screen.getByRole("button", { name: "删除杭盖" })).toBeDisabled();
-
-  await userEvent.setup().click(screen.getByRole("button", { name: /版本 1/ }));
-  expect(screen.getByRole("button", { name: "回退至上一版本" })).toBeDisabled();
-});
-
-it("keeps the secondary built-in case read-only after project selection", async () => {
-  render(<StoryProvider><StudioWorkspace projectId="demo-demo_002" /></StoryProvider>);
-
-  await waitFor(() => expect(screen.getByLabelText("章节标题")).toHaveValue("生锈的铁盒"));
-  expect(screen.getByLabelText("章节标题")).toHaveAttribute("readonly");
-  expect(screen.getByLabelText("章节摘要（用于 AI 上下文）")).toHaveAttribute("readonly");
-  expect(screen.getByTestId("prose-editor").querySelector('[contenteditable="false"]')).not.toBeNull();
-  expect(screen.getAllByRole("button", { name: /^新增/ }).every((button) => (button as HTMLButtonElement).disabled)).toBe(true);
-  expect(screen.getAllByRole("button", { name: /^删除/ }).every((button) => (button as HTMLButtonElement).disabled)).toBe(true);
-});
-
-it("protects built-in defense structure even when the demo lock switch is off", () => {
-  vi.stubEnv("NEXT_PUBLIC_DEMO_LOCKED", "false");
-  render(<StoryProvider><StudioWorkspace /></StoryProvider>);
-
-  expect(screen.getByRole("button", { name: "新增章节" })).toBeDisabled();
-  expect(screen.getByRole("button", { name: "删除杭盖" })).toBeDisabled();
-});
 
 it("lets the user adjust the writing and collaboration columns", async () => {
   const user = userEvent.setup();

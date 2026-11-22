@@ -1,4 +1,5 @@
 import { TrainingWorkspace } from "@/components/training/training-workspace";
+import "./training-evidence.css";
 
 function single(value: string | string[] | undefined, maximum: number) {
   const selected = Array.isArray(value) ? value[0] : value;

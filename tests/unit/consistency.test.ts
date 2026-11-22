@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import { buildConsistencyInput } from "@/lib/consistency";
 import { acceptCandidate, confirmConsistencyReport, deleteStoryItem, restoreVersion } from "@/lib/story-state";
 import type { Candidate, ConsistencyReport, StoryState } from "@/lib/types";

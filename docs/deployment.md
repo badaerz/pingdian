@@ -1,6 +1,6 @@
 # Story Forge 单人低成本部署
 
-本方案适合个人维护、内蒙古访问和答辩 Demo：一个北京区轻量服务器、一个非 root Next.js 容器、Nginx 反向代理，以及浏览器本地作品存储。应用不需要用户数据库，不需要 Supabase 才能运行。
+本方案适合个人维护、内蒙古访问和答辩 Demo：一个北京区轻量服务器、一个非 root Next.js 容器、Nginx 反向代理，以及浏览器本地作品存储。文学知识检索使用随应用发布的本地目录。
 
 ## 上线前提
 
@@ -26,7 +26,7 @@ cp .env.production.example /opt/story-forge/.env.production
 chmod 600 /opt/story-forge/.env.production
 ```
 
-不要把 `DEEPSEEK_API_KEY`、`MODELSCOPE_API_TOKEN`、Supabase service role key 放入 Dockerfile、前端变量或提交记录。首版保持 `EMBEDDING_PUBLIC_SEARCH_ENABLED=false`，不启用用户文本云端检索。
+不要把 `DEEPSEEK_API_KEY`、`MODELSCOPE_API_TOKEN` 放入 Dockerfile、前端变量或提交记录。知识检索使用项目内的公开文学目录。
 
 ## 构建与启动
 

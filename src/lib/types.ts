@@ -176,6 +176,8 @@ export interface LiteraryAnalysisResult {
 export interface TrainingFeedbackResult {
   strengths: string[];
   evidenceQuotes: string[];
+  evidenceBindings?: { quote: string; group: "strengths" | "issues"; index: number }[];
+  teacherNote?: string;
   issues: string[];
   nextExperiment: string;
   questions: string[];

@@ -1,4 +1,3 @@
-import { initialStoryState } from "@/data/mock-data";
 import { resolveAiSourceText } from "@/lib/ai/story-context";
 import type { AiEvidence, BlueprintNode, Candidate, Character, KnowledgeGraph, StoryState } from "@/lib/types";
 import type { AiTask, AiTaskInput, AiTaskPayload, StoryContext } from "@/lib/ai/tasks";
@@ -73,8 +72,8 @@ function analysisGraph(sourceKind: "narrative" | "argumentative" = "narrative", 
 }
 
 export function fixtureForTask(task: AiTask, context: StoryContext, input?: AiTaskInput["input"]): AiTaskPayload {
-  const characters: Character[] = context.characters.length ? context.characters : initialStoryState.characters.slice(0, 2);
-  const blueprint: BlueprintNode[] = context.blueprint.length ? context.blueprint : initialStoryState.blueprint;
+  const characters: Character[] = context.characters.length ? context.characters : [{ id: "local-protagonist", name: "主人公", role: "主角", desire: context.logline || "完成一件重要的事", fear: "", flaw: "犹豫", arc: "从犹豫到行动", notes: "", order: 0, locked: false }];
+  const blueprint: BlueprintNode[] = context.blueprint.length ? context.blueprint : ["开端", "冲突", "发展", "转折", "结局"].map((title, order) => ({ id: `local-beat-${order}`, title, summary: title, beatType: title, order, active: order === 0, locked: false }));
   switch (task) {
     case "ideas":
     case "opening":
@@ -88,7 +87,7 @@ export function fixtureForTask(task: AiTask, context: StoryContext, input?: AiTa
     case "characters":
       return { characters };
     case "world":
-      return { worldEntries: context.worldEntries.length ? context.worldEntries : initialStoryState.worldEntries };
+      return { worldEntries: context.worldEntries.length ? context.worldEntries : [{ id: "local-world", category: "地点", label: "故事地点", content: "主人公日常生活的地方", locked: false, order: 0 }] };
     case "blueprint":
       return { blueprint };
     case "analysis":

@@ -116,9 +116,10 @@ export function StudioWorkspace({ projectId, copyCaseAction }: { projectId?: str
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${state.projects.find((project) => project.id === state.activeProjectId)?.title ?? "故事熔炉作品"}.${format === "markdown" ? "md" : "txt"}`;
+    link.download = `${state.projects.find((project) => project.id === state.activeProjectId)?.title ?? "评点作品"}.${format === "markdown" ? "md" : "txt"}`;
     link.click(); URL.revokeObjectURL(url);
   };
+  if (!chapter || (projectId && projectId !== state.activeProjectId)) return <div className="empty-state"><Link href="/projects">返回项目桌面</Link></div>;
   const selectedTitle = activeSelection.type === "chapter" ? chapter.title : activeSelection.type === "character" ? state.characters.find((item) => item.id === activeSelection.id)?.name : activeSelection.type === "world" ? state.worldEntries.find((item) => item.id === activeSelection.id)?.label : state.blueprint.find((item) => item.id === activeSelection.id)?.title;
 
   return <div ref={studioRef} className={`studio ${candidateOpen ? "" : "studio-focus"} ${focusMode ? "studio-writing-focus" : ""} ${binderOpen ? "studio-binder-open" : ""}`} style={{ "--studio-binder-share": `${binderShare}fr`, "--studio-content-share": `${100 - binderShare}fr` } as CSSProperties}>
@@ -139,7 +140,7 @@ export function StudioWorkspace({ projectId, copyCaseAction }: { projectId?: str
       <div className="writing-scroll">{activeSelection.type === "chapter" ? <>
         <div className="chapter-fields"><label className="field"><span>章节标题</span><input className="input" value={chapter.title} readOnly={readOnly} onChange={(event) => setState((current) => updateStoryItem(current, "chapters", chapter.id, { title: event.target.value }))} /></label><label className="field"><span>章节摘要（用于 AI 上下文）</span><input className="input" value={chapter.summary} readOnly={readOnly} onChange={(event) => setState((current) => updateStoryItem(current, "chapters", chapter.id, { summary: event.target.value }))} /></label></div>
         <ProseEditor content={chapter.content} onChange={handleChange} onSelectionChange={setProseSelection} onAiAction={requestAi} onFocusModeChange={setFocusMode} readOnly={readOnly} />
-        <footer className="word-count">{chapter.content.replace(/\s/g, "").length} 字 · 当前上下文 revision {state.contextRevision}</footer>
+        <footer className="word-count">{chapter.content.replace(/\s/g, "").length} 字 · 候选须确认采纳才写入正文</footer>
       </> : <EntityEditor key={`${state.activeProjectId}:${activeSelection.type}:${activeSelection.id}`} selection={activeSelection} readOnly={readOnly} />}</div>
     </section>
     {candidateOpen && !focusMode && <div className={`studio-splitter studio-splitter-writing ${activeSplitter === "writing" ? "is-resizing" : ""}`} role="separator" aria-label="调整编辑区与候选面板宽度" aria-orientation="vertical" aria-valuemin={42} aria-valuemax={72} aria-valuenow={writingShare} aria-valuetext={`${writingShare}% 编辑区，${100 - writingShare}% 候选面板`} tabIndex={0} onKeyDown={(event) => onSplitKeyDown("writing", event)} onPointerDown={(event) => beginResize("writing", event)} />}

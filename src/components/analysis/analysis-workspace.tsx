@@ -3,8 +3,9 @@
 import { fetchAi } from "@/lib/ai/client";
 
 import { AlertTriangle, CheckCircle2, FileText, Lightbulb, Network, RefreshCw, Upload } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { AnalysisDiagnostics } from "@/components/analysis/analysis-diagnostics";
+import { EvidenceWorkbench } from "@/components/analysis/evidence-workbench";
 import { AnalysisExplainPanel } from "@/components/analysis/analysis-explain-panel";
 import { ThemeHeatmap } from "@/components/analysis/theme-heatmap";
 import { CharacterGraph } from "@/components/analysis/character-graph";
@@ -18,12 +19,12 @@ import { analysisResultFromSnapshot, analysisSourceHash, createAnalysisSnapshot,
 import { detectLiterarySourceKind } from "@/lib/analysis/source-kind";
 import { contextFromState } from "@/lib/ai/story-context";
 import type { AiTaskPayload } from "@/lib/ai/tasks";
-import type { LiteraryAnalysisResult, LiteraryDiagnostic, MentorResponse, StoryState } from "@/lib/types";
+import type { LiteraryAnalysisResult, LiteraryDiagnostic, MentorResponse } from "@/lib/types";
 import { useStory } from "@/providers/story-provider";
 import { aiRequestHeaders } from "@/lib/ai/user-key";
 
 type AnalysisStatus = "success" | "loading" | "error";
-type SourceMode = "snapshot" | "project" | "import";
+type SourceMode = "project" | "import";
 
 function isLiteraryAnalysis(result: AiTaskPayload): result is LiteraryAnalysisResult {
   return "sourceKind" in result && "relationGraph" in result && "diagnostics" in result;
@@ -31,47 +32,6 @@ function isLiteraryAnalysis(result: AiTaskPayload): result is LiteraryAnalysisRe
 
 function mentorSource(source: MentorResponse["evidence"][number]["source"]) {
   return source === "observation" ? "原文观察" : source === "inference" ? "文学推断" : "知识参考";
-}
-
-function legacyAnalysis(state: StoryState): LiteraryAnalysisResult {
-  const evidence = state.evidence.map((item) => ({
-    id: item.id,
-    source: item.source,
-    ...(item.source === "inference" ? { claim: item.quote } : { quote: item.quote }),
-    note: item.note,
-  }));
-  const firstEvidence = evidence.find((item) => item.source === "user") ?? evidence[0];
-  const legacyEvidenceIds = firstEvidence ? [firstEvidence.id] : [];
-  const legacyFinding = (label: string) => ({ label, description: "当前为旧版案例快照，重跑后可获得结构化证据。", evidenceIds: legacyEvidenceIds });
-  const segments = state.plotCurve.map((point) => point.beat);
-  return {
-    sourceKind: "narrative",
-    domainAnalysis: {
-      kind: "narrative",
-      characters: { goals: [legacyFinding("人物目标")], actions: [legacyFinding("人物行动")], relationshipChanges: [legacyFinding("关系变化")] },
-      plot: { turningPoints: [legacyFinding("情节转折")], setups: [legacyFinding("前置铺垫")], payoffs: [legacyFinding("线索回收")] },
-      themes: { stages: [{ stage: segments[0] ?? "当前片段", theme: "核心主题", change: "等待重跑识别", reason: "旧版快照仅用于兼容展示。", evidenceIds: legacyEvidenceIds }] },
-    },
-    analysis: state.analysis,
-    evidence,
-    relationGraph: state.characterGraph,
-    paceCurve: state.plotCurve.map((point) => ({ segment: point.beat, value: point.value, evidenceId: point.evidenceId })),
-    emotionCurve: state.emotionCurve.map((point) => ({ segment: point.beat, value: Math.max(0, Math.min(100, point.value + 50)), evidenceId: point.evidenceId })),
-    themeHeatmap: segments.flatMap((segment, index) => [
-      { theme: "核心主题", segment, value: Math.min(100, 38 + index * 11), evidenceId: state.plotCurve[index]?.evidenceId ?? firstEvidence?.id ?? "" },
-      { theme: "人物选择", segment, value: Math.min(100, 26 + index * 14), evidenceId: state.plotCurve[index]?.evidenceId ?? firstEvidence?.id ?? "" },
-    ]).filter((cell) => cell.evidenceId),
-    styleProfile: { metrics: [
-      { key: "sentenceLength", dimension: "句长", value: 1, unit: "字", interpretation: "等待重跑", evidenceIds: legacyEvidenceIds },
-      { key: "dialogueRatio", dimension: "对话比例", value: 0, unit: "%", interpretation: "等待重跑", evidenceIds: legacyEvidenceIds },
-      { key: "sensoryDensity", dimension: "感官密度", value: 0, unit: "%", interpretation: "等待重跑", evidenceIds: legacyEvidenceIds },
-      { key: "rhetoric", dimension: "修辞", value: 0, unit: "分", interpretation: "等待重跑", evidenceIds: legacyEvidenceIds },
-      { key: "narrativeDistance", dimension: "叙事距离", value: 0, unit: "分", interpretation: "等待重跑", evidenceIds: legacyEvidenceIds },
-      { key: "rhythm", dimension: "节律", value: 0, unit: "分", interpretation: "等待重跑", evidenceIds: legacyEvidenceIds },
-    ] },
-    diagnostics: firstEvidence && "quote" in firstEvidence && firstEvidence.quote ? [{ id: "legacy-diagnostic", location: segments[0] ?? "当前片段", quote: firstEvidence.quote, effect: "当前为项目内置诊断快照，建议重跑以获得逐段结构分析。", action: "重跑后检查此处铺垫是否充分。", confidence: 0.5, evidenceIds: [firstEvidence.id] }] : [],
-    retrievalEvidence: [],
-  };
 }
 
 function DomainAnalysisLedger({ result, onEvidence }: { result: LiteraryAnalysisResult; onEvidence: (id: string) => void }) {
@@ -102,7 +62,8 @@ function DomainAnalysisLedger({ result, onEvidence }: { result: LiteraryAnalysis
   </section>;
 }
 
-export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourceContext, initialSelection }: {
+export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourceContext, initialSelection, autoRead }: {
+  autoRead?: boolean;
   projectId?: string;
   sourceProjectId?: string;
   chapterId?: string;
@@ -113,9 +74,7 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
   const linkProjectMismatch = Boolean(sourceProjectId && projectId && sourceProjectId !== projectId);
   const routedProjectExists = !projectId || storyState.projects.some((project) => project.id === projectId);
   const routeReady = !projectId || storyState.activeProjectId === projectId;
-  const isCase = storyState.activeProjectId === "demo" || storyState.activeProjectId.startsWith("demo-");
-  const [selectedSourceMode, setSourceMode] = useState<SourceMode>(sourceContext === "studio" ? "project" : isCase ? "snapshot" : "project");
-  const sourceMode = selectedSourceMode === "snapshot" && !isCase ? "project" : selectedSourceMode;
+  const [sourceMode, setSourceMode] = useState<SourceMode>("project");
   const projectSource = routeReady && routedProjectExists ? resolveProjectAnalysisSource(storyState, projectId ?? storyState.activeProjectId, chapterId) : null;
   const invalidChapter = Boolean(routeReady && chapterId && !projectSource);
   const [importText, setImportText] = useState("");
@@ -164,7 +123,7 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     contextRevision: storyState.contextRevision,
   }) : null;
   const restoredAnalysis = currentSnapshot ? analysisResultFromSnapshot(currentSnapshot) : null;
-  const displayAnalysis = analysisResult ?? (sourceMode === "project" ? restoredAnalysis : null) ?? (sourceMode === "snapshot" ? legacyAnalysis(storyState) : null);
+  const displayAnalysis = analysisResult ?? (sourceMode === "project" ? restoredAnalysis : null);
   const displayAnalysisMode = analysisResult ? analysisMode : restoredAnalysis && currentSnapshot ? currentSnapshot.mode : "demo";
   const partial = displayAnalysisMode === "live" && Boolean(displayAnalysis?.discardedDiagnostics?.length || displayAnalysis?.degradedRetrievalIds?.length || displayAnalysis?.evidence.some(e => e.verification === "unverified"));
   const displayAnalysisWarnings = status === "error" && progressTask === "analysis"
@@ -245,6 +204,17 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
     }
   };
 
+  const readOnArrival = useEffectEvent(runAnalysis);
+  const startedProject = useRef<string | null>(null);
+  useEffect(() => {
+    if (!autoRead || !projectId || !routeReady || !projectSource || !analysisText || currentSnapshot || startedProject.current === projectId) return;
+    const timer = window.setTimeout(() => {
+      startedProject.current = projectId;
+      void readOnArrival();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [autoRead, projectId, routeReady, projectSource, analysisText, currentSnapshot]);
+
   const askMentor = async () => {
     if (!activeText.trim()) return;
     const request = beginRequest(`${sourceToken}|${analysisSourceHash(activeText)}`);
@@ -286,23 +256,24 @@ export function AnalysisWorkspace({ projectId, sourceProjectId, chapterId, sourc
   const runDisabled = status === "loading" || Boolean(sourceError) || !analysisText || (sourceMode === "import" && effectiveImportLength > 20_000);
   const emptyChart = (name: string) => (
     <div className="analysis-empty">
-      <p>本次没有可展示的{name}数据。{sourceMode === "snapshot" && !analysisResult ? "案例快照未包含这项数据。" : "分析未返回该项，或相关条目未通过证据校验。"}</p>
+      <p>本次没有可展示的{name}数据。分析未返回该项，或相关条目未通过证据校验。</p>
       <Button variant="secondary" onClick={runAnalysis} disabled={runDisabled}>重新分析</Button>
     </div>
   );
 
   return <div className="analysis-page">
-    <header className="analysis-head analysis-head-live"><div><span className="eyebrow">文学诊断 / Evidence Lab</span><h1>{storyState.projects.find((project) => project.id === storyState.activeProjectId)?.title ?? "未命名作品"}</h1></div><div className="analysis-source" aria-label="分析来源"><button aria-pressed={sourceMode === "snapshot"} disabled={!isCase} onClick={() => changeSource("snapshot")}>案例快照</button><button aria-pressed={sourceMode === "project"} onClick={() => changeSource("project")}>当前项目</button><button aria-pressed={sourceMode === "import"} onClick={() => changeSource("import")}>用户文本</button></div><div className="analysis-state"><StatusBadge kind={sourceMode === "snapshot" && !analysisResult ? "demo" : displayAnalysisMode === "live" ? "success" : "demo"}>{sourceMode === "snapshot" && !analysisResult ? "案例快照" : partial ? "真实分析（部分通过）" : displayAnalysisMode === "live" ? "真实分析" : "演示结果"}</StatusBadge><Button aria-label={sourceMode === "import" ? "分析用户文本" : "真实重跑"} onClick={runAnalysis} disabled={runDisabled}><RefreshCw size={15} />{sourceMode === "import" ? "分析用户文本" : "真实重跑"}</Button></div></header>
+    <header className="analysis-head analysis-head-live"><div><span className="eyebrow">文学诊断 / Evidence Lab</span><h1>{storyState.projects.find((project) => project.id === storyState.activeProjectId)?.title ?? "未命名作品"}</h1></div><div className="analysis-source" aria-label="分析来源"><button aria-pressed={sourceMode === "project"} onClick={() => changeSource("project")}>当前项目</button><button aria-pressed={sourceMode === "import"} onClick={() => changeSource("import")}>用户文本</button></div><div className="analysis-state"><StatusBadge kind={displayAnalysisMode === "live" ? "success" : "demo"}>{!displayAnalysis ? "等待诊断" : partial ? "真实分析（部分通过）" : displayAnalysisMode === "live" ? "真实分析" : "演示结果"}</StatusBadge><Button aria-label={sourceMode === "import" ? "分析用户文本" : "运行诊断"} onClick={runAnalysis} disabled={runDisabled}><RefreshCw size={15} />{sourceMode === "import" ? "分析用户文本" : "运行诊断"}</Button></div></header>
     {sourceContext === "studio" && projectSource && <section className="analysis-context-banner"><strong>创作台直达</strong><span>当前来源：{projectSource.title} · revision {storyState.contextRevision}{safeInitialSelection ? " · 当前选区" : " · 完整章节"}</span></section>}
     {sourceError && <div className="analysis-warning" role="alert"><AlertTriangle size={16} />{sourceError}</div>}
     {initialSelection && projectSource && !safeInitialSelection && <div className="analysis-warning" role="status"><AlertTriangle size={16} />链接选区不在当前章节中，已忽略该选区。</div>}
     {hasStaleSnapshot && sourceMode === "project" && !analysisResult && <div className="analysis-warning" role="status"><AlertTriangle size={16} />作品文本或上下文修订已变化，旧诊断快照已失效，请重新分析。</div>}
     {sourceMode === "import" && <section className="analysis-import"><div className="import-head"><div><FileText size={18} /><strong>{importName || "临时文本"}</strong></div><label className="button button-secondary"><Upload size={15} />选择 TXT / MD<input type="file" accept=".txt,.md,text/plain,text/markdown" onChange={(event) => void readFile(event.target.files?.[0])} /></label></div><textarea className="textarea" aria-label="待分析文本" value={importText} onChange={(event) => { const value = event.target.value; setImportText(value); setImportError(value.trim().length > 20_000 ? "有效分析文本超过 20,000 字，请截取后重试。" : ""); setAnalysisResult(null); }} placeholder="粘贴需要分析的文本……" /><footer><span>{effectiveImportLength.toLocaleString("en-US")} / 20,000 字</span><span>不会自动保存为项目或分析快照</span></footer>{importError && <p role="alert" className="form-error">{importError}</p>}</section>}
-    {sourceMode !== "snapshot" && <div className="field analysis-kind"><span>{hasSourceKindOverride ? `用户修正：${sourceKind === "narrative" ? "叙事文本" : "论述文本"}` : `系统识别：${sourceKind === "narrative" ? "叙事文本" : "论述文本"}`}</span><select aria-label="文本类型" value={sourceKind} onChange={(event) => setSourceKindOverride({ sourceHash, kind: event.target.value as typeof sourceKind })}><option value="narrative">叙事文本</option><option value="argumentative">论述文本</option></select>{hasSourceKindOverride && <button type="button" className="analysis-kind-reset" onClick={() => setSourceKindOverride(null)}>恢复系统识别</button>}</div>}
+    <div className="field analysis-kind"><span>{hasSourceKindOverride ? `用户修正：${sourceKind === "narrative" ? "叙事文本" : "论述文本"}` : `系统识别：${sourceKind === "narrative" ? "叙事文本" : "论述文本"}`}</span><select aria-label="文本类型" value={sourceKind} onChange={(event) => setSourceKindOverride({ sourceHash, kind: event.target.value as typeof sourceKind })}><option value="narrative">叙事文本</option><option value="argumentative">论述文本</option></select>{hasSourceKindOverride && <button type="button" className="analysis-kind-reset" onClick={() => setSourceKindOverride(null)}>恢复系统识别</button>}</div>
     {displayAnalysisWarnings.map((item) => <div className="analysis-warning" role="status" key={item}><AlertTriangle size={16} />{item}</div>)}
     {analysisNotices.map((item) => <div className="ai-notice" role="status" key={item}><CheckCircle2 size={16} />{item}</div>)}
     <AiProgress status={progressTask === "analysis" ? aiStatus : "idle"} label="文学诊断生成进度" />
     {status === "error" && progressTask === "analysis" ? <div className="analysis-error" role="alert"><AlertTriangle /><div><strong>分析暂时不可用</strong><p>当前文本和已有证据未受影响。</p></div>{displayAnalysis && <Button onClick={() => setStatus("success")}>查看上次结果</Button>}</div> : displayAnalysis ? <>
+      <EvidenceWorkbench key={sourceToken} result={displayAnalysis} source={analysisText} mode={displayAnalysisMode} />
       <div className="analysis-grid"><section className="dimension-panel"><div className="dimension-title"><div><h2>{displayAnalysis.sourceKind === "narrative" ? "文学结构诊断" : "论证结构诊断"}</h2><p>每项结论都可回到本次来源证据。</p></div><StatusBadge>{displayAnalysis.analysis.length ? "已生成" : "等待分析"}</StatusBadge></div><div className="dimension-list">{displayAnalysis.analysis.map((dimension) => <article data-testid="analysis-dimension" key={dimension.id}><div className="dimension-score"><span>{dimension.name}</span><strong>{dimension.score} / 100</strong></div><div className="dimension-copy"><h3>{dimension.summary}</h3><p>{dimension.impact}</p><div className="suggestion"><CheckCircle2 size={15} /><span>{dimension.suggestion}</span></div><div className="evidence-links">{dimension.evidenceIds.map((id) => <Button key={id} variant="ghost" aria-label={`证据 ${id}`} onClick={() => openEvidence(id)}>{id}</Button>)}</div></div></article>)}</div></section><section className="visual-panel">
         <Tabs defaultValue="graph">
           <TabsList className="analysis-tabs"><TabsTrigger value="graph"><Network size={15} />关系网络</TabsTrigger><TabsTrigger value="plot">情节节奏</TabsTrigger><TabsTrigger value="emotion">情绪曲线</TabsTrigger><TabsTrigger value="theme">主题热力</TabsTrigger><TabsTrigger value="style">语言风格</TabsTrigger></TabsList>

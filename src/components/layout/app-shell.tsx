@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { BookOpenText, ChartNoAxesCombined, FolderKanban, GraduationCap, LibraryBig, Menu, Settings, X } from "lucide-react";
 import { useState } from "react";
@@ -15,8 +14,8 @@ import { useStory } from "@/providers/story-provider";
 
 const projectLinks = (projectId: string) => [
   { href: "/projects", label: "项目桌面", icon: FolderKanban },
-  { href: `/project/${encodeURIComponent(projectId)}/studio`, label: "创作台", icon: BookOpenText },
-  { href: `/project/${encodeURIComponent(projectId)}/analysis`, label: "文学诊断", icon: ChartNoAxesCombined },
+  ...(projectId ? [{ href: `/project/${encodeURIComponent(projectId)}/studio`, label: "创作台", icon: BookOpenText },
+  { href: `/project/${encodeURIComponent(projectId)}/analysis`, label: "文学诊断", icon: ChartNoAxesCombined }] : []),
   { href: "/knowledge", label: "知识图谱", icon: LibraryBig },
   { href: "/training", label: "写作训练", icon: GraduationCap },
   { href: "/settings", label: "设置", icon: Settings },
@@ -28,9 +27,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { state, syncStatus, demoLocked } = useStory();
   const project = state.projects.find((item) => item.id === state.activeProjectId);
   const links = projectLinks(state.activeProjectId);
-  const syncLabel = demoLocked ? "答辩锁定" : "仅存本地";
+  const syncLabel = demoLocked ? "演示模式" : "仅存本地";
 
   if (pathname === "/") return <>{children}</>;
+  if (["/projects", "/knowledge", "/settings"].includes(pathname) || /^\/project\/[^/]+\/(studio|ip-lab)$/.test(pathname)) return <div className="pd-workspace">
+    <nav className="pd-workspace-bar" aria-label="主要导航">
+      <Link href="/">评点</Link>
+      {[...links, ...(state.activeProjectId ? [{ href: `/project/${encodeURIComponent(state.activeProjectId)}/ip-lab`, label: "IP 实验场" }] : [])].map(({ href, label }) =>
+        <Link key={label} href={href} aria-current={pathname === href ? "page" : undefined}>{label}</Link>)}
+      <span className="pd-storage-status">{syncLabel}</span>
+    </nav>
+    <SlowAiRequests />
+    <main id="main-content">{children}</main>
+  </div>;
+  if (pathname === "/training") return <main className="training-route" id="main-content">
+    <header className="training-route-bar"><Link href="/">评点</Link><Link href="/projects">项目桌面</Link></header>
+    <SlowAiRequests />
+    {children}
+  </main>;
+  if (/^\/project\/[^/]+\/analysis\/?$/.test(pathname)) return <main className="analysis-route" id="main-content">
+    <header className="analysis-route-bar">
+      <Link href="/">评点</Link>
+      <Link href={project ? `/project/${encodeURIComponent(project.id)}/studio` : "/projects"}>← 返回作品</Link>
+    </header>
+    <SlowAiRequests />
+    {children}
+  </main>;
 
   return (
     <div className={cn("app-shell", demoLocked && "app-shell-demo-locked")}>
@@ -40,11 +62,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* 顶栏：品牌标识 + 项目上下文 + 操作区 */}
       <header className="top-bar">
-        <Link href="/" className="brand-lockup" aria-label="Story Forge 首页">
-          <span className="brand-mark brand-mark-image brand-mark-pure">
-            <Image src="/brand/story-forge-mark-20260821.png" alt="" width={1254} height={1254} priority />
-          </span>
-          <span className="brand-wordmark"><b>Story Forge</b><small>故事熔炉</small></span>
+        <Link href="/" className="brand-lockup" aria-label="评点首页">
+          <span className="brand-wordmark"><b>评点</b></span>
         </Link>
 
         <div className="project-context">
@@ -68,7 +87,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="avatar" aria-label="访客账户">访</div>
         </div>
       </header>
-      {demoLocked && <div className="demo-lock-banner" role="status">答辩演示模式：内置案例只读，AI、生图与公开向量检索使用稳定本地资源。</div>}
+      {demoLocked && <div className="demo-lock-banner" role="status">演示模式：不调用外部模型，结果均为本地演示</div>}
 
       {/* 侧边导航 */}
       <aside className={cn("side-nav", menuOpen && "side-nav-open")} aria-label="主要导航">

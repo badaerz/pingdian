@@ -1,0 +1,2918 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--reporter=list,json"
+    ],
+    "configFile": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\playwright.config.ts",
+    "rootDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 3
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "C:/Users/babaerz/Downloads/story forge/story-forge-mvp/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 3,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "core-flow.spec.ts",
+      "file": "core-flow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "candidate only changes prose after explicit confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2166,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:32.358Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-965459e043f92e508073",
+          "file": "core-flow.spec.ts",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "user prose survives reload without being replaced by the built-in case",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3601,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:34.980Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-5a31806efe9a6c72f5a0",
+          "file": "core-flow.spec.ts",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "defense mode keeps the built-in case read-only while local AI remains usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "仅在答辩锁定模式运行",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 104,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 211,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:38.594Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "仅在答辩锁定模式运行",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 104,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-712324f7b44282f8ba8d",
+          "file": "core-flow.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "analysis evidence opens with source text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1780,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:38.824Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-0a61a00d52f8b518fdd3",
+          "file": "core-flow.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "analysis character list can switch and select a person without unmount errors",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1166,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:40.618Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-f127ce8089f151c0102f",
+          "file": "core-flow.spec.ts",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "loading, error, and empty dashboard states remain recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1290,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:41.798Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-73d2e9743c4dfb3aa8f4",
+          "file": "core-flow.spec.ts",
+          "line": 147,
+          "column": 1
+        },
+        {
+          "title": "the primary case link migrates a legacy 雾港 cache and preserves user prose",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1724,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:43.106Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-1f1e7116c97e12ae53c1",
+          "file": "core-flow.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "desktop completes the wizard and enters the real studio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1655,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:44.843Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-c4fb240a86e328fdd71f",
+          "file": "core-flow.spec.ts",
+          "line": 201,
+          "column": 1
+        },
+        {
+          "title": "desktop clears browser-only user works, training, legacy auth, and generated assets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 834,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:46.514Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-96049c9887d5b58631b4",
+          "file": "core-flow.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "IP concept ties its storyboard to the active chapter without asset generation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 821,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:47.363Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-907aeda616ec2fcb71e5",
+          "file": "core-flow.spec.ts",
+          "line": 252,
+          "column": 1
+        },
+        {
+          "title": "candidate only changes prose after explicit confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:37.866Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-1722d2b2fcbd4b9ab282",
+          "file": "core-flow.spec.ts",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "user prose survives reload without being replaced by the built-in case",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3477,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:40.703Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-20eee452c3314910bce2",
+          "file": "core-flow.spec.ts",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "defense mode keeps the built-in case read-only while local AI remains usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "仅在答辩锁定模式运行",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 104,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 219,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:44.196Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "仅在答辩锁定模式运行",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 104,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-e77b8f95d9a8c77cad66",
+          "file": "core-flow.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "analysis evidence opens with source text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1834,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:44.434Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-429c046f1a9c26ea7c73",
+          "file": "core-flow.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "analysis character list can switch and select a person without unmount errors",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1125,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:46.286Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-141912676926e372d48e",
+          "file": "core-flow.spec.ts",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "loading, error, and empty dashboard states remain recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "状态切换逻辑仅需运行一次，响应式由独立用例覆盖",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 148,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 196,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:47.427Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "状态切换逻辑仅需运行一次，响应式由独立用例覆盖",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 148,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-536a53635d703d468e24",
+          "file": "core-flow.spec.ts",
+          "line": 147,
+          "column": 1
+        },
+        {
+          "title": "the primary case link migrates a legacy 雾港 cache and preserves user prose",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1662,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:47.638Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-ea314aba90d859c21f58",
+          "file": "core-flow.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "desktop completes the wizard and enters the real studio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "完整创作链路只在桌面跑一次",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 202,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 191,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:49.317Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "完整创作链路只在桌面跑一次",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 202,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-c91831a0f68b8a42b9bb",
+          "file": "core-flow.spec.ts",
+          "line": 201,
+          "column": 1
+        },
+        {
+          "title": "desktop clears browser-only user works, training, legacy auth, and generated assets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "本地数据清除链路只需在桌面运行一次",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 215,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 189,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:49.521Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "本地数据清除链路只需在桌面运行一次",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 215,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-73132852ddcc7c2e03d6",
+          "file": "core-flow.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "IP concept ties its storyboard to the active chapter without asset generation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 907,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:49.729Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-191ca0f35bae8b5bd978",
+          "file": "core-flow.spec.ts",
+          "line": 252,
+          "column": 1
+        },
+        {
+          "title": "candidate only changes prose after explicit confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4333,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:49.266Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-4320edf137d88a9974c3",
+          "file": "core-flow.spec.ts",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "user prose survives reload without being replaced by the built-in case",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5523,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:54.109Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-005b7787c018ac24ebe5",
+          "file": "core-flow.spec.ts",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "defense mode keeps the built-in case read-only while local AI remains usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "仅在答辩锁定模式运行",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 104,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 137,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:59.650Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "仅在答辩锁定模式运行",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 104,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-82e46c34cb17c01c29b8",
+          "file": "core-flow.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "analysis evidence opens with source text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1181,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:59.803Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-9499d60640846cfe191c",
+          "file": "core-flow.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "analysis character list can switch and select a person without unmount errors",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 841,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:30:00.993Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-b7d7a1729436c13b4918",
+          "file": "core-flow.spec.ts",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "loading, error, and empty dashboard states remain recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "状态切换逻辑仅需运行一次，响应式由独立用例覆盖",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 148,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 147,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:30:01.846Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "状态切换逻辑仅需运行一次，响应式由独立用例覆盖",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 148,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-ffec3f447ee4ef501249",
+          "file": "core-flow.spec.ts",
+          "line": 147,
+          "column": 1
+        },
+        {
+          "title": "the primary case link migrates a legacy 雾港 cache and preserves user prose",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1230,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:30:02.003Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-519b6275ab0a22b6d3d3",
+          "file": "core-flow.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "desktop completes the wizard and enters the real studio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "完整创作链路只在桌面跑一次",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 202,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 147,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:30:03.244Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "完整创作链路只在桌面跑一次",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 202,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-e9ca6399ebbf9b7d28ca",
+          "file": "core-flow.spec.ts",
+          "line": 201,
+          "column": 1
+        },
+        {
+          "title": "desktop clears browser-only user works, training, legacy auth, and generated assets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "本地数据清除链路只需在桌面运行一次",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                    "line": 215,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 143,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:30:03.405Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "本地数据清除链路只需在桌面运行一次",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\core-flow.spec.ts",
+                        "line": 215,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-3b4be21c93676c21e832",
+          "file": "core-flow.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "IP concept ties its storyboard to the active chapter without asset generation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 564,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:30:03.559Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d34e015bf61f0703063d-54e0a8fffd7c94b396e7",
+          "file": "core-flow.spec.ts",
+          "line": 252,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "pingdian-flow.spec.ts",
+      "file": "pingdian-flow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "the first-screen animation leaves navigation usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1119,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:32.310Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-295534f054f550a01896",
+          "file": "pingdian-flow.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "reduced motion immediately shows the final reading state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 351,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:33.826Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-5842be508b90e530de46",
+          "file": "pingdian-flow.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "changing a diagnosis highlights its quote and replaces the evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 516,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:34.187Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-4a029582c5ddd6b2afe4",
+          "file": "pingdian-flow.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "the archived poem displays four couplets and marks the missing dimension",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:34.713Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-4414fbee9a56393419ec",
+          "file": "pingdian-flow.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "training binds a verbatim quote to the feedback it supports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 657,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:35.237Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-8262700126d4e67d603a",
+          "file": "pingdian-flow.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "all five reading font sizes fit the writing viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:35.907Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-875fb0f91ad7d7e6a9c8",
+          "file": "pingdian-flow.spec.ts",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "the first-screen animation leaves navigation usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1162,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:40.849Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-372ee927ff6d7f80eebb",
+          "file": "pingdian-flow.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "reduced motion immediately shows the final reading state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 319,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:42.543Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-6063451e7abb57fbdce0",
+          "file": "pingdian-flow.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "changing a diagnosis highlights its quote and replaces the evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 598,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:42.870Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-6a487bc1217d4d263dc3",
+          "file": "pingdian-flow.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "the archived poem displays four couplets and marks the missing dimension",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 490,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:43.488Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-48b300bcca35afee53ec",
+          "file": "pingdian-flow.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "training binds a verbatim quote to the feedback it supports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 636,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:44.001Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-492b266733f950bf8dbb",
+          "file": "pingdian-flow.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "all five reading font sizes fit the writing viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1093,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:44.653Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-f8d1914a89079be2a8e1",
+          "file": "pingdian-flow.spec.ts",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "the first-screen animation leaves navigation usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1083,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:50.353Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-75d4a1a23ee08c33b747",
+          "file": "pingdian-flow.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "reduced motion immediately shows the final reading state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 389,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:51.954Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-993dbbe4546dc17b48d5",
+          "file": "pingdian-flow.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "changing a diagnosis highlights its quote and replaces the evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 575,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:52.353Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-7e27080056326d94b376",
+          "file": "pingdian-flow.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "the archived poem displays four couplets and marks the missing dimension",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 509,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:52.943Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-4bf2f42eb1950fa98ea3",
+          "file": "pingdian-flow.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "training binds a verbatim quote to the feedback it supports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2783,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:53.468Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-10ebc54375d0d876b0d5",
+          "file": "pingdian-flow.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "all five reading font sizes fit the writing viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 918,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:56.268Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7905ea0ce223cb1c7d4b-a3b8b68b93ea5095f9a9",
+          "file": "pingdian-flow.spec.ts",
+          "line": 76,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "responsive.spec.ts",
+      "file": "responsive.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "new-project renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:32.278Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-889e9b7977755bdd680e",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "studio renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 588,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:33.436Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-53304ea546d6da56dee3",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "analysis renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:34.035Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-8bd8d9df95e14077cebd",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "graph has visible pixels or a mobile list alternative",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 943,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:34.905Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-ff722417394dbec1bf83",
+          "file": "responsive.spec.ts",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "uploaded knowledge graph keeps table row selection usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1056,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:35.862Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-2f6058579d270d5fa1f7",
+          "file": "responsive.spec.ts",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "studio center column stays inside the viewport and scrolls independently",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1770,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:36.937Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-758fe8b8f69dc9e95e0b",
+          "file": "responsive.spec.ts",
+          "line": 84,
+          "column": 1
+        },
+        {
+          "title": "studio header action labels stay on one line",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 652,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:38.722Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-2a2c5d5b1d3761011bdb",
+          "file": "responsive.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "studio title never enters the action toolbar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 631,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:39.392Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-4c60f3b87e1231a649ec",
+          "file": "responsive.spec.ts",
+          "line": 125,
+          "column": 1
+        },
+        {
+          "title": "new-project renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 628,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:45.780Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-5cb052061f982584b808",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "studio renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 629,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:46.422Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-4ef7425fe97df8098b18",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "analysis renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 779,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:47.066Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-c0ef2a7b800f100f2372",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "graph has visible pixels or a mobile list alternative",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 866,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:47.861Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-6c792c85d828bbba37c9",
+          "file": "responsive.spec.ts",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "uploaded knowledge graph keeps table row selection usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面图谱交互专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 54,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 174,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:48.743Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面图谱交互专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 54,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-3accea868e6c7d625abc",
+          "file": "responsive.spec.ts",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "studio center column stays inside the viewport and scrolls independently",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面三栏布局专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 85,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 165,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:48.929Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面三栏布局专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 85,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-a3e68d0770ecb63c9925",
+          "file": "responsive.spec.ts",
+          "line": 84,
+          "column": 1
+        },
+        {
+          "title": "studio header action labels stay on one line",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面三栏布局专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 118,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 172,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:49.109Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面三栏布局专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 118,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-96c097dd2c65e5e54fda",
+          "file": "responsive.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "studio title never enters the action toolbar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面工具栏专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 126,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet",
+              "projectName": "tablet",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:49.296Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面工具栏专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 126,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-2db9d9293a85a92ee7d4",
+          "file": "responsive.spec.ts",
+          "line": 125,
+          "column": 1
+        },
+        {
+          "title": "new-project renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 570,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:51.640Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-591ec8f7bb20d366a843",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "studio renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:52.741Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-b94d93599071202920d3",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "analysis renders without horizontal overflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 738,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:53.384Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-1c013ae05e0fb8bf4463",
+          "file": "responsive.spec.ts",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "title": "graph has visible pixels or a mobile list alternative",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 908,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:54.133Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-c9bf3b7ec19759c76ff1",
+          "file": "responsive.spec.ts",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "uploaded knowledge graph keeps table row selection usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面图谱交互专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 54,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 182,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:55.054Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面图谱交互专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 54,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-4d9a0e60807a2eea8235",
+          "file": "responsive.spec.ts",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "studio center column stays inside the viewport and scrolls independently",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面三栏布局专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 85,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 183,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:55.252Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面三栏布局专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 85,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-345e6f1a7e9ea3dd995c",
+          "file": "responsive.spec.ts",
+          "line": 84,
+          "column": 1
+        },
+        {
+          "title": "studio header action labels stay on one line",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面三栏布局专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 118,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 179,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:55.448Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面三栏布局专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 118,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-18bf138c45e0c0abf979",
+          "file": "responsive.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "studio title never enters the action toolbar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "桌面工具栏专用回归",
+                  "location": {
+                    "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                    "line": 126,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 178,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-21T12:29:55.641Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "桌面工具栏专用回归",
+                      "location": {
+                        "file": "C:\\Users\\babaerz\\Downloads\\story forge\\story-forge-mvp\\tests\\e2e\\responsive.spec.ts",
+                        "line": 126,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e0223b006feb3d306446-6f6b4c79d8578d4f4840",
+          "file": "responsive.spec.ts",
+          "line": 125,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-21T12:29:31.891Z",
+    "duration": 32982.229,
+    "expected": 55,
+    "skipped": 17,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,53 @@
+@font-face { font-family: "LXGW WenKai"; src: url("./fonts/lxgw-wenkai.woff2") format("woff2"); font-display: swap; }
+.training-route { min-height:100svh; background:var(--color-terminal); }
+.training-route-bar { display:flex; justify-content:space-between; align-items:center; padding:0 22px; min-height:52px; border-bottom:1px solid var(--color-reading-rule); font-family:var(--font-terminal); }
+.training-route .training-page { max-width:1440px; margin-inline:auto; }
+.training-route .training-page-head { align-items:center; }
+.training-route .exercise-work,.training-route .exercise-list,.training-route .training-history { background:var(--color-terminal); box-shadow:none; border-color:var(--color-reading-rule); }
+.training-route .exercise-list button.active { background:#f6f6f6; color:var(--color-reading-ink); }
+.training-route .exercise-list button.active :is(p,span) { color:var(--color-reading-muted); }
+.te { margin-block:24px; background:var(--color-terminal); color:var(--color-reading-ink); border-block:1px solid var(--color-reading-rule); }
+.te-head { display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; padding:12px 20px; border-bottom:1px solid var(--color-reading-rule); }
+.te-head button { text-decoration:underline; text-underline-offset:3px; }
+.te-head button:first-of-type { margin-inline-start:auto; }
+.te-grid { display:grid; grid-template-columns:minmax(0, 1.55fr) minmax(0, 1fr); }
+.te-answer,.te-feedback { min-width:0; padding:20px; }
+.te-feedback { border-inline-start:1px solid var(--color-reading-rule); display:grid; gap:20px; }
+.te h3 { display:flex; justify-content:space-between; gap:12px; margin-bottom:12px; font:12px/1.5 var(--font-terminal); color:var(--color-reading-muted); }
+.te-prose { max-width:40em; font:20px/2.05 var(--font-serif); white-space:pre-wrap; overflow-wrap:anywhere; }
+.te-prose mark { color:inherit; background:transparent; border-bottom:1px solid var(--color-vermilion); }
+.te-prose mark[data-active=true] { background:#f8eae8; }
+.te-bindings { margin-top:26px; }
+.te-bindings button { display:grid; grid-template-columns:minmax(0,auto) minmax(12px,1fr) auto; width:100%; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--color-reading-rule); text-align:left; cursor:pointer; }
+.te-bindings q { overflow-wrap:anywhere; font-family:var(--font-serif); }
+.te-bindings i { height:1px; background:var(--color-reading-rule); }
+.te-bindings button[aria-pressed=true] i { background:var(--color-vermilion); }
+.te-bindings button span,.te-diff { color:var(--color-reading-muted); font-size:11px; }
+.te-diff { margin-top:16px; }
+.te-wipe { display:grid; position:relative; margin-block:10px; isolation:isolate; }
+.te-wipe .te-prose { grid-area:1/1; max-width:none; padding:8px; color:var(--color-reading-muted); }
+.te-wipe .te-revision { background:var(--color-terminal); color:var(--color-reading-ink); }
+.te-wipe i { position:absolute; top:0; bottom:0; border-left:1px solid var(--color-vermilion); }
+.te-diff label { display:flex; align-items:center; gap:12px; }
+.te-diff input { flex:1; min-width:0; accent-color:var(--color-vermilion); }
+.te-feedback ol,.te-feedback ul { padding-left:20px; }
+.te-feedback ol { list-style:decimal; }
+.te-feedback li { margin-bottom:6px; padding-left:3px; }
+.te-feedback li::marker { color:var(--color-vermilion); }
+.te-feedback li[data-active=true] { border-inline-start:1px solid var(--color-vermilion); }
+.te-teacher { padding:4px 0 4px 14px; border-inline-start:1px solid var(--color-vermilion); }
+.te-teacher p { font:17px/1.85 "LXGW WenKai",var(--font-serif); }
+.te-teacher { display:flex; align-items:center; gap:12px; }
+.te-score { display:grid; grid-template-columns:7em 1fr 3ch; align-items:center; gap:9px; font-size:11px; padding:3px 0; }
+.te-track,.te-track i { display:block; height:2px; background:var(--color-reading-rule); }
+.te-track i { background:var(--color-reading-ink); }
+.te-score[data-up=true] .te-track i { background:var(--color-vermilion); }
+.te-score[data-up=true] > :last-child { color:var(--color-vermilion); }
+@media (max-width:1050px) {
+  .te-grid { grid-template-columns:minmax(0,1fr); }
+  .te-feedback { border-inline-start:0; border-top:1px solid var(--color-reading-rule); }
+}
+@media (max-width:540px) {
+  .te-head,.te-answer,.te-feedback { padding-inline:14px; }
+  .te-prose { font-size:17px; }
+}

@@ -2,7 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, it } from "vitest";
 import { StoryProvider, useStory } from "@/providers/story-provider";
-import { createProjectDocument, createStoryStore } from "@/lib/story-store";
+import { createFixtureStore } from "../fixtures/story-store";
+import { createProjectDocument } from "@/lib/story-store";
 
 function UserStoryProbe() {
   const { state, createProject, selectProject, setState } = useStory();
@@ -12,7 +13,7 @@ function UserStoryProbe() {
     <button onClick={() => setState((current) => ({
       ...current,
       chapters: [{ ...current.chapters[0], content: "刷新后仍在" }, ...current.chapters.slice(1)],
-    }))}>{state.chapters[0].content}</button>
+    }))}>{state.chapters[0]?.content}</button>
     <output>{state.projects.map((project) => project.title).join(",")}</output>
   </div>;
 }
@@ -22,15 +23,6 @@ function DeleteProbe() {
   return <div>
     <button onClick={() => createProject({ title: "待删除作品", genre: "短篇", logline: "测试" })}>创建</button>
     <button onClick={() => removeProject(state.projects.find((project) => project.title === "待删除作品")?.id ?? "")}>删除</button>
-    <output>{state.projects.map((project) => project.title).join(",")}</output>
-  </div>;
-}
-
-function BuiltinDeleteProbe() {
-  const { state, removeProject } = useStory();
-  return <div>
-    <button onClick={() => removeProject("demo")}>删除主答辩案例</button>
-    <button onClick={() => removeProject("demo-demo_002")}>删除回归案例</button>
     <output>{state.projects.map((project) => project.title).join(",")}</output>
   </div>;
 }
@@ -84,21 +76,9 @@ it("persists project deletion in the v3 document store", async () => {
   });
 });
 
-it("keeps both built-in defense cases when deletion is requested", async () => {
-  const user = userEvent.setup();
-  render(<StoryProvider><BuiltinDeleteProbe /></StoryProvider>);
-
-  await user.click(screen.getByRole("button", { name: "删除主答辩案例" }));
-  await user.click(screen.getByRole("button", { name: "删除回归案例" }));
-
-  await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("回响的草场,雾港来信"));
-
-  const stored = JSON.parse(localStorage.getItem("story-forge:projects:v3") ?? "{}");
-  expect(Object.keys(stored.documents ?? {})).toEqual(expect.arrayContaining(["demo", "demo-demo_002"]));
-});
-
 it("keeps extended project state and training references in browser storage", async () => {
   const user = userEvent.setup();
+  localStorage.setItem("story-forge:projects:v3", JSON.stringify(createFixtureStore()));
   render(<StoryProvider><ExtendedStateProbe /></StoryProvider>);
   const initialRevision = JSON.parse(screen.getByRole("status").textContent ?? "{}").revision;
 
@@ -128,7 +108,7 @@ it("keeps sync status disabled and stores training attempts only locally", async
     const value = JSON.parse(screen.getByRole("status").textContent ?? "{}");
     expect(value.syncStatus).toBe("disabled");
     expect(value.ids).toHaveLength(1);
-    expect(value.refs).toEqual(value.ids);
+    expect(value.refs).toEqual([]);
   });
 });
 
@@ -147,9 +127,9 @@ it("clears project training references with local history", async () => {
 
 it("clears training references from every project without changing project content", async () => {
   const user = userEvent.setup();
-  const saved = createStoryStore();
+  const saved = createFixtureStore();
   const other = createProjectDocument({ title: "第二个项目", genre: "短篇", logline: "测试全局清空" });
-  saved.documents.demo.trainingAttemptRefs = ["attempt-demo"];
+  saved.documents.fixture.trainingAttemptRefs = ["attempt-demo"];
   other.trainingAttemptRefs = ["attempt-other"];
   other.chapters[0].content = "必须保留的第二项目正文";
   saved.documents[other.project.id] = other;

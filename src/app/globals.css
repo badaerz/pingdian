@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+  --color-terminal: #fff;
+  --color-reading-ink: #131313;
+  --color-vermilion: #b3261e;
+  --color-reading-muted: #5f5f5f;
+  --color-reading-aux: #8a8a8a;
+  --color-reading-rule: rgb(0 0 0 / 11%);
+  --font-terminal: "JetBrains Mono", Consolas, "Microsoft YaHei", monospace;
+}
+
 :root { --paper:#f6f3ec; --paper-deep:#eee9df; --panel:#fff; --ink:#1d1d1b; --muted:#706c64; --line:#d8d2c7; --green:#315947; --green-soft:#e6eee9; --gold:#a77a2b; --gold-soft:#f4ecd9; --indigo:#536a8a; --indigo-soft:#e9edf3; --oxide:#a54f3f; --oxide-soft:#f5e8e4; --font-serif:"Noto Serif SC","Source Han Serif SC","Songti SC",SimSun,serif; --font-sans:"Noto Sans SC","Source Han Sans SC","Microsoft YaHei",sans-serif; --shadow-float:0 12px 36px rgb(49 42 33 / 12%); }
 * { box-sizing:border-box; letter-spacing:0; }
 html,body { min-height:100%; }

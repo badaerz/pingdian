@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import { serializeStory } from "@/lib/export-story";
 
 describe("serializeStory", () => {

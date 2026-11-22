@@ -1,0 +1,28 @@
+# 给本地用户的最短路径：在这个文件所在目录执行
+#   docker compose up --build
+# 然后打开 http://localhost:3000
+#
+# 不需要密钥也能完整跑起来：所有 AI 功能会走标注清楚的演示态。
+# 想用真实调用，打开站点后在「设置 → 自带 AI 密钥」里填自己的 DeepSeek key。
+# 密钥存在你自己的浏览器里，不进容器、不进镜像、不进日志。
+
+services:
+  pingdian:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pingdian:local
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    init: true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

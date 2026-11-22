@@ -1,0 +1,94 @@
+
+Running 72 tests using 3 workers
+
+(node:46548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [desktop] › tests\e2e\responsive.spec.ts:23:3 › new-project renders without horizontal overflow (760ms)
+  ok  2 [desktop] › tests\e2e\pingdian-flow.spec.ts:5:1 › the first-screen animation leaves navigation usable (1.1s)
+  ok  4 [desktop] › tests\e2e\responsive.spec.ts:23:3 › studio renders without horizontal overflow (588ms)
+  ok  5 [desktop] › tests\e2e\pingdian-flow.spec.ts:13:1 › reduced motion immediately shows the final reading state (351ms)
+  ok  7 [desktop] › tests\e2e\pingdian-flow.spec.ts:22:1 › changing a diagnosis highlights its quote and replaces the evidence (516ms)
+  ok  6 [desktop] › tests\e2e\responsive.spec.ts:23:3 › analysis renders without horizontal overflow (859ms)
+  ok  3 [desktop] › tests\e2e\core-flow.spec.ts:29:1 › candidate only changes prose after explicit confirmation (2.2s)
+  ok  8 [desktop] › tests\e2e\pingdian-flow.spec.ts:37:1 › the archived poem displays four couplets and marks the missing dimension (511ms)
+  ok  9 [desktop] › tests\e2e\responsive.spec.ts:30:1 › graph has visible pixels or a mobile list alternative (943ms)
+  ok 11 [desktop] › tests\e2e\pingdian-flow.spec.ts:57:1 › training binds a verbatim quote to the feedback it supports (657ms)
+  ok 12 [desktop] › tests\e2e\responsive.spec.ts:53:1 › uploaded knowledge graph keeps table row selection usable (1.1s)
+  ok 13 [desktop] › tests\e2e\pingdian-flow.spec.ts:76:1 › all five reading font sizes fit the writing viewport (1.2s)
+(node:44108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 10 [desktop] › tests\e2e\core-flow.spec.ts:76:1 › user prose survives reload without being replaced by the built-in case (3.6s)
+  ok 14 [desktop] › tests\e2e\responsive.spec.ts:84:1 › studio center column stays inside the viewport and scrolls independently (1.8s)
+  -  16 [desktop] › tests\e2e\core-flow.spec.ts:103:1 › defense mode keeps the built-in case read-only while local AI remains usable
+  ok 17 [desktop] › tests\e2e\responsive.spec.ts:117:1 › studio header action labels stay on one line (652ms)
+  ok 19 [desktop] › tests\e2e\responsive.spec.ts:125:1 › studio title never enters the action toolbar (631ms)
+  ok 18 [desktop] › tests\e2e\core-flow.spec.ts:121:1 › analysis evidence opens with source text (1.8s)
+  ok 15 [tablet] › tests\e2e\core-flow.spec.ts:29:1 › candidate only changes prose after explicit confirmation (2.4s)
+(node:2152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 20 [desktop] › tests\e2e\core-flow.spec.ts:130:1 › analysis character list can switch and select a person without unmount errors (1.2s)
+  ok 22 [tablet] › tests\e2e\pingdian-flow.spec.ts:5:1 › the first-screen animation leaves navigation usable (1.2s)
+  ok 24 [tablet] › tests\e2e\pingdian-flow.spec.ts:13:1 › reduced motion immediately shows the final reading state (319ms)
+  ok 23 [desktop] › tests\e2e\core-flow.spec.ts:147:1 › loading, error, and empty dashboard states remain recoverable (1.3s)
+  ok 25 [tablet] › tests\e2e\pingdian-flow.spec.ts:22:1 › changing a diagnosis highlights its quote and replaces the evidence (598ms)
+  ok 27 [tablet] › tests\e2e\pingdian-flow.spec.ts:37:1 › the archived poem displays four couplets and marks the missing dimension (490ms)
+  ok 21 [tablet] › tests\e2e\core-flow.spec.ts:76:1 › user prose survives reload without being replaced by the built-in case (3.5s)
+  -  29 [tablet] › tests\e2e\core-flow.spec.ts:103:1 › defense mode keeps the built-in case read-only while local AI remains usable
+  ok 28 [tablet] › tests\e2e\pingdian-flow.spec.ts:57:1 › training binds a verbatim quote to the feedback it supports (636ms)
+  ok 26 [desktop] › tests\e2e\core-flow.spec.ts:161:1 › the primary case link migrates a legacy 雾港 cache and preserves user prose (1.7s)
+  ok 31 [tablet] › tests\e2e\pingdian-flow.spec.ts:76:1 › all five reading font sizes fit the writing viewport (1.1s)
+  ok 30 [tablet] › tests\e2e\core-flow.spec.ts:121:1 › analysis evidence opens with source text (1.8s)
+  ok 33 [tablet] › tests\e2e\responsive.spec.ts:23:3 › new-project renders without horizontal overflow (628ms)
+  ok 32 [desktop] › tests\e2e\core-flow.spec.ts:201:1 › desktop completes the wizard and enters the real studio (1.7s)
+  ok 35 [tablet] › tests\e2e\responsive.spec.ts:23:3 › studio renders without horizontal overflow (629ms)
+  ok 36 [desktop] › tests\e2e\core-flow.spec.ts:214:1 › desktop clears browser-only user works, training, legacy auth, and generated assets (834ms)
+  ok 34 [tablet] › tests\e2e\core-flow.spec.ts:130:1 › analysis character list can switch and select a person without unmount errors (1.1s)
+  -  39 [tablet] › tests\e2e\core-flow.spec.ts:147:1 › loading, error, and empty dashboard states remain recoverable
+  ok 37 [tablet] › tests\e2e\responsive.spec.ts:23:3 › analysis renders without horizontal overflow (779ms)
+  ok 38 [desktop] › tests\e2e\core-flow.spec.ts:252:1 › IP concept ties its storyboard to the active chapter without asset generation (821ms)
+  ok 41 [tablet] › tests\e2e\responsive.spec.ts:30:1 › graph has visible pixels or a mobile list alternative (866ms)
+  -  42 [tablet] › tests\e2e\responsive.spec.ts:53:1 › uploaded knowledge graph keeps table row selection usable
+  -  43 [tablet] › tests\e2e\responsive.spec.ts:84:1 › studio center column stays inside the viewport and scrolls independently
+(node:37476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  44 [tablet] › tests\e2e\responsive.spec.ts:117:1 › studio header action labels stay on one line
+  ok 40 [tablet] › tests\e2e\core-flow.spec.ts:161:1 › the primary case link migrates a legacy 雾港 cache and preserves user prose (1.7s)
+  -  46 [tablet] › tests\e2e\responsive.spec.ts:125:1 › studio title never enters the action toolbar
+  -  47 [tablet] › tests\e2e\core-flow.spec.ts:201:1 › desktop completes the wizard and enters the real studio
+  -  48 [tablet] › tests\e2e\core-flow.spec.ts:214:1 › desktop clears browser-only user works, training, legacy auth, and generated assets
+(node:39032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 49 [tablet] › tests\e2e\core-flow.spec.ts:252:1 › IP concept ties its storyboard to the active chapter without asset generation (907ms)
+(node:41112) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 50 [mobile] › tests\e2e\pingdian-flow.spec.ts:5:1 › the first-screen animation leaves navigation usable (1.1s)
+  ok 52 [mobile] › tests\e2e\pingdian-flow.spec.ts:13:1 › reduced motion immediately shows the final reading state (389ms)
+  ok 51 [mobile] › tests\e2e\responsive.spec.ts:23:3 › new-project renders without horizontal overflow (570ms)
+  ok 53 [mobile] › tests\e2e\pingdian-flow.spec.ts:22:1 › changing a diagnosis highlights its quote and replaces the evidence (575ms)
+  ok 54 [mobile] › tests\e2e\responsive.spec.ts:23:3 › studio renders without horizontal overflow (632ms)
+  ok 55 [mobile] › tests\e2e\pingdian-flow.spec.ts:37:1 › the archived poem displays four couplets and marks the missing dimension (509ms)
+  ok 45 [mobile] › tests\e2e\core-flow.spec.ts:29:1 › candidate only changes prose after explicit confirmation (4.3s)
+  ok 56 [mobile] › tests\e2e\responsive.spec.ts:23:3 › analysis renders without horizontal overflow (738ms)
+  ok 59 [mobile] › tests\e2e\responsive.spec.ts:30:1 › graph has visible pixels or a mobile list alternative (908ms)
+  -  60 [mobile] › tests\e2e\responsive.spec.ts:53:1 › uploaded knowledge graph keeps table row selection usable
+  -  61 [mobile] › tests\e2e\responsive.spec.ts:84:1 › studio center column stays inside the viewport and scrolls independently
+  -  62 [mobile] › tests\e2e\responsive.spec.ts:117:1 › studio header action labels stay on one line
+  -  63 [mobile] › tests\e2e\responsive.spec.ts:125:1 › studio title never enters the action toolbar
+  ok 57 [mobile] › tests\e2e\pingdian-flow.spec.ts:57:1 › training binds a verbatim quote to the feedback it supports (2.8s)
+  ok 64 [mobile] › tests\e2e\pingdian-flow.spec.ts:76:1 › all five reading font sizes fit the writing viewport (918ms)
+  ok 58 [mobile] › tests\e2e\core-flow.spec.ts:76:1 › user prose survives reload without being replaced by the built-in case (5.5s)
+  -  65 [mobile] › tests\e2e\core-flow.spec.ts:103:1 › defense mode keeps the built-in case read-only while local AI remains usable
+  ok 66 [mobile] › tests\e2e\core-flow.spec.ts:121:1 › analysis evidence opens with source text (1.2s)
+  ok 67 [mobile] › tests\e2e\core-flow.spec.ts:130:1 › analysis character list can switch and select a person without unmount errors (841ms)
+  -  68 [mobile] › tests\e2e\core-flow.spec.ts:147:1 › loading, error, and empty dashboard states remain recoverable
+  ok 69 [mobile] › tests\e2e\core-flow.spec.ts:161:1 › the primary case link migrates a legacy 雾港 cache and preserves user prose (1.2s)
+  -  70 [mobile] › tests\e2e\core-flow.spec.ts:201:1 › desktop completes the wizard and enters the real studio
+  -  71 [mobile] › tests\e2e\core-flow.spec.ts:214:1 › desktop clears browser-only user works, training, legacy auth, and generated assets
+  ok 72 [mobile] › tests\e2e\core-flow.spec.ts:252:1 › IP concept ties its storyboard to the active chapter without asset generation (564ms)
+
+  17 skipped
+  55 passed (33.0s)

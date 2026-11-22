@@ -134,7 +134,7 @@ IP 实验场用于将故事设定整理为视觉简报、分镜和生图参数�
 | Radix UI | 对话框、标签页、弹层等基础交互 | 提供可访问的 UI 行为。 |
 | localStorage | 项目、正文和训练记录 | 浏览器里的小型本地数据库。 |
 | IndexedDB | 生图资产 | 适合保存较大的图片文件。 |
-| Supabase + pgvector | 可选的公共文学知识库 | 保存公开/授权知识和向量检索，不是首版用户作品仓库。 |
+| 本地文学目录 | 公共文学知识库 | 公开作品、结构化解构和片段随应用发布。 |
 | DeepSeek API | 可替换的文本模型服务 | 负责理解、生成、分析和反馈。 |
 | ModelScope API-Inference | 可选的图像模型服务 | 负责异步生成图片。 |
 | Docker + Nginx | 生产部署 | Docker 运行应用，Nginx 负责 HTTPS、域名和限流。 |
@@ -199,7 +199,7 @@ DeepSeek 或本地 Demo 回退
 
 ### 5.2 公共知识数据
 
-随应用发布的练习、演示项目和公开/授权知识种子属于产品素材，不属于个人用户作品。Supabase 只在启用公共知识检索时承载 `kb_works`、`kb_chunks` 等知识数据。
+随应用发布的练习、演示项目和文学知识目录属于产品素材。
 
 ### 5.3 外部 AI 的边界
 
@@ -237,7 +237,6 @@ src/app/workspaces.css       工作区布局
 src/app/marketing.css        首页视觉与滚动效果
 tests/                       单元、组件和 Playwright 浏览器测试
 incoming/                    演示项目、练习、知识种子和视觉参考
-supabase/migrations/         公共知识库和数据边界迁移
 deploy/                      Docker Compose 与 Nginx
 docs/deployment.md           低成本服务器部署、HTTPS、锁定和回滚
 ```
@@ -246,7 +245,7 @@ docs/deployment.md           低成本服务器部署、HTTPS、锁定和回滚
 
 ### 8.1 密钥安全
 
-DeepSeek、ModelScope 和 Supabase service role key 不进入浏览器，不写进 Docker 镜像，也不提交 Git。`.env.production.example` 只有空值模板，真正的服务器环境文件需要单独保存并设置为 `chmod 600`。
+部署方的 DeepSeek、ModelScope 密钥不进入浏览器，不写进 Docker 镜像，也不提交 Git。`.env.production.example` 提供模板，真正的服务器环境文件需要单独保存并设置为 `chmod 600`。
 
 ### 8.2 失败处理
 
@@ -291,8 +290,6 @@ DEEPSEEK_MODEL=deepseek-chat
 MODELSCOPE_API_TOKEN=服务端令牌
 MODELSCOPE_API_BASE_URL=https://api-inference.modelscope.cn
 MODELSCOPE_IMAGE_MODEL=Qwen/Qwen-Image
-SUPABASE_URL=可选
-SUPABASE_ANON_KEY=可选
 ```
 
 没有密钥也可以跑完整本地 Demo，但结果是结构化回退，不代表真实供应商已经联通。
@@ -323,7 +320,7 @@ npm.cmd run start
 
 - Docker 镜像构建和启动
 - Nginx 配置检查、域名 DNS 和 HTTPS 证书
-- DeepSeek、ModelScope、Supabase 的不含隐私文本 smoke test
+- DeepSeek 和 ModelScope 的不含隐私文本 smoke test
 - 内蒙古大陆节点的 ICP 备案/接入合规和正式域名上线
 
 答辩时建议说“本地离线流程和降级路径已验证，真实供应商连接按部署环境配置”，不要说“所有云服务已经在线实测”。

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { analysisSourceHash, createAnalysisSnapshot, findCurrentAnalysisSnapshot, resolveProjectAnalysisSource } from "@/lib/analysis/snapshot";
 import { fixtureForTask } from "@/lib/ai/fixtures";
 import { contextFromState } from "@/lib/ai/story-context";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import type { LiteraryAnalysisResult } from "@/lib/types";
 
 describe("analysis source and snapshot identity", () => {

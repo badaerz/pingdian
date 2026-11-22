@@ -13,7 +13,7 @@ import {
   setImageGenerationSettings,
   updateStoryItem,
 } from "@/lib/story-state";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import type { AnalysisSnapshot, Candidate, ConsistencyReport, ImageGenerationSettings, StoryDirectionMessage, StoryState, Version } from "@/lib/types";
 
 function createExtendedState() {

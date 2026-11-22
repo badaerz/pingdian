@@ -1,0 +1,14 @@
+
+Running 3 tests using 3 workers
+
+(node:44888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42004) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 [desktop] › tests\e2e\core-flow.spec.ts:103:1 › defense mode keeps the built-in case read-only while local AI remains usable (1.5s)
+  ok 2 [tablet] › tests\e2e\core-flow.spec.ts:103:1 › defense mode keeps the built-in case read-only while local AI remains usable (1.6s)
+  ok 1 [mobile] › tests\e2e\core-flow.spec.ts:103:1 › defense mode keeps the built-in case read-only while local AI remains usable (1.9s)
+
+  3 passed (2.9s)

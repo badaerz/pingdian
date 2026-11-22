@@ -1,30 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
-
-const defenseLocked = process.env.NEXT_PUBLIC_DEMO_LOCKED === "true";
-
-async function createUserProject(page: Page, project: {
-  title: string;
-  logline: string;
-  characterName: string;
-  place: string;
-  opening: string;
-}) {
-  await page.goto("/projects/new");
-  await page.waitForLoadState("networkidle");
-  await page.getByLabel("作品名称").fill(project.title);
-  await page.getByLabel("一句话灵感").fill(project.logline);
-  await expect(page.getByLabel("作品名称")).toHaveValue(project.title);
-  await expect(page.getByLabel("一句话灵感")).toHaveValue(project.logline);
-  await page.getByRole("button", { name: "下一步：人物与世界" }).click();
-  await page.getByLabel("主角姓名").fill(project.characterName);
-  await page.getByLabel("核心地点").fill(project.place);
-  await page.getByRole("button", { name: "下一步：故事蓝图" }).click();
-  await page.getByRole("button", { name: "下一步：写出首段" }).click();
-  await page.getByLabel("作品首段").fill(project.opening);
-  await page.getByRole("button", { name: "完成并进入创作台" }).click();
-  await expect(page).toHaveURL(/\/project\/project-.+\/studio$/);
-  await expect(page.getByTestId("prose-editor")).toContainText(project.opening);
-}
+import { expect, test } from "@playwright/test";
+import { createUserProject } from "./user-project";
 
 test("candidate only changes prose after explicit confirmation", async ({ page }) => {
   await page.route("**/api/ai", async (route) => {
@@ -100,48 +75,14 @@ test("user prose survives reload without being replaced by the built-in case", a
   await expect(page.getByLabel("正文编辑器")).not.toContainText("声场的入侵与重返");
 });
 
-test("defense mode keeps the built-in case read-only while local AI remains usable", async ({ page }) => {
-  test.skip(!defenseLocked, "仅在答辩锁定模式运行");
-  await page.goto("/project/demo/studio");
-
-  await expect(page.getByRole("status").filter({ hasText: "答辩演示模式" })).toBeVisible();
-  await expect(page.getByLabel("章节标题")).toHaveAttribute("readonly", "");
-  await expect(page.locator('[aria-label="正文编辑器"]')).toHaveAttribute("contenteditable", "false");
-  await expect(page.getByRole("button", { name: "新增章节" })).toBeDisabled();
-
-  const original = await page.getByTestId("prose-editor").textContent();
-  const mobileCandidateToggle = page.getByRole("button", { name: "打开协作区" });
-  if (await mobileCandidateToggle.isVisible()) await mobileCandidateToggle.click();
-  await page.getByRole("button", { name: "生成续写候选" }).click();
-  await expect(page.getByText("生成完成")).toBeVisible();
-  await expect(page.getByRole("button", { name: "采纳候选" }).first()).toBeDisabled();
-  expect(await page.getByTestId("prose-editor").textContent()).toBe(original);
-});
-
-test("analysis evidence opens with source text", async ({ page }) => {
-  await page.goto("/project/demo/analysis");
-  await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "证据 E1" }).first().click();
-  const dialog = page.getByRole("dialog", { name: "原文证据" });
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByText("用户文本")).toBeVisible();
-});
-
-test("analysis character list can switch and select a person without unmount errors", async ({ page }) => {
-  await page.goto("/project/demo/analysis");
-  await page.getByRole("tab", { name: "关系网络" }).click();
-  const listToggle = page.getByRole("button", { name: "列表" });
-  if (await listToggle.isVisible()) await listToggle.click();
-  await page.getByRole("button", { name: /杭盖 人物/ }).click();
-  await expect(page.getByRole("dialog", { name: "原文证据" })).toBeVisible();
-  await page.getByRole("button", { name: "关闭对话框" }).click();
-  const graphToggle = page.getByRole("button", { name: "图谱" });
-  if (await graphToggle.isVisible()) {
-    await graphToggle.click();
-    await listToggle.click();
+test("historical built-in URLs return to the empty projects page", async ({ page }) => {
+  for (const id of ["demo", "demo-demo_002"]) {
+    for (const route of ["studio", "analysis", "ip-lab"]) {
+      await page.goto(`/project/${id}/${route}`);
+      await expect(page).toHaveURL(/\/projects$/);
+      await expect(page.getByText("还没有作品。新建一个，或到首页贴一段文字试试。")).toBeVisible();
+    }
   }
-  await expect(page.getByRole("button", { name: /巴特尔 人物/ })).toBeVisible();
-  await expect(page.getByText("removeChild", { exact: false })).toHaveCount(0);
 });
 
 test("loading, error, and empty dashboard states remain recoverable", async ({ page }, testInfo) => {
@@ -152,37 +93,28 @@ test("loading, error, and empty dashboard states remain recoverable", async ({ p
   await expect(page.getByRole("button", { name: "加载" })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "失败" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "项目暂时无法读取" })).toBeVisible();
-  await page.getByRole("button", { name: "恢复演示数据" }).click();
-  await expect(page.getByRole("heading", { name: "回响的草场", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "项目", exact: true }).click();
   await page.getByRole("button", { name: "空状态" }).click();
-  await expect(page.getByRole("heading", { name: "桌面还是空的" })).toBeVisible();
+  await expect(page.getByText("还没有作品。新建一个，或到首页贴一段文字试试。")).toBeVisible();
 });
 
-test("the primary case link migrates a legacy 雾港 cache to 回响的草场", async ({ page }) => {
+test("legacy user prose survives migration while retired projects disappear", async ({ page }) => {
+  const path = await createUserProject(page);
+  const id = path.split("/").pop()!;
+  await page.evaluate((userId) => {
+    const key = "story-forge:projects:v3";
+    const { documents } = JSON.parse(localStorage.getItem(key)!);
+    const user = documents[userId];
+    const legacy = { ...user, project: { ...user.project, id: "demo" } };
+    localStorage.setItem("story-forge:projects:v1", JSON.stringify({ version: 1, documents: { demo: legacy, [userId]: user } }));
+    localStorage.removeItem(key);
+  }, id);
   await page.goto("/projects");
-  await expect.poll(() => page.evaluate(() => Boolean(window.localStorage.getItem("story-forge:projects:v3")))).toBe(true);
-  await page.evaluate(() => {
-    const current = JSON.parse(window.localStorage.getItem("story-forge:projects:v3") ?? "null");
-    const legacyRegression = structuredClone(current.documents["demo-demo_002"]);
-    legacyRegression.project.id = "demo";
-    delete legacyRegression.activeChapterId;
-    delete legacyRegression.contextRevision;
-    delete legacyRegression.workflowStage;
-    delete legacyRegression.ipAssets;
-    legacyRegression.world = { era: "当代", place: "雾港", rules: "灯塔每夜亮起", atmosphere: "浓雾" };
-    delete legacyRegression.worldEntries;
-    window.localStorage.removeItem("story-forge:projects:v3");
-    window.localStorage.setItem("story-forge:projects:v1", JSON.stringify({ version: 1, documents: { demo: legacyRegression } }));
-  });
-
-  await page.goto("/");
-  await page.getByRole("link", { name: "查看答辩案例" }).click();
-
-  await expect(page).toHaveURL(/\/project\/demo\/studio$/);
-  await expect(page.getByRole("heading", { name: "声场的入侵与重返" })).toBeVisible();
-  await expect(page.getByTestId("prose-editor")).toContainText("杭盖背着专业枪型麦克风");
-  await expect.poll(() => page.evaluate(() => Boolean(window.localStorage.getItem("story-forge:projects:v3")))).toBe(true);
-  await expect.poll(() => page.evaluate(() => Boolean(window.localStorage.getItem("story-forge:projects:v1")))).toBe(true);
+  await page.getByRole("link", { name: "潮汐日记", exact: true }).click();
+  await expect(page.getByTestId("prose-editor")).toContainText("屋顶先从海面下露了出来");
+  await page.reload();
+  await expect(page.getByTestId("prose-editor")).toContainText("屋顶先从海面下露了出来");
+  expect(await page.evaluate(() => Object.keys(JSON.parse(localStorage.getItem("story-forge:projects:v3")!).documents))).toEqual([id]);
 });
 
 test("desktop completes the wizard and enters the real studio", async ({ page }, testInfo) => {
@@ -200,14 +132,8 @@ test("desktop completes the wizard and enters the real studio", async ({ page },
 
 test("desktop clears browser-only user works, training, legacy auth, and generated assets", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "本地数据清除链路只需在桌面运行一次");
-  await page.goto("/projects");
-  await expect.poll(() => page.evaluate(() => Boolean(localStorage.getItem("story-forge:projects:v3")))).toBe(true);
+  await createUserProject(page);
   await page.evaluate(async () => {
-    const store = JSON.parse(localStorage.getItem("story-forge:projects:v3") ?? "null");
-    const userDocument = structuredClone(store.documents.demo);
-    userDocument.project = { ...userDocument.project, id: "project-e2e-local", title: "待清除本地作品" };
-    store.documents["project-e2e-local"] = userDocument;
-    localStorage.setItem("story-forge:projects:v3", JSON.stringify(store));
     localStorage.setItem("story-forge:training:v1", JSON.stringify([{ id: "attempt-e2e", exerciseId: "EX_001", answer: "待清除训练" }]));
     localStorage.setItem("sb-legacy-auth-token", "legacy-session");
     await new Promise<void>((resolve, reject) => {
@@ -225,33 +151,31 @@ test("desktop clears browser-only user works, training, legacy auth, and generat
   await expect(page.getByText("本地创作数据已清除")).toBeVisible();
 
   const retained = await page.evaluate(async () => ({
-    projects: Object.keys(JSON.parse(localStorage.getItem("story-forge:projects:v3") ?? "null").documents),
+    projects: Object.keys(JSON.parse(localStorage.getItem("story-forge:projects:v3") ?? "{}").documents ?? {}),
     training: JSON.parse(localStorage.getItem("story-forge:training:v1") ?? "[]"),
     legacyAuth: localStorage.getItem("sb-legacy-auth-token"),
     assetDatabase: (await indexedDB.databases()).some((database) => database.name === "story-forge-assets"),
   }));
-  expect(retained.projects.sort()).toEqual(["demo", "demo-demo_002"]);
+  expect(retained.projects.sort()).toEqual([]);
   expect(retained.training).toEqual([]);
   expect(retained.legacyAuth).toBeNull();
   expect(retained.assetDatabase).toBe(false);
 });
 
-test("desktop runs the labelled IP fallback and stores a confirmed local asset", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "desktop", "P2 资产链路只在桌面跑一次");
-  await page.route("**/api/ai", async (route) => {
-    const task = (await route.request().postDataJSON()).task;
-    const content = task === "storyboard" ? "01 远景｜风压低草\n02 中景｜人物举起麦克风\n03 特写｜频谱跳动\n04 反打｜封闭矿井\n05 跟拍｜穿过草场\n06 远景｜低鸣消退" : "矿区声学设备、草场风痕、冷绿与信号金。";
-    await route.fulfill({ json: { mode: "demo", result: { candidates: [{ id: `${task}-1`, label: task === "storyboard" ? "六镜头分镜" : "视觉简报", content, rationale: "演示链路", tags: [], status: "pending" }] }, warnings: [] } });
+test("IP concept ties its storyboard to the active chapter without asset generation", async ({ page }) => {
+  const apiCalls: string[] = [];
+  await page.route("**/api/{ai,assets/**}", async route => {
+    apiCalls.push(route.request().url());
+    await route.abort();
   });
-  await page.route("**/api/assets/generate", (route) => route.fulfill({ json: { mode: "demo", asset: { id: "asset-e2e", kind: "character-visual", title: "杭盖主视觉", previewUrl: "/visuals/ip-lab-character.webp", mode: "demo", createdAt: new Date().toISOString(), confirmed: false }, warnings: ["实时生成不可用，已返回演示资产。"] } }));
-  await page.goto("/project/demo/ip-lab");
-  await page.getByRole("button", { name: "生成视觉简报" }).click();
-  await page.getByRole("button", { name: "确认视觉简报" }).click();
-  await page.getByRole("button", { name: "生成主视觉" }).click();
-  await expect(page.getByText("演示兜底")).toBeVisible();
-  await page.getByRole("button", { name: "确认保存图像" }).click();
-  await expect(page.getByRole("button", { name: "确认保存图像" })).toBeDisabled();
-  await page.getByRole("button", { name: "生成六镜头分镜" }).click();
-  await expect(page.getByText(/06 远景/)).toBeVisible();
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("story-forge:projects:v3") ?? "null").documents.demo.ipAssets[0]?.previewUrl)).toBe("indexeddb://asset-e2e");
+  const path = await createUserProject(page);
+  await page.goto(`${path}/ip-lab`);
+  await expect(page.getByText("当前页面未接入生图链路", { exact: false })).toBeVisible();
+  const source = page.locator("blockquote");
+  await expect(source).not.toBeEmpty();
+  const quote = await source.innerText();
+  await expect(page.getByText("原文节选", { exact: false })).toBeVisible();
+  await page.getByRole("link", { name: "返回作品" }).click();
+  await expect(page.getByTestId("prose-editor")).toContainText(quote);
+  expect(apiCalls).toEqual([]);
 });

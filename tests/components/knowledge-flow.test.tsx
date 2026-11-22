@@ -6,7 +6,7 @@ it("shows classic text deconstruction for the selected work", async () => {
 
   expect(await screen.findByText("经典文本解构")).toBeVisible();
   expect(screen.getByText("情节结构")).toBeVisible();
-  expect(screen.getByText("片段证据")).toBeVisible();
+  expect(screen.getByRole("region", { name: "来源证据" })).toBeVisible();
   expect(screen.getByText("为什么这样写")).toBeVisible();
   expect(screen.getByText("训练提示")).toBeVisible();
   expect(screen.getByText("来源状态")).toBeVisible();

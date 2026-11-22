@@ -1,0 +1,189 @@
+/* 首屏 = 一张校对纸。
+   没有立绘、没有粒子：全部靠排印和时序说明「逐字核对，对不上就删」。
+
+   写法约定：默认样式就是终态。动画只在 [data-flow] 且元素还没拿到 .on 时生效，
+   用 :not(.on) 表达。这样无 JS、减少动画、点「跳过」三种情况都不用另写一套覆盖规则。 */
+
+.ink-hero{
+  --paper:#FFFFFF; --sheet:#FAF8F4;
+  --ink:#131313; --dim:#5F5F5F; --faint:#8A8A8A;
+  --red:#B3261E; --rule:rgba(0,0,0,.10);
+  --mono:"JetBrains Mono",Consolas,monospace;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Noto Serif SC","Songti SC",SimSun,serif;
+  position:relative; isolation:isolate;
+  min-height:100svh; display:grid; grid-template-rows:64px 1fr auto;
+  background:var(--paper); color:var(--ink);
+  font:normal 16px/normal var(--mono); -webkit-font-smoothing:antialiased;
+}
+.ink-hero *{box-sizing:border-box}
+
+/* 顶栏 */
+.bar{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,56px);z-index:6}
+.bar .brand{display:flex;align-items:baseline;gap:12px}
+.bar .zh{font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:.12em}
+.bar .en{font:9px/1 var(--mono);letter-spacing:.34em;color:var(--faint)}
+.bar nav{display:flex;gap:30px;align-items:center;font-size:10px;letter-spacing:.2em;color:var(--dim)}
+.bar nav a{color:inherit;text-decoration:none;position:relative;padding:4px 0}
+.bar nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--red);transition:right .3s ease}
+.bar nav a:hover{color:var(--ink)}
+.bar nav a:hover::after{right:0}
+.bar nav .go{color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:3px}
+
+/* 两栏 */
+.hero-grid{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.04fr);
+  align-items:center; gap:clamp(28px,5vw,88px);
+  width:100%; max-width:1580px; margin:0 auto;
+  padding:clamp(12px,3vh,40px) clamp(20px,6vw,96px);
+}
+.lead-col{max-width:34em}
+
+/* 左栏：标题 / 导语 / 按钮 —— 不做入场动画，首屏文字要立刻可读 */
+.eyebrow{display:flex;gap:14px;align-items:center;margin:0 0 clamp(20px,3.4vh,34px);
+  font-size:9.5px;letter-spacing:.22em;color:var(--faint)}
+.eyebrow i{display:block;width:28px;height:1px;background:var(--red)}
+.ink-hero h1{
+  font-family:var(--serif); font-weight:600;
+  font-size:clamp(32px,3.55vw,50px); line-height:1.32; letter-spacing:0;
+  margin:0 0 24px;
+}
+.ink-hero h1 em{font-style:normal;color:var(--red)}
+.lede{font-size:12.5px;line-height:2.05;color:var(--dim);letter-spacing:.06em;max-width:29em;margin:0 0 30px}
+.cta{
+  align-self:flex-start;display:inline-flex;align-items:center;gap:12px;
+  background:var(--ink);color:#fff;text-decoration:none;font-size:11px;letter-spacing:.2em;padding:16px 26px;
+  transition:background .3s;
+}
+.cta:hover{background:var(--red)}
+.cta span{transition:transform .3s}
+.cta:hover span{transform:translateX(5px)}
+
+/* 右栏：校对纸 */
+.sheet{
+  background:var(--sheet); border:1px solid rgba(0,0,0,.09);
+  padding:clamp(18px,2.1vw,28px) clamp(18px,2.3vw,32px);
+  box-shadow:0 1px 0 rgba(0,0,0,.02), 0 18px 50px -34px rgba(0,0,0,.35);
+  transition:opacity .7s ease, transform .8s cubic-bezier(.16,.84,.34,1);
+}
+.ink-hero[data-flow] .sheet:not(.on){opacity:0;transform:translateY(14px)}
+
+.sheet-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--rule);
+  font-size:9px;letter-spacing:.2em;color:var(--faint);
+}
+
+.couplets{list-style:none;margin:0;padding:0;font-family:var(--serif);
+  font-size:clamp(16px,1.28vw,20px);line-height:2.15;letter-spacing:.02em}
+.couplets li{display:grid;grid-template-columns:1fr 1fr;gap:0 1.1em}
+.couplets .hit{position:relative;display:block;justify-self:start;width:fit-content}
+.couplets .hit .rule{
+  position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:var(--red);
+  transform:scaleX(1);transform-origin:0 50%;
+  transition:transform .62s cubic-bezier(.22,.61,.36,1) .1s;
+}
+.ink-hero[data-flow] .sheet:not(.on) .hit .rule{transform:scaleX(0)}
+
+.claims{margin-top:clamp(16px,2.4vh,26px);display:grid;gap:18px}
+.claim{border-left:2px solid transparent;padding-left:14px;
+  transition:opacity .55s ease, transform .55s ease, border-color .4s ease}
+.claim header{display:flex;align-items:center;gap:10px;font-size:9px;letter-spacing:.2em;color:var(--faint);margin-bottom:5px}
+.claim header b{font-weight:500;color:var(--dim)}
+.claim blockquote{
+  margin:0 0 6px;font-family:var(--serif);
+  font-size:clamp(19px,1.75vw,26px);line-height:1.5;letter-spacing:.02em;
+}
+.claim .meta{font-size:9.5px;letter-spacing:.14em;color:var(--faint);margin:0}
+.claim .meta b{color:var(--red);font-weight:400;font-variant-numeric:tabular-nums}
+
+/* 第 01 条：通过 */
+#claim1{border-left-color:var(--red)}
+.ink-hero[data-flow] #claim1:not(.on){opacity:0;transform:translateY(6px);border-left-color:transparent}
+
+/* 朱印「真」：从大一号斜着按下去 */
+.seal{
+  display:inline-grid;place-items:center;width:26px;height:26px;flex:none;
+  border:1.5px solid var(--red);color:var(--red);border-radius:2px;
+  font-family:var(--serif);font-size:13px;line-height:1;letter-spacing:0;
+  transform:rotate(-6deg);
+  transition:opacity .28s ease, transform .4s cubic-bezier(.2,1.5,.4,1);
+}
+.ink-hero[data-flow] .seal:not(.on){opacity:0;transform:rotate(-16deg) scale(1.9)}
+
+/* 第 02 条：误写演示，结局是被丢掉 */
+.tag-demo{color:var(--faint);border:1px solid rgba(0,0,0,.14);padding:1px 6px;letter-spacing:.12em}
+#claim2 .verdict{opacity:0;color:var(--red);letter-spacing:.14em;transition:opacity .4s ease .3s}
+#claim2 blockquote span{
+  display:inline-block;
+  transition:transform .8s cubic-bezier(.3,.72,.35,1), opacity .8s ease, filter .8s ease, color .3s ease;
+  transition-delay:calc(var(--i) * 24ms);
+}
+.ink-hero[data-flow] #claim2:not(.on){opacity:0}
+
+/* 对不上的那个字先闪朱红，再跟着整条一起沉下去 */
+#claim2[data-mark] blockquote span[data-miss]{color:var(--red);animation:pd-shiver .34s ease 2}
+@keyframes pd-shiver{0%,100%{transform:translateX(0)}35%{transform:translateX(-2px)}70%{transform:translateX(2px)}}
+
+/* 丢掉之后不是消失，是留下被划掉的一行——台账里要能对上它。
+   用 keyframes 而不是 transition：动的时候字往外散，停下来的位置必须是干净的，
+   否则每个字带一点偏移会被看成渲染错位，而不是「被划掉」。 */
+#claim2[data-gone]{border-left-color:rgba(0,0,0,.14)}
+#claim2[data-gone] blockquote{margin-bottom:9px;padding-bottom:2px}
+#claim2[data-gone] blockquote span{
+  opacity:.38; filter:blur(.3px);
+  transform:translate(calc(var(--dx) * .25),0) rotate(calc(var(--rot) * .3));
+  transition:none;
+  animation:pd-strike .82s cubic-bezier(.3,.72,.35,1) both;
+  animation-delay:calc(var(--i) * 24ms);
+}
+@keyframes pd-strike{
+  0%{opacity:1;filter:none;transform:none}
+  50%{opacity:.6;filter:blur(.45px);transform:translate(var(--dx),var(--dy)) rotate(var(--rot))}
+  100%{opacity:.38;filter:blur(.3px);transform:translate(calc(var(--dx) * .25),0) rotate(calc(var(--rot) * .3))}
+}
+#claim2[data-gone] blockquote span[data-miss]{opacity:.75}
+#claim2[data-gone] blockquote{text-decoration:line-through;text-decoration-color:rgba(179,38,30,.8);text-decoration-thickness:1px}
+#claim2[data-gone] .verdict{opacity:1}
+
+/* 底部 */
+.foot{display:flex;justify-content:space-between;align-items:baseline;
+  padding:0 clamp(20px,6vw,96px) clamp(16px,3vh,26px);
+  font-size:9px;letter-spacing:.18em;color:var(--faint)}
+.foot .drop{display:flex;gap:14px;align-items:baseline;transition:opacity .5s ease}
+.foot .drop em{font-style:normal;color:var(--red)}
+.ink-hero[data-flow] .foot .drop:not(.on){opacity:0}
+.skip{color:var(--dim);background:none;border:0;border-bottom:1px solid var(--rule);font:inherit;letter-spacing:inherit;padding:0 0 2px;cursor:pointer}
+.skip:hover{color:var(--ink)}
+
+/* 批点光标 */
+.cur{position:absolute;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;
+  background:var(--red);z-index:20;pointer-events:none;display:none;
+  transition:width .25s,height .25s,margin .25s,background .25s,border .25s}
+.cur.ring{width:34px;height:34px;margin:-17px 0 0 -17px;background:transparent;border:1px solid var(--red)}
+@media (pointer:fine) and (hover:hover){
+  .ink-hero[data-pointer],.ink-hero[data-pointer] :is(a,button){cursor:none}
+  .ink-hero[data-pointer] .cur{display:block}
+}
+
+/* 窄屏：上下堆叠，取消全屏高度锁 */
+@media (max-width:920px){
+  .ink-hero{grid-template-rows:auto 1fr auto}
+  .bar{height:56px}
+  .bar nav{gap:18px}
+  .bar nav a:not(.go){display:none}
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vh,36px);padding-block:8px clamp(16px,3vh,28px)}
+  .lead-col{max-width:none}
+  .ink-hero h1{font-size:clamp(30px,7.4vw,40px);margin-bottom:16px}
+  .lede{font-size:12px;margin-bottom:22px}
+  .couplets{font-size:15.5px;line-height:2}
+  .couplets li{grid-template-columns:1fr;gap:0}
+  .couplets li span:nth-child(2){color:var(--dim)}
+  .claim blockquote{font-size:19px}
+  .foot{padding-top:8px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ink-hero *,.ink-hero *::before,.ink-hero *::after{
+    transition:none!important;animation:none!important;
+  }
+}

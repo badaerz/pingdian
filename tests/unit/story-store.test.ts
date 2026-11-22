@@ -1,3 +1,4 @@
+import { createFixtureStore } from "../fixtures/story-store";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   LEGACY_STORY_STORE_KEY,
@@ -13,14 +14,24 @@ import { acceptCandidate } from "@/lib/story-state";
 import { createAnalysisSnapshot } from "@/lib/analysis/snapshot";
 import { fixtureForTask } from "@/lib/ai/fixtures";
 import { contextFromState } from "@/lib/ai/story-context";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 import type { LiteraryAnalysisResult, StoryState } from "@/lib/types";
 
 describe("story store", () => {
   beforeEach(() => localStorage.clear());
 
+  it("starts empty and removes old built-ins while preserving user works", () => {
+    expect(createStoryStore().documents).toEqual({});
+    const userWork = createProjectDocument({ title: "雾港来信", genre: "", logline: "" });
+    userWork.chapters[0].content = "我的作品";
+    localStorage.setItem(LEGACY_STORY_STORE_KEY, JSON.stringify({
+      version: 1, documents: { demo: userWork, "demo-demo_002": userWork, [userWork.project.id]: userWork },
+    }));
+    expect(loadStoryStore()?.documents).toEqual({ [userWork.project.id]: userWork });
+  });
+
   it("persists a new project's independent chapter and setup data", () => {
-    const store = createStoryStore();
+    const store = createFixtureStore();
     const document = createProjectDocument({
       title: "潮汐日记",
       genre: "纯文学短篇",
@@ -39,7 +50,7 @@ describe("story store", () => {
   });
 
   it("migrates legacy asset generationSettings to sanitized requestedSettings and persists only the current contract", () => {
-    const store = createStoryStore();
+    const store = createFixtureStore();
     const legacyAsset = {
       id: "asset-legacy-settings",
       kind: "poster",
@@ -60,11 +71,11 @@ describe("story store", () => {
       providerRequest: { model: "Qwen/Qwen-Image", prompt: "旧版正向词", authorization: "must-drop" },
       runtimeOnly: { mustDrop: true },
     };
-    const document = structuredClone(store.documents.demo) as unknown as Record<string, unknown>;
+    const document = structuredClone(store.documents.fixture) as unknown as Record<string, unknown>;
     document.ipAssets = [legacyAsset];
 
-    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as unknown as Parameters<typeof reconcileStoryStore>[0]);
-    const migrated = reconciled.documents.demo.ipAssets[0];
+    const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: document } } as unknown as Parameters<typeof reconcileStoryStore>[0]);
+    const migrated = reconciled.documents.fixture.ipAssets[0];
 
     expect(migrated.requestedSettings).toEqual({
       prompt: "旧版正向词",
@@ -79,10 +90,10 @@ describe("story store", () => {
     expect(migrated).not.toHaveProperty("runtimeOnly");
 
     saveStoryStore(reconciled);
-    const persisted = JSON.parse(localStorage.getItem(STORY_STORE_KEY) ?? "{}") as { documents: { demo: { ipAssets: Array<Record<string, unknown>> } } };
-    expect(persisted.documents.demo.ipAssets[0]).toHaveProperty("requestedSettings");
-    expect(persisted.documents.demo.ipAssets[0]).not.toHaveProperty("generationSettings");
-    expect(loadStoryStore()?.documents.demo.ipAssets[0]).toEqual(migrated);
+    const persisted = JSON.parse(localStorage.getItem(STORY_STORE_KEY) ?? "{}") as { documents: { fixture: { ipAssets: Array<Record<string, unknown>> } } };
+    expect(persisted.documents.fixture.ipAssets[0]).toHaveProperty("requestedSettings");
+    expect(persisted.documents.fixture.ipAssets[0]).not.toHaveProperty("generationSettings");
+    expect(loadStoryStore()?.documents.fixture.ipAssets[0]).toEqual(migrated);
   });
 
   it("falls back to a fresh store when cached data is invalid", () => {
@@ -91,55 +102,6 @@ describe("story store", () => {
     const restored = loadStoryStore();
 
     expect(restored).toBeNull();
-  });
-
-  it("uses 回响的草场 as the primary demo and 雾港来信 as a regression case", () => {
-    const store = createStoryStore();
-    const projects = Object.values(store.documents).map((document) => document.project);
-
-    expect(projects[0]?.title).toBe("回响的草场");
-    expect(projects.some((project) => project.title === "雾港来信")).toBe(true);
-    expect(store.documents.demo.characters.map((character) => character.name)).toContain("杭盖");
-    expect(store.documents.demo.dialogueThreads).toEqual([]);
-    expect(store.documents.demo.imageGenerationSettings?.model).toBe("Qwen/Qwen-Image");
-    expect(store.documents.demo.analysisSnapshots).toEqual([]);
-    expect(store.documents.demo.consistencyReports).toEqual([]);
-    expect(store.documents.demo.trainingAttemptRefs).toEqual([]);
-  });
-
-  it("restores the canonical regression case when a legacy demo id was overwritten", () => {
-    const current = createStoryStore();
-    const legacyRegression = structuredClone(current.documents["demo-demo_002"]);
-    legacyRegression.project.id = "demo";
-    legacyRegression.chapters[0].content = `${legacyRegression.chapters[0].content}\n\n已删除的段落`;
-    localStorage.setItem(LEGACY_STORY_STORE_KEY, JSON.stringify({
-      version: 1,
-      documents: { demo: legacyRegression },
-    }));
-
-    const restored = loadStoryStore();
-
-    expect(restored?.documents.demo.project.title).toBe("回响的草场");
-    expect(restored?.documents["demo-demo_002"].project.id).toBe("demo-demo_002");
-    expect(restored?.documents["demo-demo_002"].chapters[0].content).toBe(current.documents["demo-demo_002"].chapters[0].content);
-    expect(restored?.documents["demo-demo_002"].worldEntries.map((entry) => entry.category)).toEqual(["时代", "地点", "规则", "氛围"]);
-    expect(restored?.documents["demo-demo_002"].contextRevision).toBe(1);
-    expect(localStorage.getItem(LEGACY_STORY_STORE_KEY)).not.toBeNull();
-    expect(localStorage.getItem(STORY_STORE_KEY)).not.toBeNull();
-  });
-
-  it("restores canonical builtin chapter titles and order", () => {
-    const canonical = createStoryStore();
-    const savedDemo = structuredClone(canonical.documents.demo);
-    savedDemo.chapters[0].title = "第一章";
-    savedDemo.chapters[0].order = 17;
-
-    const restored = reconcileStoryStore({ version: 3, documents: { demo: savedDemo } });
-    const fallback = reconcileStoryStore({ version: 3, documents: {} });
-
-    expect(restored.documents.demo.chapters[0].title).toBe(canonical.documents.demo.chapters[0].title);
-    expect(restored.documents.demo.chapters[0].order).toBe(canonical.documents.demo.chapters[0].order);
-    expect(fallback.documents.demo.chapters[0].title).toBe(canonical.documents.demo.chapters[0].title);
   });
 
   it("creates editable ordered records and starts new work in the wizard", () => {
@@ -165,8 +127,8 @@ describe("story store", () => {
   });
 
   it("migrates v2 documents without changing authored content", () => {
-    const current = createStoryStore();
-    const legacyDocument = structuredClone(current.documents.demo);
+    const current = createFixtureStore();
+    const legacyDocument = structuredClone(current.documents.fixture);
     const legacyRecord = legacyDocument as unknown as Record<string, unknown>;
     delete legacyRecord.dialogueThreads;
     delete legacyRecord.imageGenerationSettings;
@@ -215,11 +177,11 @@ describe("story store", () => {
   });
 
   it("drops runtime-only fields during migration and direct persistence", () => {
-    const current = createStoryStore();
+    const current = createFixtureStore();
     const trainingObject = { answer: "完整训练答案", feedback: { score: 99 } };
     const unsafeDocument = {
-      ...structuredClone(current.documents.demo),
-      project: { ...current.documents.demo.project, id: "project-whitelist" },
+      ...structuredClone(current.documents.fixture),
+      project: { ...current.documents.fixture.project, id: "project-whitelist" },
       sourceText: "临时上传原文",
       uploadedText: "浏览器会话文本",
       retrievalEvidence: [{ content: "RAG 片段" }],
@@ -277,11 +239,11 @@ describe("story store", () => {
   });
 
   it("drops malformed nested dialogue and consistency records without losing healthy records or projects", () => {
-    const current = createStoryStore();
-    const healthy = structuredClone(current.documents.demo);
+    const current = createFixtureStore();
+    const healthy = structuredClone(current.documents.fixture);
     healthy.project = { ...healthy.project, id: "project-healthy", title: "完整项目" };
     healthy.chapters[0].content = "必须保留的其他项目正文";
-    const mixed = structuredClone(current.documents.demo);
+    const mixed = structuredClone(current.documents.fixture);
     mixed.project = { ...mixed.project, id: "project-mixed", title: "混合记录项目" };
     const candidateId = mixed.candidates[0].id;
     const validMessage = { id: "message-good", role: "user" as const, content: "保留这条讨论", tags: ["推进冲突"], createdAt: "刚刚", contextRevision: mixed.contextRevision };
@@ -335,10 +297,10 @@ describe("story store", () => {
   });
 
   it("fills missing image setting fields without replacing existing values", () => {
-    const current = createStoryStore();
+    const current = createFixtureStore();
     const document = {
-      ...structuredClone(current.documents.demo),
-      project: { ...current.documents.demo.project, id: "project-image-settings" },
+      ...structuredClone(current.documents.fixture),
+      project: { ...current.documents.fixture.project, id: "project-image-settings" },
       imageGenerationSettings: { prompt: "保留提示词", advanced: { steps: 31, enhance: true } },
     };
 
@@ -354,14 +316,14 @@ describe("story store", () => {
   });
 
   it("preserves existing v3 extension fields", () => {
-    const current = createStoryStore();
-    const candidateId = current.documents.demo.candidates[0].id;
+    const current = createFixtureStore();
+    const candidateId = current.documents.fixture.candidates[0].id;
     const context = contextFromState(initialStoryState);
     const sourceText = context.chapters[0].content;
     const result = fixtureForTask("analysis-v2", context, { sourceText, sourceKind: "narrative" }) as LiteraryAnalysisResult;
     const completeSnapshot = createAnalysisSnapshot({
-      projectId: "demo",
-      chapterId: current.documents.demo.chapters[0].id,
+      projectId: "fixture",
+      chapterId: current.documents.fixture.chapters[0].id,
       sourceText,
       contextRevision: 7,
       mode: "live",
@@ -371,7 +333,7 @@ describe("story store", () => {
       now: "刚刚",
     });
     const document = {
-      ...structuredClone(current.documents.demo),
+      ...structuredClone(current.documents.fixture),
       dialogueThreads: [{ id: "message-1", role: "user" as const, content: "保留这个方向", tags: ["克制"], createdAt: "刚刚", contextRevision: 7 }],
       imageGenerationSettings: { prompt: "草原上的旧矿场", negativePrompt: "文字", model: "custom-image", size: "1024x1024", advanced: { steps: 28 } },
       analysisSnapshots: [{ ...completeSnapshot, runtimeOnly: "must-drop" }],
@@ -379,24 +341,24 @@ describe("story store", () => {
       trainingAttemptRefs: ["attempt-1"],
     };
 
-    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } } as unknown as Parameters<typeof reconcileStoryStore>[0]);
+    const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: document } } as unknown as Parameters<typeof reconcileStoryStore>[0]);
 
     expect(reconciled.version).toBe(3);
-    expect(reconciled.documents.demo.dialogueThreads).toEqual(document.dialogueThreads);
-    expect(reconciled.documents.demo.imageGenerationSettings).toEqual(document.imageGenerationSettings);
+    expect(reconciled.documents.fixture.dialogueThreads).toEqual(document.dialogueThreads);
+    expect(reconciled.documents.fixture.imageGenerationSettings).toEqual(document.imageGenerationSettings);
     const expectedSnapshot = { ...document.analysisSnapshots[0] };
     delete (expectedSnapshot as Record<string, unknown>).runtimeOnly;
-    expect(reconciled.documents.demo.analysisSnapshots).toEqual([expectedSnapshot]);
-    expect(reconciled.documents.demo.consistencyReports).toEqual(document.consistencyReports);
-    expect(reconciled.documents.demo.trainingAttemptRefs).toEqual(document.trainingAttemptRefs);
+    expect(reconciled.documents.fixture.analysisSnapshots).toEqual([expectedSnapshot]);
+    expect(reconciled.documents.fixture.consistencyReports).toEqual(document.consistencyReports);
+    expect(reconciled.documents.fixture.trainingAttemptRefs).toEqual(document.trainingAttemptRefs);
   });
 
   it("drops each invalid v2 snapshot fail-closed while preserving another project's valid snapshot", () => {
-    const store = createStoryStore();
+    const store = createFixtureStore();
     const context = contextFromState(initialStoryState);
     const sourceText = context.chapters[0].content;
     const result = fixtureForTask("analysis-v2", context, { sourceText, sourceKind: "narrative" }) as LiteraryAnalysisResult;
-    const valid = createAnalysisSnapshot({ projectId: "demo", chapterId: "demo-chapter-1", sourceText, contextRevision: 3, mode: "live", warnings: [], result, id: "valid-analysis", now: "2026-08-21T00:00:00.000Z" });
+    const valid = createAnalysisSnapshot({ projectId: "fixture", chapterId: "fixture-chapter-1", sourceText, contextRevision: 3, mode: "live", warnings: [], result, id: "valid-analysis", now: "2026-08-21T00:00:00.000Z" });
     const invalidRange = structuredClone(valid);
     invalidRange.id = "invalid-range";
     invalidRange.themeHeatmap![0].value = 101;
@@ -410,7 +372,7 @@ describe("story store", () => {
     const invalidReference = structuredClone(valid);
     invalidReference.id = "invalid-reference";
     invalidReference.styleProfile!.metrics[0].evidenceIds = ["missing-evidence"];
-    store.documents.demo.analysisSnapshots = [invalidRange, invalidEndpoint, invalidObservation, invalidReference];
+    store.documents.fixture.analysisSnapshots = [invalidRange, invalidEndpoint, invalidObservation, invalidReference];
 
     const other = createProjectDocument({ title: "保留项目", genre: "短篇", logline: "验证项目隔离" });
     const otherValid = structuredClone(valid);
@@ -422,7 +384,7 @@ describe("story store", () => {
 
     const reconciled = reconcileStoryStore(store);
 
-    const restored = reconciled.documents.demo.analysisSnapshots;
+    const restored = reconciled.documents.fixture.analysisSnapshots;
     expect(restored.map(s => s.id)).toEqual(["invalid-range", "invalid-reference"]);
     expect(restored[0].themeHeatmap).toEqual(valid.themeHeatmap!.slice(1));
     expect(restored[1].styleProfile!.metrics).toEqual(valid.styleProfile!.metrics.slice(1));
@@ -431,8 +393,8 @@ describe("story store", () => {
   });
 
   it("persists structured direction replies and assigns every migrated version to a chapter", () => {
-    const current = createStoryStore();
-    const document = structuredClone(current.documents.demo);
+    const current = createFixtureStore();
+    const document = structuredClone(current.documents.fixture);
     document.dialogueThreads = [{
       id: "assistant-direction",
       role: "assistant",
@@ -458,16 +420,16 @@ describe("story store", () => {
       createdAt: version.createdAt,
     }));
 
-    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: { ...document, versions: legacyVersions } } } as unknown as Parameters<typeof reconcileStoryStore>[0]);
+    const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: { ...document, versions: legacyVersions } } } as unknown as Parameters<typeof reconcileStoryStore>[0]);
 
-    expect(reconciled.documents.demo.dialogueThreads).toEqual(document.dialogueThreads);
-    expect(reconciled.documents.demo.versions.length).toBeGreaterThan(0);
-    expect(reconciled.documents.demo.versions.every((version) => version.chapterId === document.activeChapterId)).toBe(true);
+    expect(reconciled.documents.fixture.dialogueThreads).toEqual(document.dialogueThreads);
+    expect(reconciled.documents.fixture.versions.length).toBeGreaterThan(0);
+    expect(reconciled.documents.fixture.versions.every((version) => version.chapterId === document.activeChapterId)).toBe(true);
   });
 
   it("migrates only targetless legacy chapter candidates and removes reports for deleted explicit targets", () => {
-    const current = createStoryStore();
-    const document = structuredClone(current.documents.demo);
+    const current = createFixtureStore();
+    const document = structuredClone(current.documents.fixture);
     const firstChapter = document.chapters[0];
     const activeChapter = { ...firstChapter, id: "chapter-active", title: "当前章", order: 1 };
     document.chapters = [firstChapter, activeChapter];
@@ -490,8 +452,8 @@ describe("story store", () => {
       userConfirmation: "none" as const,
     }));
 
-    const reconciled = reconcileStoryStore({ version: 3, documents: { demo: document } });
-    const migrated = reconciled.documents.demo;
+    const reconciled = reconcileStoryStore({ version: 3, documents: { fixture: document } });
+    const migrated = reconciled.documents.fixture;
 
     expect(migrated.candidates.map((candidate) => candidate.id)).toEqual(["candidate-targetless", "candidate-valid"]);
     expect(migrated.candidates.find((candidate) => candidate.id === "candidate-targetless")?.target).toEqual({ type: "chapter", id: activeChapter.id });
@@ -499,8 +461,8 @@ describe("story store", () => {
   });
 
   it("migrates only chapterless legacy versions and drops versions explicitly targeting deleted chapters", () => {
-    const current = createStoryStore();
-    const document = structuredClone(current.documents.demo);
+    const current = createFixtureStore();
+    const document = structuredClone(current.documents.fixture);
     document.project = { ...document.project, id: "project-version-migration", title: "版本迁移项目" };
     const firstChapter = document.chapters[0];
     const activeChapter = { ...firstChapter, id: "chapter-active", title: "当前章", order: 1 };
@@ -527,48 +489,28 @@ describe("story store", () => {
     ]);
   });
 
-  it("restores canonical content for v3 builtin projects after local deletion", () => {
-    const saved = createStoryStore();
-    const canonical = createStoryStore();
-    saved.documents.demo.project.title = "用户改名后的草场";
-    saved.documents.demo.chapters = [];
-    saved.documents.demo.characters = [];
-    saved.documents.demo.worldEntries = [];
-    saved.documents.demo.blueprint = [];
-    saved.documents.demo.versions = [];
-
-    const reconciled = reconcileStoryStore(saved);
-
-    expect(reconciled.documents.demo.project).toEqual(canonical.documents.demo.project);
-    expect(reconciled.documents.demo.chapters).toEqual(canonical.documents.demo.chapters);
-    expect(reconciled.documents.demo.characters).toEqual(canonical.documents.demo.characters);
-    expect(reconciled.documents.demo.worldEntries).toEqual(canonical.documents.demo.worldEntries);
-    expect(reconciled.documents.demo.blueprint).toEqual(canonical.documents.demo.blueprint);
-    expect(reconciled.documents.demo.versions).toEqual(canonical.documents.demo.versions);
-  });
-
   it("loads the v2 storage key and writes the migrated v3 store", () => {
-    const current = createStoryStore();
-    const legacyDocument = structuredClone(current.documents.demo);
+    const current = createFixtureStore();
+    const legacyDocument = structuredClone(current.documents.fixture);
     const legacyRecord = legacyDocument as unknown as Record<string, unknown>;
     delete legacyRecord.dialogueThreads;
     delete legacyRecord.imageGenerationSettings;
     delete legacyRecord.analysisSnapshots;
     delete legacyRecord.consistencyReports;
     delete legacyRecord.trainingAttemptRefs;
-    localStorage.setItem(PREVIOUS_STORY_STORE_KEY, JSON.stringify({ version: 2, documents: { demo: legacyDocument } }));
+    localStorage.setItem(PREVIOUS_STORY_STORE_KEY, JSON.stringify({ version: 2, documents: { fixture: legacyDocument } }));
 
     const restored = loadStoryStore();
 
     expect(restored?.version).toBe(3);
-    expect(restored?.documents.demo.dialogueThreads).toEqual([]);
+    expect(restored?.documents.fixture.dialogueThreads).toEqual([]);
     expect(localStorage.getItem(PREVIOUS_STORY_STORE_KEY)).not.toBeNull();
     expect(localStorage.getItem(STORY_STORE_KEY)).not.toBeNull();
   });
 
   it("preserves v2 candidate targets and application modes when reloading", () => {
-    const store = createStoryStore();
-    const document = store.documents.demo;
+    const store = createFixtureStore();
+    const document = store.documents.fixture;
     document.candidates.push({
       id: "character-candidate",
       label: "人物卡候选",
@@ -584,7 +526,7 @@ describe("story store", () => {
     saveStoryStore(store);
 
     const restored = loadStoryStore();
-    const candidate = restored?.documents.demo.candidates.find((item) => item.id === "character-candidate");
+    const candidate = restored?.documents.fixture.candidates.find((item) => item.id === "character-candidate");
 
     expect(candidate).toMatchObject({ target: { type: "character", id: document.characters[0].id }, applyMode: "replace-fields", mode: "live" });
   });

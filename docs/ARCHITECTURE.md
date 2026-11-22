@@ -35,7 +35,6 @@ src/data/         纯静态数据
 | `lib/knowledge/` | 知识条目目录与文本抽取 | `catalog.ts` | 不做检索打分（打分在 `ai/retrieval.ts`） |
 | `lib/assets/` | 生图链路（v2.0 起降级为愿景） | `generation.ts`、`indexed-db.ts` | 不得成为演示阻塞点 |
 | `lib/http/` | 限流预算、无缓存响应头 | `request-budget.ts`、`no-store.ts` | 不含业务逻辑 |
-| `lib/supabase/` | 仅公开知识库检索边界 | `sync.ts`、`browser.ts` | **绝不**读写用户数据 |
 | `story-store.ts` | localStorage 持久化与内置案例修复 | `load`/`save` | 不 import AI 模块（见 §6 技术债） |
 
 ## 3. `lib/ai` 内部数据流

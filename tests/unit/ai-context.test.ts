@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildAiContextPacket, buildAiContextPacketFromStoryContext } from "@/lib/ai/context";
-import { initialStoryState } from "@/data/mock-data";
+import { initialStoryState } from "../fixtures/story-state";
 
 describe("AI context packet", () => {
   it("uses the documented priority and reports visible trimming", () => {

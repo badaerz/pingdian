@@ -1,0 +1,8 @@
+@view-transition { navigation:auto; }
+@keyframes reading-exit { to { opacity:0; transform:translateY(-8px); } }
+@keyframes reading-enter { from { opacity:0; transform:translateY(8px); } }
+::view-transition-old(.reading-navigation), ::view-transition-old(root) { animation:reading-exit 200ms ease-in both; }
+::view-transition-new(.reading-navigation), ::view-transition-new(root) { animation:reading-enter 200ms ease-out both; }
+@media (prefers-reduced-motion:reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation:none !important; }
+}

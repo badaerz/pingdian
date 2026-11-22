@@ -172,7 +172,7 @@ function createRequestBody(settings: ImageGenerationSettings) {
 }
 
 export async function runAssetGeneration(input: AssetGenerationInput, config: AssetGenerationConfig): Promise<AssetGenerationResult> {
-  if (!config.apiKey) return demo(input, "未配置服务端图像密钥，已返回明确标注的《回响的草场》演示资产。", { failureStage: "configuration" });
+  if (!config.apiKey) return demo(input, "未配置服务端图像密钥，已返回明确标注的演示资产。", { failureStage: "configuration" });
   const controller = new AbortController();
   const timeoutMs = config.timeoutMs ?? 90_000;
   const timeout = setTimeout(() => controller.abort(), timeoutMs);

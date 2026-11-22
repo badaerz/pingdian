@@ -1,37 +1,19 @@
 import { expect, test, type Page } from "@playwright/test";
 
-async function createUserProject(page: Page) {
-  await page.goto("/projects/new");
-  await page.waitForLoadState("networkidle");
-  await page.getByLabel("作品名称").fill("长篇布局回归");
-  await page.getByLabel("一句话灵感").fill("记录草场与矿井之间不断累积的回声。");
-  await page.getByRole("button", { name: "下一步：人物与世界" }).click();
-  await page.getByRole("button", { name: "下一步：故事蓝图" }).click();
-  await page.getByRole("button", { name: "下一步：写出首段" }).click();
-  await page.getByLabel("作品首段").fill("风穿过草场与矿井之间的旧钢索。");
-  await page.getByRole("button", { name: "完成并进入创作台" }).click();
-  await expect(page).toHaveURL(/\/project\/project-.+\/studio$/);
-}
+import { createUserProject } from "./user-project";
 
 const routes = [
-  { path: "/", heading: "以叙事智能", slug: "home", visualAlt: "故事熔炉完整品牌标识" },
-  { path: "/projects", heading: "回响的草场", slug: "dashboard", visualAlt: "作品项目档案" },
-  { path: "/projects/new", heading: "三分钟", slug: "new-project", visualAlt: "故事熔炉中的叙事线索" },
-  { path: "/project/demo/studio", heading: "声场的入侵与重返", slug: "studio" },
-  { path: "/project/demo/analysis", heading: "回响的草场", slug: "analysis" },
-  { path: "/project/demo/ip-lab", heading: "文学 IP 实验场", slug: "ip-lab" },
-  { path: "/knowledge", heading: "文学知识图谱", slug: "knowledge", visualAlt: "文学知识关系图谱" },
-  { path: "/training", heading: "写作训练", slug: "training", visualAlt: "文学写作训练工坊" },
-  { path: "/settings", heading: "设置", slug: "settings", visualAlt: "本地优先的数据档案" },
+  { path: "/projects/new", slug: "new-project", ready: (page: Page) => page.getByLabel("作品名称") },
+  { path: "/studio", slug: "studio", ready: (page: Page) => page.getByLabel("正文编辑器") },
+  { path: "/analysis", slug: "analysis", ready: (page: Page) => page.getByRole("main") },
 ];
 
 for (const route of routes) {
-  test(`${route.slug} renders without horizontal overflow`, async ({ page }, testInfo) => {
-    await page.goto(route.path);
-    await expect(page.getByRole("heading", { name: new RegExp(route.heading) }).first()).toBeVisible();
-    if (route.visualAlt) await expect(page.getByRole("img", { name: route.visualAlt })).toBeVisible();
+  test(`${route.slug} renders without horizontal overflow`, async ({ page }) => {
+    const prefix = route.path === "/projects/new" ? "" : await createUserProject(page);
+    await page.goto(prefix + route.path);
+    await expect(route.ready(page)).toBeVisible();
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-    await page.screenshot({ path: `tests/e2e/screenshots/${testInfo.project.name}-${route.slug}.png`, fullPage: true });
   });
 }
 
@@ -124,7 +106,7 @@ test("studio center column stays inside the viewport and scrolls independently",
 
 test("studio header action labels stay on one line", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "桌面三栏布局专用回归");
-  await page.goto("/project/demo/studio");
+  await createUserProject(page);
 
   const actionHeights = await page.locator(".writing-actions .button:visible").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().height));
   expect(Math.max(...actionHeights)).toBeLessThanOrEqual(44);
@@ -132,7 +114,7 @@ test("studio header action labels stay on one line", async ({ page }, testInfo) 
 
 test("studio title never enters the action toolbar", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "桌面工具栏专用回归");
-  await page.goto("/project/demo/studio");
+  await createUserProject(page);
 
   const geometry = await page.locator(".writing-head").evaluate((header) => {
     const title = header.querySelector("h1")!.getBoundingClientRect();

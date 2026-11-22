@@ -23,7 +23,7 @@ const DIMENSION_EXERCISE: Record<string, string> = {
 };
 
 /** 从裸判据编号（P1 / M3）推出练习；模型自带的有效 ID 优先。 */
-function exerciseFor(diagnostic: LiteraryDiagnostic): string | null {
+export function exerciseFor(diagnostic: LiteraryDiagnostic): string | null {
   if (hasExercise(diagnostic.trainingExerciseId)) return diagnostic.trainingExerciseId;
   for (const id of diagnostic.criteriaIds ?? []) {
     const exercise = DIMENSION_EXERCISE[id.slice(0, 1)];

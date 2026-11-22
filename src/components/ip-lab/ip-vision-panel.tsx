@@ -7,7 +7,6 @@ import { ArrowRight, Building2, GraduationCap, Sparkles, Users } from "lucide-re
  *
  * PRD 的原话很直接：这块的价值在讲清楚"为什么"，不在做一个能用的生图按钮。
  * 同一件事，表述成"产品下一步的想象力"就是 vision，表述成"我做了个功能但没做完"就是半成品
- * ——AIPM 面试的差距正在这句话。
  *
  * 所以这里不删任何已有能力，只把**框架**摆正：
  *   1. 顶部明确标注这是愿景层，不是本期交付

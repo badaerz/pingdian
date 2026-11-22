@@ -1,3 +1,4 @@
+import "../fixtures/seeded-store";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AnalysisWorkspace } from "@/components/analysis/analysis-workspace";
@@ -52,15 +53,17 @@ const completeAnalysisV2 = {
   retrievalEvidence: [],
 };
 
-it("shows six dimensions and opens cited evidence", async () => {
-  const user = userEvent.setup();
-  render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  expect(screen.getAllByTestId("analysis-dimension")).toHaveLength(6);
-  expect(screen.getAllByText("案例快照")[0]).toBeVisible();
-  await user.click(screen.getAllByRole("button", { name: "证据 E1" })[0]);
-  const evidenceDialog = screen.getByRole("dialog", { name: "原文证据" });
-  expect(evidenceDialog).toBeVisible();
-  expect(within(evidenceDialog).getByText("用户文本")).toBeVisible();
+it("automatically reads the pasted project once and pins a quoted diagnostic", async () => {
+  const fetcher = vi.fn().mockResolvedValue(Response.json({ mode: "demo", result: completeAnalysisV2 }));
+  vi.stubGlobal("fetch", fetcher);
+  const view = render(<StoryProvider><AnalysisWorkspace projectId="fixture" autoRead /></StoryProvider>);
+  await screen.findByText("新诊断");
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  const request = JSON.parse(fetcher.mock.calls[0][1].body);
+  expect(request.input.sourceText).toContain("声场的入侵与重返");
+  expect(screen.getByText(/引文取自原文，评语和分数为示范/)).toBeVisible();
+  view.rerender(<StoryProvider><AnalysisWorkspace projectId="fixture" autoRead /></StoryProvider>);
+  expect(fetcher).toHaveBeenCalledTimes(1);
 });
 
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
@@ -71,7 +74,7 @@ it("explains an empty relationship graph and offers a new analysis", async () =>
   const fetcher = vi.fn().mockImplementation(() => Promise.resolve(Response.json({ mode: "demo", task: "analysis-v2", warnings: [], result })));
   vi.stubGlobal("fetch", fetcher);
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   const graph = await screen.findByRole("tabpanel");
   expect(await within(graph).findByText(/没有可展示的关系网络数据/)).toBeVisible();
   await user.click(within(graph).getByRole("button", { name: "重新分析" }));
@@ -83,7 +86,7 @@ it("explains empty pace and heatmap panels without drawing unsupported charts", 
   const result = { ...completeAnalysisV2, paceCurve: [], themeHeatmap: [] };
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ mode: "demo", task: "analysis-v2", warnings: [], result })));
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   await screen.findByText("新诊断");
   await user.click(screen.getByRole("tab", { name: "情节节奏" }));
   expect(screen.getByText(/没有可展示的情节节奏数据/)).toBeVisible();
@@ -98,7 +101,7 @@ it("explains empty pace and heatmap panels without drawing unsupported charts", 
 it("labels partial live results and shows the rejection without a heatmap tab", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ mode: "live", task: "analysis-v2", warnings: [], result: { ...completeAnalysisV2, discardedDiagnostics: [{ attempted: { id: "bad" }, reason: "field_invalid" }] } })));
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  await userEvent.click(screen.getByRole("button", { name: "真实重跑" }));
+  await userEvent.click(screen.getByRole("button", { name: "运行诊断" }));
   expect(await screen.findByText("真实分析（部分通过）")).toBeVisible();
   expect(screen.getByText(/bad：字段缺失或格式不符/)).toBeVisible();
   expect(screen.queryByRole("tab", { name: "主题演变" })).toBeNull();
@@ -117,7 +120,7 @@ it("真实诊断没带 trainingExerciseId 时，按判据维度仍能跳到专�
   }), { status: 200 })));
 
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   await screen.findByText("新诊断");
 
   const link = screen.getByRole("link", { name: "去专项训练" });
@@ -133,7 +136,7 @@ it("主题热力 tab 渲染模型返回的主题分布，点格子可定位证�
   vi.stubGlobal("fetch", fetcher);
 
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   await screen.findByText("新诊断");
 
   // PRD 2.0 §5 黄金路径要求「关系图 / 节奏曲线 / 热力图」都在
@@ -164,7 +167,7 @@ it("runs analysis-v2, links diagnostics to evidence, and explains selected text 
   vi.stubGlobal("fetch", fetcher);
 
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
 
   expect(screen.getByRole("progressbar", { name: "文学诊断生成进度" })).toBeVisible();
   expect(await screen.findByText("新诊断")).toBeVisible();
@@ -196,7 +199,7 @@ it("keeps analysis mode and warnings separate from mentor mode and warnings", as
     .mockResolvedValueOnce(new Response(JSON.stringify({ mode: "demo", task: "mentor", result: { mentor: { thesis: "导师降级结果", evidence: [{ quote: "选中的句子", source: "observation" }], craft: ["延宕"], effect: ["张力"], consistency: ["一致"], experiments: ["拆句"], questions: ["为什么？"], references: [] } }, warnings: ["导师降级提示"], requestId: "mentor-demo" }), { status: 200 })));
   render(<StoryProvider><AnalysisWorkspace initialSelection="选中的句子" /></StoryProvider>);
 
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   expect(await screen.findByText("真实分析")).toBeVisible();
   expect(screen.getByText("分析来源提示")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "解释这段文字" }));
@@ -225,7 +228,7 @@ it("automatically detects argumentative text and marks explicit user correction"
 
 it("loads a studio project chapter context without crossing to another chapter", async () => {
   const user = userEvent.setup();
-  render(<StoryProvider><AnalysisWorkspace projectId="demo" chapterId="demo-chapter-1" sourceContext="studio" initialSelection="声场的入侵与重返" /></StoryProvider>);
+  render(<StoryProvider><AnalysisWorkspace projectId="fixture" chapterId="fixture-chapter-1" sourceContext="studio" initialSelection="声场的入侵与重返" /></StoryProvider>);
 
   expect(await screen.findByText(/创作台直达/)).toBeVisible();
   expect(screen.getByText(/当前来源/)).toBeVisible();
@@ -236,10 +239,10 @@ it("loads a studio project chapter context without crossing to another chapter",
 });
 
 it("rejects a chapter id outside the routed project instead of falling back", async () => {
-  render(<StoryProvider><AnalysisWorkspace projectId="demo" chapterId="chapter-from-another-project" sourceContext="studio" /></StoryProvider>);
+  render(<StoryProvider><AnalysisWorkspace projectId="fixture" chapterId="chapter-from-another-project" sourceContext="studio" /></StoryProvider>);
 
   expect(await screen.findByRole("alert")).toHaveTextContent("不属于当前项目");
-  expect(screen.getByRole("button", { name: "真实重跑" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "运行诊断" })).toBeDisabled();
 });
 
 it("validates pasted analysis text without silently truncating or saving it", async () => {
@@ -297,6 +300,11 @@ it("does not persist imported text in project snapshots or AI run logs", async (
   await user.type(screen.getByRole("textbox", { name: "待分析文本" }), importedText);
   await user.click(screen.getByRole("button", { name: "分析用户文本" }));
   expect(await screen.findByText("新诊断")).toBeVisible();
+  const notes = screen.getByRole("region", { name: "批注流" });
+  await user.click(within(notes).getByRole("button"));
+  const anchor = screen.getByRole("button", { name: importedText });
+  expect(anchor.closest(".ew-source")).toHaveAttribute("data-pinned", "true");
+  expect(anchor).toHaveAttribute("aria-pressed", "true");
   await user.click(screen.getByRole("button", { name: "解释这段文字" }));
   expect(await screen.findByText("外文仅在内存分析")).toBeVisible();
 
@@ -306,15 +314,17 @@ it("does not persist imported text in project snapshots or AI run logs", async (
 
 it("keeps the previous evidence and reports uncertainty when analysis fails", async () => {
   const user = userEvent.setup();
-  vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(Response.json({ mode: "live", result: completeAnalysisV2 })).mockRejectedValue(new Error("offline")));
   render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
 
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
 
+  await screen.findByText("新诊断");
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   expect(await screen.findByRole("alert", { name: "" })).toHaveTextContent("分析暂时不可用");
   expect(screen.getByRole("status")).toHaveTextContent("未生成未经校验的结论");
   await user.click(screen.getByRole("button", { name: "查看上次结果" }));
-  expect(screen.getAllByTestId("analysis-dimension")).toHaveLength(6);
+  expect(screen.getAllByTestId("analysis-dimension")).toHaveLength(completeAnalysisV2.analysis.length);
 });
 
 it("drops a late analysis response after the imported source changes", async () => {
@@ -373,7 +383,7 @@ it("aborts in-flight analysis when the workspace unmounts", async () => {
   }));
   const view = render(<StoryProvider><AnalysisWorkspace /></StoryProvider>);
 
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   expect(requestSignal?.aborted).toBe(false);
   view.unmount();
   expect(requestSignal?.aborted).toBe(true);
@@ -386,7 +396,7 @@ it("clears analysis and disables mentor after an invalid imported file", async (
     .mockResolvedValueOnce(new Response(JSON.stringify({ mode: "demo", task: "mentor", result: { mentor: { thesis: "旧导师结论", evidence: [{ quote: "选中的句子", source: "observation" }], craft: [], effect: [], consistency: [], experiments: [], questions: [], references: [] } }, warnings: [] }), { status: 200 })));
   const { container } = render(<StoryProvider><AnalysisWorkspace initialSelection="选中的句子" /></StoryProvider>);
 
-  await user.click(screen.getByRole("button", { name: "真实重跑" }));
+  await user.click(screen.getByRole("button", { name: "运行诊断" }));
   expect(await screen.findByText("新诊断")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "解释这段文字" }));
   expect(await screen.findByText("旧导师结论")).toBeVisible();
