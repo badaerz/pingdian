@@ -10,7 +10,7 @@
 
 **方式一：直接下载（推荐）**
 
-1. 打开 [Releases](https://github.com/badaerz/pingdian/releases) → 下载 `Source code (zip)`
+1. 打开 Releases → 下载 pingdian-v0.1.0-quickstart.zip
 2. 解压，进入文件夹
 3. 装 [Node.js](https://nodejs.org) 20 或以上
 4. 双击 `一键启动-Windows.bat`；macOS / Linux 在终端执行 `bash 一键启动-macOS-Linux.sh`
